@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Байланыс | Әдебиет ордасы</title>
+
+<style>
+* {box-sizing:border-box;}
+body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
+
+header {
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  color:white;
+  text-align:center;
+  padding:25px;
+}
+
+nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+nav button {
+  background:none;
+  border:none;
+  color:white;
+  padding:12px 18px;
+  margin:2px;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:bold;
+  border-radius:5px;
+}
+nav button:hover {background:#6e472c;}
+
+section {padding:20px;max-width:600px;margin:30px auto;}
+.card {background:white;padding:20px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+h2 {color:#5c4033;}
+p {margin:8px 0;}
+footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Байланыс</h1>
+<p>Сайт редакциясына хабарласу</p>
+</header>
+
+<nav>
+<button onclick="location.href='index.html'">Басты бет</button>
+<button onclick="location.href='alash.html'">Алаш зиялылары</button>
+<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+<button onclick="location.href='poets.html'">Ақындар</button>
+<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+<button onclick="location.href='contact.html'">Байланыс</button>
+</nav>
+
+<section>
+  <div class="card">
+    <h2>Редакциямен байланыс</h2>
+    <p>📧 Email: <a href="mailto:adebiet13@gmail.com">adebiet13@gmail.com</a></p>
+    <p>📱 Телефон: +7 707 893 82 45</p>
+    <p>🌐 Telegram: <a href="https://t.me/userd26" target="_blank">@userd26</a></p>
+  </div>
+</section>
+
+<footer>
+© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+</footer>
+
+</body>
+</html>
