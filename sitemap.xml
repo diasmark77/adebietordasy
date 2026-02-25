@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-   <!-- Негізгі беттер -->
    <url>
       <loc>https://adebietordasy.netlify.app/</loc>
    </url>
@@ -18,10 +17,10 @@
       <loc>https://adebietordasy.netlify.app/contact.html</loc>
    </url>
    <url>
-      <loc>https://adebietordasy.netlify.app/poemgame</loc>
+      <loc>https://adebietordasy.netlify.app/poemGame</loc>
    </url>
 
-   <!-- Әр автордың беттері -->
+   
    <url>
       <loc>https://adebietordasy.netlify.app/authors/zhambyl</loc>
    </url>
@@ -58,5 +57,6 @@
    <url>
       <loc>https://adebietordasy.netlify.app/authors/mauezov</loc>
    </url>
+
 
 </urlset>
