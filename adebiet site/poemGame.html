@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Қаламгер ойыны | Әдебиет ордасы</title>
+
+<style>
+* {box-sizing:border-box;}
+body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
+
+header {
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  color:white;
+  text-align:center;
+  padding:25px;
+}
+
+nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+nav button {
+  background:none;
+  border:none;
+  color:white;
+  padding:12px 18px;
+  margin:2px;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:bold;
+  border-radius:5px;
+}
+nav button:hover {background:#6e472c;}
+
+section {padding:20px;max-width:800px;margin:auto;}
+textarea {width:100%;padding:10px;font-size:16px;border-radius:5px;border:1px solid #ccc;margin-top:10px;}
+button.action-btn {margin-top:10px;padding:10px 20px;font-size:16px;border:none;background:#8b5e3c;color:white;border-radius:5px;cursor:pointer;}
+button.action-btn:hover {background:#6e472c;}
+#result {margin-top:15px;border:1px solid #ccc;padding:10px;white-space: pre-line;background:white;border-radius:5px;}
+h2 {color:#5c4033;}
+footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Қаламгер ойыны</h1>
+<p>Өлеңіңді жалғастыр, шығармашылығыңды дамыт!</p>
+</header>
+
+<nav>
+<button onclick="location.href='index.html'">Басты бет</button>
+<button onclick="location.href='alash.html'">Алаш зиялылары</button>
+<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+<button onclick="location.href='poets.html'">Ақындар</button>
+<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+<button onclick="location.href='contact.html'">Байланыс</button>
+<button onclick="location.href='poems.html'">Өлеңдер</button>
+</nav>
+
+<section>
+<h2>Өлең ойыны</h2>
+<p id="poemLine"></p>
+<textarea id="userInput" placeholder="Өлеңіңді жалғастыр"></textarea>
+<br>
+<button class="action-btn" onclick="nextLine()">Келесі жол</button>
+<div id="result"></div>
+</section>
+
+<footer>
+© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+</footer>
+
+<script>
+// Өлең жолдары
+const poems = [
+  "Абай: Көзімнің қарасы ", 
+  "Абай: Бітпейді іштегі",
+  "Мұқағали: Қазақтың данасы,",
+  "Диас: Бар демес сендей бір,",
+  "Мұқағали:Найзағай шаншып өткенде,",
+  "Мұқағали:Гүл тере барсаң бөктерге,",
+  "Мұқағали:Нұр жауып тұрған көктемде,",
+  "Диас:Самал соқса би билемес ырғалмай,",
+  "Диас:Ақ қайыңдар сауық кешін құрғандай.",
+  "Диас:Ақ қалпақты Алатаудың басынан,",
+  "Диас:Қонаев та қолын бұлғап тұрғандай."
+];
+let currentLine = 0;
+
+function nextLine(){
+  const userText = document.getElementById('userInput').value;
+  if(userText.trim()===""){ alert("Өлең жолын жаз!"); return; }
+  const resultDiv = document.getElementById('result');
+  resultDiv.textContent += poems[currentLine] + " " + userText + "\n";
+  document.getElementById('userInput').value="";
+  currentLine++; 
+  if(currentLine>=poems.length){
+    document.getElementById('poemLine').textContent="Барлық жолдар аяқталды!";
+    return;
+  }
+  document.getElementById('poemLine').textContent=poems[currentLine];
+}
+
+// Бастапқы өлең жолын көрсету
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('poemLine').textContent=poems[0];
+});
+</script>
+
+</body>
+</html>
