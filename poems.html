@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Әдебиет ордасы</title>
+
+<style>
+* {box-sizing:border-box;}
+body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
+
+header {
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  color:white;
+  text-align:center;
+  padding:25px;
+}
+
+nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+nav button {
+  background:none;
+  border:none;
+  color:white;
+  padding:12px 18px;
+  margin:2px;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:bold;
+  border-radius:5px;
+}
+nav button:hover {background:#6e472c;}
+
+section {padding:20px;max-width:1000px;margin:auto;}
+.card {background:white;padding:20px;margin:15px 0;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+h2 {color:#5c4033;}
+footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
+.search-box {text-align:center;margin:15px;}
+.search-box input {
+  width:80%;max-width:400px;padding:10px;font-size:16px;border-radius:5px;border:1px solid #ccc;
+}
+@media(max-width:600px){
+  nav {flex-direction:column;align-items:center;}
+  nav button {width:90%; margin:3px 0;}
+  .search-box input {width:95%;}
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>📚 Әдебиет ордасы</h1>
+<p>Қазақ руханиятының әдеби ордасы</p>
+</header>
+
+<nav>
+<button onclick="location.href='index.html'">Басты бет</button>
+<button onclick="location.href='alash.html'">Алаш зиялылары</button>
+<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+<button onclick="location.href='poets.html'">Ақындар</button>
+<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+<button onclick="location.href='contact.html'">Байланыс</button>
+<button onclick="location.href='poems.html'">Өлеңдер</button>
+</nav>
+
+<!-- Search -->
+<div class="search-box">
+<input type="text" id="searchInput" onkeyup="searchCards()" placeholder="Іздеу авторлар мен шығармалар бойынша...">
+</div>
+
+<div class="card">
+  <h2>Мұқағали Мақатаев"Есіңе мені алғайсың"</h2>
+  <pre>
+"Есіңе мені алғайсың"
+Нұр жауып тұрған көктемде,
+Гүл тере барсаң бөктерге,
+Қоңыраулатқан аспанды
+Найзағай шаншып өткенде,
+Есіңе мені алғайсың?
+  </pre>
+    <a href="poems/esine-meni-algaysyn.html">Толығырақ →</a>
+</div>
+
+<div class="card">
+  <h2>Жамбыл Жабаев "Ұлы көш"</h2>
+  <pre>
+    Кавказ бен Алтай, Алатау,
+Асқар, асу белімсің,
+Шығысым — қиыр зор тайга,
+Құрсанған болат темірсің.
+  </pre>
+  <a href="poems/uly-kosh.html">Толығырақ →</a>
+</div>
+
+<div class="card">
+  <h2>Марқабай Диас "Биік шың"</h2>
+  <pre>
+    Шығып бірде Алатаудың шыңына,
+Көз тастадым Алматының маңына.
+Табиғатты етіп алып сырласым,
+Тәнті болдым Алматының халқына.
+  </pre>
+  <a href="poems/bik-shyn.html">Толығырақ →</a>
+</div>
+
+<div class="card">
+  <h2>Абай Құнанбайұлы "Көзімнің қарасы"</h2>
+  <pre>
+    Көзімнің қарасы,
+Көңілімнің санасы.
+Бітпейді іштегі,
+Ғашықтық жарасы.
+  </pre>
+<a href="poems/kozimnin-karasy.html">Толығырақ →</a>
+</div>
+
+<div class="card">
+  <h2>Марқабай Диас "Ұлы ұстаз"</h2>
+  <pre>
+   Кешірген жастығымды, мастығымды,
+Кешірген еркелікті азды-көпті.
+Білмеймін, қатты бұзық болғанмын ба,
+Ұстазымның самайына ақ түсіпті.
+  </pre>
+  <a href="poems/uly-ustaz.html">Толығырақ →</a>
+</div>
+
+
+<div class="card">
+  <h2>Марқабай Диас "Ізгі ізденіс"</h2>
+  <pre>
+    Қанша тағдыр бір-бірімен тоғысқан,
+Танығандар жұптарымен табысқан.
+Қанша жанның ішінен тапты екен,
+Рухтардың арасынан жан ұшқан
+  </pre>
+  <a href="poems/izgy-izdenis.html">Толығырақ →</a>
+</div>
+
+<div class="card">
+  <h2>Марқабай Диас "Бауырларым"</h2>
+  <pre>
+   Тай құлындай тебісіп бірге өскен,
+Перзенті едік асылдардың көпті көрген.
+Қайран қарттар үйретті ау, бар білгенін,
+Сүрінеді екен деп неше жерден.
+  </pre>
+  <a href="poems/baurlarym.html">Толығырақ →</a>
+</div>
+
+<footer>
+© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+</footer>
+
+</body>
+</html>
+
