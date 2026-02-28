@@ -17,12 +17,13 @@ document.getElementById("signupBtn").onclick = async () => {
   const password = document.getElementById("password").value;
   const user = await createUserWithEmailAndPassword(auth, email, password);
   await setDoc(doc(db, "users", user.user.uid), {
-    email: email,
-    role: "user"
+    email: diasmarkabayev@gmail.com,
+    role: "admin"
   });
   alert("Тіркелді");
   window.location.href = "login.html";
 };
 </script>
 </body>
+
 </html>
