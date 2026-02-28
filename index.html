@@ -7,53 +7,173 @@
 
 <style>
 * {box-sizing:border-box;}
-body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
-
-header {
-  background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url("kazakh-dalasy.jpg") center/cover no-repeat;
-  color:white;
-  text-align:center;
-  padding:25px;
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f1ea;
+  color:#333;
 }
 
-nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+/* ===== HERO ===== */
+header {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    url("kazak-dalasy.jpg") center/cover no-repeat;
+  color:white;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:40px 20px;
+  position:relative;
+}
+
+.hero-logo {
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  margin-bottom:20px;
+  box-shadow:0 0 30px rgba(0,0,0,0.6);
+  background:#00000055;
+  padding:10px;
+}
+
+.hero-title {
+  font-size:56px;
+  margin:10px 0;
+  font-family: "Georgia", serif;
+  letter-spacing:2px;
+}
+
+.hero-subtitle {
+  font-size:22px;
+  opacity:0.9;
+  margin-bottom:30px;
+}
+
+.hero-btn {
+  padding:15px 45px;
+  background:#d4af37;
+  color:#000;
+  text-decoration:none;
+  font-size:18px;
+  border-radius:10px;
+  font-weight:bold;
+  transition:0.3s;
+  box-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+.hero-btn:hover {
+  background:#b8962e;
+  transform:translateY(-2px);
+}
+
+/* ===== NAV ===== */
+nav {
+  background:#5c4033;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+  box-shadow:0 4px 10px rgba(0,0,0,0.4);
+}
+
 nav button {
   background:none;
   border:none;
   color:white;
-  padding:12px 18px;
+  padding:14px 20px;
   margin:2px;
   cursor:pointer;
   font-size:16px;
   font-weight:bold;
-  border-radius:5px;
+  border-radius:6px;
+  transition:0.3s;
 }
-nav button:hover {background:#6e472c;}
 
-section {padding:20px;max-width:1000px;margin:auto;}
-.card {background:white;padding:20px;margin:15px 0;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-h2 {color:#5c4033;}
-footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
-.search-box {text-align:center;margin:15px;}
-.search-box input {
-  width:80%;max-width:400px;padding:10px;font-size:16px;border-radius:5px;border:1px solid #ccc;
+nav button:hover {
+  background:#d4af37;
+  color:#000;
 }
+
+/* ===== SEARCH ===== */
+.search-box {
+  text-align:center;
+  margin:25px;
+}
+
+.search-box input {
+  width:80%;
+  max-width:450px;
+  padding:12px;
+  font-size:16px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* ===== CONTENT ===== */
+section {
+  padding:20px;
+  max-width:1000px;
+  margin:auto;
+}
+
+.card {
+  background:white;
+  padding:25px;
+  margin:20px 0;
+  border-radius:15px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.15);
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+h2 {
+  color:#5c4033;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background:#5c4033;
+  color:white;
+  text-align:center;
+  padding:20px;
+  margin-top:40px;
+  font-size:14px;
+}
+
+/* ===== MOBILE ===== */
 @media(max-width:600px){
+  .hero-title {font-size:36px;}
+  .hero-subtitle {font-size:18px;}
+  .hero-logo {width:140px;height:140px;}
   nav {flex-direction:column;align-items:center;}
-  nav button {width:90%; margin:3px 0;}
+  nav button {width:90%; margin:4px 0;}
   .search-box input {width:95%;}
 }
 </style>
 </head>
+
 <body>
 
+<!-- HERO -->
 <header>
-<h1>📚 Әдебиет ордасы</h1>
-<p>Қазақ руханиятының әдеби ордасы</p>
+  <img src="logo.png" class="hero-logo" alt="Әдебиет ордасы логотипі">
+  <h1 class="hero-title">Әдебиет ордасы</h1>
+  <p class="hero-subtitle">Қазақ руханиятының әдеби ордасы</p>
+  <a href="#home" class="hero-btn">Бастау</a>
 </header>
 
+<!-- NAV -->
 <nav>
 <button onclick="location.href='index.html'">Басты бет</button>
 <button onclick="location.href='alash.html'">Алаш зиялылары</button>
@@ -64,24 +184,25 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 <button onclick="location.href='poems.html'">Өлеңдер</button>
 </nav>
 
-<!-- Search -->
+<!-- SEARCH -->
 <div class="search-box">
 <input type="text" id="searchInput" onkeyup="searchCards()" placeholder="Іздеу авторлар мен шығармалар бойынша...">
 </div>
 
-<!-- Басты бет -->
+<!-- HOME -->
 <section id="home">
   <div class="card">
     <h2>Қош келдіңіз!</h2>
     <p>Бұл сайт – қазақ әдебиетінің ұлы тұлғаларын таныстыратын портал. Мұнда Алаш зиялылары, қазақ жазушылары, ақындар және олардың мұралары жинақталған.</p>
   </div>
+
   <div class="card">
     <h2>Құрметті жас талап!</h2>
     <p>Егерде сіз өзіңізді, өзіңіздің шығармаларыңызды біздің парақшамызда көргіңіз келсе, бізбен байланысуыңызды сұраймыз. Құрметпен "Әдебиет ордасы" сайтының редакторы!</p>
   </div>
 </section>
 
- 
+<!-- FOOTER -->
 <footer>
 © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
@@ -98,6 +219,4 @@ function searchCards(){
 </script>
 
 </body>
-
 </html>
-
