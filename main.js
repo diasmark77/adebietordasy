@@ -6,7 +6,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/12.10.0/firebas
 const firebaseConfig = {
   apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
   authDomain: "adebietordasy.firebaseapp.com",
-  projectId: "adebiet-ordasy",
+  projectId: "adebietordasy",
   storageBucket: "adebietordasy.firebasestorage.app",
   messagingSenderId: "331787955330",
   appId: "1:331787955330:web:a77853b5bffdb44bed989b",
@@ -15,3 +15,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
