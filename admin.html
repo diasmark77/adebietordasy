@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>Admin Panel</title></head>
+<body>
+<h1>Админ панель</h1>
+<input id="title" placeholder="Тақырып"><br>
+<textarea id="content" placeholder="Мазмұн"></textarea><br>
+<button id="addBtn">Қосу</button>
+
+<div id="posts"></div>
+
+<script type="module">
+import { db } from "./main.js";
+import { addDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const postsDiv = document.getElementById("posts");
+
+document.getElementById("addBtn").onclick = async () => {
+  await addDoc(collection(db, "posts"), {
+    title: title.value,
+    content: content.value
+  });
+  alert("Қосылды");
+  loadPosts();
+};
+
+async function loadPosts(){
+  postsDiv.innerHTML = "";
+  const snap = await getDocs(collection(db, "posts"));
+  snap.forEach(doc=>{
+    const d = doc.data();
+    postsDiv.innerHTML += `<h3>${d.title}</h3><p>${d.content}</p><hr>`;
+  });
+}
+loadPosts();
+</script>
+</body>
+</html>

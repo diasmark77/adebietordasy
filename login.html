@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><title>Кіру</title></head>
+<body>
+<h2>Кіру</h2>
+<input type="email" id="email" placeholder="Email"><br>
+<input type="password" id="password" placeholder="Құпиясөз"><br>
+<button id="loginBtn">Кіру</button>
+
+<script type="module">
+import { auth, db } from "./main.js";
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+document.getElementById("loginBtn").onclick = async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const user = await signInWithEmailAndPassword(auth, email, password);
+  const snap = await getDoc(doc(db, "users", user.user.uid));
+  const role = snap.data().role;
+  if(role === "admin") window.location.href = "admin.html";
+  else window.location.href = "index.html";
+};
+</script>
+</body>
+</html>

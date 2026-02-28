@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head><title>Тіркелу</title></head>
+<body>
+<h2>Тіркелу</h2>
+<input type="email" id="email" placeholder="Email"><br>
+<input type="password" id="password" placeholder="Құпиясөз"><br>
+<button id="signupBtn">Тіркелу</button>
+
+<script type="module">
+import { auth, db } from "./main.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+document.getElementById("signupBtn").onclick = async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const user = await createUserWithEmailAndPassword(auth, email, password);
+  await setDoc(doc(db, "users", user.user.uid), {
+    email: email,
+    role: "user"
+  });
+  alert("Тіркелді");
+  window.location.href = "login.html";
+};
+</script>
+</body>
+</html>
