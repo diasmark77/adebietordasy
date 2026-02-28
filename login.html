@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Кіру – Әдебиет ордасы</title>
+<title>Кіру / Тіркелу – Әдебиет ордасы</title>
 <style>
 * {box-sizing:border-box;}
 body {
@@ -16,7 +16,7 @@ body {
   align-items:center;
   min-height:100vh;
 }
-.login-container {
+.container {
   background: rgba(30,15,0,0.85);
   padding:40px;
   border-radius:15px;
@@ -25,72 +25,60 @@ body {
   max-width:400px;
   text-align:center;
 }
-.login-container h2 {
-  margin-bottom:20px;
-  color:#ffa500;
-}
-.login-container input {
-  width:90%;
-  padding:12px;
-  margin:10px 0;
-  border:none;
-  border-radius:8px;
-}
-.login-container button {
-  width:95%;
-  padding:12px;
-  margin-top:15px;
-  background:#b85c00;
-  color:white;
-  border:none;
-  border-radius:8px;
-  font-weight:bold;
-  font-size:16px;
-  cursor:pointer;
-  transition:0.3s;
-}
-.login-container button:hover {
-  background:#ffa500;
-  color:#000;
-}
+.container h2 { color:#ffa500; margin-bottom:20px; }
+.container input { width:90%; padding:12px; margin:10px 0; border:none; border-radius:8px; }
+.container button { width:95%; padding:12px; margin-top:10px; background:#b85c00; color:white; border:none; border-radius:8px; font-weight:bold; font-size:16px; cursor:pointer; transition:0.3s; }
+.container button:hover { background:#ffa500; color:#000; }
 </style>
 </head>
 <body>
 
-<div class="login-container">
-  <h2>Кіру – Әдебиет ордасы</h2>
+<div class="container">
+  <h2>Әдебиет ордасы</h2>
   <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Құпиясөз">
+  <button id="signupBtn">Тіркелу</button>
   <button id="loginBtn">Кіру</button>
 </div>
 
 <script type="module">
 import { auth, db } from './main.js';
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
+// 🔹 Тіркелу
+document.getElementById('signupBtn').onclick = async () => {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  if(!email || !password){ alert("Барлық өрістерді толтырыңыз!"); return; }
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    // Firestore-қа автоматты қосу role = "user"
+    await setDoc(doc(db,"users",userCredential.user.uid), {email, role:"user"});
+    alert("Сәтті тіркелдіңіз!");
+    document.getElementById('email').value = "";
+    document.getElementById('password').value = "";
+  } catch(err) {
+    alert("Қате! Қайталап көріңіз.");
+    console.error(err);
+  }
+};
+
+// 🔹 Кіру
 document.getElementById('loginBtn').onclick = async () => {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
-  
+  if(!email || !password){ alert("Барлық өрістерді толтырыңыз!"); return; }
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const userId = userCredential.user.uid;
-    const snap = await getDoc(doc(db, "users", userId));
-    
-    if(!snap.exists()) {
-      alert("Пайдаланушы мәліметтері табылмады!");
-      return;
-    }
-    
+    const snap = await getDoc(doc(db,"users",userId));
+    if(!snap.exists()){ alert("Пайдаланушы мәліметтері табылмады!"); return; }
+
     const role = snap.data().role;
     alert("Сәтті кірдіңіз!");
-    
-    if(role === "admin") {
-      window.location.href = 'admin.html';
-    } else {
-      window.location.href = 'index.html';
-    }
+    if(role === "admin"){ window.location.href = 'admin.html'; }
+    else { window.location.href = 'index.html'; }
   } catch(err) {
     alert("Қате! Email немесе құпиясөз дұрыс емес.");
     console.error(err);
