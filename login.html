@@ -29,6 +29,8 @@ body {
 .container input { width:90%; padding:12px; margin:10px 0; border:none; border-radius:8px; }
 .container button { width:95%; padding:12px; margin-top:10px; background:#b85c00; color:white; border:none; border-radius:8px; font-weight:bold; font-size:16px; cursor:pointer; transition:0.3s; }
 .container button:hover { background:#ffa500; color:#000; }
+#homeBtn { background:#333; color:#ffa500; }
+#homeBtn:hover { background:#ffa500; color:#000; }
 </style>
 </head>
 <body>
@@ -39,6 +41,7 @@ body {
   <input type="password" id="password" placeholder="Құпиясөз">
   <button id="signupBtn">Тіркелу</button>
   <button id="loginBtn">Кіру</button>
+  <button id="homeBtn">Басты бетке</button>
 </div>
 
 <script type="module">
@@ -53,13 +56,12 @@ document.getElementById('signupBtn').onclick = async () => {
   if(!email || !password){ alert("Барлық өрістерді толтырыңыз!"); return; }
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    // Firestore-қа автоматты қосу role = "user"
     await setDoc(doc(db,"users",userCredential.user.uid), {email, role:"user"});
-    alert("Сәтті тіркелдіңіз!");
+    alert("✅ Сәтті тіркелдіңіз!");
     document.getElementById('email').value = "";
     document.getElementById('password').value = "";
   } catch(err) {
-    alert("Қате! Қайталап көріңіз.");
+    alert("❌ Қате! Қайталап көріңіз.");
     console.error(err);
   }
 };
@@ -73,16 +75,22 @@ document.getElementById('loginBtn').onclick = async () => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const userId = userCredential.user.uid;
     const snap = await getDoc(doc(db,"users",userId));
-    if(!snap.exists()){ alert("Пайдаланушы мәліметтері табылмады!"); return; }
+    if(!snap.exists()){ alert("❌ Пайдаланушы мәліметтері табылмады!"); return; }
 
     const role = snap.data().role;
-    alert("Сәтті кірдіңіз!");
+    alert("✅ Сәтті кірдіңіз!");
+
     if(role === "admin"){ window.location.href = 'admin.html'; }
     else { window.location.href = 'index.html'; }
   } catch(err) {
-    alert("Қате! Email немесе құпиясөз дұрыс емес.");
+    alert("❌ Қате! Email немесе құпиясөз дұрыс емес.");
     console.error(err);
   }
+};
+
+// 🔹 Басты бетке батырма
+document.getElementById('homeBtn').onclick = () => {
+  window.location.href = 'index.html';
 };
 </script>
 
