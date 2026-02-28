@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Кіру / Тіркелу – Әдебиет ордасы</title>
+<title>Кіру – Әдебиет ордасы</title>
 <style>
 * {box-sizing:border-box;}
 body {
@@ -39,41 +39,25 @@ body {
   <h2>Әдебиет ордасы</h2>
   <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Құпиясөз">
-  <button id="signupBtn">Тіркелу</button>
   <button id="loginBtn">Кіру</button>
   <button id="homeBtn">Басты бетке</button>
 </div>
 
 <script type="module">
 import { auth, db } from './main.js';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-// 🔹 Тіркелу
-document.getElementById('signupBtn').onclick = async () => {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  if(!email || !password){ alert("Барлық өрістерді толтырыңыз!"); return; }
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    await setDoc(doc(db,"users",userCredential.user.uid), {email, role:"user"});
-    alert("✅ Сәтті тіркелдіңіз!");
-    document.getElementById('email').value = "";
-    document.getElementById('password').value = "";
-  } catch(err) {
-    alert("❌ Қате! Қайталап көріңіз.");
-    console.error(err);
-  }
-};
-
-// 🔹 Кіру
 document.getElementById('loginBtn').onclick = async () => {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
+
   if(!email || !password){ alert("Барлық өрістерді толтырыңыз!"); return; }
+
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const userId = userCredential.user.uid;
+
     const snap = await getDoc(doc(db,"users",userId));
     if(!snap.exists()){ alert("❌ Пайдаланушы мәліметтері табылмады!"); return; }
 
@@ -82,13 +66,13 @@ document.getElementById('loginBtn').onclick = async () => {
 
     if(role === "admin"){ window.location.href = 'admin.html'; }
     else { window.location.href = 'index.html'; }
+
   } catch(err) {
-    alert("❌ Қате! Email немесе құпиясөз дұрыс емес.");
+    alert("❌ Email немесе құпиясөз дұрыс емес.");
     console.error(err);
   }
 };
 
-// 🔹 Басты бетке батырма
 document.getElementById('homeBtn').onclick = () => {
   window.location.href = 'index.html';
 };
@@ -96,5 +80,3 @@ document.getElementById('homeBtn').onclick = () => {
 
 </body>
 </html>
-
-
