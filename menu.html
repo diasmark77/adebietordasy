@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Меню – Әдебиет ордасы</title>
+
+<style>
+* {box-sizing:border-box;}
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),url("kazakh-dalasy.jpg") center/cover no-repeat;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+nav {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+nav button {
+  margin:12px 0;
+  padding:16px 50px;
+  font-size:22px;
+  border:none;
+  border-radius:10px;
+  background:rgba(212,175,55,0.7); /* прозрачный */
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+nav button:hover {background:rgba(184,150,46,0.8);}
+.account-icon {
+  position:absolute;
+  top:15px;
+  left:15px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:#ffa500;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:28px;
+  cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,0.5);
+}
+@media(max-width:600px){
+  nav button {width:80%;padding:12px 0;font-size:18px;}
+  .account-icon{width:50px;height:50px;font-size:26px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="account-icon" id="accountIcon">👤</div>
+
+<nav>
+<button onclick="location.href='index.html'">Басты бет</button>
+<button onclick="location.href='alash.html'">Алаш зиялылары</button>
+<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+<button onclick="location.href='poets.html'">Ақындар</button>
+<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+<button onclick="location.href='contact.html'">Байланыс</button>
+<button onclick="location.href='poems.html'">Өлеңдер</button>
+</nav>
+
+<script>
+// Аккаунт белгісі login бетіне бағыттайды
+document.getElementById("accountIcon").addEventListener("click", ()=>{
+  location.href = 'login.html';
+});
+</script>
+
+</body>
+</html>
