@@ -1,26 +1,102 @@
 <!DOCTYPE html>
-<html>
-<head><title>Кіру</title></head>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Кіру – Әдебиет ордасы</title>
+<style>
+* {box-sizing:border-box;}
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('kazakh-dalasy.jpg') center/cover no-repeat;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+.login-container {
+  background: rgba(30,15,0,0.85);
+  padding:40px;
+  border-radius:15px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.7);
+  width: 90%;
+  max-width:400px;
+  text-align:center;
+}
+.login-container h2 {
+  margin-bottom:20px;
+  color:#ffa500;
+}
+.login-container input {
+  width:90%;
+  padding:12px;
+  margin:10px 0;
+  border:none;
+  border-radius:8px;
+}
+.login-container button {
+  width:95%;
+  padding:12px;
+  margin-top:15px;
+  background:#b85c00;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.login-container button:hover {
+  background:#ffa500;
+  color:#000;
+}
+</style>
+</head>
 <body>
-<h2>Кіру</h2>
-<input type="email" id="email" placeholder="Email"><br>
-<input type="password" id="password" placeholder="Құпиясөз"><br>
-<button id="loginBtn">Кіру</button>
+
+<div class="login-container">
+  <h2>Кіру – Әдебиет ордасы</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Құпиясөз">
+  <button id="loginBtn">Кіру</button>
+</div>
 
 <script type="module">
-import { auth, db } from "./main.js";
+import { auth, db } from './main.js';
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-document.getElementById("loginBtn").onclick = async () => {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const user = await signInWithEmailAndPassword(auth, email, password);
-  const snap = await getDoc(doc(db, "users", user.user.uid));
-  const role = snap.data().role;
-  if(role === "admin") window.location.href = "admin.html";
-  else window.location.href = "index.html";
+document.getElementById('loginBtn').onclick = async () => {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userId = userCredential.user.uid;
+    const snap = await getDoc(doc(db, "users", userId));
+    
+    if(!snap.exists()) {
+      alert("Пайдаланушы мәліметтері табылмады!");
+      return;
+    }
+    
+    const role = snap.data().role;
+    alert("Сәтті кірдіңіз!");
+    
+    if(role === "admin") {
+      window.location.href = 'admin.html';
+    } else {
+      window.location.href = 'index.html';
+    }
+  } catch(err) {
+    alert("Қате! Email немесе құпиясөз дұрыс емес.");
+    console.error(err);
+  }
 };
 </script>
+
 </body>
 </html>
