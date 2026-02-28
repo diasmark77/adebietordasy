@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Тіркелу – Әдебиет ордасы</title>
+<title>Тіркелу / Кіру – Әдебиет ордасы</title>
 <style>
 * {box-sizing:border-box;}
 body {
@@ -29,6 +29,10 @@ body {
 .container input { width:90%; padding:12px; margin:10px 0; border:none; border-radius:8px; }
 .container button { width:95%; padding:12px; margin-top:10px; background:#b85c00; color:white; border:none; border-radius:8px; font-weight:bold; font-size:16px; cursor:pointer; transition:0.3s; }
 .container button:hover { background:#ffa500; color:#000; }
+#loginBtn { background:#333; color:#ffa500; }
+#loginBtn:hover { background:#ffa500; color:#000; }
+#homeBtn { background:#444; color:#ffa500; margin-top:10px; }
+#homeBtn:hover { background:#ffa500; color:#000; }
 </style>
 </head>
 <body>
@@ -38,31 +42,60 @@ body {
   <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Құпиясөз">
   <button id="signupBtn">Тіркелу</button>
+  <button id="loginBtn">Кіру</button>
+  <button id="homeBtn">Басты бетке</button>
 </div>
 
 <script type="module">
 import { auth, db } from './main.js';
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { doc, setDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
+// 🔹 Тіркелу
 document.getElementById("signupBtn").onclick = async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-
   if(!email || !password){ alert("Барлық өрістерді толтырыңыз!"); return; }
 
   try {
     const user = await createUserWithEmailAndPassword(auth, email, password);
-    await setDoc(doc(db, "users", user.user.uid), {
-      email: email,
-      role: "user"
-    });
+    await setDoc(doc(db, "users", user.user.uid), { email, role:"user" });
     alert("✅ Сәтті тіркелдіңіз!");
-    window.location.href = "login.html";
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
   } catch(err) {
     alert("❌ Қате! Қайталап көріңіз.");
     console.error(err);
   }
+};
+
+// 🔹 Кіру
+document.getElementById("loginBtn").onclick = async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  if(!email || !password){ alert("Барлық өрістерді толтырыңыз!"); return; }
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userId = userCredential.user.uid;
+    const snap = await getDoc(doc(db,"users",userId));
+
+    if(!snap.exists()){ alert("❌ Пайдаланушы мәліметтері табылмады!"); return; }
+    const role = snap.data().role;
+
+    alert("✅ Сәтті кірдіңіз!");
+    if(role === "admin"){ window.location.href = 'admin.html'; }
+    else { window.location.href = 'index.html'; }
+
+  } catch(err) {
+    alert("❌ Email немесе құпиясөз дұрыс емес.");
+    console.error(err);
+  }
+};
+
+// 🔹 Басты бетке батырма
+document.getElementById('homeBtn').onclick = () => {
+  window.location.href = 'index.html';
 };
 </script>
 
