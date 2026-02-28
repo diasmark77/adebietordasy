@@ -47,7 +47,7 @@ body {
 </div>
 
 <script type="module">
-import { auth, db } from 'main.js';
+import { auth, db } from './main.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
@@ -101,4 +101,5 @@ document.getElementById('homeBtn').onclick = () => {
 
 </body>
 </html>
+
 
