@@ -22,20 +22,25 @@ nav {
   display:flex;
   flex-direction:column;
   align-items:center;
+  width:100%;
 }
 nav button {
-  margin:12px 0;
-  padding:16px 50px;
-  font-size:22px;
+  margin:10px 0;
+  padding:18px 0;
+  width:220px; /* барлығы бірдей */
+  font-size:20px; /* бірдей өлшем */
   border:none;
   border-radius:10px;
-  background:rgba(212,175,55,0.7); /* прозрачный */
+  background:rgba(212,175,55,0.5); /* прозрачный */
   color:#000;
   font-weight:bold;
   cursor:pointer;
   transition:0.3s;
 }
-nav button:hover {background:rgba(184,150,46,0.8);}
+nav button:hover {
+  background:rgba(184,150,46,0.6);
+  transform:translateY(-2px);
+}
 .account-icon {
   position:absolute;
   top:15px;
@@ -53,8 +58,16 @@ nav button:hover {background:rgba(184,150,46,0.8);}
   box-shadow:0 3px 10px rgba(0,0,0,0.5);
 }
 @media(max-width:600px){
-  nav button {width:80%;padding:12px 0;font-size:18px;}
-  .account-icon{width:50px;height:50px;font-size:26px;}
+  nav button {
+    width:80%;
+    padding:14px 0;
+    font-size:18px;
+  }
+  .account-icon{
+    width:50px;
+    height:50px;
+    font-size:26px;
+  }
 }
 </style>
 </head>
