@@ -10,7 +10,7 @@
 <div id="posts"></div>
 
 <script type="module">
-import { db } from "./main.js";
+import { db } from "main.js";
 import { addDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
 const postsDiv = document.getElementById("posts");
@@ -35,4 +35,5 @@ async function loadPosts(){
 loadPosts();
 </script>
 </body>
+
 </html>
