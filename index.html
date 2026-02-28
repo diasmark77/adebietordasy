@@ -14,9 +14,31 @@ header {min-height:100vh;background:linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,
 .hero-subtitle {font-size:22px;opacity:0.9;margin-bottom:30px;}
 .hero-btn {padding:15px 45px;background:#d4af37;color:#000;text-decoration:none;font-size:18px;border-radius:10px;font-weight:bold;transition:0.3s;box-shadow:0 5px 15px rgba(0,0,0,0.4);}
 .hero-btn:hover {background:#b8962e;transform:translateY(-2px);}
+
+/* 🔹 NAV */
 nav {background:#5c4033;display:flex;flex-wrap:wrap;justify-content:center;position:sticky;top:0;z-index:1000;box-shadow:0 4px 10px rgba(0,0,0,0.4);}
 nav button {background:none;border:none;color:white;padding:14px 20px;margin:2px;cursor:pointer;font-size:16px;font-weight:bold;border-radius:6px;transition:0.3s;}
 nav button:hover {background:#d4af37;color:#000;}
+
+/* 🔹 Hamburger */
+.menu-toggle{
+  display:none;
+  font-size:26px;
+  color:white;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:12px 18px;
+}
+
+/* 🔹 Mobile menu */
+.nav-links{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+/* 🔹 Search */
 .search-box {text-align:center;margin:25px;}
 .search-box input {width:80%;max-width:450px;padding:12px;font-size:16px;border-radius:8px;border:1px solid #ccc;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
 section {padding:20px;max-width:1000px;margin:auto;}
@@ -24,7 +46,32 @@ section {padding:20px;max-width:1000px;margin:auto;}
 .card:hover {transform:translateY(-3px);box-shadow:0 10px 25px rgba(0,0,0,0.2);}
 h2 {color:#5c4033;}
 footer {background:#5c4033;color:white;text-align:center;padding:20px;margin-top:40px;font-size:14px;}
-@media(max-width:600px){.hero-title{font-size:36px;}.hero-subtitle{font-size:18px;}.hero-logo{width:140px;height:140px;}nav{flex-direction:column;align-items:center;}nav button{width:90%;margin:4px 0;}.search-box input{width:95%;}}
+
+/* 📱 MOBILE */
+@media(max-width:768px){
+  .hero-title{font-size:36px;}
+  .hero-subtitle{font-size:18px;}
+  .hero-logo{width:140px;height:140px;}
+
+  .menu-toggle{display:block;}
+  .nav-links{
+    display:none;
+    flex-direction:column;
+    width:100%;
+    align-items:center;
+    background:#5c4033;
+  }
+  .nav-links.show{
+    display:flex;
+  }
+  .nav-links button{
+    width:95%;
+    margin:6px 0;
+    border-top:1px solid rgba(255,255,255,0.2);
+  }
+
+  .search-box input{width:95%;}
+}
 </style>
 </head>
 
@@ -38,16 +85,21 @@ footer {background:#5c4033;color:white;text-align:center;padding:20px;margin-top
 </header>
 
 <nav>
-<button onclick="location.href='index.html'">Басты бет</button>
-<button onclick="location.href='alash.html'">Алаш зиялылары</button>
-<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
-<button onclick="location.href='poets.html'">Ақындар</button>
-<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">Байланыс</button>
-<button onclick="location.href='poems.html'">Өлеңдер</button>
-<!-- 🔹 Тіркелу және кіру батырмалары -->
-<button onclick="location.href='signup.html'">Тіркелу</button>
-<button onclick="location.href='login.html'">Кіру</button>
+  <!-- 🔹 Hamburger батырма -->
+  <button class="menu-toggle" onclick="toggleMenu()">☰ МЕНЮ</button>
+
+  <!-- 🔹 Навигация батырмалары -->
+  <div class="nav-links" id="navLinks">
+    <button onclick="location.href='index.html'">Басты бет</button>
+    <button onclick="location.href='alash.html'">Алаш зиялылары</button>
+    <button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+    <button onclick="location.href='poets.html'">Ақындар</button>
+    <button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+    <button onclick="location.href='contact.html'">Байланыс</button>
+    <button onclick="location.href='poems.html'">Өлеңдер</button>
+    <button onclick="location.href='signup.html'">Тіркелу</button>
+    <button onclick="location.href='login.html'">Кіру</button>
+  </div>
 </nav>
 
 <div class="search-box">
@@ -55,7 +107,6 @@ footer {background:#5c4033;color:white;text-align:center;padding:20px;margin-top
 </div>
 
 <section id="home">
-  <!-- Статикалық хабарламалар -->
   <div class="card">
     <h2>Қош келдіңіз!</h2>
     <p>Бұл сайт – қазақ әдебиетінің ұлы тұлғаларын таныстыратын портал. Мұнда Алаш зиялылары, қазақ жазушылары, ақындар және олардың мұралары жинақталған.</p>
@@ -66,7 +117,6 @@ footer {background:#5c4033;color:white;text-align:center;padding:20px;margin-top
     <p>Егерде сіз өзіңізді, өзіңіздің шығармаларыңызды біздің парақшамызда көргіңіз келсе, бізбен байланысуыңызды сұраймыз. Құрметпен "Әдебиет ордасы" сайтының редакторы!</p>
   </div>
 
-  <!-- Firebase-тен posts шығару үшін контейнер -->
   <div id="firebase-posts"></div>
 </section>
 
@@ -78,7 +128,6 @@ footer {background:#5c4033;color:white;text-align:center;padding:20px;margin-top
 import { db } from "./main.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-// Firebase-тен posts шығару
 async function loadPosts() {
   const div = document.getElementById("firebase-posts");
   div.innerHTML = "";
@@ -90,13 +139,17 @@ async function loadPosts() {
 }
 loadPosts();
 
-// Search функциясы
 function searchCards(){
   let input = document.getElementById("searchInput").value.toLowerCase();
   let cards = document.querySelectorAll("#home .card");
   cards.forEach(card=>{
     card.style.display = card.innerText.toLowerCase().includes(input) ? "block" : "none";
   });
+}
+
+/* 🔹 Hamburger логика */
+window.toggleMenu = function(){
+  document.getElementById("navLinks").classList.toggle("show");
 }
 </script>
 
