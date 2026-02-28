@@ -25,21 +25,22 @@ nav {
   width:100%;
 }
 nav button {
-  margin:10px 0;
-  padding:18px 0;
-  width:220px; /* барлығы бірдей */
+  margin:12px 0;
+  padding:16px 0;
+  width:220px; /* бірдей өлшем */
   font-size:20px; /* бірдей өлшем */
-  border:none;
+  border:2px solid #d4af37; /* тек жиегі алтын түстес */
   border-radius:10px;
-  background:rgba(212,175,55,0.5); /* прозрачный */
-  color:#000;
+  background:transparent; /* фон толық прозрачный */
+  color:#d4af37; /* текст алтын түстес */
   font-weight:bold;
   cursor:pointer;
   transition:0.3s;
 }
 nav button:hover {
-  background:rgba(184,150,46,0.6);
-  transform:translateY(-2px);
+  background:rgba(212,175,55,0.2); /* жеңіл алтын фоны hover кезінде */
+  color:#000; /* текст қараға ауысады */
+  transform:scale(1.05); /* сәл үлкейту эффекті */
 }
 .account-icon {
   position:absolute;
