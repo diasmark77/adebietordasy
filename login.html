@@ -4,18 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Кіру – Әдебиет ордасы</title>
+
 <style>
 * {box-sizing:border-box;}
 body {
   margin:0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('kazakh-dalasy.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
+              url('kazakh-dalasy.jpg') center/cover no-repeat;
   color:white;
   display:flex;
   justify-content:center;
   align-items:center;
   min-height:100vh;
 }
+
 .container {
   background: rgba(30,15,0,0.85);
   padding:40px;
@@ -25,60 +28,113 @@ body {
   max-width:400px;
   text-align:center;
 }
-.container h2 { color:#ffa500; margin-bottom:20px; }
-.container input { width:90%; padding:12px; margin:10px 0; border:none; border-radius:8px; }
-.container button { width:95%; padding:12px; margin-top:10px; background:#b85c00; color:white; border:none; border-radius:8px; font-weight:bold; font-size:16px; cursor:pointer; transition:0.3s; }
-.container button:hover { background:#ffa500; color:#000; }
-#homeBtn { background:#333; color:#ffa500; }
+
+.container h2 { 
+  color:#ffa500; 
+  margin-bottom:20px; 
+}
+
+.container input { 
+  width:90%; 
+  padding:12px; 
+  margin:10px 0; 
+  border:none; 
+  border-radius:8px; 
+}
+
+.container button { 
+  width:95%; 
+  padding:12px; 
+  margin-top:10px; 
+  background:#b85c00; 
+  color:white; 
+  border:none; 
+  border-radius:8px; 
+  font-weight:bold; 
+  font-size:16px; 
+  cursor:pointer; 
+  transition:0.3s; 
+}
+
+.container button:hover { 
+  background:#ffa500; 
+  color:#000; 
+}
+
+/* арнайы батырмалар */
+#signupBtn { background:#333; color:#ffa500; }
+#signupBtn:hover { background:#ffa500; color:#000; }
+
+#homeBtn { background:#444; color:#ffa500; }
 #homeBtn:hover { background:#ffa500; color:#000; }
+
 </style>
 </head>
+
 <body>
 
 <div class="container">
   <h2>Әдебиет ордасы</h2>
+
   <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Құпиясөз">
+
   <button id="loginBtn">Кіру</button>
+  <button id="signupBtn">Тіркелу</button>
   <button id="homeBtn">Басты бетке</button>
 </div>
 
 <script type="module">
 import { auth, db } from './main.js';
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { signInWithEmailAndPassword } from 
+  "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { doc, getDoc } from 
+  "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-document.getElementById('loginBtn').onclick = async () => {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+// 🔹 Кіру
+document.getElementById("loginBtn").onclick = async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-  if(!email || !password){ alert("Барлық өрістерді толтырыңыз!"); return; }
+  if(!email || !password){
+    alert("Барлық өрістерді толтырыңыз!");
+    return;
+  }
 
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const userId = userCredential.user.uid;
 
     const snap = await getDoc(doc(db,"users",userId));
-    if(!snap.exists()){ alert("❌ Пайдаланушы мәліметтері табылмады!"); return; }
+    if(!snap.exists()){
+      alert("❌ Пайдаланушы Firestore-да табылмады!");
+      return;
+    }
 
     const role = snap.data().role;
-    alert("✅ Сәтті кірдіңіз!");
 
-    if(role === "admin"){ window.location.href = 'admin.html'; }
-    else { window.location.href = 'index.html'; }
+    if(role === "admin"){
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "index.html";
+    }
 
-  } catch(err) {
-    alert("❌ Email немесе құпиясөз дұрыс емес.");
+  } catch(err){
+    alert("❌ Email немесе құпиясөз қате");
     console.error(err);
   }
 };
 
-document.getElementById('homeBtn').onclick = () => {
-  window.location.href = 'index.html';
+// 🔹 Тіркелуге өту
+document.getElementById("signupBtn").onclick = () => {
+  window.location.href = "signup.html";
+};
+
+// 🔹 Басты бетке
+document.getElementById("homeBtn").onclick = () => {
+  window.location.href = "index.html";
 };
 </script>
 
 </body>
 </html>
-
-
