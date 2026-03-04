@@ -9,7 +9,7 @@
 body {
   margin:0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('kazakh-dalasy.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('images/kazakh-dalasy.jpg') center/cover no-repeat;
   color:white;
   display:flex;
   justify-content:center;
@@ -47,7 +47,7 @@ body {
 </div>
 
 <script type="module">
-import { auth, db } from './main.js';
+import { auth, db } from 'main.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
@@ -101,5 +101,6 @@ document.getElementById('homeBtn').onclick = () => {
 
 </body>
 </html>
+
 
 
