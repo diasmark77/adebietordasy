@@ -5,27 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Алаш зиялылары | Әдебиет ордасы</title>
 
-   <link rel="icon" href="images/logo.png" type="image/png">
+<link rel="icon" href="images/logo.png" type="image/png">
 
 <style>
-* {box-sizing:border-box;}
-body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
+* {box-sizing: border-box;}
+body {margin:0;font-family:'Georgia', serif;background:#f4f1ea;color:#333;line-height:1.6;}
 
 header {
-  background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/kazakh-dalasy.jpg') center/cover no-repeat;
   color:white;
   text-align:center;
-  padding:25px;
+  padding:60px 20px;
 }
+header h1 {font-size:48px;margin-bottom:10px;letter-spacing:2px;}
+header p {font-size:20px;opacity:0.9;}
 
-nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+nav {
+  background:#8b5e3c;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+}
 nav button {
   background:none;
   border:none;
   color:white;
-  padding:12px 18px;
+  padding:12px 20px;
   margin:2px;
   cursor:pointer;
   font-size:16px;
@@ -34,65 +39,115 @@ nav button {
 }
 nav button:hover {background:#6e472c;}
 
-section {padding:20px;max-width:1000px;margin:auto;}
-.card {background:white;padding:20px;margin:15px 0;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-.card img {width:120px;height:auto;border-radius:5px;float:left;margin-right:15px;}
-h2 {color:#5c4033;}
-footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
+section {max-width:900px;margin:auto;padding:20px;}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap:20px;
+  justify-content: center;
+}
+
+.card {
+  background: rgba(255,255,255,0.95);
+  padding:25px 20px;
+  border-radius:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  width: 300px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s;
+}
+.card:hover {transform: translateY(-5px); box-shadow:0 12px 25px rgba(0,0,0,0.25);}
+
+.card img {
+  width:120px;
+  height:auto;
+  border-radius:5px;
+  margin-bottom:15px;
+}
+
+.card h2 {
+  color:#5c4033;
+  margin:10px 0 5px 0;
+  font-weight:bold;
+}
+.card p {
+  margin-bottom:10px;
+}
+.card a {
+  text-decoration:none;
+  color:#d4af37;
+  font-weight:bold;
+}
+.card a:hover {color:#b8962e;}
+
+footer {
+  background:#5c4033;
+  color:white;
+  text-align:center;
+  padding:20px;
+  margin-top:40px;
+}
+
+@media(max-width:600px){
+  header h1 {font-size:32px;}
+  header p {font-size:16px;}
+  .card {width:90%;padding:20px;}
+}
 </style>
 </head>
 <body>
 
 <header>
-<h1>Алаш зиялылары</h1>
-<p>Алаш қозғалысының көрнекті тұлғалары</p>
+  <h1>Алаш зиялылары</h1>
+  <p>Алаш қозғалысының көрнекті тұлғалары</p>
 </header>
 
 <nav>
-<button onclick="location.href='index.html'">Басты бет</button>
-<button onclick="location.href='alash.html'">Алаш зиялылары</button>
-<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
-<button onclick="location.href='poets.html'">Ақындар</button>
-<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">Байланыс</button>
-<button onclick="location.href='poems.html'">Өлеңдер</button>
+  <button onclick="location.href='index.html'">Басты бет</button>
+  <button onclick="location.href='alash.html'">Алаш зиялылары</button>
+  <button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+  <button onclick="location.href='poets.html'">Ақындар</button>
+  <button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+  <button onclick="location.href='contact.html'">Байланыс</button>
+  <button onclick="location.href='poems.html'">Өлеңдер</button>
 </nav>
 
 <section>
-  <div class="card">
-    <img src="images/alikhan.jpg" alt="Әлихан Бөкейхан">
-    <h2>Әлихан Бөкейхан (1866-1937)</h2>
-    <p>Алаш қозғалысының көсемі, қоғам қайраткері, ұлт азаттығы жолындағы тарихи тұлға.</p>
-    <a href="alash/alikhan.html">Толығырақ →</a>
-  </div>
+  <div class="cards-container">
 
-  <div class="card">
-    <img src="images/ahmet.jpg" alt="Ахмет Байтұрсынұлы">
-    <h2>Ахмет Байтұрсынұлы (1872-1937)</h2>
-    <p>Ұлт ұстазы, ағартушы, тіл білімінің негізін қалаушы.</p>
-    <a href="alash/akmet.html">Толығырақ →</a>
-  </div>
+    <div class="card">
+      <img src="images/alikhan.jpg" alt="Әлихан Бөкейхан">
+      <h2>Әлихан Бөкейхан (1866-1937)</h2>
+      <p>Алаш қозғалысының көсемі, қоғам қайраткері, ұлт азаттығы жолындағы тарихи тұлға.</p>
+      <a href="alash/alikhan.html">Толығырақ →</a>
+    </div>
 
-  <div class="card">
-    <img src="images/mirzhaqip.jpg" alt="Міржақып Дулатұлы">
-    <h2>Міржақып Дулатұлы (1885-1935)</h2>
-    <p>Алаш қайраткері, ақын, жазушы, қоғам қайраткері.</p>
-    <a href="alash/mirzhaqip.html">Толығырақ →</a>
-  </div>
+    <div class="card">
+      <img src="images/ahmet.jpg" alt="Ахмет Байтұрсынұлы">
+      <h2>Ахмет Байтұрсынұлы (1872-1937)</h2>
+      <p>Ұлт ұстазы, ағартушы, тіл білімінің негізін қалаушы.</p>
+      <a href="alash/akmet.html">Толығырақ →</a>
+    </div>
 
-  <!-- Қосымша Алаш қайраткерлерін осылай қосасың -->
+    <div class="card">
+      <img src="images/mirzhaqip.jpg" alt="Міржақып Дулатұлы">
+      <h2>Міржақып Дулатұлы (1885-1935)</h2>
+      <p>Алаш қайраткері, ақын, жазушы, қоғам қайраткері.</p>
+      <a href="alash/mirzhaqip.html">Толығырақ →</a>
+    </div>
+
+    <!-- Қосымша Алаш қайраткерлерін осылай қосасың -->
+
+  </div>
 </section>
 
 <footer>
-© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+  © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
 </body>
-
 </html>
-
-
-
-
-
-
