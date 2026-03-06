@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<title>Өлеңдер қосу беті</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+  h1 { color: #333; }
+  .author { margin-bottom: 20px; padding: 10px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  .poem-list { margin-left: 20px; margin-top: 5px; }
+  .poem-list li { cursor: pointer; color: #007BFF; text-decoration: underline; margin-bottom: 3px; }
+  .poem-list li:hover { color: #0056b3; }
+  #poemDisplay { margin-top: 30px; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+</style>
+</head>
+<body>
+
+<h1>Өлеңдер қосу беті</h1>
+
+<div>
+  <input type="text" id="authorName" placeholder="Автор атын жаз" style="padding:5px; width:200px;">
+  <button onclick="addAuthor()" style="padding:5px 10px;">Автор қосу</button>
+</div>
+
+<div id="authorsContainer"></div>
+<div id="poemDisplay"></div>
+
+<script>
+// Авторлар мен өлеңдерді сақтау
+let authors = [];
+
+// Сайт жүктелгенде localStorage-тен деректерді алу
+window.onload = function() {
+    const data = localStorage.getItem('authors');
+    if (data) {
+        authors = JSON.parse(data);
+        renderAuthors();
+    }
+}
+
+// LocalStorage-қа сақтау
+function saveData() {
+    localStorage.setItem('authors', JSON.stringify(authors));
+}
+
+// Жаңа автор қосу
+function addAuthor() {
+    const nameInput = document.getElementById('authorName');
+    const name = nameInput.value.trim();
+    if (!name) return alert("Автор атын енгізіңіз");
+
+    const author = { name: name, poems: [] };
+    authors.push(author);
+    saveData();
+    renderAuthors();
+    nameInput.value = '';
+}
+
+// Өлең қосу
+function addPoem(authorIndex) {
+    const title = prompt("Өлең атауын енгізіңіз:");
+    if (!title) return;
+    const content = prompt("Өлең мәтінін енгізіңіз:");
+    if (!content) return;
+
+    authors[authorIndex].poems.push({ title, content });
+    saveData();
+    renderAuthors();
+}
+
+// Авторлар мен өлеңдерді көрсету
+function renderAuthors() {
+    const container = document.getElementById('authorsContainer');
+    container.innerHTML = '';
+
+    authors.forEach((author, index) => {
+        const div = document.createElement('div');
+        div.className = 'author';
+        div.innerHTML = `
+            <strong>${author.name}</strong> 
+            <button onclick="addPoem(${index})" style="margin-left:10px;">Өлең қосу</button>
+            <ul class="poem-list">
+                ${author.poems.map((poem, i) => `<li onclick="showPoem(${index}, ${i})">${poem.title}</li>`).join('')}
+            </ul>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// Өлеңді көрсету
+function showPoem(authorIndex, poemIndex) {
+    const poem = authors[authorIndex].poems[poemIndex];
+    const display = document.getElementById('poemDisplay');
+    display.innerHTML = `<h2>${poem.title}</h2><p>${poem.content.replace(/\n/g, "<br>")}</p>`;
+}
+</script>
+
+</body>
+</html>
