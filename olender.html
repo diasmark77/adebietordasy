@@ -2,97 +2,115 @@
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
-<title>Өлеңдер қосу беті</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Автор қосу | Әдебиет ордасы</title>
+<link rel="icon" href="images/logo.png" type="image/png">
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
-  h1 { color: #333; }
-  .author { margin-bottom: 20px; padding: 10px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-  .poem-list { margin-left: 20px; margin-top: 5px; }
-  .poem-list li { cursor: pointer; color: #007BFF; text-decoration: underline; margin-bottom: 3px; }
-  .poem-list li:hover { color: #0056b3; }
-  #poemDisplay { margin-top: 30px; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+* {box-sizing:border-box;}
+body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
+header {
+  background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), 
+              url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  color:white;text-align:center;padding:25px;
+}
+nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+nav button {
+  background:none;border:none;color:white;padding:12px 18px;margin:2px;cursor:pointer;
+  font-size:16px;font-weight:bold;border-radius:5px;
+}
+nav button:hover {background:#6e472c;}
+section {padding:20px;max-width:900px;margin:auto;}
+.card {background:white;padding:20px;margin:20px 0;border-radius:12px;
+      box-shadow:0 6px 15px rgba(0,0,0,0.12);}
+h2 {color:#5c4033;margin-bottom:15px;}
+label {display:block;margin-top:10px;font-weight:bold;}
+input, textarea {width:100%;padding:10px;margin-top:5px;border-radius:5px;border:1px solid #ccc;}
+textarea {resize:vertical;}
+button.submit {background:#8b5e3c;color:white;border:none;padding:12px 20px;
+               margin-top:15px;border-radius:5px;cursor:pointer;font-size:16px;}
+button.submit:hover {background:#6e472c;}
+.status {margin-top:10px;padding:8px;border-radius:5px;font-weight:bold;}
+.pending {background:#fce5cd;color:#b45f06;}
+.approved {background:#d9ead3;color:#38761d;}
+footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
+@media(max-width:600px){
+  nav {flex-direction:column;align-items:center;}
+  nav button {width:90%; margin:3px 0;}
+}
 </style>
 </head>
 <body>
 
-<h1>Өлеңдер қосу беті</h1>
+<header>
+<h1>Автор қосу</h1>
+<p>Өзіңіздің сүйікті авторыңызды қосып, өлеңін енгізіңіз. Барлығы модерациядан өтеді.</p>
+</header>
 
-<div>
-  <input type="text" id="authorName" placeholder="Автор атын жаз" style="padding:5px; width:200px;">
-  <button onclick="addAuthor()" style="padding:5px 10px;">Автор қосу</button>
-</div>
+<nav>
+<button onclick="location.href='index.html'">Басты бет</button>
+<button onclick="location.href='poems.html'">Өлеңдер</button>
+<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+<button onclick="location.href='poets.html'">Ақындар</button>
+</nav>
 
-<div id="authorsContainer"></div>
-<div id="poemDisplay"></div>
+<section>
+  <div class="card">
+    <h2>Жаңа автор қосу</h2>
+    <form id="authorForm">
+      <label>Автор аты-жөні:</label>
+      <input type="text" name="name" required>
+
+      <label>Туған жылы:</label>
+      <input type="number" name="birth_year">
+
+      <label>Қайтыс болған жылы:</label>
+      <input type="number" name="death_year">
+
+      <label>Сурет (jpg/png):</label>
+      <input type="file" name="photo" accept="image/*">
+
+      <label>Өлең:</label>
+      <textarea name="poem" rows="5" required></textarea>
+
+      <button type="submit" class="submit">Жіберу</button>
+    </form>
+
+    <div id="statusMessage" class="status pending" style="display:none;">
+      Сіздің авторыңыз модерациядан өтуді күтуде.
+    </div>
+  </div>
+</section>
+
+<footer>
+© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+</footer>
 
 <script>
-// Авторлар мен өлеңдерді сақтау
-let authors = [];
+const form = document.getElementById('authorForm');
+const statusMsg = document.getElementById('statusMessage');
 
-// Сайт жүктелгенде localStorage-тен деректерді алу
-window.onload = function() {
-    const data = localStorage.getItem('authors');
-    if (data) {
-        authors = JSON.parse(data);
-        renderAuthors();
-    }
-}
+form.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  
+  // JSON объект жасап аламыз
+  const data = {
+    name: form.name.value,
+    birth_year: form.birth_year.value,
+    death_year: form.death_year.value,
+    poem: form.poem.value,
+    photo: form.photo.files[0] ? form.photo.files[0].name : null,
+    status: 'pending'
+  };
 
-// LocalStorage-қа сақтау
-function saveData() {
-    localStorage.setItem('authors', JSON.stringify(authors));
-}
+  // Бұл жерде серверге POST жасайсың немесе localStorage симуляциясы
+  let authors = JSON.parse(localStorage.getItem('authors') || '[]');
+  authors.push(data);
+  localStorage.setItem('authors', JSON.stringify(authors));
 
-// Жаңа автор қосу
-function addAuthor() {
-    const nameInput = document.getElementById('authorName');
-    const name = nameInput.value.trim();
-    if (!name) return alert("Автор атын енгізіңіз");
-
-    const author = { name: name, poems: [] };
-    authors.push(author);
-    saveData();
-    renderAuthors();
-    nameInput.value = '';
-}
-
-// Өлең қосу
-function addPoem(authorIndex) {
-    const title = prompt("Өлең атауын енгізіңіз:");
-    if (!title) return;
-    const content = prompt("Өлең мәтінін енгізіңіз:");
-    if (!content) return;
-
-    authors[authorIndex].poems.push({ title, content });
-    saveData();
-    renderAuthors();
-}
-
-// Авторлар мен өлеңдерді көрсету
-function renderAuthors() {
-    const container = document.getElementById('authorsContainer');
-    container.innerHTML = '';
-
-    authors.forEach((author, index) => {
-        const div = document.createElement('div');
-        div.className = 'author';
-        div.innerHTML = `
-            <strong>${author.name}</strong> 
-            <button onclick="addPoem(${index})" style="margin-left:10px;">Өлең қосу</button>
-            <ul class="poem-list">
-                ${author.poems.map((poem, i) => `<li onclick="showPoem(${index}, ${i})">${poem.title}</li>`).join('')}
-            </ul>
-        `;
-        container.appendChild(div);
-    });
-}
-
-// Өлеңді көрсету
-function showPoem(authorIndex, poemIndex) {
-    const poem = authors[authorIndex].poems[poemIndex];
-    const display = document.getElementById('poemDisplay');
-    display.innerHTML = `<h2>${poem.title}</h2><p>${poem.content.replace(/\n/g, "<br>")}</p>`;
-}
+  // Статус хабарын көрсету
+  statusMsg.style.display = 'block';
+  form.reset();
+});
 </script>
 
 </body>
