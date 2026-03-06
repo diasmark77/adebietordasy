@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Қазақ жазушылары | Әдебиет ордасы</title>
 
-   <link rel="icon" href="images/logo.png" type="image/png">
+<link rel="icon" href="images/logo.png" type="image/png">
 
 <style>
 * {box-sizing:border-box;}
@@ -20,7 +20,13 @@ header {
   padding:25px;
 }
 
-nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+nav {
+  background:#8b5e3c;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
 nav button {
   background:none;
   border:none;
@@ -32,90 +38,130 @@ nav button {
   font-weight:bold;
   border-radius:5px;
 }
+
 nav button:hover {background:#6e472c;}
 
 section {padding:20px;max-width:1000px;margin:auto;}
-.card {background:white;padding:20px;margin:15px 0;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-.card img {width:120px;height:auto;border-radius:5px;float:left;margin-right:15px;}
-h2 {color:#5c4033;}
+
+/* Контейнер барлық карточкалар үшін */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* карточкалар арасын бірдей ету */
+  justify-content: center;
+}
+
+/* Әр карточка */
+.card {
+  background:white;
+  color:#333;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  width: 300px; /* бірдей ені */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card img {
+  width: 120px;
+  height: auto;
+  border-radius:5px;
+  margin-bottom:15px;
+}
+
+.card h2 {
+  color:#5c4033;
+  margin:10px 0 5px 0;
+}
+
+.card p {
+  margin-bottom:10px;
+}
+
+.card a {
+  text-decoration:none;
+  color:#d4af37;
+  font-weight:bold;
+}
+
+.card a:hover {
+  color:#b8962e;
+}
+
 footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
 </style>
 </head>
 <body>
 
 <header>
-<h1>Қазақ жазушылары</h1>
-<p>Қазақ прозасының көрнекті тұлғалары</p>
+  <h1>Қазақ жазушылары</h1>
+  <p>Қазақ прозасының көрнекті тұлғалары</p>
 </header>
 
 <nav>
-<button onclick="location.href='index.html'">Басты бет</button>
-<button onclick="location.href='alash.html'">Алаш зиялылары</button>
-<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
-<button onclick="location.href='poets.html'">Ақындар</button>
-<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">Байланыс</button>
-<button onclick="location.href='poems.html'">Өлеңдер</button>
+  <button onclick="location.href='index.html'">Басты бет</button>
+  <button onclick="location.href='alash.html'">Алаш зиялылары</button>
+  <button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+  <button onclick="location.href='poets.html'">Ақындар</button>
+  <button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+  <button onclick="location.href='contact.html'">Байланыс</button>
+  <button onclick="location.href='poems.html'">Өлеңдер</button>
 </nav>
 
 <section>
-  <div class="card">
-    <img src="images/mauezov.jpg" alt="Мұхтар Әуезов">
-    <h2>Мұхтар Әуезов (1897-1961)</h2>
-    <p>Ұлы жазушы, драматург, ғалым. «Абай жолы» эпопеясының авторы.</p>
-    <a href="writers/mauezov.html">Толығырақ →</a>
-  </div>
+  <div class="cards-container">
 
-  <div class="card">
-    <img src="images/gabitm.jpg" alt="Ғабит Мүсірепов">
-    <h2>Ғабит Мүсірепов (1902-1985)</h2>
-    <p>Қазақ прозасының классигі, драматург, қоғам қайраткері.</p>
-    <a href="writers/gabitm.html">Толығырақ →</a>
-  </div>
+    <div class="card">
+      <img src="images/mauezov.jpg" alt="Мұхтар Әуезов">
+      <h2>Мұхтар Әуезов (1897-1961)</h2>
+      <p>Ұлы жазушы, драматург, ғалым. «Абай жолы» эпопеясының авторы.</p>
+      <a href="writers/mauezov.html">Толығырақ →</a>
+    </div>
 
-  <div class="card">
-    <img src="images/sabitm.jpg" alt="Сәбит Мұқанов">
-    <h2>Сәбит Мұқанов (1901-1973)</h2>
-    <p>Жазушы, ақын, қоғам қайраткері. Қазақ әдебиетінің ірі тұлғасы.</p>
-    <a href="writers/sabitm.html">Толығырақ →</a>
-  </div>
+    <div class="card">
+      <img src="images/gabitm.jpg" alt="Ғабит Мүсірепов">
+      <h2>Ғабит Мүсірепов (1902-1985)</h2>
+      <p>Қазақ прозасының классигі, драматург, қоғам қайраткері.</p>
+      <a href="writers/gabitm.html">Толығырақ →</a>
+    </div>
 
-      <section>
-  <div class="card">
-    <img src="images/zhenisbek.jpg" alt="Кукенов Жеңісбек">
-    <h2>Көкенов Жеңісбек ("1983-жылы туған)</h2>
-    <p>Ақын,жазушы,тіл жанашыры,№119-мектеп лицейінің ұстазы.</p>
-    <a href="poet/zhenisbek.html">Толығырақ →</a>
-  </div>
+    <div class="card">
+      <img src="images/sabitm.jpg" alt="Сәбит Мұқанов">
+      <h2>Сәбит Мұқанов (1901-1973)</h2>
+      <p>Жазушы, ақын, қоғам қайраткері. Қазақ әдебиетінің ірі тұлғасы.</p>
+      <a href="writers/sabitm.html">Толығырақ →</a>
+    </div>
 
-  <div class="card">
-    <img src="images/sainm.jpg" alt="Сайын Мұратбеков">
-    <h2>Сайын Мұратбеков (1936-2007)</h2>
-    <p>Қазақ прозасының шебері, ауыл өмірін шынайы суреттеген жазушы.</p>
-    <a href="writers/sainm.html">Толығырақ →</a>
-  </div>
+    <div class="card">
+      <img src="images/zhenisbek.jpg" alt="Көкенов Жеңісбек">
+      <h2>Көкенов Жеңісбек (1983-…)</h2>
+      <p>Ақын, жазушы, тіл жанашыры, №119 мектеп-лицейінің ұстазы.</p>
+      <a href="poet/zhenisbek.html">Толығырақ →</a>
+    </div>
 
-  <div class="card">
-    <img src="images/dulat.jpg" alt="Дулат Исабеков">
-    <h2>Дулат Исабеков (1942-2025)</h2>
-    <p>Қазіргі қазақ әдебиетінің көрнекті жазушысы, драматург.</p>
-    <a href="writers/dulat.html">Толығырақ →</a>
-  </div>
+    <div class="card">
+      <img src="images/sainm.jpg" alt="Сайын Мұратбеков">
+      <h2>Сайын Мұратбеков (1936-2007)</h2>
+      <p>Қазақ прозасының шебері, ауыл өмірін шынайы суреттеген жазушы.</p>
+      <a href="writers/sainm.html">Толығырақ →</a>
+    </div>
 
- 
+    <div class="card">
+      <img src="images/dulat.jpg" alt="Дулат Исабеков">
+      <h2>Дулат Исабеков (1942-2025)</h2>
+      <p>Қазіргі қазақ әдебиетінің көрнекті жазушысы, драматург.</p>
+      <a href="writers/dulat.html">Толығырақ →</a>
+    </div>
+
+  </div>
 </section>
 
 <footer>
-© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+  © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
 </body>
-
 </html>
-
-
-
-
-
-
-
