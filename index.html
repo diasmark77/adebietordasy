@@ -5,64 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Әдебиет ордасы</title>
 
-
 <style>
 * {box-sizing:border-box;}
-body {
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),url("images/kazakh-dalasy.jpg") center/cover no-repeat;
-  color:white;
-  overflow:hidden; /* астыға сырғыту болмайды */
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
+header {
   min-height:100vh;
+  background: url("kazakh-dalasy.jpg") center/cover no-repeat;
+  color:white;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:40px 20px;
+  position:relative;
 }
-.hero-title {font-size:56px;margin:10px 0;font-family:"Georgia", serif;letter-spacing:2px;text-align:center;}
-.hero-subtitle {font-size:22px;opacity:0.9;margin-bottom:30px;text-align:center;}
+.hero-logo {width:180px;height:180px;border-radius:50%;margin-bottom:20px;box-shadow:0 0 30px rgba(0,0,0,0.6);background:#00000055;padding:10px;}
+.hero-title {font-size:56px;margin:10px 0;font-family:"Georgia", serif;letter-spacing:2px;}
+.hero-subtitle {font-size:22px;opacity:0.9;margin-bottom:30px;}
 .hero-btn {padding:15px 45px;background:#d4af37;color:#000;text-decoration:none;font-size:18px;border-radius:10px;font-weight:bold;transition:0.3s;box-shadow:0 5px 15px rgba(0,0,0,0.4);}
 .hero-btn:hover {background:#b8962e;transform:translateY(-2px);}
-
-/* Account Icon */
-.account-icon {
-  position:absolute;
-  top:15px;
-  left:15px;
-  width:55px; /* үлкейтілді */
-  height:55px;
-  border-radius:50%;
-  background:#ffa500;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:28px;
-  cursor:pointer;
-  box-shadow:0 3px 10px rgba(0,0,0,0.5);
-}
-
-@media(max-width:600px){
-  .hero-title{font-size:36px;}
-  .hero-subtitle{font-size:18px;}
-  .hero-btn{padding:12px 30px;font-size:16px;}
-  .account-icon{width:50px;height:50px;font-size:26px;}
-}
+nav {background:#5c4033;display:flex;flex-wrap:wrap;justify-content:center;position:sticky;top:0;z-index:1000;box-shadow:0 4px 10px rgba(0,0,0,0.4);}
+nav button {background:none;border:none;color:white;padding:14px 20px;margin:2px;cursor:pointer;font-size:16px;font-weight:bold;border-radius:6px;transition:0.3s;}
+nav button:hover {background:#d4af37;color:#000;}
+.search-box {text-align:center;margin:25px;}
+.search-box input {width:80%;max-width:450px;padding:12px;font-size:16px;border-radius:8px;border:1px solid #ccc;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+section {padding:20px;max-width:1000px;margin:auto;}
+.card {background:white;padding:25px;margin:20px 0;border-radius:15px;box-shadow:0 6px 15px rgba(0,0,0,0.15);transition:0.3s;}
+.card:hover {transform:translateY(-3px);box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+h2 {color:#5c4033;}
+footer {background:#5c4033;color:white;text-align:center;padding:20px;margin-top:40px;font-size:14px;}
+@media(max-width:600px){.hero-title{font-size:36px;}.hero-subtitle{font-size:18px;}.hero-logo{width:140px;height:140px;}nav{flex-direction:column;align-items:center;}nav button{width:90%;margin:4px 0;}.search-box input{width:95%;}}
 </style>
 </head>
 
 <body>
 
+<header>
+  <img src="logo.png" class="hero-logo" alt="Әдебиет ордасы логотипі">
+  <h1 class="hero-title">Әдебиет ордасы</h1>
+  <p class="hero-subtitle">Қазақ руханиятының әдеби ордасы</p>
+  <a href="#home" class="hero-btn">Бастау</a>
+</header>
 
+<nav>
+<button onclick="location.href='index.html'">Басты бет</button>
+<button onclick="location.href='alash.html'">Алаш зиялылары</button>
+<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+<button onclick="location.href='poets.html'">Ақындар</button>
+<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+<button onclick="location.href='contact.html'">Байланыс</button>
+<button onclick="location.href='poems.html'">Өлеңдер</button>
+</nav>
 
-<h1 class="hero-title">Әдебиет ордасы</h1>
-<p class="hero-subtitle">Қазақ руханиятының әдеби ордасы</p>
-<a href="menu.html" class="hero-btn">Бастау</a>
+<div class="search-box">
+<input type="text" id="searchInput" onkeyup="searchCards()" placeholder="Іздеу авторлар мен шығармалар бойынша...">
+</div>
 
+<section id="home">
+  <!-- Статикалық хабарламалар -->
+  <div class="card">
+    <h2>Қош келдіңіз!</h2>
+    <p>Бұл сайт – қазақ әдебиетінің ұлы тұлғаларын таныстыратын портал. Мұнда Алаш зиялылары, қазақ жазушылары, ақындар және олардың мұралары жинақталған.</p>
+  </div>
+
+  <div class="card">
+    <h2>Құрметті жас талап!</h2>
+    <p>Егерде сіз өзіңізді, өзіңіздің шығармаларыңызды біздің парақшамызда көргіңіз келсе, бізбен байланысуыңызды сұраймыз. Құрметпен "Әдебиет ордасы" сайтының редакторы!</p>
+  </div>
+
+  <!-- Firebase-тен posts шығару үшін контейнер -->
+  <div id="firebase-posts"></div>
+</section>
+
+<footer>
+© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+</footer>
+
+<script type="module">
+import { db } from "./main.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+// Firebase-тен posts шығару
+async function loadPosts() {
+  const div = document.getElementById("firebase-posts");
+  div.innerHTML = "";
+  const snap = await getDocs(collection(db, "posts"));
+  snap.forEach(doc => {
+    const d = doc.data();
+    div.innerHTML += `<div class="card"><h2>${d.title}</h2><p>${d.content}</p></div>`;
+  });
+}
+loadPosts();
+
+// Search функциясы
+function searchCards(){
+  let input = document.getElementById("searchInput").value.toLowerCase();
+  let cards = document.querySelectorAll("#home .card");
+  cards.forEach(card=>{
+    card.style.display = card.innerText.toLowerCase().includes(input) ? "block" : "none";
+  });
+}
+</script>
 
 </body>
 </html>
-
-
-
