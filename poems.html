@@ -3,24 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Әдебиет ордасы</title>
+<title>Өлеңдер | Әдебиет ордасы</title>
 
-   <link rel="icon" href="images/logo.png" type="image/png">
+<link rel="icon" href="images/logo.png" type="image/png">
 
 <style>
 * {box-sizing:border-box;}
-body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
+body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;line-height:1.5;}
 
 header {
-  background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("images/kazakh-dalasy.jpg") center/cover no-repeat;
   color:white;
   text-align:center;
-  padding:25px;
+  padding:50px 20px;
 }
+header h1 {font-size:42px;margin-bottom:10px;}
+header p {font-size:18px;opacity:0.9;}
 
-nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+nav {
+  background:#8b5e3c;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+}
 nav button {
   background:none;
   border:none;
@@ -34,18 +39,59 @@ nav button {
 }
 nav button:hover {background:#6e472c;}
 
-section {padding:20px;max-width:1000px;margin:auto;}
-.card {background:white;padding:20px;margin:15px 0;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-h2 {color:#5c4033;}
-footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
-.search-box {text-align:center;margin:15px;}
-.search-box input {
-  width:80%;max-width:400px;padding:10px;font-size:16px;border-radius:5px;border:1px solid #ccc;
+.search-box {
+  text-align:center;
+  margin:20px 0;
 }
+.search-box input {
+  width:80%;
+  max-width:400px;
+  padding:10px 12px;
+  font-size:16px;
+  border-radius:5px;
+  border:1px solid #ccc;
+}
+
+section {padding:0 15px 50px 15px; max-width:900px; margin:auto;}
+.card {
+  background:white;
+  padding:20px;
+  margin:15px 0;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.card h2 {color:#5c4033; font-size:20px; margin-bottom:10px;}
+.card pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Georgia', serif;
+  font-size:16px;
+  margin-bottom:10px;
+}
+.card a {
+  display:inline-block;
+  margin-top:10px;
+  color:#8b5e3c;
+  font-weight:bold;
+  text-decoration:none;
+}
+.card a:hover {text-decoration:underline;}
+
+footer {
+  background:#5c4033;
+  color:white;
+  text-align:center;
+  padding:15px;
+  margin-top:30px;
+  font-size:14px;
+}
+
 @media(max-width:600px){
   nav {flex-direction:column;align-items:center;}
   nav button {width:90%; margin:3px 0;}
   .search-box input {width:95%;}
+  .card h2 {font-size:18px;}
+  .card pre {font-size:15px;}
 }
 </style>
 </head>
@@ -70,145 +116,135 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 <input type="text" id="searchInput" placeholder="Іздеу авторлар мен шығармалар бойынша...">
 </div>
 
-<div class="card">
-  <h2>Мұқағали Мақатаев"Есіңе мені алғайсың"</h2>
-  <pre>
+<section>
+  <div class="card">
+    <h2>Мұқағали Мақатаев "Есіңе мені алғайсың"</h2>
+    <pre>
 "Есіңе мені алғайсың"
 Нұр жауып тұрған көктемде,
 Гүл тере барсаң бөктерге,
 Қоңыраулатқан аспанды
 Найзағай шаншып өткенде,
 Есіңе мені алғайсың?
-  </pre>
+    </pre>
     <a href="create/esine-meni-algaysyn.html">Толығырақ →</a>
-</div>
+  </div>
 
   <div class="card">
-  <h2>Еркін Жұмабекұлы "Ұстаздарға"</h2>
-  <pre>
+    <h2>Еркін Жұмабекұлы "Ұстаздарға"</h2>
+    <pre>
 Білімге арнап өмірін,
 Таңдамай кәсіп жеңілін,
 Нұр таңы болып үйінің,
 Ұлтаны болған елінің.
-  </pre>
+    </pre>
     <a href="create/ustazdarga.html">Толығырақ →</a>
-</div>
+  </div>
 
-  
   <div class="card">
-  <h2>Еркін Жұмабекұлы "Сенім"</h2>
-  <pre>
+    <h2>Еркін Жұмабекұлы "Сенім"</h2>
+    <pre>
 Тағдыр қатал деп жүрегім қуарма,
 Қайғы келсе, бақыт күтіп тұр алда.
 Жығылуың  жығуыңа бір себеп,
 Қазіргі сәт ертең қайта туар ма?
-  </pre>
+    </pre>
     <a href="create/senim.html">Толығырақ →</a>
-</div>
+  </div>
 
   <div class="card">
-  <h2>Еркін Жұмабекұлы "Өмір-күрес"</h2>
-  <pre>
-  Төсек пе едің жайылар кімге болсын,
+    <h2>Еркін Жұмабекұлы "Өмір-күрес"</h2>
+    <pre>
+Төсек пе едің жайылар кімге болсын,
 Есептегін, болашақ болар тосын.
 Жаман десе, жаман боп қалмайсың ғой,
 Өсекте кім, қалмайды айтшы досым?
-  </pre>
+    </pre>
     <a href="create/omir-kures.html">Толығырақ →</a>
-</div>
-<div class="card">
-  <h2>Жамбыл Жабаев "Ұлы көш"</h2>
-  <pre>
-    Кавказ бен Алтай, Алатау,
+  </div>
+
+  <div class="card">
+    <h2>Жамбыл Жабаев "Ұлы көш"</h2>
+    <pre>
+Кавказ бен Алтай, Алатау,
 Асқар, асу белімсің,
 Шығысым — қиыр зор тайга,
 Құрсанған болат темірсің.
-  </pre>
-  <a href="create/uly-kosh.html">Толығырақ →</a>
-</div>
+    </pre>
+    <a href="create/uly-kosh.html">Толығырақ →</a>
+  </div>
 
-<div class="card">
-  <h2>Марқабай Диас "Биік шың"</h2>
-  <pre>
-    Шығып бірде Алатаудың шыңына,
+  <div class="card">
+    <h2>Марқабай Диас "Биік шың"</h2>
+    <pre>
+Шығып бірде Алатаудың шыңына,
 Көз тастадым Алматының маңына.
 Табиғатты етіп алып сырласым,
 Тәнті болдым Алматының халқына.
-  </pre>
-  <a href="create/bik-shyn.html">Толығырақ →</a>
-</div>
+    </pre>
+    <a href="create/bik-shyn.html">Толығырақ →</a>
+  </div>
 
   <div class="card">
-  <h2>Құдайбергенов Дархан "Алматы-арман қала"</h2>
-  <pre>
+    <h2>Құдайбергенов Дархан "Алматы-арман қала"</h2>
+    <pre>
 Арман қалам, ару қалам, гүл қалам,
 Сен дегенде өз-өзімнен нұрланам.
 Дәл өзіңдей туған анам секілді,
 Мейірімін төгеді екен кім маған?....
-  </pre>
+    </pre>
     <a href="create/almaty-arman-kala.html">Толығырақ →</a>
-</div>
+  </div>
 
-<div class="card">
-  <h2>Абай Құнанбайұлы "Көзімнің қарасы"</h2>
-  <pre>
-    Көзімнің қарасы,
+  <div class="card">
+    <h2>Абай Құнанбайұлы "Көзімнің қарасы"</h2>
+    <pre>
+Көзімнің қарасы,
 Көңілімнің санасы.
 Бітпейді іштегі,
 Ғашықтық жарасы.
-  </pre>
-<a href="create/kozimnin-karasy.html">Толығырақ →</a>
-</div>
+    </pre>
+    <a href="create/kozimnin-karasy.html">Толығырақ →</a>
+  </div>
 
-<div class="card">
-  <h2>Марқабай Диас "Ұлы ұстаз"</h2>
-  <pre>
-   Кешірген жастығымды, мастығымды,
+  <div class="card">
+    <h2>Марқабай Диас "Ұлы ұстаз"</h2>
+    <pre>
+Кешірген жастығымды, мастығымды,
 Кешірген еркелікті азды-көпті.
 Білмеймін, қатты бұзық болғанмын ба,
 Ұстазымның самайына ақ түсіпті.
-  </pre>
-  <a href="vtrate/uly-ustaz.html">Толығырақ →</a>
-</div>
+    </pre>
+    <a href="vtrate/uly-ustaz.html">Толығырақ →</a>
+  </div>
 
-
-<div class="create/card">
-  <h2>Марқабай Диас "Ізгі ізденіс"</h2>
-  <pre>
-    Қанша тағдыр бір-бірімен тоғысқан,
+  <div class="card">
+    <h2>Марқабай Диас "Ізгі ізденіс"</h2>
+    <pre>
+Қанша тағдыр бір-бірімен тоғысқан,
 Танығандар жұптарымен табысқан.
 Қанша жанның ішінен тапты екен,
 Рухтардың арасынан жан ұшқан
-  </pre>
-  <a href="create/izgy-izdenis.html">Толығырақ →</a>
-</div>
+    </pre>
+    <a href="create/izgy-izdenis.html">Толығырақ →</a>
+  </div>
 
-<div class="card">
-  <h2>Марқабай Диас "Бауырларым"</h2>
-  <pre>
-   Тай құлындай тебісіп бірге өскен,
+  <div class="card">
+    <h2>Марқабай Диас "Бауырларым"</h2>
+    <pre>
+Тай құлындай тебісіп бірге өскен,
 Перзенті едік асылдардың көпті көрген.
 Қайран қарттар үйретті ау, бар білгенін,
 Сүрінеді екен деп неше жерден.
-  </pre>
-  <a href="create/baurlarym.html">Толығырақ →</a>
-</div>
+    </pre>
+    <a href="create/baurlarym.html">Толығырақ →</a>
+  </div>
+</section>
 
 <footer>
 © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-  <script src="search.js"></script>
-
+<script src="search.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
