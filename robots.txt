@@ -1,6 +1,5 @@
 User-agent: * 
-Disallow: /private/ 
 Allow: / 
 
 
-Sitemap: https://diasmark77.github.io/adebietordasy/ 
+Sitemap: https://diasmark77.github.io/adebietordasy/sitemap.xml
