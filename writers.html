@@ -20,78 +20,73 @@ header {
   padding:25px;
 }
 
-nav {
-  background:#8b5e3c;
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
+/* MENU BUTTON */
+.menu-btn{
+background:#8b5e3c;
+color:white;
+border:none;
+padding:12px 18px;
+font-size:18px;
+width:100%;
+cursor:pointer;
 }
 
+/* NAVIGATION */
+nav {
+  display:none;
+  flex-direction:column;
+  background:#8b5e3c;
+}
 nav button {
   background:none;
   border:none;
   color:white;
-  padding:12px 18px;
-  margin:2px;
+  padding:14px;
   cursor:pointer;
   font-size:16px;
   font-weight:bold;
-  border-radius:5px;
+  border-top:1px solid rgba(255,255,255,0.2);
 }
-
 nav button:hover {background:#6e472c;}
+nav.show{display:flex;}
 
-section {padding:20px;max-width:1000px;margin:auto;}
-
-/* Контейнер барлық карточкалар үшін */
+/* Cards */
 .cards-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; /* карточкалар арасын бірдей ету */
+  gap: 20px;
   justify-content: center;
 }
-
-/* Әр карточка */
 .card {
   background:white;
   color:#333;
   padding:20px;
   border-radius:10px;
   box-shadow:0 4px 10px rgba(0,0,0,0.1);
-  width: 300px; /* бірдей ені */
+  width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
-
 .card img {
   width: 120px;
-  height: auto;
+  height:auto;
   border-radius:5px;
   margin-bottom:15px;
 }
-
-.card h2 {
-  color:#5c4033;
-  margin:10px 0 5px 0;
-}
-
-.card p {
-  margin-bottom:10px;
-}
-
-.card a {
-  text-decoration:none;
-  color:#d4af37;
-  font-weight:bold;
-}
-
-.card a:hover {
-  color:#b8962e;
-}
+.card h2 {color:#5c4033;margin:10px 0 5px 0;}
+.card p {margin-bottom:10px;}
+.card a {text-decoration:none;color:#d4af37;font-weight:bold;}
+.card a:hover {color:#b8962e;}
 
 footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
+
+@media(max-width:800px){
+  .menu-btn{display:block;}
+  nav{display:none;}
+  nav.show{display:flex;}
+}
 </style>
 </head>
 <body>
@@ -101,7 +96,11 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
   <p>Қазақ прозасының көрнекті тұлғалары</p>
 </header>
 
-<nav>
+<!-- MENU BUTTON -->
+<button class="menu-btn" onclick="toggleMenu()">☰ Меню</button>
+
+<!-- NAVIGATION -->
+<nav id="menu">
   <button onclick="location.href='index.html'">Басты бет</button>
   <button onclick="location.href='alash.html'">Алаш зиялылары</button>
   <button onclick="location.href='writers.html'">Қазақ жазушылары</button>
@@ -163,5 +162,14 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
   © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+}
+</script>
+
 </body>
 </html>
+
+
+</section>
