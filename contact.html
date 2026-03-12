@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Байланыс | Әдебиет ордасы</title>
 
-   <link rel="icon" href="images/logo.png" type="image/png">
+<link rel="icon" href="images/logo.png" type="image/png">
 
 <style>
 * {box-sizing:border-box;}
 body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
 
+/* HEADER */
 header {
   background:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
@@ -20,25 +21,47 @@ header {
   padding:25px;
 }
 
-nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+/* MENU BUTTON */
+.menu-btn{
+background:#8b5e3c;
+color:white;
+border:none;
+padding:12px 18px;
+font-size:18px;
+width:100%;
+cursor:pointer;
+}
+
+/* NAVIGATION */
+nav {
+  display:none;
+  flex-direction:column;
+  background:#8b5e3c;
+}
 nav button {
   background:none;
   border:none;
   color:white;
-  padding:12px 18px;
-  margin:2px;
+  padding:14px;
   cursor:pointer;
   font-size:16px;
   font-weight:bold;
-  border-radius:5px;
+  border-top:1px solid rgba(255,255,255,0.2);
 }
 nav button:hover {background:#6e472c;}
+nav.show{display:flex;}
 
+/* CONTENT */
 section {padding:20px;max-width:600px;margin:30px auto;}
 .card {background:white;padding:20px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
 h2 {color:#5c4033;}
 p {margin:8px 0;}
+a {color:#d4af37; text-decoration:none;}
+a:hover {color:#b8962e;}
+
+/* FOOTER */
 footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
+
 </style>
 </head>
 <body>
@@ -48,7 +71,11 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 <p>Сайт редакциясына хабарласу</p>
 </header>
 
-<nav>
+<!-- MENU BUTTON -->
+<button class="menu-btn" onclick="toggleMenu()">☰ Меню</button>
+
+<!-- NAVIGATION -->
+<nav id="menu">
 <button onclick="location.href='index.html'">Басты бет</button>
 <button onclick="location.href='alash.html'">Алаш зиялылары</button>
 <button onclick="location.href='writers.html'">Қазақ жазушылары</button>
@@ -71,8 +98,11 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
+<script>
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("show");
+}
+</script>
+
 </body>
-
 </html>
-
-
