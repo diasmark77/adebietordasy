@@ -8,94 +8,205 @@
 <link rel="icon" href="images/logo.png" type="image/png">
 
 <style>
-* {box-sizing:border-box;}
-body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
 
-header {
-  background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
-  color:white;
-  text-align:center;
-  padding:25px;
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f1ea;
+color:#333;
 }
 
-nav {
-  background:#8b5e3c;
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
+/* HEADER */
+
+header{
+background:
+linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+color:white;
+text-align:center;
+padding:25px;
 }
 
-nav button {
-  background:none;
-  border:none;
-  color:white;
-  padding:12px 18px;
-  margin:2px;
-  cursor:pointer;
-  font-size:16px;
-  font-weight:bold;
-  border-radius:5px;
+/* MENU BUTTON */
+
+.menu-btn{
+display:none;
+background:#8b5e3c;
+color:white;
+border:none;
+padding:14px;
+font-size:18px;
+width:100%;
+cursor:pointer;
 }
 
-nav button:hover {background:#6e472c;}
+/* NAV */
 
-section {padding:20px;max-width:1000px;margin:auto;}
-
-.card {
-  background:
-    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
-    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
-  color:white;
-  padding:20px;
-  margin:15px 0;
-  border-radius:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+nav{
+background:#8b5e3c;
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
 }
 
-.card h2 {margin-top:0;}
-.card img {width:120px;height:auto;border-radius:5px;float:left;margin-right:15px;}
+nav button{
+background:none;
+border:none;
+color:white;
+padding:12px 18px;
+margin:2px;
+cursor:pointer;
+font-size:16px;
+font-weight:bold;
+border-radius:5px;
+}
 
-h2 {color:#fff;}
-footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
+nav button:hover{
+background:#6e472c;
+}
+
+/* CONTENT */
+
+section{
+padding:20px;
+max-width:1000px;
+margin:auto;
+}
+
+.card{
+background:
+linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+color:white;
+padding:20px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+.card h2{
+margin-top:0;
+}
+
+.card img{
+width:120px;
+height:auto;
+border-radius:5px;
+float:left;
+margin-right:15px;
+}
+
+h2{
+color:#fff;
+}
+
+/* FOOTER */
+
+footer{
+background:#5c4033;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:30px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+.menu-btn{
+display:block;
+}
+
+nav{
+display:none;
+flex-direction:column;
+}
+
+nav button{
+width:100%;
+border-top:1px solid rgba(255,255,255,0.2);
+}
+
+nav.show{
+display:flex;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>Әдебиет ордасы</h1>
-  <p>Қазақ руханиятының әдеби ордасы</p>
+<h1>Әдебиет ордасы</h1>
+<p>Қазақ руханиятының әдеби ордасы</p>
 </header>
 
-<nav>
-  <button onclick="location.href='index.html'">Басты бет</button>
-  <button onclick="location.href='alash.html'">Алаш зиялылары</button>
-  <button onclick="location.href='writers.html'">Қазақ жазушылары</button>
-  <button onclick="location.href='poets.html'">Ақындар</button>
-  <button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
-  <button onclick="location.href='contact.html'">Байланыс</button>
-  <button onclick="location.href='poems.html'">Өлеңдер</button>
+<button class="menu-btn" onclick="toggleMenu()">☰ Меню</button>
+
+<nav id="menu">
+
+<button onclick="location.href='index.html'">Басты бет</button>
+
+<button onclick="location.href='alash.html'">Алаш зиялылары</button>
+
+<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+
+<button onclick="location.href='poets.html'">Ақындар</button>
+
+<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+
+<button onclick="location.href='poems.html'">Өлеңдер</button>
+
+<button onclick="location.href='angimeler.html'">Әңгімелер</button>
+
+<button onclick="location.href='contact.html'">Байланыс</button>
+
 </nav>
 
 <section>
-  <div class="card">
-    <h2>Қош келдіңіз!</h2>
-    <p>Бұл сайт – қазақ әдебиетінің ұлы тұлғаларын таныстыратын портал. Мұнда Алаш зиялылары, қазақ жазушылары, ақындар және олардың мұралары жинақталған.</p>
-  </div>
 
-  <div class="card">
-    <h2>Құрметті жас талап!</h2>
-    <p>Егерде сіз өзіңізді, өзіңіздің шығармаларыңызды біздің парақшамызда көргіңіз келсе, бізбен байланысуыңызды сұраймыз. Құрметпен "Әдебиет ордасы" сайтының редакторы!</p>
-  </div>
+<div class="card">
+<h2>Қош келдіңіз!</h2>
+
+<p>
+Бұл сайт – қазақ әдебиетінің ұлы тұлғаларын таныстыратын портал.
+Мұнда Алаш зиялылары, қазақ жазушылары, ақындар және олардың мұралары жинақталған.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Құрметті жас талап!</h2>
+
+<p>
+Егерде сіз өзіңізді, өзіңіздің шығармаларыңызды біздің парақшамызда
+көргіңіз келсе, бізбен байланысуыңызды сұраймыз.
+Құрметпен "Әдебиет ордасы" сайтының редакторы!
+</p>
+
+</div>
+
 </section>
 
 <footer>
-  © 2026 Әдебиет ордасы | Қазақ әдеби порталы
+© 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
+
+<script>
+
+function toggleMenu(){
+
+document.getElementById("menu").classList.toggle("show");
+
+}
+
+</script>
 
 </body>
 </html>
-
-
