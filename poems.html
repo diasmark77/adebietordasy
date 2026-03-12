@@ -20,25 +20,37 @@ header {
 header h1 {font-size:42px;margin-bottom:10px;}
 header p {font-size:18px;opacity:0.9;}
 
+/* MENU BUTTON */
+.menu-btn{
+background:#8b5e3c;
+color:white;
+border:none;
+padding:12px 18px;
+font-size:18px;
+width:100%;
+cursor:pointer;
+}
+
+/* NAVIGATION */
 nav {
+  display:none;
+  flex-direction:column;
   background:#8b5e3c;
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
 }
 nav button {
   background:none;
   border:none;
   color:white;
-  padding:12px 18px;
-  margin:2px;
+  padding:14px;
   cursor:pointer;
   font-size:16px;
   font-weight:bold;
-  border-radius:5px;
+  border-top:1px solid rgba(255,255,255,0.2);
 }
 nav button:hover {background:#6e472c;}
+nav.show{display:flex;}
 
+/* SEARCH BOX */
 .search-box {
   text-align:center;
   margin:20px 0;
@@ -86,8 +98,12 @@ footer {
   font-size:14px;
 }
 
+@media(max-width:800px){
+  .menu-btn{display:block;}
+  nav{display:none;}
+  nav.show{display:flex;}
+}
 @media(max-width:600px){
-  nav {flex-direction:column;align-items:center;}
   nav button {width:90%; margin:3px 0;}
   .search-box input {width:95%;}
   .card h2 {font-size:18px;}
@@ -102,7 +118,11 @@ footer {
 <p>Қазақ руханиятының әдеби ордасы</p>
 </header>
 
-<nav>
+<!-- MENU BUTTON -->
+<button class="menu-btn" onclick="toggleMenu()">☰ Меню</button>
+
+<!-- NAVIGATION -->
+<nav id="menu">
 <button onclick="location.href='index.html'">Басты бет</button>
 <button onclick="location.href='alash.html'">Алаш зиялылары</button>
 <button onclick="location.href='writers.html'">Қазақ жазушылары</button>
@@ -119,7 +139,7 @@ footer {
 <section>
   <div class="card">
     <h2>Мұқағали Мақатаев "Есіңе мені алғайсың"</h2>
-    <pre>
+    <pre>
     Нұр жауып тұрған көктемде,
     Гүл тере барсаң бөктерге,
     Қоңыраулатқан аспанды
@@ -263,13 +283,17 @@ footer {
   </div>
 </section>
 
+
 <footer>
 © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
 <script src="search.js"></script>
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+}
+</script>
+
 </body>
 </html>
-
-
-
