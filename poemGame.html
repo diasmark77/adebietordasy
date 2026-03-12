@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+Й<!DOCTYPE html>
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Қаламгер ойыны | Әдебиет ордасы</title>
 
-   <link rel="icon" href="images/logo.png" type="image/png">
+<link rel="icon" href="images/logo.png" type="image/png">
 
 <style>
 * {box-sizing:border-box;}
@@ -20,20 +20,37 @@ header {
   padding:25px;
 }
 
-nav {background:#8b5e3c;display:flex;flex-wrap:wrap;justify-content:center;}
+/* MENU BUTTON */
+.menu-btn{
+background:#8b5e3c;
+color:white;
+border:none;
+padding:12px 18px;
+font-size:18px;
+width:100%;
+cursor:pointer;
+}
+
+/* NAVIGATION */
+nav {
+  display:none;
+  flex-direction:column;
+  background:#8b5e3c;
+}
 nav button {
   background:none;
   border:none;
   color:white;
-  padding:12px 18px;
-  margin:2px;
+  padding:14px;
   cursor:pointer;
   font-size:16px;
   font-weight:bold;
-  border-radius:5px;
+  border-top:1px solid rgba(255,255,255,0.2);
 }
 nav button:hover {background:#6e472c;}
+nav.show{display:flex;}
 
+/* CONTENT */
 section {padding:20px;max-width:800px;margin:auto;}
 textarea {width:100%;padding:10px;font-size:16px;border-radius:5px;border:1px solid #ccc;margin-top:10px;}
 button.action-btn {margin-top:10px;padding:10px 20px;font-size:16px;border:none;background:#8b5e3c;color:white;border-radius:5px;cursor:pointer;}
@@ -41,6 +58,12 @@ button.action-btn:hover {background:#6e472c;}
 #result {margin-top:15px;border:1px solid #ccc;padding:10px;white-space: pre-line;background:white;border-radius:5px;}
 h2 {color:#5c4033;}
 footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
+
+@media(max-width:800px){
+  .menu-btn{display:block;}
+  nav{display:none;}
+  nav.show{display:flex;}
+}
 </style>
 </head>
 <body>
@@ -50,7 +73,11 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 <p>Өлеңіңді жалғастыр, шығармашылығыңды дамыт!</p>
 </header>
 
-<nav>
+<!-- MENU BUTTON -->
+<button class="menu-btn" onclick="toggleMenu()">☰ Меню</button>
+
+<!-- NAVIGATION -->
+<nav id="menu">
 <button onclick="location.href='index.html'">Басты бет</button>
 <button onclick="location.href='alash.html'">Алаш зиялылары</button>
 <button onclick="location.href='writers.html'">Қазақ жазушылары</button>
@@ -74,6 +101,11 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 </footer>
 
 <script>
+// MENU TOGGLE
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("show");
+}
+
 // Өлең жолдары
 const poems = [
   "Абай: Көзімнің қарасы ", 
@@ -111,7 +143,4 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 </body>
-
 </html>
-
-
