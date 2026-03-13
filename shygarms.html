@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шығармалар | Әдебиет ордасы</title>
+
+<link rel="icon" href="images/logo.png" type="image/png">
+
+<style>
+* {box-sizing:border-box;}
+body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;line-height:1.5;}
+
+header {
+  background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  color:white;
+  text-align:center;
+  padding:50px 20px;
+}
+header h1 {font-size:42px;margin-bottom:10px;}
+header p {font-size:18px;opacity:0.9;}
+
+/* MENU BUTTON */
+.menu-btn{
+background:#8b5e3c;
+color:white;
+border:none;
+padding:12px 18px;
+font-size:18px;
+width:100%;
+cursor:pointer;
+}
+
+/* NAVIGATION */
+nav {
+  display:none;
+  flex-direction:column;
+  background:#8b5e3c;
+}
+nav button {
+  background:none;
+  border:none;
+  color:white;
+  padding:14px;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:bold;
+  border-top:1px solid rgba(255,255,255,0.2);
+}
+nav button:hover {background:#6e472c;}
+nav.show{display:flex;}
+
+/* SEARCH BOX */
+.search-box {
+  text-align:center;
+  margin:20px 0;
+}
+.search-box input {
+  width:80%;
+  max-width:400px;
+  padding:10px 12px;
+  font-size:16px;
+  border-radius:5px;
+  border:1px solid #ccc;
+}
+
+section {padding:0 15px 50px 15px; max-width:900px; margin:auto;}
+.card {
+  background:white;
+  padding:20px;
+  margin:15px 0;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.card h2 {color:#5c4033; font-size:20px; margin-bottom:10px;}
+.card pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Georgia', serif;
+  font-size:16px;
+  margin-bottom:10px;
+}
+.card a {
+  display:inline-block;
+  margin-top:10px;
+  color:#8b5e3c;
+  font-weight:bold;
+  text-decoration:none;
+}
+.card a:hover {text-decoration:underline;}
+
+footer {
+  background:#5c4033;
+  color:white;
+  text-align:center;
+  padding:15px;
+  margin-top:30px;
+  font-size:14px;
+}
+
+@media(max-width:800px){
+  .menu-btn{display:block;}
+  nav{display:none;}
+  nav.show{display:flex;}
+}
+@media(max-width:600px){
+  nav button {width:90%; margin:3px 0;}
+  .search-box input {width:95%;}
+  .card h2 {font-size:18px;}
+  .card pre {font-size:15px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>📚 Әдебиет ордасы</h1>
+<p>Қазақ руханиятының әдеби ордасы</p>
+</header>
+
+<!-- MENU BUTTON -->
+<button class="menu-btn" onclick="toggleMenu()">☰ Меню</button>
+
+<!-- NAVIGATION -->
+<nav id="menu">
+<button onclick="location.href='index.html'">Басты бет</button>
+<button onclick="location.href='alash.html'">Алаш зиялылары</button>
+<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
+<button onclick="location.href='poets.html'">Ақындар</button>
+<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
+<button onclick="location.href='contact.html'">Байланыс</button>
+<button onclick="location.href='poems.html'">Өлеңдер</button>
+<button onclick="location.href='shygarms.html'">Шығармалар</button>
+</nav>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Іздеу авторлар мен шығармалар бойынша...">
+</div>
+
+<section>
+  <div class="card">
+    <h2>Ғабит Мүсірепов "Ұлпан"</h2>
+    <pre>
+      Есенейдің төрт қос жылқысы «Қаршығалы» шұбарына жақындап келіп, қапталдай төніп қалып еді. Тақырланып қалған...
+    </pre>
+    <a href="shygarma/ulpan.html">Толығырақ →</a>
+  </div>
+
+<section>
+  <div class="card">
+    <h2> Дулат Исабеков "Гауһартас"</h2>
+    <pre>
+     Ыбыштың мінез-құлқы, кескін-келбеті, аузындағысөзі мен күлкісіне шейін əкемнен аумай қалған, сойып қаптағандай дерсің.
+    </pre>
+    <a href="shygarma/gauhartas.html">Толығырақ →</a>
+  </div>
+
+<section>
+  <div class="card">
+    <h2>Көкенов Жеңісбек  "Орманда сыр бар түсінсең"</h2>
+    <pre>
+       Ағаштан қиып салынған еңселі үйімнен шыға сала, орманға тартып отырдым. Күндегі тірлігім осы...
+    </pre>
+    <a href="shygarma/ormanda.html">Толығырақ →</a>
+  </div>
+
+<section>
+  <div class="card">
+    <h2>Сайын Мұратбеков "Жусан иісі"</h2>
+    <pre>
+      Алыста қалған балалық шағым... Ойымнан: жарғақ сары тоны қаудырлаған, тобығы тайған сол аяғын сүйрете жүгіретін, 
+    </pre>
+    <a href="shygarma/zhusan-isi.html">Толығырақ →</a>
+  </div>
+
+<section>
+  <div class="card">
+    <h2> Дулат Исабеков "Ескерткіш"</h2>
+    <pre>
+       Аудандық партия комитетінің секретары Жанайдаров ертеңгілік кабинетіне келіп, шешініп, шашын тарап...
+    </pre>
+    <a href="shygarma/eskertkish.html">Толығырақ →</a>
+  </div>
+
+  </div>
+</section>
+
+
+<footer>
+© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+</footer>
+
+<script src="search.js"></script>
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+}
+</script>
+
+</body>
+</html>
