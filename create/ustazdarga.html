@@ -6,7 +6,9 @@
 <title>Ұстаздарға</title>
 
      <link rel="icon" href="../images/logo.png" type="image/png">
-  
+
+     <link rel="stylesheet" href="../css/style.css">
+     
 <style>
 body { font-family: Arial, sans-serif; margin:20px; background:#f4f1ea; color:#333; }
 .card { background:white; padding:15px; margin:15px 0; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
@@ -53,5 +55,15 @@ pre { white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa;
 <a href="/adebietordasy/poet/erkin.html" class="back-btn">← Автор бетіне</a>
 <a href="../poems.html" class="back-btn">← Өлеңдер бетіне қайту</a>
 
+<div id="related-poems-container"></div>
+
+<script>
+fetch('../related-poems.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('related-poems-container').innerHTML = data;
+  });
+</script>
+     
 </body>
 </html>
