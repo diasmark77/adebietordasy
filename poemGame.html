@@ -74,21 +74,30 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 <p>Өлеңіңді жалғастыр, шығармашылығыңды дамыт!</p>
 </header>
 
-<!-- MENU BUTTON -->
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-<!-- NAVIGATION -->
-<nav id="menu">
-<button onclick="location.href='index.html'">Басты бет</button>
-<button onclick="location.href='alash.html'">Алаш зиялылары</button>
-<button onclick="location.href='writers.html'">Қазақ жазушылары</button>
-<button onclick="location.href='poets.html'">Ақындар</button>
-<button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">Байланыс</button>
-<button onclick="location.href='poems.html'">Өлеңдер</button>
-<button onclick="location.href='shygarms.html'">Шығармалар</button>
-</nav>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
+<nav id="menu">
+
+<button onclick="location.href='index.html'">🏠 Басты бет</button>
+
+<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+
+<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+
+<button onclick="location.href='poets.html'">✍️ Ақындар</button>
+
+<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+
+<button onclick="location.href='contact.html'">📩 Байланыс</button>
+
+<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+
+<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+
+</nav>
+  
 <section>
 <h2>Өлең ойыны</h2>
 <p id="poemLine"></p>
