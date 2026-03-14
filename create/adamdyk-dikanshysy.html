@@ -7,6 +7,8 @@
 
 <link rel="icon" href="../images/logo.png" type="image/png">
 
+<link rel="stylesheet" href="../css/style.css">
+  
 <style>
 
 body{
@@ -101,6 +103,16 @@ background:#6e472c;
 
 <a href="/adebietordasy/alash/akmet.html" class="back-btn">← Автор бетіне</a>
 <a href="../poems.html" class="back-btn">← Өлеңдер бетіне қайту</a>
+
+  <div id="related-poems-container"></div>
+
+<script>
+fetch('../related-poems.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('related-poems-container').innerHTML = data;
+  });
+</script>
 
 </body>
 </html>
