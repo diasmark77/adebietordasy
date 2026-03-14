@@ -82,7 +82,7 @@ nav button:hover{
 }
 
 /* ============================= */
-/* HEADER ASTYNA SЫZЫQ */
+/* HEADER ASTYNA JUAN SЫZЫQ */
 /* ============================= */
 header{
   position:relative; /* ::after үшін керек */
@@ -91,7 +91,7 @@ header{
 header::after{
   content:"";
   display:block;
-  height:4px;             /* сызық биіктігі */
+  height:8px;             /* Жуан сызық */
   background:#8b5e3c;     /* меню түсімен бірдей */
   width:100%;
   position:absolute;
