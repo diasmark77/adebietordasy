@@ -6,7 +6,8 @@
 <title>Қаламгер ойыны | Әдебиет ордасы</title>
 
 <link rel="icon" href="images/logo.png" type="image/png">
-
+<link rel="stylesheet" href="css/menu.css">
+  
 <style>
 * {box-sizing:border-box;}
 body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
@@ -141,7 +142,16 @@ function nextLine(){
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('poemLine').textContent=poems[0];
 });
+
+
+
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
 </script>
+  
 
 </body>
 </html>
