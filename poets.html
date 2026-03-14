@@ -6,7 +6,8 @@
 <title>Ақындар | Әдебиет ордасы</title>
 
 <link rel="icon" href="images/logo.png" type="image/png">
-
+<link rel="stylesheet" href="css/menu.css">
+  
 <style>
 * {box-sizing:border-box;}
 body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
@@ -115,7 +116,7 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 </header>
 
 <!-- MENU BUTTON -->
-<button class="menu-btn" onclick="toggleMenu()">☰ Меню</button>
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
 
 <!-- NAVIGATION -->
 <nav id="menu">
@@ -199,12 +200,16 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 </footer>
 
 <script src="search.js"></script>
-<script>
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("show");
-}
-</script>
 
+<script>
+
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+</script>
+  
 </body>
 </html>
 
