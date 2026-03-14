@@ -1,79 +1,100 @@
+/* ============================= */
 /* MENU BUTTON */
-
+/* ============================= */
 .menu-btn{
-position:fixed;
-top:15px;
-left:15px;
-width:42px;
-height:42px;
-background:#8b5e3c;
-color:white;
-border:none;
-font-size:22px;
-cursor:pointer;
-border-radius:8px;
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:1001;
-box-shadow:0 3px 8px rgba(0,0,0,0.3);
+  position:fixed;
+  top:15px;
+  left:15px;
+  width:42px;
+  height:42px;
+  background:#8b5e3c;
+  color:white;
+  border:none;
+  font-size:22px;
+  cursor:pointer;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1001;
+  box-shadow:0 3px 8px rgba(0,0,0,0.3);
+  transition:transform 0.2s;
 }
 
-/* DARK OVERLAY */
+.menu-btn:hover{
+  transform:scale(1.08);
+}
 
+/* ============================= */
+/* OVERLAY */
+/* ============================= */
 .overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-display:none;
-z-index:999;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  z-index:999;
 }
-
-/* SIDEBAR MENU */
-
-nav{
-position:fixed;
-top:0;
-left:-260px;
-width:260px;
-height:100%;
-background:#8b5e3c;
-display:flex;
-flex-direction:column;
-transition:0.3s;
-z-index:1000;
-padding-top:60px;
-}
-
-/* MENU OPEN */
-
-nav.show{
-left:0;
-}
-
-/* OVERLAY ACTIVE */
 
 .overlay.show{
-display:block;
+  display:block;
 }
 
-/* MENU BUTTONS */
+/* ============================= */
+/* SIDEBAR NAVIGATION */
+/* ============================= */
+nav{
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:260px;
+  height:100%;
+  background:#8b5e3c;
+  display:flex;
+  flex-direction:column;
+  transition:0.3s;
+  z-index:1000;
+  padding-top:60px;
+}
+
+nav.show{
+  left:0;
+}
 
 nav button{
-background:none;
-border:none;
-color:white;
-padding:15px 20px;
-font-size:16px;
-font-weight:bold;
-text-align:left;
-cursor:pointer;
-border-bottom:1px solid rgba(255,255,255,0.2);
+  background:none;
+  border:none;
+  color:white;
+  padding:15px 20px;
+  font-size:16px;
+  font-weight:bold;
+  text-align:left;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+  transition:background 0.2s;
 }
 
 nav button:hover{
-background:#6e472c;
+  background:#6e472c;
+}
+
+/* ============================= */
+/* HEADER ASTYNA SЫZЫQ */
+/* ============================= */
+header{
+  position:relative; /* ::after үшін керек */
+}
+
+header::after{
+  content:"";
+  display:block;
+  height:4px;             /* сызық биіктігі */
+  background:#8b5e3c;     /* меню түсімен бірдей */
+  width:100%;
+  position:absolute;
+  bottom:0;
+  left:0;
 }
