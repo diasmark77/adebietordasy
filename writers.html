@@ -6,7 +6,8 @@
 <title>Қазақ жазушылары | Әдебиет ордасы</title>
 
 <link rel="icon" href="images/logo.png" type="image/png">
-
+<link rel="stylesheet" href="css/menu.css">
+  
 <style>
 * {box-sizing:border-box;}
 body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
@@ -96,19 +97,28 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
   <p>Қазақ прозасының көрнекті тұлғалары</p>
 </header>
 
-<!-- MENU BUTTON -->
-<button class="menu-btn" onclick="toggleMenu()">☰ Меню</button>
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-<!-- NAVIGATION -->
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
 <nav id="menu">
-  <button onclick="location.href='index.html'">Басты бет</button>
-  <button onclick="location.href='alash.html'">Алаш зиялылары</button>
-  <button onclick="location.href='writers.html'">Қазақ жазушылары</button>
-  <button onclick="location.href='poets.html'">Ақындар</button>
-  <button onclick="location.href='poemGame.html'">Қаламгер ойыны</button>
-  <button onclick="location.href='contact.html'">Байланыс</button>
-  <button onclick="location.href='poems.html'">Өлеңдер</button>
-  <button onclick="location.href='shygarms.html'">Шығармалар</button>
+
+<button onclick="location.href='index.html'">🏠 Басты бет</button>
+
+<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+
+<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+
+<button onclick="location.href='poets.html'">✍️ Ақындар</button>
+
+<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+
+<button onclick="location.href='contact.html'">📩 Байланыс</button>
+
+<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+
+<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+
 </nav>
 
 <section>
@@ -164,11 +174,14 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 </footer>
 
 <script>
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("show");
-}
-</script>
 
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+</script>
+  
 </body>
 </html>
 
