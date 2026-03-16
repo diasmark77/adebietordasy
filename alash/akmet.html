@@ -29,25 +29,11 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 .back-btn:hover {background:#6e472c;}
 </style>
 </head>
+   
 <body>
 
 <header>
 
-<button class="menu-btn" onclick="toggleMenu()">☰</button>
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<nav id="menu">
-<button onclick="location.href='../index.html'">🏠 Басты бет</button>
-<button onclick="location.href='../alash.html'">📜 Алаш зиялылары</button>
-<button onclick="location.href='../writers.html'">📚 Қазақ жазушылары</button>
-<button onclick="location.href='../poets.html'">✍️ Ақындар</button>
-<button onclick="location.href='../poemGame.html'">🎮 Қаламгер ойыны</button>
-<button onclick="location.href='../contact.html'">📩 Байланыс</button>
-<button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
-<button onclick="location.href='../angimeler.html'">📖 Әңгімелер</button>
-<button onclick="location.href='../shygarms.html'">📑 Шығармалар</button>
-</nav>
-   
 <img src="../images/ahmet.jpg" alt="Ахмет Байтұрсынұлы" class="author-img">
    
 <h1>Ахмет Байтұрсынұлы (1872-1937)</h1>
@@ -90,16 +76,13 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
       </ul>
     </section>
   </main>
+
+<div id="menu-container"></div>
    
 
 <a href="../alash.html" class="back-btn">← Басты бетке қайту</a>
 
-<script>
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("show");
-  document.getElementById("overlay").classList.toggle("show");
-}
-</script>
+<script src="/js/menu.js"></script>
    
 <footer>
 © 2026 Әдебиет әлемі | Қазақ әдеби порталы
