@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Әдебиет Ордасы - Қазақ Әдеби порталы</title>
+<title>Әдебиет ордасы- Қазақ әдеби порталы</title>
 
 <meta name="description" content="Әдебиет Ордасы – қазақ әдебиетінің ұлы тұлғаларын таныстыратын портал. Алаш зиялылары, қазақ жазушылары, ақындар және олардың шығармалары жинақталған.">
 
@@ -12,7 +12,108 @@
 <link rel="icon" href="images/logo.png" type="image/png">
 
 <link rel="stylesheet" href="css/menu.css">
+  
+<style>
 
+* {box-sizing:border-box;}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f1ea;
+color:#333;
+}
+
+header{
+background:
+linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+color:white;
+text-align:center;
+padding:20px;
+}
+
+/* NAV */
+
+nav{
+display:none;
+background:#8b5e3c;
+flex-direction:column;
+}
+
+nav button{
+background:none;
+border:none;
+color:white;
+padding:14px;
+cursor:pointer;
+font-size:16px;
+font-weight:bold;
+border-top:1px solid rgba(255,255,255,0.2);
+}
+
+nav button:hover{
+background:#6e472c;
+}
+
+nav.show{
+display:flex;
+}
+
+/* CONTENT */
+
+section{
+padding:20px;
+max-width:1000px;
+margin:auto;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.card{
+position:relative;
+overflow:hidden;
+border-radius:10px;
+cursor:pointer;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+.card img{
+width:100%;
+height:auto;
+display:block;
+transition: transform 0.3s ease;
+}
+
+.card h2{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+padding:15px;
+margin:0;
+background:rgba(0,0,0,0.5);
+color:white;
+font-size:1.5rem;
+text-align:center;
+}
+
+.card:hover img{
+transform: scale(1.05);
+}
+
+h2{color:#fff;}
+
+footer{
+background:#5c4033;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:30px;
+}
+
+</style>
 </head>
 
 <body>
@@ -41,29 +142,29 @@
 <section>
   <div class="card">
     <a href="shygarma/eskertkish.html">
-      <img src="images/eskertkish.jpg" alt="Ескерткіш">
+      <img src="images/eskertkish.jpg" alt="Ескерткіш шығармасы">
       <h2>Дулат Исабеков "Ескерткіш"</h2>
     </a>
   </div>
 
   <div class="card">
     <a href="shygarma/ulpan.html">
-      <img src="images/ulpan.jpg" alt="Ұлпан">
-      <h2>Ғабит Мүсірепов  "Ұлпан"</h2>
+      <img src="images/ulpan.jpg" alt="Ұлпан шығармасы">
+      <h2>Ғабит Мүсірепов "Ұлпан"</h2>
     </a>
   </div>
 
   <div class="card">
     <a href="shygarma/kobylandy-batyr.html">
       <img src="images/kobylandy-batyr.jpg" alt="Қобыланды батыр">
-      <h2>Мұхтар Әуезов  "Қобыланды батыр"</h2>
+      <h2>Мұхтар Әузов "Қобыланды батыр"</h2>
     </a>
   </div>
 
   <div class="card">
     <a href="create/zhurektesin.html">
       <img src="images/zhurektesin.jpg" alt="Жүректесің">
-      <h2>БақдәулетАарыстан  ">Жүректесің"</h2>
+      <h2>Бақдәулет Арыстан "Жүректесің"</h2>
     </a>
   </div>
 </section>
@@ -73,10 +174,12 @@
 </footer>
 
 <script>
+
 function toggleMenu(){
-  document.getElementById("menu").classList.toggle("show");
-  document.getElementById("overlay").classList.toggle("show");
+document.getElementById("menu").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
 }
+
 </script>
   
 </body>
