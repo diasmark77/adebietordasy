@@ -3,99 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Әдебиет ордасы</title>
+<title>Әдебиет Ордасы - Қазақ Әдеби порталы</title>
 
+<meta name="description" content="Әдебиет Ордасы – қазақ әдебиетінің ұлы тұлғаларын таныстыратын портал. Алаш зиялылары, қазақ жазушылары, ақындар және олардың шығармалары жинақталған.">
+
+<meta name="keywords" content="қазақ әдебиеті, ақындар, жазушылар, өлеңдер, шығармалар, Алаш зиялылары">
+  
 <link rel="icon" href="images/logo.png" type="image/png">
 
 <link rel="stylesheet" href="css/menu.css">
-  
-<style>
 
-* {box-sizing:border-box;}
-
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f4f1ea;
-color:#333;
-}
-
-header{
-background:
-linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-url("images/kazakh-dalasy.jpg") center/cover no-repeat;
-color:white;
-text-align:center;
-padding:20px;
-}
-
-/* NAV */
-
-nav{
-display:none;
-background:#8b5e3c;
-flex-direction:column;
-}
-
-nav button{
-background:none;
-border:none;
-color:white;
-padding:14px;
-cursor:pointer;
-font-size:16px;
-font-weight:bold;
-border-top:1px solid rgba(255,255,255,0.2);
-}
-
-nav button:hover{
-background:#6e472c;
-}
-
-nav.show{
-display:flex;
-}
-
-/* CONTENT */
-
-section{
-padding:20px;
-max-width:1000px;
-margin:auto;
-}
-
-.card{
-background:
-linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
-url("images/kazakh-dalasy.jpg") center/cover no-repeat;
-color:white;
-padding:20px;
-margin:15px 0;
-border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.3);
-}
-
-.card h2{margin-top:0;}
-
-.card img{
-width:120px;
-height:auto;
-border-radius:5px;
-float:left;
-margin-right:15px;
-}
-
-h2{color:#fff;}
-
-footer{
-background:#5c4033;
-color:white;
-text-align:center;
-padding:15px;
-margin-top:30px;
-}
-
-</style>
 </head>
 
 <body>
@@ -110,37 +27,45 @@ margin-top:30px;
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-
 <button onclick="location.href='index.html'">🏠 Басты бет</button>
-
 <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-
 <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-
 <button onclick="location.href='poets.html'">✍️ Ақындар</button>
-
 <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-
 <button onclick="location.href='contact.html'">📩 Байланыс</button>
-
 <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-
 <button onclick="location.href='angimeler.html'">📖 Әңгімелер</button>
-
 <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-
 </nav>
 
-<div class="card">
-<h2>Қош келдіңіз!</h2>
-<p>Бұл сайт – қазақ әдебиетінің ұлы тұлғаларын таныстыратын портал. Мұнда Алаш зиялылары, қазақ жазушылары, ақындар және олардың мұралары жинақталған.</p>
-</div>
+<section>
+  <div class="card">
+    <a href="shygarma/eskertkish.html">
+      <img src="images/eskertkish.jpg" alt="Ескерткіш">
+      <h2>Дулат Исабеков "Ескерткіш"</h2>
+    </a>
+  </div>
 
-<div class="card">
-<h2>Құрметті жас талап!</h2>
-<p>Егерде сіз өзіңізді, өзіңіздің шығармаларыңызды біздің парақшамызда көргіңіз келсе, бізбен байланысуыңызды сұраймыз. Құрметпен "Әдебиет ордасы" сайтының редакторы!</p>
-</div>
+  <div class="card">
+    <a href="shygarma/ulpan.html">
+      <img src="images/ulpan.jpg" alt="Ұлпан">
+      <h2>Ғабит Мүсірепов  "Ұлпан"</h2>
+    </a>
+  </div>
 
+  <div class="card">
+    <a href="shygarma/kobylandy-batyr.html">
+      <img src="images/kobylandy-batyr.jpg" alt="Қобыланды батыр">
+      <h2>Мұхтар Әуезов  "Қобыланды батыр"</h2>
+    </a>
+  </div>
+
+  <div class="card">
+    <a href="create/zhurektesin.html">
+      <img src="images/zhurektesin.jpg" alt="Жүректесің">
+      <h2>БақдәулетАарыстан  ">Жүректесің"</h2>
+    </a>
+  </div>
 </section>
 
 <footer>
@@ -148,22 +73,11 @@ margin-top:30px;
 </footer>
 
 <script>
-
 function toggleMenu(){
-document.getElementById("menu").classList.toggle("show");
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
 }
-
-</script>
-
-<script>
-
-function toggleMenu(){
-document.getElementById("menu").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-
 </script>
   
 </body>
 </html>
-
