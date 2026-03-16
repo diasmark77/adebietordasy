@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ахмет Байтұрсынұлы</title>
 
-   <link rel="icon" href="../images/logo.png" type="image/png">
-  
+<link rel="icon" href="../images/logo.png" type="image/png">
+<link rel="stylesheet" href="../css/menu.css">
+   
 <style>
 body {font-family: Arial, sans-serif; margin:20px; background:#f4f1ea; color:#333;}
 header {text-align:center; padding:20px; background:#5c4033; color:white;}
@@ -32,7 +33,22 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 
 <header>
 
-   <img src="../images/ahmet.jpg" alt="Ахмет Байтұрсынұлы" class="author-img">
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+<button onclick="location.href='../index.html'">🏠 Басты бет</button>
+<button onclick="location.href='../alash.html'">📜 Алаш зиялылары</button>
+<button onclick="location.href='../writers.html'">📚 Қазақ жазушылары</button>
+<button onclick="location.href='../poets.html'">✍️ Ақындар</button>
+<button onclick="location.href='../poemGame.html'">🎮 Қаламгер ойыны</button>
+<button onclick="location.href='../contact.html'">📩 Байланыс</button>
+<button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
+<button onclick="location.href='../angimeler.html'">📖 Әңгімелер</button>
+<button onclick="location.href='../shygarms.html'">📑 Шығармалар</button>
+</nav>
+   
+<img src="../images/ahmet.jpg" alt="Ахмет Байтұрсынұлы" class="author-img">
    
 <h1>Ахмет Байтұрсынұлы (1872-1937)</h1>
 <p>Ұлт ұстазы,ағартушы,тіл білімінің негізін қалаушы.</p>
