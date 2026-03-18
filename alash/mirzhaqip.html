@@ -32,6 +32,8 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 
 <header>
 
+<div id="menu-container"></div>
+     
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
@@ -93,9 +95,12 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
       </ul>
     </section>
   </main>
+     
 <a href="../create/oyan-kazakh.html" class="back-btn">← Өлеңдері беті</a>
 <a href="../alash.html" class="back-btn">← Басты бетке қайту</a>
 
+<script src="/js/menu.js"></script>
+     
 <script>
 function toggleMenu(){
   document.getElementById("menu").classList.toggle("show");
