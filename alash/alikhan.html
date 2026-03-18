@@ -42,6 +42,21 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 </header>
 
 <div id="menu-container"></div>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+<button onclick="location.href='../index.html'">🏠 Басты бет</button>
+<button onclick="location.href='../alash.html'">📜 Алаш зиялылары</button>
+<button onclick="location.href='../writers.html'">📚 Қазақ жазушылары</button>
+<button onclick="location.href='../poets.html'">✍️ Ақындар</button>
+<button onclick="location.href='../poemGame.html'">🎮 Қаламгер ойыны</button>
+<button onclick="location.href='../contact.html'">📩 Байланыс</button>
+<button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
+<button onclick="location.href='../angimeler.html'">📖 Әңгімелер</button>
+<button onclick="location.href='../shygarms.html'">📑 Шығармалар</button>
+</nav>
          
 <div class="card">
 <h2>Өмірбаян</h2>
@@ -71,6 +86,13 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 <a href="../alash.html" class="back-btn">← Басты бетке қайту</a>
 
 <script src="/js/menu.js"></script>
+
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
+}
+</script>
          
 <footer>
 © 2026 Әдебиет әлемі | Қазақ әдеби порталы
