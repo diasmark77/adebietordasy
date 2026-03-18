@@ -2,113 +2,175 @@
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <meta name="description" content="Әдебиет ордасы – ақындар мен жазушылар, қаламгерлер шығармалары, қазақ әдебиеті және қаламгер ойыны қамтылған білім беру сайты.">
 <title>Әдебиет ордасы</title>
 
 <meta name="keywords" content="әдебиет ордасы, қазақ әдебиеті, ақындар, жазушылар, қаламгер, қаламгер ойыны, өлеңдер, шығармалар">
 
 <link rel="icon" href="images/logo.png" type="image/png">
-
 <link rel="stylesheet" href="css/menu.css">
-  
+
 <style>
 
-* {box-sizing:border-box;}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f4f1ea;
-color:#333;
+  font-family:Arial,sans-serif;
+  background:#f4f1ea;
+  color:#333;
 }
+
+/* HEADER */
 
 header{
-background:
-linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-url("images/kazakh-dalasy.jpg") center/cover no-repeat;
-color:white;
-text-align:center;
-padding:20px;
+  background:
+  linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+  url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  color:white;
+  text-align:center;
+  padding:30px 15px;
 }
 
-/* NAV */
+header h1{
+  font-size:28px;
+}
+
+header p{
+  font-size:16px;
+  margin-top:5px;
+}
+
+/* MENU */
+
+.menu-btn{
+  position:fixed;
+  top:15px;
+  left:15px;
+  font-size:22px;
+  background:#8b5e3c;
+  color:white;
+  border:none;
+  padding:10px 14px;
+  border-radius:8px;
+  z-index:1000;
+}
+
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  z-index:900;
+}
+
+.overlay.show{
+  display:block;
+}
 
 nav{
-display:none;
-background:#8b5e3c;
-flex-direction:column;
-}
-
-nav button{
-background:none;
-border:none;
-color:white;
-padding:14px;
-cursor:pointer;
-font-size:16px;
-font-weight:bold;
-border-top:1px solid rgba(255,255,255,0.2);
-}
-
-nav button:hover{
-background:#6e472c;
+  position:fixed;
+  top:0;
+  left:0;
+  width:250px;
+  height:100%;
+  background:#8b5e3c;
+  display:flex;
+  flex-direction:column;
+  transform:translateX(-100%);
+  transition:0.3s;
+  z-index:1001;
 }
 
 nav.show{
-display:flex;
+  transform:translateX(0);
+}
+
+nav button{
+  background:none;
+  border:none;
+  color:white;
+  padding:15px;
+  text-align:left;
+  font-size:16px;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+}
+
+nav button:hover{
+  background:#6e472c;
 }
 
 /* CONTENT */
 
 section{
-padding:20px;
-max-width:1000px;
-margin:auto;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
+  padding:15px;
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  gap:15px;
 }
 
 .card{
-position:relative;
-overflow:hidden;
-border-radius:10px;
-cursor:pointer;
-box-shadow:0 4px 10px rgba(0,0,0,0.3);
+  position:relative;
+  overflow:hidden;
+  border-radius:12px;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
 }
 
 .card img{
-width:100%;
-height:auto;
-display:block;
-transition: transform 0.3s ease;
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  transition:0.3s;
 }
 
 .card h2{
-position:absolute;
-bottom:0;
-left:0;
-width:100%;
-padding:15px;
-margin:0;
-background:rgba(0,0,0,0.5);
-color:white;
-font-size:1.5rem;
-text-align:center;
+  position:absolute;
+  bottom:0;
+  width:100%;
+  padding:10px;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  text-align:center;
 }
 
 .card:hover img{
-transform: scale(1.05);
+  transform:scale(1.05);
 }
 
-h2{color:#fff;}
+/* FOOTER */
 
 footer{
-background:#5c4033;
-color:white;
-text-align:center;
-padding:15px;
-margin-top:30px;
+  background:#5c4033;
+  color:white;
+  text-align:center;
+  padding:15px;
+  margin-top:20px;
+}
+
+/* 📱 MOBILE */
+
+@media (max-width:600px){
+
+  header h1{
+    font-size:22px;
+  }
+
+  header p{
+    font-size:14px;
+  }
+
+  .card img{
+    height:250px;
+  }
+
 }
 
 </style>
@@ -170,11 +232,11 @@ margin-top:30px;
 <script>
 
 function toggleMenu(){
-document.getElementById("menu").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
 }
 
 </script>
-  
+
 </body>
 </html>
