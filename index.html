@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="css/menu.css">
 
 <style>
-
 *{
   box-sizing:border-box;
   margin:0;
@@ -27,27 +26,25 @@ body{
 }
 
 /* HEADER */
-
 header{
   background:
   linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
   url("images/kazakh-dalasy.jpg") center/cover no-repeat;
   color:white;
   text-align:center;
-  padding:30px 15px;
+  padding:60px 15px;
 }
 
 header h1{
-  font-size:28px;
+  font-size:32px;
 }
 
 header p{
-  font-size:16px;
-  margin-top:5px;
+  font-size:18px;
+  margin-top:8px;
 }
 
 /* MENU */
-
 .menu-btn{
   position:fixed;
   top:15px;
@@ -107,12 +104,11 @@ nav button:hover{
 }
 
 /* CONTENT */
-
 section{
   padding:15px;
   width:100%;
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns:repeat(2, 1fr); /* екі баған */
   gap:15px;
 }
 
@@ -122,31 +118,27 @@ section{
   border-radius:12px;
   cursor:pointer;
   box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
 }
 
 .card img{
   width:100%;
-  height:220px;
-  object-fit:cover;
+  height:auto;
+  object-fit:contain; /* суреттер толық көрінуі үшін */
   transition:0.3s;
+  border-radius:8px;
 }
 
 .card h2{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  padding:10px;
-  background:rgba(0,0,0,0.5);
-  color:white;
-  text-align:center;
-}
-
-.card:hover img{
-  transform:scale(1.05);
+  margin-top:8px;
+  font-size:18px;
+  color:#5c4033;
 }
 
 /* FOOTER */
-
 footer{
   background:#5c4033;
   color:white;
@@ -155,10 +147,8 @@ footer{
   margin-top:20px;
 }
 
-/* 📱 MOBILE */
-
+/* MOBILE */
 @media (max-width:600px){
-
   header h1{
     font-size:22px;
   }
@@ -167,12 +157,14 @@ footer{
     font-size:14px;
   }
 
-  .card img{
-    height:250px;
+  section{
+    grid-template-columns:1fr; /* телефонда бір баған */
   }
 
+  .card img{
+    height:auto;
+  }
 }
-
 </style>
 </head>
 
@@ -203,24 +195,28 @@ footer{
   <div class="card">
     <a href="shygarma/eskertkish.html">
       <img src="images/eskertkish.jpeg" alt="Ескерткіш шығармасы">
+      <h2>Ескерткіш</h2>
     </a>
   </div>
 
   <div class="card">
     <a href="shygarma/ulpan.html">
       <img src="images/ulpan.jpeg" alt="Ұлпан шығармасы">
+      <h2>Ұлпан</h2>
     </a>
   </div>
 
   <div class="card">
     <a href="create/kobylandy-batyr.html">
       <img src="images/kobylandy-batyr.jpg" alt="Қобыланды батыр">
+      <h2>Қобыланды батыр</h2>
     </a>
   </div>
 
   <div class="card">
     <a href="create/zhurektesin.html">
       <img src="images/zhurektesin.jpeg" alt="Жүректесің">
+      <h2>Жүректесің</h2>
     </a>
   </div>
 </section>
@@ -230,12 +226,10 @@ footer{
 </footer>
 
 <script>
-
 function toggleMenu(){
   document.getElementById("menu").classList.toggle("show");
   document.getElementById("overlay").classList.toggle("show");
 }
-
 </script>
 
 </body>
