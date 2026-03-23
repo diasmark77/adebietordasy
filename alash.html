@@ -3,107 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Алаш зиялылары | Әдебиет ордасы</title>
+
+<meta name="description" content="Әдебиет ордасы – ақындар мен жазушылар, қаламгерлер шығармалары, қазақ әдебиеті және қаламгер ойыны қамтылған білім беру сайты.">
+<title>Әдебиет ордасы</title>
+
+<meta name="keywords" content="әдебиет ордасы, қазақ әдебиеті, ақындар, жазушылар, қаламгер, қаламгер ойыны, өлеңдер, шығармалар">
 
 <link rel="icon" href="images/logo.png" type="image/png">
 <link rel="stylesheet" href="css/menu.css">
-  
-<style>
-* {box-sizing: border-box;}
-body {margin:0;font-family:'Georgia', serif;background:#f4f1ea;color:#333;line-height:1.6;}
 
-header {
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/kazakh-dalasy.jpg') center/cover no-repeat;
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f1ea;
+  color:#333;
+}
+
+/* HEADER */
+header{
+  background:
+  linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+  url("images/kazakh-dalasy.jpg") center/cover no-repeat;
   color:white;
   text-align:center;
-  padding:60px 20px;
+  padding:60px 15px; /* alash.html сияқты */
 }
-header h1 {font-size:48px;margin-bottom:10px;letter-spacing:2px;}
-header p {font-size:20px;opacity:0.9;}
 
-/* NAV */
-nav {
+header h1{
+  font-size:32px;
+}
+
+header p{
+  font-size:18px;
+  margin-top:8px;
+}
+
+/* MENU */
+.menu-btn{
+  position:fixed;
+  top:15px;
+  left:15px;
+  font-size:22px;
   background:#8b5e3c;
-  display:none;
-  flex-direction:column;
+  color:white;
+  border:none;
+  padding:10px 14px;
+  border-radius:8px;
+  z-index:1000;
 }
 
-nav button {
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  z-index:900;
+}
+
+.overlay.show{
+  display:block;
+}
+
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  width:250px;
+  height:100%;
+  background:#8b5e3c;
+  display:flex;
+  flex-direction:column;
+  transform:translateX(-100%);
+  transition:0.3s;
+  z-index:1001;
+}
+
+nav.show{
+  transform:translateX(0);
+}
+
+nav button{
   background:none;
   border:none;
   color:white;
-  padding:14px;
-  cursor:pointer;
+  padding:15px;
+  text-align:left;
   font-size:16px;
-  font-weight:bold;
-  border-top:1px solid rgba(255,255,255,0.2);
+  border-bottom:1px solid rgba(255,255,255,0.2);
 }
 
-nav button:hover {background:#6e472c;}
-
-nav.show{
-display:flex;
+nav button:hover{
+  background:#6e472c;
 }
 
-section {max-width:900px;margin:auto;padding:20px;}
-
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap:20px;
-  justify-content: center;
+/* CONTENT */
+section{
+  padding:15px;
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(2, 1fr); /* екі баған */
+  gap:15px;
 }
 
-.card {
-  background: rgba(255,255,255,0.95);
-  padding:25px 20px;
-  border-radius:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.2);
-  width: 300px;
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: transform 0.3s;
+.card{
+  position:relative;
+  overflow:hidden;
+  border-radius:12px;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
 }
 
-.card:hover {transform: translateY(-5px); box-shadow:0 12px 25px rgba(0,0,0,0.25);}
-
-.card img {
-  width:120px;
-  height:auto;
-  border-radius:5px;
-  margin-bottom:15px;
+.card img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  transition:0.3s;
 }
 
-.card h2 {
-  color:#5c4033;
-  margin:10px 0 5px 0;
-  font-weight:bold;
+.card h2{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  padding:10px;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  text-align:center;
 }
 
-.card p {margin-bottom:10px;}
-
-.card a {
-  text-decoration:none;
-  color:#d4af37;
-  font-weight:bold;
+.card:hover img{
+  transform:scale(1.05);
 }
 
-.card a:hover {color:#b8962e;}
-
-footer {
+/* FOOTER */
+footer{
   background:#5c4033;
   color:white;
   text-align:center;
-  padding:20px;
-  margin-top:40px;
+  padding:15px;
+  margin-top:20px;
 }
 
-@media(max-width:600px){
-  header h1 {font-size:32px;}
-  header p {font-size:16px;}
-  .card {width:90%;padding:20px;}
+/* MOBILE */
+@media (max-width:600px){
+  header h1{
+    font-size:22px;
+  }
+
+  header p{
+    font-size:14px;
+  }
+
+  section{
+    grid-template-columns:1fr; /* телефонда бір баған */
+  }
+
+  .card img{
+    height:250px;
+  }
 }
 </style>
 </head>
@@ -111,8 +174,8 @@ footer {
 <body>
 
 <header>
-  <h1>Алаш зиялылары</h1>
-  <p>Алаш қозғалысының көрнекті тұлғалары</p>
+<h1>Әдебиет ордасы</h1>
+<p>Қазақ руханиятының әдеби ордасы</p>
 </header>
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
@@ -120,67 +183,57 @@ footer {
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-
 <button onclick="location.href='index.html'">🏠 Басты бет</button>
-
 <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-
 <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-
 <button onclick="location.href='poets.html'">✍️ Ақындар</button>
-
 <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-
 <button onclick="location.href='contact.html'">📩 Байланыс</button>
-
 <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-
 <button onclick="location.href='angimeler.html'">📖 Әңгімелер</button>
-
 <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-
 </nav>
 
-  <div class="cards-container">
+<section>
+  <div class="card">
+    <a href="shygarma/eskertkish.html">
+      <img src="images/eskertkish.jpeg" alt="Ескерткіш шығармасы">
+      <h2>Ескерткіш</h2>
+    </a>
+  </div>
 
-    <div class="card">
-      <img src="images/alikhan.jpg" alt="Әлихан Бөкейхан">
-      <h2>Әлихан Бөкейхан (1866-1937)</h2>
-      <p>Алаш қозғалысының көсемі, қоғам қайраткері, ұлт азаттығы жолындағы тарихи тұлға.</p>
-      <a href="alash/alikhan.html">Толығырақ →</a>
-    </div>
+  <div class="card">
+    <a href="shygarma/ulpan.html">
+      <img src="images/ulpan.jpeg" alt="Ұлпан шығармасы">
+      <h2>Ұлпан</h2>
+    </a>
+  </div>
 
-    <div class="card">
-      <img src="images/ahmet.jpg" alt="Ахмет Байтұрсынұлы">
-      <h2>Ахмет Байтұрсынұлы (1872-1937)</h2>
-      <p>Ұлт ұстазы, ағартушы, тіл білімінің негізін қалаушы.</p>
-      <a href="alash/akmet.html">Толығырақ →</a>
-    </div>
+  <div class="card">
+    <a href="create/kobylandy-batyr.html">
+      <img src="images/kobylandy-batyr.jpg" alt="Қобыланды батыр">
+      <h2>Қобыланды батыр</h2>
+    </a>
+  </div>
 
-    <div class="card">
-      <img src="images/mirzhaqip.jpg" alt="Міржақып Дулатұлы">
-      <h2>Міржақып Дулатұлы (1885-1935)</h2>
-      <p>Алаш қайраткері, ақын, жазушы, қоғам қайраткері.</p>
-      <a href="alash/mirzhaqip.html">Толығырақ →</a>
-    </div>
-
+  <div class="card">
+    <a href="create/zhurektesin.html">
+      <img src="images/zhurektesin.jpeg" alt="Жүректесің">
+      <h2>Жүректесің</h2>
+    </a>
   </div>
 </section>
 
 <footer>
-  © 2026 Әдебиет ордасы | Қазақ әдеби порталы
+© 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-
 <script>
-
 function toggleMenu(){
-document.getElementById("menu").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
 }
-
 </script>
-  
+
 </body>
 </html>
-
