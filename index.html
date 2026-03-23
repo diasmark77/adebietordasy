@@ -26,15 +26,15 @@ body{
   color:#333;
 }
 
-/* HEADER - үлкен сурет */
+/* HEADER */
+
 header{
   background:
   linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
   url("images/kazakh-dalasy.jpg") center/cover no-repeat;
   color:white;
   text-align:center;
-  padding:60px 15px;
-  min-height:400px;
+  padding:30px 15px;
 }
 
 header h1{
@@ -46,7 +46,8 @@ header p{
   margin-top:5px;
 }
 
-/* MENU BUTTON & NAVIGATION */
+/* MENU */
+
 .menu-btn{
   position:fixed;
   top:15px;
@@ -105,12 +106,13 @@ nav button:hover{
   background:#6e472c;
 }
 
-/* SECTION - шығармалар 2x2 */
+/* CONTENT */
+
 section{
   padding:15px;
   width:100%;
   display:grid;
-  grid-template-columns:repeat(2, 1fr);
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
   gap:15px;
 }
 
@@ -124,7 +126,7 @@ section{
 
 .card img{
   width:100%;
-  height:250px;
+  height:220px;
   object-fit:cover;
   transition:0.3s;
 }
@@ -144,6 +146,7 @@ section{
 }
 
 /* FOOTER */
+
 footer{
   background:#5c4033;
   color:white;
@@ -152,16 +155,22 @@ footer{
   margin-top:20px;
 }
 
-/* MOBILE */
-@media(max-width:600px){
-  header h1 {font-size:22px;}
-  header p {font-size:14px;}
-  section {
-    grid-template-columns:1fr; /* мобильде бір бағанға ауыстырады */
+/* 📱 MOBILE */
+
+@media (max-width:600px){
+
+  header h1{
+    font-size:22px;
   }
+
+  header p{
+    font-size:14px;
+  }
+
   .card img{
     height:250px;
   }
+
 }
 
 </style>
@@ -221,10 +230,12 @@ footer{
 </footer>
 
 <script>
+
 function toggleMenu(){
   document.getElementById("menu").classList.toggle("show");
   document.getElementById("overlay").classList.toggle("show");
 }
+
 </script>
 
 </body>
