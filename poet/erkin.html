@@ -3,9 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Еркін Жұмабекұлы</title>
+<title>Еркін Жұмабекұлы | Әдебиет ордасы</title>
 
-     <link rel="icon" href="../images/logo.png" type="image/png">
+<meta name="description" content="Әдебиет ордасы сайтында Еркін Жұмабекұлы – қазақ ақыны. 'Сенім', 'Өмір-күрес', 'Ұстаздарға' сияқты шығармалары арқылы танылған қаламгердің өмірі мен поэзиясы туралы толық мәлімет.">
+
+<meta name="keywords" content="Еркін Жұмабекұлы, Әдебиет ордасы, қазақ ақыны, Сенім, Өмір-күрес, Ұстаздарға, қазақ поэзиясы, Жұмабекұлы шығармалары, өлеңдер">
+
+<meta name="author" content="Әдебиет ордасы">
+
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="../css/menu.css">
+<link rel="icon" href="../images/logo.png" type="image/png">
   
 <style>
 body {font-family: Arial, sans-serif; margin:20px; background:#f4f1ea; color:#333;}
@@ -38,6 +47,23 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 <p>№119-мектеп лицейінің дене шынықтыру пәнінің ұстазы,ақын.</p>
 </header>
 
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+<button onclick="location.href='../index.html'">🏠 Басты бет</button>
+<button onclick="location.href='../alash.html'">📜 Алаш зиялылары</button>
+<button onclick="location.href='../writers.html'">📚 Қазақ жазушылары</button>
+<button onclick="location.href='../poets.html'">✍️ Ақындар</button>
+<button onclick="location.href='../poemGame.html'">🎮 Қаламгер ойыны</button>
+<button onclick="location.href='../contact.html'">📩 Байланыс</button>
+<button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
+<button onclick="location.href='../angimeler.html'">📖 Әңгімелер</button>
+<button onclick="location.href='../shygarms.html'">📑 Шығармалар</button>
+</nav>
+     
+<div id="menu-container"></div>
+     
 <div class="card">
 <h2>Өмірбаян</h2>
 <p>Семей қаласында туған.Қәзіргі таңда №119-мектеп лицейінің дене шынықтыру пәнінің ұстазы,ақын,бала күнінен Абай атамыздың кітаптарын көп оқып білімге деген үлкен ынтасын  танытты.</p>
@@ -87,6 +113,15 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 
 <a href="../poets.html" class="back-btn">← Басты бетке қайту</a>
 
+<script src="../js/menu.js"></script>
+     
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
+}
+</script>
+     
 <footer>
 © 2026 Әдебиет әлемі | Қазақ әдеби порталы
 </footer>
