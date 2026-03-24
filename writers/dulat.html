@@ -3,7 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Дулат Исабеков</title>
+    
+<title>Дулат Исабеков | Әдебиет ордасы</title>
+
+<meta name="description" content="Әдебиет ордасы сайтында Дулат Исабеков – қазақтың көрнекті жазушысы мен драматургының өмірі, шығармашылығы және еңбектері туралы толық мәлімет оқыңыз.">
+
+<meta name="keywords" content="Дулат Исабеков, Әдебиет ордасы, қазақ жазушысы, драматург, шығармалары, қазақ әдебиеті, Исабеков кітаптары, өмірбаяны">
+
+<meta name="author" content="Әдебиет ордасы">
+
+<meta name="robots" content="index, follow">
+
+<link rel="icon" href="images/logo.png" type="image/png">
+
+<link rel="stylesheet" href="/css/menu.css">
+    
 <style>
 body {font-family: Arial, sans-serif; margin:20px; background:#f4f1ea; color:#333;}
 header {text-align:center; padding:20px; background:#5c4033; color:white;}
@@ -32,6 +46,8 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 <p>Қазіргі қазақ әдебиетінің көрнекті жазушысы, драматург.</p>
 </header>
 
+<div id="menu-container"></div>
+    
 <div class="card">
 <h2>Өмірбаян</h2>
 <p>Дулат Исабеков қазақ прозасының дамуына үлес қосқан көрнекті жазушы және драматург.</p>
@@ -44,6 +60,21 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 </pre>
 </div>
 
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+<button onclick="location.href='../index.html'">🏠 Басты бет</button>
+<button onclick="location.href='../alash.html'">📜 Алаш зиялылары</button>
+<button onclick="location.href='../writers.html'">📚 Қазақ жазушылары</button>
+<button onclick="location.href='../poets.html'">✍️ Ақындар</button>
+<button onclick="location.href='../poemGame.html'">🎮 Қаламгер ойыны</button>
+<button onclick="location.href='../contact.html'">📩 Байланыс</button>
+<button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
+<button onclick="location.href='../angimeler.html'">📖 Әңгімелер</button>
+<button onclick="location.href='../shygarms.html'">📑 Шығармалар</button>
+</nav>
+    
 <main>
     <section id="works">
       <h2>Шығармалары</h2>
@@ -60,11 +91,15 @@ footer {text-align:center; padding:15px; background:#5c4033; color:white; margin
 © 2026 Әдебиет әлемі | Қазақ әдеби порталы
 </footer>
 
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
+}
+</script>
+
+<script src="/js/menu.js"></script>
+    
 </body>
 
 </html>
-
-
-
-
-
