@@ -1,0 +1,29 @@
+<h2>Авторлар</h2>
+<div id="list"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "YOUR_API_KEY",
+  projectId: "YOUR_PROJECT_ID"
+});
+
+const db = getFirestore(app);
+
+const list = document.getElementById("list");
+
+const snap = await getDocs(collection(db, "authors"));
+
+snap.forEach(doc => {
+  let a = doc.data();
+
+  list.innerHTML += `
+    <div style="border:1px solid black; margin:10px; padding:10px;">
+      <h3>${a.name}</h3>
+    </div>
+  `;
+});
+</script>
