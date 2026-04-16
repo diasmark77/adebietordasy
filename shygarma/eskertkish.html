@@ -6,7 +6,11 @@
 <title>"Ескерткіш" Дулат Исабеков</title>
 
      <link rel="icon" href="../images/logo.png" type="image/png">
-  
+
+     <link rel="stylesheet" href="../css/style.css">
+
+     <link rel="stylesheet" href="../css/menu.css">
+     
 <style>
 body { font-family: Arial, sans-serif; margin:20px; background:#f4f1ea; color:#333; }
 .card { background:white; padding:15px; margin:15px 0; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
@@ -28,6 +32,22 @@ pre { white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa;
 <body>
      
 <img src="../images/dulat.jpg" alt="Дулат Исабеков" class="author-img">
+
+<div id="menu-container"></div>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+<button onclick="location.href='../index.html'">🏠 Басты бет</button>
+<button onclick="location.href='../alash.html'">📜 Алаш зиялылары</button>
+<button onclick="location.href='../writers.html'">📚 Қазақ жазушылары</button>
+<button onclick="location.href='../poets.html'">✍️ Ақындар</button>
+<button onclick="location.href='../poemGame.html'">🎮 Қаламгер ойыны</button>
+<button onclick="location.href='../contact.html'">📩 Байланыс</button>
+<button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
+<button onclick="location.href='../shygarms.html'">📑 Шығармалар</button>
+</nav>
      
 <div class="card">
   <h2>Дулат Исабеков "Ескерткіш"</h2>
@@ -455,6 +475,25 @@ pre { white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa;
 <a href="/adebietordasy/writers/dulat.html" class="back-btn">← Автор бетіне</a>
 <a href="../shygarms.html" class="back-btn">← Шығармалар бетіне</a>
 
+  <div id="related-poems-container"></div>
+
+<script src="/js/menu.js"></script>
+
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
+}
+</script>
+  
+<script>
+fetch('../related-poems.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('related-poems-container').innerHTML = data;
+  });
+</script>
+     
 </body>
 </html>
 
