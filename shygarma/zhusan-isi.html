@@ -3,21 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Сайын Мұратбеков "Жусан иісі</title>
+<title>"Жусан иісі" Сайын Мұратбеков </title>
 
      <link rel="icon" href="../images/logo.png" type="image/png">
-  
+
+     <link rel="stylesheet" href="../css/style.css">
+
+     <link rel="stylesheet" href="../css/menu.css">
+     
 <style>
 body { font-family: Arial, sans-serif; margin:20px; background:#f4f1ea; color:#333; }
-.card { background:white; padding:15px; margin:15px 0; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
-.author-img{
-display:block;
-width:100%;
-max-width:500px;
-height:auto;
-border-radius:10px;
-margin:0 auto 15px auto;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
+.card {
+  background:white;
+  padding:15px;
+  margin:15px auto; /* ортасына әкеледі */
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  max-width:800px; /* енін шектейді */
 }
 h2 { color:#5c4033; }
 pre { white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa; padding:10px; border-radius:5px; border:1px solid #ccc; min-height:120px; }
@@ -27,12 +29,28 @@ pre { white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa;
 </head>
 <body>
      
-<img src="../images/sainm.jpg" alt="айын Мұратбеков " class="author-img">
-     
+<img src="../images/sainmjpg" alt="Сайын Мұратбеков " class="author-img">
+
+<div id="menu-container"></div>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+<button onclick="location.href='../index.html'">🏠 Басты бет</button>
+<button onclick="location.href='../alash.html'">📜 Алаш зиялылары</button>
+<button onclick="location.href='../writers.html'">📚 Қазақ жазушылары</button>
+<button onclick="location.href='../poets.html'">✍️ Ақындар</button>
+<button onclick="location.href='../poemGame.html'">🎮 Қаламгер ойыны</button>
+<button onclick="location.href='../contact.html'">📩 Байланыс</button>
+<button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
+<button onclick="location.href='../shygarms.html'">📑 Шығармалар</button>
+</nav>
+
 <div class="card">
   <h2> Сайын Мұратбеков "Жусан иісі"</h2>
   <pre>
- Сайын Мұратбеков "Жусан иісі"
+   Сайын Мұратбеков "Жусан иісі"
 1
 
 Алыста қалған балалық шағым... Ойымнан: жарғақ сары тоны қаудырлаған, тобығы тайған сол аяғын сүйрете жүгіретін, шілбиген арық ақсақ қара бала бір кетпейді. Көзімді сәл жұмсам-ақ: шуылдаған балалардың ең соңында сол аяғын жер сыпырғандай көлденең сүйретіп, ес қалмай далбақтай жүгіріп келе жатқан Аянды көргендей болам. Сондайда оның алқына шыққан әлсіз, жіңішке дауыспен: «Ей, тоқтаңдаршы, мен сендерге бүгін кешегіден де қызық ертегі айтамын»,- деген жалынышты үнін естимін.
@@ -146,13 +164,37 @@ pre { white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa;
 Бірте-бірте ол алысып-жұлысып ойнайтын ойындарға араласпай, шеттеп, бар қызыққа тек анадайдан сырттай қызыға қарап тұратын болды.
 
 Тобығы үшінші рет тайғанда, ол үйінде бұрынғыдан да ұзағырақ жатты.
-
-Бұл кезде қыс түсіп қар жауған. Біз болсақ сырғанақтың қызығына кіріскенбіз.
   </pre>
 </div>
 
 <a href="/adebietordasy/writers/sainm.html" class="back-btn">← Автор бетіне</a>
 <a href="../shygarms.html" class="back-btn">← Шығармалар бетіне</a>
 
+  <div id="related-poems-container"></div>
+
+<script src="/js/menu.js"></script>
+
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
+}
+</script>
+  
+<script>
+fetch('../related-poems.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('related-poems-container').innerHTML = data;
+  });
+</script>
+     
 </body>
 </html>
+
+
+
+
+
+
+
