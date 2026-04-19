@@ -21,8 +21,6 @@ header {
 header h1 {font-size:42px;margin-bottom:10px;}
 header p {font-size:18px;opacity:0.9;}
 
-
-/* NAVIGATION */
 nav {
   display:none;
   flex-direction:column;
@@ -41,7 +39,6 @@ nav button {
 nav button:hover {background:#6e472c;}
 nav.show{display:flex;}
 
-/* SEARCH BOX */
 .search-box {
   text-align:center;
   margin:20px 0;
@@ -55,22 +52,36 @@ nav.show{display:flex;}
   border:1px solid #ccc;
 }
 
-section {padding:0 15px 50px 15px; max-width:900px; margin:auto;}
+section {
+  padding:0 15px 50px 15px;
+  max-width:900px;
+  margin:auto;
+}
+
 .card {
   background:white;
   padding:20px;
   margin:15px 0;
   border-radius:10px;
   box-shadow:0 4px 10px rgba(0,0,0,0.1);
+
+  /* БІРКЕЛКІ ҚЫЛУ */
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  min-height:200px;
 }
+
 .card h2 {color:#5c4033; font-size:20px; margin-bottom:10px;}
+
 .card pre {
   white-space: pre-wrap;
   word-wrap: break-word;
   font-family: 'Georgia', serif;
   font-size:16px;
-  margin-bottom:10px;
+  margin:0; /* артық бос орындарды алып тастау */
 }
+
 .card a {
   display:inline-block;
   margin-top:10px;
@@ -114,23 +125,14 @@ footer {
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-
 <button onclick="location.href='index.html'">🏠 Басты бет</button>
-
 <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-
 <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-
 <button onclick="location.href='poets.html'">✍️ Ақындар</button>
-
 <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-
 <button onclick="location.href='contact.html'">📩 Байланыс</button>
-
 <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-
 <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-
 </nav>
 
 <div class="search-box">
@@ -138,65 +140,48 @@ footer {
 </div>
 
 <section>
+
   <div class="card">
     <h2>Ғабит Мүсірепов "Ұлпан"</h2>
-    <pre>
-      Есенейдің төрт қос жылқысы «Қаршығалы» шұбарына жақындап келіп, қапталдай төніп қалып еді. Тақырланып қалған...
-    </pre>
+    <pre>Есенейдің төрт қос жылқысы «Қаршығалы» шұбарына жақындап келіп, қапталдай төніп қалып еді. Тақырланып қалған...</pre>
     <a href="shygarma/ulpan.html">Толығырақ →</a>
   </div>
 
-<section>
   <div class="card">
-    <h2> Дулат Исабеков "Гауһартас"</h2>
-    <pre>
-     Ыбыштың мінез-құлқы, кескін-келбеті, аузындағысөзі мен күлкісіне шейін əкемнен аумай қалған, сойып қаптағандай дерсің.
-    </pre>
+    <h2>Дулат Исабеков "Гауһартас"</h2>
+    <pre>Ыбыштың мінез-құлқы, кескін-келбеті, аузындағысөзі мен күлкісіне шейін əкемнен аумай қалған, сойып қаптағандай дерсің.</pre>
     <a href="shygarma/gauhartas.html">Толығырақ →</a>
   </div>
 
-<section>
   <div class="card">
-    <h2>Көкенов Жеңісбек  "Орманда сыр бар түсінсең"</h2>
-    <pre>
-       Ағаштан қиып салынған еңселі үйімнен шыға сала, орманға тартып отырдым. Күндегі тірлігім осы...
-    </pre>
+    <h2>Көкенов Жеңісбек "Орманда сыр бар түсінсең"</h2>
+    <pre>Ағаштан қиып салынған еңселі үйімнен шыға сала, орманға тартып отырдым. Күндегі тірлігім осы...</pre>
     <a href="shygarma/ormanda.html">Толығырақ →</a>
   </div>
 
-<section>
   <div class="card">
     <h2>Сайын Мұратбеков "Жусан иісі"</h2>
-    <pre>
-      Алыста қалған балалық шағым... Ойымнан: жарғақ сары тоны қаудырлаған, тобығы тайған сол аяғын сүйрете жүгіретін, 
-    </pre>
+    <pre>Алыста қалған балалық шағым... Ойымнан: жарғақ сары тоны қаудырлаған, тобығы тайған сол аяғын сүйрете жүгіретін,</pre>
     <a href="shygarma/zhusan-isi.html">Толығырақ →</a>
   </div>
 
-<section>
   <div class="card">
-    <h2> Дулат Исабеков "Ескерткіш"</h2>
-    <pre>
-       Аудандық партия комитетінің секретары Жанайдаров ертеңгілік кабинетіне келіп, шешініп, шашын тарап...
-    </pre>
+    <h2>Дулат Исабеков "Ескерткіш"</h2>
+    <pre>Аудандық партия комитетінің секретары Жанайдаров ертеңгілік кабинетіне келіп, шешініп, шашын тарап...</pre>
     <a href="shygarma/eskertkish.html">Толығырақ →</a>
   </div>
 
-  </div>
 </section>
-
 
 <footer>
 © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
 <script>
-
 function toggleMenu(){
-document.getElementById("menu").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
 }
-
 </script>
 
 </body>
