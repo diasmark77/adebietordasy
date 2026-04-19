@@ -40,7 +40,6 @@ nav button {
 nav button:hover {background:#6e472c;}
 nav.show{display:flex;}
 
-/* Search Box */
 .search-box {
   text-align: center;
   margin: 20px 0;
@@ -54,13 +53,13 @@ nav.show{display:flex;}
   border: 1px solid #ccc;
 }
 
-/* Cards */
 .cards-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
 }
+
 .card {
   background:white;
   color:#333;
@@ -72,31 +71,26 @@ nav.show{display:flex;}
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
-.card img {
-  width:120px;
-  height:auto;
-  border-radius:5px;
-  margin-bottom:15px;
-}
-.card h2 {color:#5c4033;margin:10px 0 5px 0;}
-.card p {margin-bottom:10px;}
-.card a {text-decoration:none;color:#d4af37;font-weight:bold;}
-.card a:hover {color:#b8962e;}
-
-.card {
   cursor: pointer;
   transition: 0.3s;
 }
-  
 .card:hover {
   transform: translateY(-5px);
 }
-  
+
+.card img {
+  width:120px;
+  border-radius:5px;
+  margin-bottom:15px;
+}
 
 footer{
-background:#5c4033;color:white;text-align:center;
-padding:20px;margin-top:40px;
+  background:#5c4033;
+  color:white;
+  text-align:center;
+  padding:20px;
+  margin-top:40px;
+  width:100%;
 }
 
 @media(max-width:800px){
@@ -110,6 +104,7 @@ padding:20px;margin-top:40px;
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -122,93 +117,40 @@ padding:20px;margin-top:40px;
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-
 <button onclick="location.href='index.html'">🏠 Басты бет</button>
-
 <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-
 <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-
 <button onclick="location.href='poets.html'">✍️ Ақындар</button>
-
 <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-
 <button onclick="location.href='contact.html'">📩 Байланыс</button>
-
 <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-
 <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-
 </nav>
-  
+
 <div class="search-box">
   <input type="text" id="searchInput" placeholder="Іздеу авторлар мен шығармалар бойынша...">
 </div>
 
-  <section>
+<section>
   <div class="cards-container">
-<div class="card" onclick="location.href='poet/qudaybergenov.html'">
-  <img src="images/qudaybergenov.jpg" alt="Құдайбергенов Дархан">
-  <h2>Құдайбергенов Дархан (1979-жылы туған)</h2>
-  <p>№119-мектеп лицейінің қазақ тілі және қазақ әдебиеті пәндерінің ұстазы, айтыскер ақын.</p>
-  <a href="poet/qudaybergenov.html">Толығырақ →</a>
-</div>
 
-<div class="card" onclick="location.href='poet/marqabai.html'">
-  <img src="images/marqabai.jpg" alt="Марқабай Диас">
-  <h2>Марқабай Диас (2009-жылы туған)</h2>
-  <p>Жас ақын.</p>
-  <a href="poet/marqabai.html">Толығырақ →</a>
-</div>
+    <!-- КАРТОЧКАЛАР -->
+    <div class="card" onclick="location.href='poet/abay.html'">
+      <img src="images/abay.jpg">
+      <h2>Абай Құнанбайұлы</h2>
+      <p>Қазақтың ұлы ақыны</p>
+    </div>
 
-<div class="card" onclick="location.href='poet/abay.html'">
-  <img src="images/abay.jpg" alt="Абай Құнанбайұлы">
-  <h2>Абай Құнанбайұлы (1845-1904)</h2>
-  <p>Қазақтың ұлы ақыны, ойшыл, ағартушы.</p>
-  <a href="poet/abay.html">Толығырақ →</a>
-</div>
+    <div class="card" onclick="location.href='poet/mukagali.html'">
+      <img src="images/mukagali.jpg">
+      <h2>Мұқағали Мақатаев</h2>
+      <p>Лирик ақын</p>
+    </div>
 
-<div class="card" onclick="location.href='poet/magzhan.html'">
-  <img src="images/magzhan.jpeg" alt="Мағжан Жұмабаев">
-  <h2>Мағжан Жұмабаев (1893-1938)</h2>
-  <p>Алаш қозғалысының қайраткері, ақын.</p>
-  <a href="poet/magzhan.html">Толығырақ →</a>
-</div>
+  </div>
+</section>
 
-<div class="card" onclick="location.href='poet/erkin.html'">
-  <img src="images/erkin.jpeg" alt="Салықбаев Еркін">
-  <h2>Еркін Жұмабекұлы (1976-жылы туған)</h2>
-  <p>№119-мектеп лицейінің дене шынықтыру пәнінің ұстазы, ақын.</p>
-  <a href="poet/erkin.html">Толығырақ →</a>
-</div>
-
-<div class="card" onclick="location.href='poet/bakdaulet.html'">
-  <img src="images/bakdaulet.jpg" alt="Бақдәулет Арыстан">
-  <h2>Бақдәулет Арыстан (1992-жылы туған)</h2>
-  <p>Ақын, көптеген әндер мәтінінің авторы.</p>
-  <a href="poet/bakdaulet.html">Толығырақ →</a>
-</div>
-
-<div class="card" onclick="location.href='poet/mukagali.html'">
-  <img src="images/mukagali.jpg" alt="Мұқағали Мақатаев">
-  <h2>Мұқағали Мақатаев (1931-1976)</h2>
-  <p>Лирик ақын, қазақ поэзиясының биік шыңы.</p>
-  <a href="poet/mukagali.html">Толығырақ →</a>
-</div>
-
-<div class="card" onclick="location.href='writers/zhenisbek.html'">
-  <img src="images/zhenisbek.jpg" alt="Көкенов Жеңісбек">
-  <h2>Көкенов Жеңісбек (1983-жылы туған)</h2>
-  <p>Ақын, жазушы, тіл жанашыры.</p>
-  <a href="writers/zhenisbek.html">Толығырақ →</a>
-</div>
-
-<div class="card" onclick="location.href='poet/zhambyl.html'">
-  <img src="images/zhambyl.jpg" alt="Жамбыл Жабаев">
-  <h2>Жамбыл Жабаев (1846-1945)</h2>
-  <p>Халық ақыны, жыр алыбы.</p>
-  <a href="poet/zhambyl.html">Толығырақ →</a>
-</div>
+<!-- МІНЕ ДҰРЫС ОРЫН -->
 <footer>
   © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
@@ -216,13 +158,11 @@ padding:20px;margin-top:40px;
 <script src="search.js"></script>
 
 <script>
-
 function toggleMenu(){
-document.getElementById("menu").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
 }
-
 </script>
-  
+
 </body>
-</html>   
+</html>
