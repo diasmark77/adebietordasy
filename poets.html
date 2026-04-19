@@ -40,6 +40,7 @@ nav button {
 nav button:hover {background:#6e472c;}
 nav.show{display:flex;}
 
+/* Search Box */
 .search-box {
   text-align: center;
   margin: 20px 0;
@@ -53,13 +54,13 @@ nav.show{display:flex;}
   border: 1px solid #ccc;
 }
 
+/* Cards */
 .cards-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
 }
-
 .card {
   background:white;
   color:#333;
@@ -71,27 +72,19 @@ nav.show{display:flex;}
   flex-direction: column;
   align-items: center;
   text-align: center;
-  cursor: pointer;
-  transition: 0.3s;
 }
-.card:hover {
-  transform: translateY(-5px);
-}
-
 .card img {
   width:120px;
+  height:auto;
   border-radius:5px;
   margin-bottom:15px;
 }
+.card h2 {color:#5c4033;margin:10px 0 5px 0;}
+.card p {margin-bottom:10px;}
+.card a {text-decoration:none;color:#d4af37;font-weight:bold;}
+.card a:hover {color:#b8962e;}
 
-footer{
-  background:#5c4033;
-  color:white;
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
-  width:100%;
-}
+footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
 
 @media(max-width:800px){
   .menu-btn{display:block;}
@@ -104,7 +97,6 @@ footer{
 }
 </style>
 </head>
-
 <body>
 
 <header>
@@ -117,19 +109,31 @@ footer{
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-<button onclick="location.href='poets.html'">✍️ Ақындар</button>
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-</nav>
 
+<button onclick="location.href='index.html'">🏠 Басты бет</button>
+
+<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+
+<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+
+<button onclick="location.href='poets.html'">✍️ Ақындар</button>
+
+<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+
+<button onclick="location.href='contact.html'">📩 Байланыс</button>
+
+<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+
+<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+
+</nav>
+  
 <div class="search-box">
   <input type="text" id="searchInput" placeholder="Іздеу авторлар мен шығармалар бойынша...">
 </div>
+
+  <section>
+  <div class="cards-container">
 
 <div class="card" onclick="location.href='poet/qudaybergenov.html'">
   <img src="images/qudaybergenov.jpg" alt="Құдайбергенов Дархан">
@@ -194,6 +198,10 @@ footer{
   <a href="poet/zhambyl.html">Толығырақ →</a>
 </div>
 
+  </div>
+</section>
+
+  
 <footer>
   © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
@@ -201,11 +209,13 @@ footer{
 <script src="search.js"></script>
 
 <script>
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("show");
-  document.getElementById("overlay").classList.toggle("show");
-}
-</script>
 
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+</script>
+  
 </body>
-</html>
+</html>   осы беттегі карточкаларғасілтеме қос
