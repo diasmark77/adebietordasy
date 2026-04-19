@@ -42,16 +42,38 @@ nav button:hover {background:#6e472c;}
 nav.show{display:flex;}
 
 /* CONTENT */
-section {padding:20px;max-width:600px;margin:30px auto;}
-.card {background:white;padding:20px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+section {
+  padding:20px;
+  max-width:600px;
+  margin:30px auto;
+
+  /* МІНЕ НЕГІЗГІ ФИКС */
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.card {
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
 h2 {color:#5c4033;}
 p {margin:8px 0;}
+
 a {color:#d4af37; text-decoration:none;}
 a:hover {color:#b8962e;}
 
 /* FOOTER */
-footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
-
+footer {
+  background:#5c4033;
+  color:white;
+  text-align:center;
+  padding:15px;
+  margin-top:30px;
+}
 </style>
 </head>
 <body>
@@ -66,28 +88,19 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-
 <button onclick="location.href='index.html'">🏠 Басты бет</button>
-
 <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-
 <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-
 <button onclick="location.href='poets.html'">✍️ Ақындар</button>
-
 <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-
 <button onclick="location.href='contact.html'">📩 Байланыс</button>
-
 <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-
 <button onclick="location.href='angimeler.html'">📖 Әңгімелер</button>
-
 <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-
 </nav>
 
 <section>
+
   <div class="card">
     <h2>Редакциямен байланыс</h2>
     <p>📧 Email: <a href="mailto:adebiet13@gmail.com">adebiet13@gmail.com</a></p>
@@ -96,9 +109,9 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
   </div>
 
   <div class="card">
-<h2>Құрметті жас талап!</h2>
-<p>Егерде сіз өзіңізді, өзіңіздің шығармаларыңызды біздің парақшамызда көргіңіз келсе, бізбен байланысуыңызды сұраймыз. Құрметпен "Әдебиет ордасы" сайтының редакторы!</p>
-</div>
+    <h2>Құрметті жас талап!</h2>
+    <p>Егерде сіз өзіңізді, өзіңіздің шығармаларыңызды біздің парақшамызда көргіңіз келсе, бізбен байланысуыңызды сұраймыз. Құрметпен "Әдебиет ордасы" сайтының редакторы!</p>
+  </div>
 
 </section>
 
@@ -107,14 +120,11 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 </footer>
 
 <script>
-
 function toggleMenu(){
-document.getElementById("menu").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
 }
-
 </script>
   
 </body>
 </html>
-
