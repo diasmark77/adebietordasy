@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>"Рух пен Тіл" Мұхтар Шаханов |Әдебиет ордасы </title>
+
+<link rel="icon" href="../images/logo.png" type="image/png">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<link rel="stylesheet" href="../css/menu.css">
+<style>
+
+body{
+font-family: Arial, sans-serif;
+margin:20px;
+background:#f4f1ea;
+color:#333;
+text-align:center;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:20px auto;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+max-width:700px;
+}
+
+.author-img{
+display:block;
+width:100%;
+max-width:450px;
+height:auto;
+border-radius:10px;
+margin:0 auto 20px auto;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+h2{
+color:#5c4033;
+}
+
+pre{
+white-space:pre-wrap;
+font-family:Arial, sans-serif;
+background:#fafafa;
+padding:15px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:16px;
+line-height:1.6;
+}
+
+.back-btn{
+display:inline-block;
+margin-top:20px;
+padding:10px 18px;
+background:#8b5e3c;
+color:white;
+text-decoration:none;
+border-radius:6px;
+font-weight:bold;
+}
+
+.back-btn:hover{
+background:#6e472c;
+}
+
+</style>
+</head>
+
+<body>
+
+<img src="../images/muhtar.jpg" alt="Мұхтар Шаханов" class="author-img">
+
+<div id="menu-container"></div>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+<button onclick="location.href='../index.html'">🏠 Басты бет</button>
+<button onclick="location.href='../alash.html'">📜 Алаш зиялылары</button>
+<button onclick="location.href='../writers.html'">📚 Қазақ жазушылары</button>
+<button onclick="location.href='../poets.html'">✍️ Ақындар</button>
+<button onclick="location.href='../poemGame.html'">🎮 Қаламгер ойыны</button>
+<button onclick="location.href='../contact.html'">📩 Байланыс</button>
+<button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
+<button onclick="location.href='../shygarms.html'">📑 Шығармалар</button>
+</nav>
+  
+<div class="card">
+
+<h2>"Рух пен Тіл" Мұхтар Шаханов</h2>
+
+<pre>
+Табиғаттың өзгермейтін заңына бұр бетіңді,
+Қай кезде де туған тілің туған анаң секілді.
+Бабалардың арманы бар мына қызыл гүлдерде,
+Олар елін, тілін қорғап жанын қиған бұл жерде.
+
+Қайырмасы:
+Ұлтсыздану заманында,
+Тілің нарық табанында,
+Көнбістік бар қадамыңда,
+Рухыңды басып кетті қарын.
+
+Тіліңді жоғалтсаң,
+Діліңді жоғалтсаң 2 рет
+Жоғалтасың ² бәрін.
+
+Адам қанша болғанымен дарынды әрі табанды,
+Туған жерін сүймей тұрып сүймек емес ғаламды.
+Өзге ананың мазмұнына, мерейіне тор құрар,
+Алдыменен өз анасын сүйе алмаған сорлылар.
+
+Нарық-ғасыр бәрін сатып жібере ме алтынға,
+Кім қалады сол алтынға сатылмайтын қалпында?
+Жалғандық бар ұлтсыздардың беделі мен даңқында,
+Ана тілін сыйламаған сыйламайды халқын да.
+</pre>
+
+</div>
+
+<a href="/adebietordasy/poet/muhtar-shahanov.html" class="back-btn">← Автор бетіне</a>
+<a href="../poems.html" class="back-btn">← Өлеңдер бетіне қайту</a>
+
+  <div id="related-poems-container"></div>
+
+<script src="/js/menu.js"></script>
+
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
+}
+</script>
+  
+<script>
+fetch('../related-poems.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('related-poems-container').innerHTML = data;
+  });
+</script>
+
+</body>
+</html>
