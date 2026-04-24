@@ -1,6 +1,6 @@
 /* =============================================
-   cards.css — Барлық тізім беттеріне арналған
-   writers.html, poets.html, alash.html, т.б.
+   cards.css — alash.html бетіндегідей карточка
+   writers.html, poets.html, т.б. беттерге арналған
    ============================================= */
 
 .cards-container {
@@ -8,7 +8,7 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  padding: 30px 20px;
+  padding: 20px;
 }
 
 .card {
@@ -21,75 +21,45 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: 0.3s;
   cursor: pointer;
 }
 
-/* Hover анимациясы — жоғары көтерілу */
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
 }
 
-/* Карточкадағы сурет */
 .card img {
   width: 120px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
+  height: auto;
+  border-radius: 5px;
   margin-bottom: 15px;
-  transition: transform 0.3s ease;
 }
 
-/* Hover кезінде сурет сәл үлкейеді */
-.card:hover img {
-  transform: scale(1.05);
-}
-
-/* Карточка тақырыбы */
 .card h2 {
   color: #5c4033;
   margin: 10px 0 5px;
   font-weight: bold;
-  font-size: 18px;
 }
 
-/* Карточка мәтіні */
 .card p {
-  margin-bottom: 15px;
-  color: #555;
-  font-size: 14px;
-  line-height: 1.6;
+  margin-bottom: 10px;
 }
 
-/* "Толығырақ →" сілтемесі */
 .card a {
   text-decoration: none;
   color: #d4af37;
   font-weight: bold;
-  font-size: 15px;
-  transition: color 0.3s ease, transform 0.3s ease;
-  display: inline-block;
 }
 
 .card a:hover {
   color: #b8962e;
-  transform: translateX(4px);
 }
 
-/* Мобильді экран үшін */
 @media (max-width: 600px) {
   .card {
     width: 90%;
     padding: 20px;
-  }
-
-  .card img {
-    width: 100px;
-    height: 120px;
-  }
-
-  .card h2 {
-    font-size: 16px;
   }
 }
