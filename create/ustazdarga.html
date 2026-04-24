@@ -3,15 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ұстаздарға</title>
+<title>"Ұстаздарға" Еркін Жұмабекұлы |Әдебиет ордасы </title>
 
      <link rel="icon" href="../images/logo.png" type="image/png">
 
      <link rel="stylesheet" href="../css/style.css">
+
+    <link rel="stylesheet" href="../css/menu.css">
      
 <style>
 body { font-family: Arial, sans-serif; margin:20px; background:#f4f1ea; color:#333; }
-.card { background:white; padding:15px; margin:15px 0; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+.card { background:white; padding:15px; margin:15px auto; max-width:700px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
 .author-img{
 display:block;
 width:100%;
@@ -58,6 +60,23 @@ pre { white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa;
 </head>
 <body>
 <img src="../images/erkin.jpeg" alt="Еркін Жұмабекұлы" class="author-img">
+
+<div id="menu-container"></div>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+<button onclick="location.href='../index.html'">🏠 Басты бет</button>
+<button onclick="location.href='../alash.html'">📜 Алаш зиялылары</button>
+<button onclick="location.href='../writers.html'">📚 Қазақ жазушылары</button>
+<button onclick="location.href='../poets.html'">✍️ Ақындар</button>
+<button onclick="location.href='../poemGame.html'">🎮 Қаламгер ойыны</button>
+<button onclick="location.href='../contact.html'">📩 Байланыс</button>
+<button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
+<button onclick="location.href='../shygarms.html'">📑 Шығармалар</button>
+</nav>
+     
 <div class="card">
   <h2>Еркін Жұмабекұлы "Ұстаздарға"</h2>
   <pre>
@@ -86,6 +105,15 @@ pre { white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa;
 
 <div id="related-poems-container"></div>
 
+<script src="/js/menu.js"></script>
+
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
+}
+</script>
+     
 <script>
 fetch('../related-poems.html')
   .then(response => response.text())
