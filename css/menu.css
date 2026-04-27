@@ -5,7 +5,7 @@
   position:fixed;
   top:15px;
   left:15px;
-  padding:10px 18px;   /* Ұзын батырма */
+  padding:10px 18px;
   background:#8b5e3c;
   color:white;
   border:none;
@@ -19,12 +19,9 @@
   align-items:center;
   justify-content:center;
 }
-
 .menu-btn:hover{
   transform:scale(1.05);
 }
-
-/* Кішкентай квадрат батырмалар үшін */
 .menu-btn.square{
   width:42px;
   height:42px;
@@ -35,7 +32,6 @@
   align-items:center;
   justify-content:center;
 }
-
 /* ============================= */
 /* OVERLAY */
 /* ============================= */
@@ -49,11 +45,9 @@
   display:none;
   z-index:999;
 }
-
 .overlay.show{
   display:block;
 }
-
 /* ============================= */
 /* SIDEBAR NAVIGATION */
 /* ============================= */
@@ -70,11 +64,9 @@ nav{
   z-index:1000;
   padding-top:60px;
 }
-
 nav.show{
   left:0;
 }
-
 nav button{
   background:none;
   border:none;
@@ -87,23 +79,20 @@ nav button{
   border-bottom:1px solid rgba(255,255,255,0.2);
   transition:background 0.2s;
 }
-
 nav button:hover{
   background:#6e472c;
 }
-
 /* ============================= */
 /* HEADER ASTYNA JUAN SЫZЫQ */
 /* ============================= */
 header{
   position:relative;
 }
-
 header::after{
   content:"";
   display:block;
-  height:8px;             /* Жуан сызық */
-  background:#8b5e3c;     /* меню түсімен бірдей */
+  height:8px;
+  background:#8b5e3c;
   width:100%;
   position:absolute;
   bottom:0;
