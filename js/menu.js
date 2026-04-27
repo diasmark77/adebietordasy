@@ -10,12 +10,15 @@ function toggleMenu(){
 }
 
 // Scroll батырмаларын меню батырмасының астына қос
-document.addEventListener("DOMContentLoaded", function() {
-  const scrollDiv = document.createElement('div');
-  scrollDiv.className = 'scroll-buttons';
-  scrollDiv.innerHTML = `
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="scroll-btn">⬆</button>
-    <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="scroll-btn">⬇</button>
-  `;
-  document.querySelector('.menu-btn').after(scrollDiv);
-});
+setTimeout(function() {
+  const menuBtn = document.querySelector('.menu-btn');
+  if (menuBtn) {
+    const scrollDiv = document.createElement('div');
+    scrollDiv.className = 'scroll-buttons';
+    scrollDiv.innerHTML = `
+      <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="scroll-btn">⬆</button>
+      <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="scroll-btn">⬇</button>
+    `;
+    menuBtn.after(scrollDiv);
+  }
+}, 100);
