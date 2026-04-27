@@ -96,29 +96,3 @@ pre {
   box-shadow:0 6px 12px rgba(0,0,0,0.3);
   background:#6e472c;
 }
-
-.scroll-buttons {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-  justify-content: center;
-}
-
-.scroll-btn {
-  background: #8b5e3c;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  width: auto; 
-  transition: all 0.3s ease;
-}
-
-.scroll-btn:hover {
-  background: #6e472c;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-}
