@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithPopup, signOut, GoogleAuthProvider, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, deleteDoc, doc } 
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, deleteDoc, doc }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Firebase конфигурация
@@ -38,7 +38,6 @@ async function logout() {
 function sendToTelegram(userName, text) {
     const token = '8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0'; 
     const chatId = '5616776281'; 
-    
     const pageTitle = document.title; 
     const pageUrl = window.location.href; 
 
@@ -46,9 +45,20 @@ function sendToTelegram(userName, text) {
 
     const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
 
-    fetch(url)
-        .then(() => console.log("Telegram-ға кетті!"))
-        .catch(err => console.error("Бот қатесі:", err));
+    fetch(url).catch(err => console.error("Бот қатесі:", err));
+}
+
+// ── Пікірді өшіру функциясы ──────────────────
+async function deleteComment(commentId) {
+  if (confirm("Пікірді өшіргіңіз келе ме?")) {
+    try {
+      await deleteDoc(doc(db, "comments", pageId, "messages", commentId));
+      loadComments(); // Тізімді жаңарту
+    } catch (e) {
+      console.error("Өшіру қатесі:", e);
+      alert("Өшіру мүмкін болмады.");
+    }
+  }
 }
 
 // ── Пікір жіберу ─────────────────────────────
@@ -69,13 +79,11 @@ async function submitComment() {
       text,
       userName: user.displayName,
       userPhoto: user.photoURL,
-      userId: user.uid,
+      userId: user.uid, // Авторды анықтау үшін керек
       createdAt: serverTimestamp()
     });
     
-    // ТЕЛЕГРАМҒА ЖІБЕРУ
     sendToTelegram(user.displayName, text);
-    
     input.value = "";
     await loadComments();
   } catch (e) {
@@ -98,69 +106,64 @@ async function loadComments() {
       orderBy("createdAt", "desc")
     );
     const snapshot = await getDocs(q);
+    container.innerHTML = snapshot.empty ? "<p class='no-comments'>Әлі пікір жоқ.</p>" : "";
 
-    if (snapshot.empty) {
-      container.innerHTML = "<p class='no-comments'>Әлі пікір жоқ. Бірінші болыңыз!</p>";
-      return;
-    }
-
-    container.innerHTML = "";
-    snapshot.forEach(doc => {
-      const d = doc.data();
+    snapshot.forEach(docSnap => {
+      const d = docSnap.data();
       const date = d.createdAt?.toDate?.()?.toLocaleDateString("kk-KZ") ?? "";
-      container.innerHTML += `
+      const isOwner = auth.currentUser && d.userId === auth.currentUser.uid;
+
+      const commentHtml = `
         <div class="comment-card">
-          <img class="comment-avatar" src="${d.userPhoto}" alt="${d.userName}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(d.userName)}&background=8B4513&color=fff'">
+          <img class="comment-avatar" src="${d.userPhoto}" alt="${d.userName}">
           <div class="comment-body">
             <div class="comment-header">
               <span class="comment-name">${d.userName}</span>
               <span class="comment-date">${date}</span>
+              ${isOwner ? `<button class="delete-btn" data-id="${docSnap.id}">Өшіру</button>` : ""}
             </div>
             <p class="comment-text">${d.text}</p>
           </div>
         </div>`;
+      container.innerHTML += commentHtml;
     });
+
+    // Өшіру батырмаларына оқиға қосу
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+      btn.onclick = () => deleteComment(btn.getAttribute("data-id"));
+    });
+
   } catch (e) {
-    container.innerHTML = "<p class='error-text'>Қате шықты, қайта жүктеңіз.</p>";
     console.error(e);
   }
 }
 
-// ── Auth күйін бақылау ────────────────────────
+// ── Auth күйін бақылау және батырмаларды байлау ─
 onAuthStateChanged(auth, user => {
-  const loginBtn  = document.getElementById("login-btn");
-  const logoutBtn = document.getElementById("logout-btn");
-  const userInfo  = document.getElementById("user-info");
-  const form      = document.getElementById("comment-form");
-  const loginNote = document.getElementById("login-note");
+  const elements = ["login-btn", "logout-btn", "user-info", "comment-form", "login-note"];
+  const ui = {};
+  elements.forEach(id => ui[id] = document.getElementById(id));
 
   if (user) {
-    if(loginBtn) loginBtn.style.display  = "none";
-    if(logoutBtn) logoutBtn.style.display = "inline-flex";
-    if(userInfo) userInfo.style.display  = "flex";
-    if(form) form.style.display      = "block";
-    if(loginNote) loginNote.style.display = "none";
-    const nameEl = document.getElementById("user-name");
-    const photoEl = document.getElementById("user-photo");
-    if(nameEl) nameEl.textContent = user.displayName;
-    if(photoEl) photoEl.src = user.photoURL;
+    if(ui["login-btn"]) ui["login-btn"].style.display = "none";
+    if(ui["logout-btn"]) ui["logout-btn"].style.display = "inline-flex";
+    if(ui["user-info"]) ui["user-info"].style.display = "flex";
+    if(ui["comment-form"]) ui["comment-form"].style.display = "block";
+    if(ui["login-note"]) ui["login-note"].style.display = "none";
+    document.getElementById("user-name").textContent = user.displayName;
+    document.getElementById("user-photo").src = user.photoURL;
   } else {
-    if(loginBtn) loginBtn.style.display  = "inline-flex";
-    if(logoutBtn) logoutBtn.style.display = "none";
-    if(userInfo) userInfo.style.display  = "none";
-    if(form) form.style.display      = "none";
-    if(loginNote) loginNote.style.display = "block";
+    if(ui["login-btn"]) ui["login-btn"].style.display = "inline-flex";
+    if(ui["logout-btn"]) ui["logout-btn"].style.display = "none";
+    if(ui["user-info"]) ui["user-info"].style.display = "none";
+    if(ui["comment-form"]) ui["comment-form"].style.display = "none";
+    if(ui["login-note"]) ui["login-note"].style.display = "block";
   }
+  loadComments(); // Пайдаланушы өзгергенде өшіру батырмасы көрінуі үшін
 });
 
-// ── Батырмаларды байлау ───────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  const lBtn = document.getElementById("login-btn");
-  const loBtn = document.getElementById("logout-btn");
-  const sBtn = document.getElementById("submit-btn");
-  
-  if(lBtn) lBtn.addEventListener("click", login);
-  if(loBtn) loBtn.addEventListener("click", logout);
-  if(sBtn) sBtn.addEventListener("click", submitComment);
-  loadComments();
+  document.getElementById("login-btn")?.addEventListener("click", login);
+  document.getElementById("logout-btn")?.addEventListener("click", logout);
+  document.getElementById("submit-btn")?.addEventListener("click", submitComment);
 });
