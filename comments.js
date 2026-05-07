@@ -49,30 +49,31 @@ async function deleteComment(commentId) {
       const user = auth.currentUser;
       const pageTitle = document.title;
       
-      // 1. Өшірмес бұрын пікірдің мәтінін базадан тауып аламыз
-      const commentRef = doc(db, "comments", pageId, "messages", commentId);
-      const commentSnap = await getDocs(query(collection(db, "comments", pageId, "messages")));
+      // 1. Алдымен экрандағы пікірлер тізімінен өшірілетін мәтінді тауып аламыз
+      // (Бұл базаға қайта сұраныс жібермей-ақ тез жұмыс істеу үшін керек)
+      const commentCards = document.querySelectorAll('.comment-card');
+      let deletedText = "Мәтін анықталмады";
       
-      // Нақты осы ID-ге тиісті мәтінді анықтаймыз
-      let deletedText = "Мәтін табылмады";
-      snapshot.forEach(docSnap => {
-        if(docSnap.id === commentId) {
-          deletedText = docSnap.data().text;
+      commentCards.forEach(card => {
+        const btn = card.querySelector(`.delete-btn[data-id="${commentId}"]`);
+        if (btn) {
+          deletedText = card.querySelector('.comment-text').textContent;
         }
       });
 
-      // 2. Енді пікірді базадан өшіреміз
-      await deleteDoc(commentRef);
+      // 2. Базадан (Firebase) өшіру
+      await deleteDoc(doc(db, "comments", pageId, "messages", commentId));
       
-      // 3. Телеграмға толық хабарлама жібереміз (мәтінімен бірге)
+      // 3. Телеграмға хабарлама жіберу
       const deletionMsg = `🗑️ *Пікір өшірілді!* \n\n👤 *Кім:* ${user.displayName} \n💬 *Өшірілген мәтін:* _${deletedText}_ \n📖 *Бет:* ${pageTitle}`;
-      
       sendToTelegram(deletionMsg);
       
+      // 4. Тізімді жаңарту
       await loadComments();
+      
     } catch (e) {
       console.error("Өшіру қатесі:", e);
-      alert("Өшіру мүмкін болмады.");
+      alert("Өшіру мүмкін болмады. Қате: " + e.message);
     }
   }
 }
