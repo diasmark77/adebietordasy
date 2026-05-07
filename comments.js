@@ -19,7 +19,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-// Беттің идентификаторы (URL бойынша)
 const pageId = window.location.pathname.replace(/\//g, "_").replace(".html", "");
 
 // ── Кіру / Шығу ──────────────────────────────
@@ -33,6 +32,23 @@ async function login() {
 
 async function logout() {
   await signOut(auth);
+}
+
+// ── Telegram хабарлама функциясы ──────────────
+function sendToTelegram(userName, text) {
+    const token = '8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0'; 
+    const chatId = '5616776281'; 
+    
+    const pageTitle = document.title; 
+    const pageUrl = window.location.href; 
+
+    const message = `🔔 *Жаңа пікір!* \n\n👤 *Кім:* ${userName} \n💬 *Пікір:* ${text} \n📖 *Бет:* ${pageTitle} \n🔗 [Сілтемеге өту](${pageUrl})`;
+
+    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+
+    fetch(url)
+        .then(() => console.log("Telegram-ға кетті!"))
+        .catch(err => console.error("Бот қатесі:", err));
 }
 
 // ── Пікір жіберу ─────────────────────────────
@@ -56,24 +72,24 @@ async function submitComment() {
       userId: user.uid,
       createdAt: serverTimestamp()
     });
+    
+    // ТЕЛЕГРАМҒА ЖІБЕРУ
+    sendToTelegram(user.displayName, text);
+    
     input.value = "";
     await loadComments();
-// ЕСКІ ФУНКЦИЯНЫ ӨШІРІП, ОСЫНЫ ҚОЙ:
-function sendToTelegram(userName, text) {
- } catch (e) {
-
+  } catch (e) {
     console.error("Жіберу қатесі:", e);
-
   }
 
   btn.disabled = false;
-
   btn.textContent = "Жіберу";
-
 }
+
 // ── Пікірлерді жүктеу ────────────────────────
 async function loadComments() {
   const container = document.getElementById("comments-list");
+  if(!container) return;
   container.innerHTML = "<p class='loading-text'>Жүктелуде...</p>";
 
   try {
@@ -119,43 +135,32 @@ onAuthStateChanged(auth, user => {
   const loginNote = document.getElementById("login-note");
 
   if (user) {
-    loginBtn.style.display  = "none";
-    logoutBtn.style.display = "inline-flex";
-    userInfo.style.display  = "flex";
-    form.style.display      = "block";
-    loginNote.style.display = "none";
-    document.getElementById("user-name").textContent  = user.displayName;
-    document.getElementById("user-photo").src         = user.photoURL;
+    if(loginBtn) loginBtn.style.display  = "none";
+    if(logoutBtn) logoutBtn.style.display = "inline-flex";
+    if(userInfo) userInfo.style.display  = "flex";
+    if(form) form.style.display      = "block";
+    if(loginNote) loginNote.style.display = "none";
+    const nameEl = document.getElementById("user-name");
+    const photoEl = document.getElementById("user-photo");
+    if(nameEl) nameEl.textContent = user.displayName;
+    if(photoEl) photoEl.src = user.photoURL;
   } else {
-    loginBtn.style.display  = "inline-flex";
-    logoutBtn.style.display = "none";
-    userInfo.style.display  = "none";
-    form.style.display      = "none";
-    loginNote.style.display = "block";
+    if(loginBtn) loginBtn.style.display  = "inline-flex";
+    if(logoutBtn) logoutBtn.style.display = "none";
+    if(userInfo) userInfo.style.display  = "none";
+    if(form) form.style.display      = "none";
+    if(loginNote) loginNote.style.display = "block";
   }
 });
 
 // ── Батырмаларды байлау ───────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("login-btn").addEventListener("click", login);
-  document.getElementById("logout-btn").addEventListener("click", logout);
-  document.getElementById("submit-btn").addEventListener("click", submitComment);
+  const lBtn = document.getElementById("login-btn");
+  const loBtn = document.getElementById("logout-btn");
+  const sBtn = document.getElementById("submit-btn");
+  
+  if(lBtn) lBtn.addEventListener("click", login);
+  if(loBtn) loBtn.addEventListener("click", logout);
+  if(sBtn) sBtn.addEventListener("click", submitComment);
   loadComments();
 });
-
-// Telegram хабарлама функциясы
-function sendToTelegram(userName, text) {
-    const token = '8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0'; 
-    const chatId = '5616776281'; 
-    
-    const pageTitle = document.title; 
-    const pageUrl = window.location.href; 
-
-    const message = `🔔 *Жаңа пікір!* \n\n👤 *Кім:* ${userName} \n💬 *Пікір:* ${text} \n📖 *Бет:* ${pageTitle} \n🔗 [Сілтемеге өту](${pageUrl})`;
-
-    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
-
-    fetch(url)
-        .then(() => console.log("Telegram-ға кетті!"))
-        .catch(err => console.error("Қате:", err));
-}
