@@ -58,7 +58,27 @@ async function submitComment() {
     });
     input.value = "";
     await loadComments();
-    sendToTelegram(user.displayName, text);
+// ЕСКІ ФУНКЦИЯНЫ ӨШІРІП, ОСЫНЫ ҚОЙ:
+function sendToTelegram(userName, text) {
+    const token = '8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0'; 
+    const chatId = '5616776281'; 
+    
+    const pageTitle = document.title; 
+    const pageUrl = window.location.href; 
+
+    const message = `🔔 *Жаңа пікір!*
+    
+👤 *Кім:* ${userName}
+💬 *Пікір:* ${text}
+📖 *Бет:* ${pageTitle}
+🔗 [Сілтемеге өту](${pageUrl})`;
+
+    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+
+    fetch(url)
+        .then(() => console.log("Сілтемемен бірге жіберілді!"))
+        .catch(err => console.error("Қате:", err));
+}
   } catch (e) {
     console.error("Жіберу қатесі:", e);
   }
