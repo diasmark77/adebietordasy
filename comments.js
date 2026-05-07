@@ -77,16 +77,8 @@ function sendToTelegram(userName, text) {
 
     fetch(url)
         .then(() => console.log("Сілтемемен бірге жіберілді!"))
-        .catch(err => console.error("Қате:", err));
+        .catch(err => console.error("Телеграм жіберу қатесі:", err));
 }
-  } catch (e) {
-    console.error("Жіберу қатесі:", e);
-  }
-
-  btn.disabled = false;
-  btn.textContent = "Жіберу";
-}
-
 // ── Пікірлерді жүктеу ────────────────────────
 async function loadComments() {
   const container = document.getElementById("comments-list");
