@@ -137,3 +137,16 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("submit-btn").addEventListener("click", submitComment);
   loadComments();
 });
+
+// Telegram хабарлама функциясы
+function sendToTelegram(userName, text) {
+    const token = '8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0'; 
+    const chatId = '5616776281';
+    const message = `🔔 *Әдебиет Ордасы: Жаңа пікір!*\n\n👤 *Кім:* ${userName}\n💬 *Пікір:* ${text}`;
+
+    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+
+    fetch(url)
+        .then(() => console.log("Telegram-ға сәтті жіберілді!"))
+        .catch(err => console.error("Telegram қатесі:", err));
+}
