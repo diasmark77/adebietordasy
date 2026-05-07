@@ -46,11 +46,28 @@ async function logout() {
 async function deleteComment(commentId) {
   if (confirm("Пікірді өшіргіңіз келе ме?")) {
     try {
-      await deleteDoc(doc(db, "comments", pageId, "messages", commentId));
+      const user = auth.currentUser;
+      const pageTitle = document.title;
       
-      // Өшірілгені туралы хабарлама
-      const msg = `🗑️ *Пікір өшірілді!* \n👤 *Кім:* ${auth.currentUser.displayName} \n📖 *Бет:* ${document.title}`;
-      sendToTelegram(msg);
+      // 1. Өшірмес бұрын пікірдің мәтінін базадан тауып аламыз
+      const commentRef = doc(db, "comments", pageId, "messages", commentId);
+      const commentSnap = await getDocs(query(collection(db, "comments", pageId, "messages")));
+      
+      // Нақты осы ID-ге тиісті мәтінді анықтаймыз
+      let deletedText = "Мәтін табылмады";
+      snapshot.forEach(docSnap => {
+        if(docSnap.id === commentId) {
+          deletedText = docSnap.data().text;
+        }
+      });
+
+      // 2. Енді пікірді базадан өшіреміз
+      await deleteDoc(commentRef);
+      
+      // 3. Телеграмға толық хабарлама жібереміз (мәтінімен бірге)
+      const deletionMsg = `🗑️ *Пікір өшірілді!* \n\n👤 *Кім:* ${user.displayName} \n💬 *Өшірілген мәтін:* _${deletedText}_ \n📖 *Бет:* ${pageTitle}`;
+      
+      sendToTelegram(deletionMsg);
       
       await loadComments();
     } catch (e) {
@@ -59,7 +76,6 @@ async function deleteComment(commentId) {
     }
   }
 }
-
 // ── Пікір жіберу ─────────────────────────────
 async function submitComment() {
   const user = auth.currentUser;
