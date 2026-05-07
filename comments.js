@@ -58,6 +58,7 @@ async function submitComment() {
     });
     input.value = "";
     await loadComments();
+    sendToTelegram(user.displayName, text);
   } catch (e) {
     console.error("Жіберу қатесі:", e);
   }
