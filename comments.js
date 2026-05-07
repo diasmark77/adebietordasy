@@ -60,24 +60,16 @@ async function submitComment() {
     await loadComments();
 // ЕСКІ ФУНКЦИЯНЫ ӨШІРІП, ОСЫНЫ ҚОЙ:
 function sendToTelegram(userName, text) {
-    const token = '8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0'; 
-    const chatId = '5616776281'; 
-    
-    const pageTitle = document.title; 
-    const pageUrl = window.location.href; 
+ } catch (e) {
 
-    const message = `🔔 *Жаңа пікір!*
-    
-👤 *Кім:* ${userName}
-💬 *Пікір:* ${text}
-📖 *Бет:* ${pageTitle}
-🔗 [Сілтемеге өту](${pageUrl})`;
+    console.error("Жіберу қатесі:", e);
 
-    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+  }
 
-    fetch(url)
-        .then(() => console.log("Сілтемемен бірге жіберілді!"))
-        .catch(err => console.error("Телеграм жіберу қатесі:", err));
+  btn.disabled = false;
+
+  btn.textContent = "Жіберу";
+
 }
 // ── Пікірлерді жүктеу ────────────────────────
 async function loadComments() {
@@ -154,12 +146,16 @@ document.addEventListener("DOMContentLoaded", () => {
 // Telegram хабарлама функциясы
 function sendToTelegram(userName, text) {
     const token = '8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0'; 
-    const chatId = '5616776281';
-    const message = `🔔 *Әдебиет Ордасы: Жаңа пікір!*\n\n👤 *Кім:* ${userName}\n💬 *Пікір:* ${text}`;
+    const chatId = '5616776281'; 
+    
+    const pageTitle = document.title; 
+    const pageUrl = window.location.href; 
+
+    const message = `🔔 *Жаңа пікір!* \n\n👤 *Кім:* ${userName} \n💬 *Пікір:* ${text} \n📖 *Бет:* ${pageTitle} \n🔗 [Сілтемеге өту](${pageUrl})`;
 
     const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
 
     fetch(url)
-        .then(() => console.log("Telegram-ға сәтті жіберілді!"))
-        .catch(err => console.error("Telegram қатесі:", err));
+        .then(() => console.log("Telegram-ға кетті!"))
+        .catch(err => console.error("Қате:", err));
 }
