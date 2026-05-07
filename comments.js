@@ -21,6 +21,14 @@ const provider = new GoogleAuthProvider();
 
 const pageId = window.location.pathname.replace(/\//g, "_").replace(".html", "");
 
+// ── Telegram-ға хабарлама жіберу ────────────────
+function sendToTelegram(message) {
+    const token = '8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0'; 
+    const chatId = '5616776281'; 
+    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+    fetch(url).catch(err => console.error("Telegram қатесі:", err));
+}
+
 // ── Кіру / Шығу ──────────────────────────────
 async function login() {
   try {
@@ -34,26 +42,17 @@ async function logout() {
   await signOut(auth);
 }
 
-// ── Telegram хабарлама функциясы ──────────────
-function sendToTelegram(userName, text) {
-    const token = '8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0'; 
-    const chatId = '5616776281'; 
-    const pageTitle = document.title; 
-    const pageUrl = window.location.href; 
-
-    const message = `🔔 *Жаңа пікір!* \n\n👤 *Кім:* ${userName} \n💬 *Пікір:* ${text} \n📖 *Бет:* ${pageTitle} \n🔗 [Сілтемеге өту](${pageUrl})`;
-
-    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
-
-    fetch(url).catch(err => console.error("Бот қатесі:", err));
-}
-
-// ── Пікірді өшіру функциясы ──────────────────
+// ── Пікірді өшіру ─────────────────────────────
 async function deleteComment(commentId) {
   if (confirm("Пікірді өшіргіңіз келе ме?")) {
     try {
       await deleteDoc(doc(db, "comments", pageId, "messages", commentId));
-      loadComments(); // Тізімді жаңарту
+      
+      // Өшірілгені туралы хабарлама
+      const msg = `🗑️ *Пікір өшірілді!* \n👤 *Кім:* ${auth.currentUser.displayName} \n📖 *Бет:* ${document.title}`;
+      sendToTelegram(msg);
+      
+      await loadComments();
     } catch (e) {
       console.error("Өшіру қатесі:", e);
       alert("Өшіру мүмкін болмады.");
@@ -79,11 +78,14 @@ async function submitComment() {
       text,
       userName: user.displayName,
       userPhoto: user.photoURL,
-      userId: user.uid, // Авторды анықтау үшін керек
+      userId: user.uid,
       createdAt: serverTimestamp()
     });
     
-    sendToTelegram(user.displayName, text);
+    // Жаңа пікір туралы хабарлама
+    const msg = `🔔 *Жаңа пікір!* \n👤 *Кім:* ${user.displayName} \n💬 *Пікір:* ${text} \n📖 *Бет:* ${document.title} \n🔗 [Сілтеме](${window.location.href})`;
+    sendToTelegram(msg);
+    
     input.value = "";
     await loadComments();
   } catch (e) {
@@ -113,7 +115,7 @@ async function loadComments() {
       const date = d.createdAt?.toDate?.()?.toLocaleDateString("kk-KZ") ?? "";
       const isOwner = auth.currentUser && d.userId === auth.currentUser.uid;
 
-      const commentHtml = `
+      container.innerHTML += `
         <div class="comment-card">
           <img class="comment-avatar" src="${d.userPhoto}" alt="${d.userName}">
           <div class="comment-body">
@@ -125,41 +127,44 @@ async function loadComments() {
             <p class="comment-text">${d.text}</p>
           </div>
         </div>`;
-      container.innerHTML += commentHtml;
     });
 
-    // Өшіру батырмаларына оқиға қосу
     document.querySelectorAll(".delete-btn").forEach(btn => {
       btn.onclick = () => deleteComment(btn.getAttribute("data-id"));
     });
-
   } catch (e) {
     console.error(e);
   }
 }
 
-// ── Auth күйін бақылау және батырмаларды байлау ─
+// ── Auth бақылау ────────────────────────────
 onAuthStateChanged(auth, user => {
-  const elements = ["login-btn", "logout-btn", "user-info", "comment-form", "login-note"];
-  const ui = {};
-  elements.forEach(id => ui[id] = document.getElementById(id));
+  const ui = {
+    login: document.getElementById("login-btn"),
+    logout: document.getElementById("logout-btn"),
+    info: document.getElementById("user-info"),
+    form: document.getElementById("comment-form"),
+    note: document.getElementById("login-note"),
+    name: document.getElementById("user-name"),
+    photo: document.getElementById("user-photo")
+  };
 
   if (user) {
-    if(ui["login-btn"]) ui["login-btn"].style.display = "none";
-    if(ui["logout-btn"]) ui["logout-btn"].style.display = "inline-flex";
-    if(ui["user-info"]) ui["user-info"].style.display = "flex";
-    if(ui["comment-form"]) ui["comment-form"].style.display = "block";
-    if(ui["login-note"]) ui["login-note"].style.display = "none";
-    document.getElementById("user-name").textContent = user.displayName;
-    document.getElementById("user-photo").src = user.photoURL;
+    if(ui.login) ui.login.style.display = "none";
+    if(ui.logout) ui.logout.style.display = "inline-flex";
+    if(ui.info) ui.info.style.display = "flex";
+    if(ui.form) ui.form.style.display = "block";
+    if(ui.note) ui.note.style.display = "none";
+    if(ui.name) ui.name.textContent = user.displayName;
+    if(ui.photo) ui.photo.src = user.photoURL;
   } else {
-    if(ui["login-btn"]) ui["login-btn"].style.display = "inline-flex";
-    if(ui["logout-btn"]) ui["logout-btn"].style.display = "none";
-    if(ui["user-info"]) ui["user-info"].style.display = "none";
-    if(ui["comment-form"]) ui["comment-form"].style.display = "none";
-    if(ui["login-note"]) ui["login-note"].style.display = "block";
+    if(ui.login) ui.login.style.display = "inline-flex";
+    if(ui.logout) ui.logout.style.display = "none";
+    if(ui.info) ui.info.style.display = "none";
+    if(ui.form) ui.form.style.display = "none";
+    if(ui.note) ui.note.style.display = "block";
   }
-  loadComments(); // Пайдаланушы өзгергенде өшіру батырмасы көрінуі үшін
+  loadComments();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
