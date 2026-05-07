@@ -96,3 +96,17 @@ pre {
   box-shadow:0 6px 12px rgba(0,0,0,0.3);
   background:#6e472c;
 }
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 0;
+    text-decoration: underline;
+}
+.delete-btn:hover {
+    color: #cc0000;
+}
