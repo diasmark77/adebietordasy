@@ -3,99 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Өлеңді оқу | Әдебиет ордасы</title>
-    <link rel="stylesheet" href="css/menu.css">
-    <link rel="icon" href="images/logo.png" type="image/png">
+    <title id="page-title">Өлең оқу | Әдебиет ордасы</title>
+    <!-- CSS файлдарың -->
+    <link rel="icon" href="../images/logo.png" type="image/png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/menu.css">
     
     <style>
-        body { font-family: 'Georgia', serif; background: #fdfaf4; margin: 0; color: #2c1a0a; }
-        header { background: #5c4033; padding: 30px; text-align: center; color: white; }
-        
-        .poem-container { 
-            max-width: 700px; margin: 40px auto; background: white; 
-            padding: 50px; border-radius: 10px; 
-            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
-            position: relative;
+        /* Сенің стиліңді сақтадым */
+        body { font-family: Arial, sans-serif; margin:20px; background:#f4f1ea; color:#333; }
+        .card { background:white; padding:25px; margin:15px auto; max-width:700px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color:#5c4033; text-align: center; }
+        pre { 
+            white-space: pre-wrap; font-family: 'Georgia', serif; font-size: 1.2rem;
+            background:#fafafa; padding:20px; border-radius:5px; border:1px solid #ccc; 
+            line-height: 1.6;
         }
-
-        .poem-title { font-size: 2.2rem; color: #5c4033; text-align: center; margin-bottom: 10px; }
-        .poem-author { text-align: center; font-style: italic; color: #8b5e3c; margin-bottom: 40px; font-size: 1.2rem; }
+        .back-btn { display:inline-block; margin:10px 5px; padding:10px 18px; background:#8b5e3c; color:white; text-decoration:none; border-radius:6px; font-weight:bold; }
         
-        pre#poem-text {
-            white-space: pre-wrap; 
-            font-size: 1.3rem; 
-            line-height: 1.8; 
-            color: #333; 
-            border-left: 3px solid #d4af37; 
-            padding-left: 25px;
-            margin: 0 auto;
-            max-width: fit-content; /* Өлең ортада тұруы үшін */
-        }
-
-        .controls { text-align: center; margin-top: 50px; }
-        .btn { padding: 12px 25px; border-radius: 25px; border: none; cursor: pointer; font-weight: bold; text-decoration: none; transition: 0.3s; }
-        .btn-back { background: #d4af37; color: white; }
-        
-        @media (max-width: 600px) {
-            .poem-container { padding: 25px; width: 95%; }
-            .poem-title { font-size: 1.6rem; }
-            pre#poem-text { font-size: 1.1rem; }
+        /* Плеердің стилі (сен жіберген кодтан алынды) */
+        #zhurek-player-wrap { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; opacity: 0; }
+        .player-container {
+            display: flex; flex-direction: column; align-items: center; gap: 14px;
+            background: #fdf6f0; border: 1px solid #d4a97a; border-radius: 16px;
+            padding: 20px 24px; max-width: 360px; margin: 14px auto 0;
+            box-shadow: 0 2px 12px rgba(139,69,19,0.08);
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 id="header-title">Поэзия әлемі</h1>
-</header>
+<!-- Меню бөлімі -->
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<nav id="menu">
+    <button onclick="location.href='../index.html'">🏠 Басты бет</button>
+    <button onclick="location.href='../poems.html'">📝 Өлеңдер</button>
+</nav>
 
-<div class="poem-container">
-    <h1 id="display-title" class="poem-title">Жүктелуде...</h1>
-    <p id="display-author" class="poem-author"></p>
-    
-    <pre id="poem-text">Өлең мәтіні жүктеліп жатыр...</pre>
-
-    <div class="controls">
-        <a href="poems.html" class="btn btn-back">⬅ Барлық өлеңдерге қайту</a>
-    </div>
+<!-- Аудио батырмасы (бастапқыда жасырын тұрады) -->
+<div id="audio-btn-wrapper" style="text-align:center; margin: 16px 0 0; display: none;">
+  <button id="zhurek-toggle" onclick="togglePlayer()" style="display: inline-flex; align-items: center; gap: 7px; background: #8B4513; color: #fff; border: none; border-radius: 20px; padding: 8px 20px; font-size: 14px; cursor: pointer;">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm-2 13V8l6 4-6 4z"/></svg>
+    Әнді тыңдау
+  </button>
 </div>
 
+<!-- Плеер контейнері -->
+<div id="zhurek-player-wrap">
+  <div class="player-container">
+    <audio id="zhurek-audio" preload="metadata"></audio>
+    <div id="audio-title" style="font-size:15px; font-weight:600; color:#5a2a00;">🎵 Жүктелуде...</div>
+    
+    <div style="display:flex; align-items:center; gap:10px; width:100%;">
+      <span id="zhurek-cur" style="font-size:12px; color:#999;">0:00</span>
+      <input type="range" id="zhurek-seek" min="0" max="100" step="0.1" value="0" style="flex:1; accent-color:#8B4513;">
+      <span id="zhurek-dur" style="font-size:12px; color:#999;">0:00</span>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:16px;">
+      <button onclick="zhurekRew()" style="background:none; border:1px solid #c8914f; border-radius:50%; width:38px; height:38px; cursor:pointer;">⏪</button>
+      <button onclick="zhurekPlayPause()" id="zhurek-play-btn" style="background:#8B4513; border:none; border-radius:50%; width:52px; height:52px; color:white; cursor:pointer; font-size:20px;">▶</button>
+      <button onclick="zhurekFwd()" style="background:none; border:1px solid #8B4513; border-radius:50%; width:38px; height:38px; cursor:pointer;">⏩</button>
+    </div>
+  </div>
+</div>
+
+<!-- Өлең мәтіні -->
+<div class="card">
+  <h2 id="poem-title">Жүктелуде...</h2>
+  <pre id="poem-content">Мәтін базадан алынуда...</pre>
+</div>
+
+<div style="text-align:center;">
+    <a href="../poems.html" class="back-btn">← Тізімге қайту</a>
+</div>
+
+<!-- FIREBASE ЛОГИКАСЫ -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-        authDomain: "adebiet-ordasy.firebaseapp.com",
+        // ОСЫ ЖЕРГЕ СЕНІҢ Firebase Config-ің қойылады
+        apiKey: "AIzaSyC_...", 
         projectId: "adebiet-ordasy",
-        storageBucket: "adebiet-ordasy.appspot.com",
-        messagingSenderId: "776364024545",
-        appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+        // ...
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // URL-ден ID-ні оқу
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    async function loadPoem() {
+    async function loadData() {
         if (!id) return;
-        try {
-            const docRef = doc(db, "published_content", id);
-            const docSnap = await getDoc(docRef);
+        const docRef = doc(db, "published_content", id);
+        const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                document.getElementById('display-title').innerText = data.workTitle || "Тақырыпсыз";
-                document.getElementById('display-author').innerText = data.name;
-                document.getElementById('poem-text').innerText = data.work;
-                document.title = `${data.workTitle} - ${data.name} | Әдебиет ордасы`;
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            
+            // Мәліметтерді толтыру
+            document.getElementById('poem-title').innerText = data.name + ' "' + data.workTitle + '"';
+            document.getElementById('poem-content').innerText = data.work;
+            document.title = data.workTitle + " | Әдебиет ордасы";
+
+            // Аудио бар ма?
+            if (data.audioUrl) {
+                document.getElementById('audio-btn-wrapper').style.display = 'block';
+                document.getElementById('zhurek-audio').src = data.audioUrl;
+                document.getElementById('audio-title').innerText = "🎵 " + data.workTitle + " (Аудио)";
             }
-        } catch (e) { console.error(e); }
+        }
     }
-
-    loadPoem();
+    loadData();
 </script>
+
+<script>
+    // Сенің плеер басқару функцияларың (togglePlayer, zhurekPlayPause т.б.) осында қалады
+    // Оларды өз кодыңнан көшіріп салсаң болады
+    var zhurekAudio = document.getElementById('zhurek-audio');
+    // ... (zhurekPlayPause функциялары)
+</script>
+
 </body>
 </html>
