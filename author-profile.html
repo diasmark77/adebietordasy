@@ -48,28 +48,33 @@
         .back-btn { display: inline-block; margin-top: 20px; padding: 12px 20px; background: #d4af37; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; font-size: 0.9rem; }
 
         /* Пікірлер бөлімі стилі */
-        .comments-section { width: 90%; max-width: 800px; margin: 40px auto; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); box-sizing: border-box; }
-        .comments-title { font-size: 1.3rem; color: #3b1f0a; border-bottom: 2px solid #c8a06a; padding-bottom: 10px; margin-bottom: 20px; }
-        
-        .auth-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        #user-info { display: none; align-items: center; gap: 10px; }
-        #user-photo { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #c8a06a; }
-        
-        .auth-btn { padding: 8px 15px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; font-size: 0.85rem; }
-        #login-btn { background: #4285f4; color: white; }
-        #logout-btn { display: none; background: #eee; color: #333; }
-
-        #comment-form { display: none; margin-top: 15px; }
-        #comment-input { width: 100%; min-height: 80px; padding: 10px; border: 1px solid #d4b896; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
-        #submit-btn { margin-top: 10px; padding: 10px 20px; background: #8B4513; color: white; border: none; border-radius: 8px; cursor: pointer; }
-        
-        #login-note { color: #888; font-size: 0.9rem; }
-
-        @media (max-width: 600px) {
-            header { padding: 30px 10px; }
-            h1#author-name { font-size: 1.5rem; }
-            .container { padding: 15px; }
-        }
+          .comments-section { max-width: 760px; margin: 60px auto 40px; padding: 0 20px; font-family: 'Segoe UI', sans-serif; }
+  .comments-title { font-size: 1.4rem; font-weight: 700; color: #3b1f0a; border-bottom: 2px solid #c8a06a; padding-bottom: 10px; margin-bottom: 24px; }
+  .auth-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  #user-info { display: none; align-items: center; gap: 10px; }
+  #user-photo { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; }
+  #user-name { font-size: 0.95rem; color: #3b1f0a; font-weight: 600; }
+  .auth-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  #login-btn { background: #4285f4; color: #fff; }
+  #login-btn:hover { background: #2f6fd8; }
+  #logout-btn { display: none; background: #f1e8db; color: #7a4520; }
+  #logout-btn:hover { background: #e2d0bb; }
+  #comment-form { display: none; margin-bottom: 28px; }
+  #comment-input { width: 100%; min-height: 90px; padding: 12px 14px; border: 1.5px solid #d4b896; border-radius: 10px; font-size: 0.95rem; color: #2c1a0a; background: #fffaf5; resize: vertical; box-sizing: border-box; font-family: inherit; transition: border-color 0.2s; }
+  #comment-input:focus { outline: none; border-color: #a0622a; }
+  #submit-btn { margin-top: 10px; padding: 10px 24px; background: #8B4513; color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  #submit-btn:hover { background: #6b3410; }
+  #submit-btn:disabled { background: #c4a882; cursor: not-allowed; }
+  #login-note { color: #9a7a5a; font-size: 0.9rem; margin-bottom: 20px; }
+  .comment-card { display: flex; gap: 14px; padding: 16px; background: #fffaf5; border: 1px solid #e8d5ba; border-radius: 12px; margin-bottom: 14px; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .comment-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; flex-shrink: 0; }
+  .comment-body { flex: 1; }
+  .comment-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+  .comment-name { font-weight: 700; font-size: 0.95rem; color: #3b1f0a; }
+  .comment-date { font-size: 0.8rem; color: #b08060; }
+  .comment-text { font-size: 0.95rem; color: #4a3020; line-height: 1.6; margin: 0; white-space: pre-wrap; }
+  .loading-text, .no-comments, .error-text { text-align: center; color: #9a7a5a; padding: 20px 0; font-size: 0.95rem; }
     </style>
 </head>
 <body>
