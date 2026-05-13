@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>Автор профилі</title>
+    <link rel="stylesheet" href="css/menu.css">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f1ea; padding: 20px; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 10px; text-align: center; }
+        img { width: 150px; height: 200px; object-fit: cover; border-radius: 10px; }
+        .poem-text { text-align: left; white-space: pre-line; margin-top: 20px; background: #fffaf0; padding: 15px; border-left: 4px solid #d4af37; }
+    </style>
+</head>
+<body>
+    <div class="container" id="profile-content">
+        <h2 id="name">Жүктелуде...</h2>
+        <img id="photo" src="" alt="">
+        <p id="bio"></p>
+        <div id="work" class="poem-text"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // ӨЗІҢНІҢ FIREBASE CONFIG ДЕРЕКТЕРІҢДІ ҚОЙ
+        const firebaseConfig = {
+            apiKey: ""AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+            projectId: "adebiet-ordasy",
+            appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        async function getAuthor() {
+            if (id) {
+                const docRef = doc(db, "published_content", id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('name').innerText = data.name;
+                    document.getElementById('photo').src = data.photoUrl || 'images/logo.png';
+                    document.getElementById('bio').innerText = data.description;
+                    document.getElementById('work').innerText = data.work;
+                }
+            }
+        }
+        getAuthor();
+    </script>
+
+  <script src="../js/menu.js"></script>
+     
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
+}
+</script>
+<section class="comments-section">
+  <h2 class="comments-title">💬 Пікірлер</h2>
+  <div class="auth-bar">
+    <button id="login-btn" class="auth-btn">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#4285F4" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.5 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 28.9 5 24 5 13 5 4 14 4 25s9 20 20 20c11 0 20-9 20-20 0-1.5-.2-3-.4-4.5z"/>
+        <path fill="#34A853" d="M6.3 15.7l6.6 4.8C14.5 17 19 14 24 14c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 28.9 5 24 5c-7.7 0-14.3 4.4-17.7 10.7z"/>
+        <path fill="#FBBC05" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.5 36.4 26.9 37 24 37c-5.2 0-9.6-3.4-11.2-8.1l-6.5 5C9.5 40.5 16.2 45 24 45z"/>
+        <path fill="#EA4335" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2C37 39.1 44 34 44 25c0-1.5-.2-3-.4-4.5z"/>
+      </svg>
+      Google арқылы кіру
+    </button>
+    <div id="user-info">
+      <img id="user-photo" src="" alt="avatar">
+      <span id="user-name"></span>
+    </div>
+    <button id="logout-btn" class="auth-btn">Шығу</button>
+  </div>
+  <div id="comment-form">
+    <textarea id="comment-input" placeholder="Пікіріңізді жазыңыз..."></textarea>
+    <button id="submit-btn">Жіберу</button>
+  </div>
+  <p id="login-note">Пікір қалдыру үшін Google аккаунтымен кіріңіз.</p>
+  <div id="comments-list"></div>
+</section>
+
+<script type="module" src="/adebietordasy/comments.js"></script>
+</body>
+</html>
