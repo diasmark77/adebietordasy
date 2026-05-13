@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Автор болуға өтініш | Әдебиет ордасы</title>
+    
 <link rel="stylesheet" href="css/menu.css">
-
+<link rel="icon" href="images/logo.png" type="image/png">
+    
 <style>
 *{box-sizing:border-box;}
 body{margin:0;font-family:'Georgia',serif;background:#f4f1ea;color:#333;line-height:1.6;}
@@ -70,6 +72,23 @@ footer{ background:#5c4033; color:white; text-align:center; padding:20px; }
     <p>Өз туындыларыңды ұлттық порталда жарияла</p>
 </header>
 
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+<button onclick="location.href='index.html'">🏠 Басты бет</button>
+<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+<button onclick="location.href='poets.html'">✍️ Ақындар</button>
+<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+<button onclick="location.href='contact.html'">📩 Байланыс</button>
+<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+</nav>
+
+<section>
+    
 <div class="form-container">
     <div class="notice">
         <b>Шарттар:</b><br>
@@ -88,8 +107,18 @@ footer{ background:#5c4033; color:white; text-align:center; padding:20px; }
             <input type="text" id="contact" placeholder="Telegram немесе Email" required>
         </div>
 
+         <div class="form-group">
+            <label>Өмірбаяныңыз:</label>
+            <textarea id="work" rows="10" placeholder="Мәтінді осы жерге енгізіңіз..." required minlength="100"></textarea>
+        </div>
+
         <div class="form-group">
-            <label>Шығармаңыз (өлең, әңгіме немесе эссе):</label>
+           <label>Суретіңізге сілтеме (немесе Telegram,WhatsApp арқылы):</label>
+           <input type="url" id="photoUrl" placeholder="https://image-link.com/photo.jpg">
+       </div>
+        
+        <div class="form-group">
+            <label>Шығармаңыз (өлең, әңгіме немесе материал жарияланған желінің сілтемесі):</label>
             <textarea id="work" rows="10" placeholder="Мәтінді осы жерге енгізіңіз..." required minlength="100"></textarea>
         </div>
 
