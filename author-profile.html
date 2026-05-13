@@ -144,5 +144,63 @@ function toggleMenu(){
 </section>
 
 <script type="module" src="/adebietordasy/comments.js"></script>
+
+<script>
+// 1. Firebase конфигурациясы (Тырнақшаларды ұмытпа!)
+const firebaseConfig = {
+    apiKey: "AIzaSyC...", // Осы жерді міндетті түрде тырнақшаға ал!
+    authDomain: "adebiet-ordasy.firebaseapp.com",
+    projectId: "adebiet-ordasy",
+    storageBucket: "adebiet-ordasy.appspot.com",
+    messagingSenderId: "776364024545",
+    appId: "1:776364024545:web:..."
+};
+
+// 2. Firebase-ті іске қосу
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
+
+// 3. URL-ден автордың ID-ін алу (мысалы: ?id=WjMbm...)
+const urlParams = new URLSearchParams(window.location.search);
+const authorId = urlParams.get('id');
+
+// 4. Деректерді базадан тарту функциясы
+function loadAuthorData() {
+    if (!authorId) {
+        console.error("ID табылмады");
+        return;
+    }
+
+    db.collection("published_content").doc(authorId).get().then((doc) => {
+        if (doc.exists) {
+            const data = doc.data();
+            
+            // HTML-дегі элементтерді толтыру
+            document.getElementById('author-name').innerText = data.name;
+            
+            // Суретті тексеріп салу
+            const photoImg = document.getElementById('author-photo');
+            if (photoImg && data.photoUrl) {
+                photoImg.src = data.photoUrl;
+            }
+
+            // Биографияны салу
+            const bioText = document.getElementById('author-bio');
+            if (bioText) {
+                bioText.innerText = data.description;
+            }
+        } else {
+            document.getElementById('author-name').innerText = "Автор табылмады";
+        }
+    }).catch((error) => {
+        console.error("Қате шықты:", error);
+    });
+}
+
+// Бет жүктелгенде функцияны іске қосу
+window.onload = loadAuthorData;
+            </script>
 </body>
 </html>
