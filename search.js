@@ -18,7 +18,7 @@ function initSearch() {
   });
 }
 
-<script>
+
   window.onload = function() {
     // 1. URL-ден "search" параметрін іздейміз (мысалы: poems.html?search=Ақжол)
     const urlParams = new URLSearchParams(window.location.search);
@@ -41,5 +41,4 @@ function initSearch() {
       }
     }
   };
-</script>
 document.addEventListener("DOMContentLoaded", initSearch);
