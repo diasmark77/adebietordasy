@@ -18,5 +18,28 @@ function initSearch() {
   });
 }
 
+<script>
+  window.onload = function() {
+    // 1. URL-ден "search" параметрін іздейміз (мысалы: poems.html?search=Ақжол)
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
 
+    if (searchQuery) {
+      // 2. Іздеу ұяшығын (input) тауып, оған автордың атын жазамыз
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.value = searchQuery;
+
+        // 3. Сенің search.js файлындағы іздеу функциясын қолмен іске қосамыз
+        // Егер функцияның аты басқа болса (мысалы, filterTable), соны жаз
+        if (typeof filterSearch === "function") {
+            filterSearch(); 
+        } else {
+            // Егер арнайы функция болмаса, жай ғана "input" оқиғасын тудырамыз
+            searchInput.dispatchEvent(new Event('input'));
+        }
+      }
+    }
+  };
+</script>
 document.addEventListener("DOMContentLoaded", initSearch);
