@@ -1,29 +1,169 @@
-<h2>Авторлар</h2>
-<div id="list"></div>
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Автор болуға өтініш | Әдебиет ордасы</title>
+<link rel="stylesheet" href="css/menu.css">
+
+<style>
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Georgia',serif;background:#f4f1ea;color:#333;line-height:1.6;}
+
+/* Төбесі сайтыңыздың стилінде */
+header{
+    background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url('images/kazakh-dalasy.jpg') center/cover no-repeat;
+    color:white;text-align:center;padding:50px 20px;
+}
+header h1{font-size:38px;margin-bottom:10px;letter-spacing:1px;}
+
+.form-container {
+    max-width: 700px;
+    margin: -40px auto 40px; /* Header-дің үстіне сәл шығып тұру үшін */
+    background: rgba(255,255,255,0.98);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 10;
+}
+
+.form-group { margin-bottom: 20px; }
+label { display: block; font-weight: bold; color: #5c4033; margin-bottom: 8px; }
+
+input, textarea {
+    width: 100%; padding: 12px; border: 1px solid #d3cdc0; border-radius: 8px;
+    background: #fdfcf9; font-family: inherit; font-size: 16px; transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+    outline: none; border-color: #8b5e3c; background: #fff; box-shadow: 0 0 8px rgba(139,94,60,0.2);
+}
+
+.btn-submit {
+    background: #8b5e3c; color: white; border: none; padding: 15px 30px;
+    border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;
+    width: 100%; transition: 0.3s; margin-top: 10px;
+}
+
+.btn-submit:hover { background: #5c4033; transform: translateY(-2px); }
+
+.notice {
+    font-size: 14px; color: #777; background: #fdf5e6;
+    padding: 15px; border-left: 4px solid #d4af37; margin-bottom: 25px;
+}
+
+#status { text-align: center; margin-top: 20px; font-weight: bold; }
+
+footer{ background:#5c4033; color:white; text-align:center; padding:20px; }
+
+@media(max-width:600px){
+    header h1{font-size:28px;}
+    .form-container { margin: 20px; padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Қаламгерлер қатарына қосыл</h1>
+    <p>Өз туындыларыңды ұлттық порталда жарияла</p>
+</header>
+
+<div class="form-container">
+    <div class="notice">
+        <b>Шарттар:</b><br>
+        • Шығармаңыз кем дегенде 100 таңбадан тұруы тиіс.<br>
+        • Мәтін сауатты және өзіңіздің төл туындыңыз болуы міндетті.
+    </div>
+
+    <form id="authorForm">
+        <div class="form-group">
+            <label>Толық есіміңіз (немесе бүркеншік есім):</label>
+            <input type="text" id="name" placeholder="Аты-жөніңізді жазыңыз" required>
+        </div>
+
+        <div class="form-group">
+            <label>Байланыс мәліметі:</label>
+            <input type="text" id="contact" placeholder="Telegram немесе Email" required>
+        </div>
+
+        <div class="form-group">
+            <label>Шығармаңыз (өлең, әңгіме немесе эссе):</label>
+            <textarea id="work" rows="10" placeholder="Мәтінді осы жерге енгізіңіз..." required minlength="100"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Өтініш жіберу</button>
+    </form>
+    <div id="status"></div>
+</div>
+
+<footer>
+    © 2026 Әдебиет ордасы | Қазақ әдеби порталы
+</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const app = initializeApp({
-  apiKey: "YOUR_API_KEY",
-  projectId: "YOUR_PROJECT_ID"
-});
+// Firebase мәліметтері
+const firebaseConfig = {
+  apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+  projectId: "adebiet-ordasy"
+};
 
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const list = document.getElementById("list");
+// Telegram мәліметтері
+const TG_TOKEN = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
+const TG_CHAT_ID = "5616776281";
 
-const snap = await getDocs(collection(db, "authors"));
+const form = document.getElementById('authorForm');
+const status = document.getElementById('status');
 
-snap.forEach(doc => {
-  let a = doc.data();
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('name').value;
+    const contact = document.getElementById('contact').value;
+    const work = document.getElementById('work').value;
 
-  list.innerHTML += `
-    <div style="border:1px solid black; margin:10px; padding:10px;">
-      <h3>${a.name}</h3>
-    </div>
-  `;
+    try {
+        status.innerHTML = "Жіберілуде...";
+        status.style.color = "#8b5e3c";
+
+        // 1. Firebase-ке сақтау
+        await addDoc(collection(db, "requests"), {
+            authorName: name,
+            contactInfo: contact,
+            content: work,
+            timestamp: serverTimestamp()
+        });
+
+        // 2. Telegram-ға хабарлама жіберу
+        const text = `✍️ *Жаңа автордан өтініш!*\n\n👤 *Аты:* ${name}\n📞 *Байланыс:* ${contact}\n\n📝 *Шығарма:* \n${work.substring(0, 300)}...`;
+        
+        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: TG_CHAT_ID,
+                text: text,
+                parse_mode: 'Markdown'
+            })
+        });
+
+        status.innerHTML = "✅ Өтінішіңіз сәтті жіберілді! Жақында хабарласамыз.";
+        status.style.color = "green";
+        form.reset();
+
+    } catch (err) {
+        status.innerHTML = "❌ Қате орын алды. Қайта көріңіз.";
+        status.style.color = "red";
+    }
 });
 </script>
+
+</body>
+</html>
