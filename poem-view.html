@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Өлеңді оқу | Әдебиет ордасы</title>
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="icon" href="images/logo.png" type="image/png">
+    
+    <style>
+        body { font-family: 'Georgia', serif; background: #fdfaf4; margin: 0; color: #2c1a0a; }
+        header { background: #5c4033; padding: 30px; text-align: center; color: white; }
+        
+        .poem-container { 
+            max-width: 700px; margin: 40px auto; background: white; 
+            padding: 50px; border-radius: 10px; 
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .poem-title { font-size: 2.2rem; color: #5c4033; text-align: center; margin-bottom: 10px; }
+        .poem-author { text-align: center; font-style: italic; color: #8b5e3c; margin-bottom: 40px; font-size: 1.2rem; }
+        
+        pre#poem-text {
+            white-space: pre-wrap; 
+            font-size: 1.3rem; 
+            line-height: 1.8; 
+            color: #333; 
+            border-left: 3px solid #d4af37; 
+            padding-left: 25px;
+            margin: 0 auto;
+            max-width: fit-content; /* Өлең ортада тұруы үшін */
+        }
+
+        .controls { text-align: center; margin-top: 50px; }
+        .btn { padding: 12px 25px; border-radius: 25px; border: none; cursor: pointer; font-weight: bold; text-decoration: none; transition: 0.3s; }
+        .btn-back { background: #d4af37; color: white; }
+        
+        @media (max-width: 600px) {
+            .poem-container { padding: 25px; width: 95%; }
+            .poem-title { font-size: 1.6rem; }
+            pre#poem-text { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 id="header-title">Поэзия әлемі</h1>
+</header>
+
+<div class="poem-container">
+    <h1 id="display-title" class="poem-title">Жүктелуде...</h1>
+    <p id="display-author" class="poem-author"></p>
+    
+    <pre id="poem-text">Өлең мәтіні жүктеліп жатыр...</pre>
+
+    <div class="controls">
+        <a href="poems.html" class="btn btn-back">⬅ Барлық өлеңдерге қайту</a>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+        authDomain: "adebiet-ordasy.firebaseapp.com",
+        projectId: "adebiet-ordasy",
+        storageBucket: "adebiet-ordasy.appspot.com",
+        messagingSenderId: "776364024545",
+        appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    async function loadPoem() {
+        if (!id) return;
+        try {
+            const docRef = doc(db, "published_content", id);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('display-title').innerText = data.workTitle || "Тақырыпсыз";
+                document.getElementById('display-author').innerText = data.name;
+                document.getElementById('poem-text').innerText = data.work;
+                document.title = `${data.workTitle} - ${data.name} | Әдебиет ордасы`;
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    loadPoem();
+</script>
+</body>
+</html>
