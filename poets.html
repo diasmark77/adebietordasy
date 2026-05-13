@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ақындар | Әдебиет ордасы</title>
 <meta name="description" content="Әдебиет ордасы сайтындағы қазақ ақындарының өмірбаяны, шығармашылығы және танымал өлеңдерімен танысыңыз.">
-
 <meta name="keywords" content="әдебиет ордасы, қазақ ақындары, ақындар өмірбаяны, өлеңдер, поэзия">
   
 <link rel="icon" href="images/logo.png" type="image/png">
@@ -75,24 +74,21 @@ nav.show{display:flex;}
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
-.card img {
-  width:120px;
-  height:auto;
-  border-radius:5px;
-  margin-bottom:15px;
-}
-.card h2 {color:#5c4033;margin:10px 0 5px 0;}
-.card p {margin-bottom:10px;}
-.card a {text-decoration:none;color:#d4af37;font-weight:bold;}
-.card a:hover {color:#b8962e;}
-.card {
   cursor: pointer;
   transition: 0.3s;
 }
-.card:hover {
-  transform: translateY(-5px);
+.card img {
+  width:120px;
+  height:150px;
+  object-fit: cover;
+  border-radius:5px;
+  margin-bottom:15px;
 }
+.card h2 {color:#5c4033;margin:10px 0 5px 0; font-size: 1.2em;}
+.card p {margin-bottom:10px; font-size: 0.9em;}
+.card a {text-decoration:none;color:#d4af37;font-weight:bold;}
+.card a:hover {color:#b8962e;}
+.card:hover { transform: translateY(-5px); }
 
 footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top:30px;}
 
@@ -115,33 +111,27 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 </header>
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
-
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-
-<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-
-<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-
-<button onclick="location.href='poets.html'">✍️ Ақындар</button>
-
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-
-<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-
+  <button onclick="location.href='index.html'">🏠 Басты бет</button>
+  <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+  <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+  <button onclick="location.href='poets.html'">✍️ Ақындар</button>
+  <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+  <button onclick="location.href='contact.html'">📩 Байланыс</button>
+  <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+  <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
 </nav>
   
 <div class="search-box">
   <input type="text" id="searchInput" placeholder="Іздеу авторлар мен шығармалар бойынша...">
 </div>
 
+<section>
+  <div class="cards-container" id="all-cards">
+
+    <!-- ЕСКІ АВТОРЛАР (Статикалық) -->
   <section>
   <div class="cards-container">
 
@@ -215,24 +205,72 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
   <a href="poet/zhambyl.html">Толығырақ →</a>
 </div>
 
+    <!-- Осында сенің басқа да ескі карточкаларың (Абай, Мағжан т.б.) тұра береді -->
+
+    <!-- ЖАҢА АВТОРЛАР ҮШІН ОРЫН (Firebase-тен келетіндер) -->
+    <div id="dynamic-list" style="display: contents;"></div>
+
   </div>
 </section>
 
-  
 <footer>
   © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
 <script src="search.js"></script>
 
+<script type="module">
+  // FIREBASE БАЙЛАНЫСЫ
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // СЕНІҢ FIREBASE CONFIG ДЕРЕКТЕРІҢДІ ОСЫНДА ҚОЙ
+  const firebaseConfig = {
+    apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+    projectId: "adebiet-ordasy",
+    appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function loadFirebasePoets() {
+    const dynamicContainer = document.getElementById('dynamic-list');
+    
+    try {
+      const q = query(collection(db, "published_content"), where("category", "==", "poet"));
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        const author = doc.data();
+        const id = doc.id;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => { location.href = `author-profile.html?id=${id}`; };
+
+        card.innerHTML = `
+          <img src="${author.photoUrl || 'images/logo.png'}" alt="${author.name}">
+          <h2>${author.name}</h2>
+          <p>${author.description || 'Жас ақын'}</p>
+          <a href="author-profile.html?id=${id}">Толығырақ →</a>
+        `;
+        dynamicContainer.appendChild(card);
+      });
+    } catch (e) {
+      console.error("Firebase қатесі:", e);
+    }
+  }
+
+  loadFirebasePoets();
+</script>
+
 <script>
-
-function toggleMenu(){
-document.getElementById("menu").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-
+  function toggleMenu(){
+    document.getElementById("menu").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
+  }
 </script>
   
 </body>
-</html>  
+</html>
