@@ -5,224 +5,152 @@
     <title>Автор профилі | Әдебиет ордасы</title>
     <link rel="stylesheet" href="css/menu.css">
     <link rel="icon" href="images/logo.png" type="image/png">
-         <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     
-<style>body {font-family: Arial, sans-serif; margin:20px; background:#f4f1ea; color:#333;}
-header {text-align:center; padding:20px; background:#5c4033; color:white;}
-.author-img{
-width:100%;
-max-width:500px;
-height:auto;
-border-radius:10px;
-margin-bottom:15px;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f1ea; color: #333; }
+        header { text-align: center; padding: 40px 20px; background: #5c4033; color: white; }
+        .author-img { 
+            width: 100%; max-width: 400px; height: auto; 
+            border-radius: 15px; margin: 20px 0; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3); 
+            border: 4px solid white;
+        }
+        .container { max-width: 800px; margin: -30px auto 20px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: relative; }
+        h1#author-name { margin: 10px 0; font-size: 2.2rem; }
+        #author-bio { font-size: 1.1rem; line-height: 1.8; color: #444; }
+        .work-section { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+        .back-btn { display: inline-block; margin-top: 20px; padding: 12px 24px; background: #d4af37; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; transition: 0.3s; }
+        .back-btn:hover { background: #b8962d; transform: scale(1.05); }
+        
+        /* Пікірлер стилі */
+        .comments-section { max-width: 800px; margin: 40px auto; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .comments-title { color: #5c4033; border-bottom: 2px solid #d4af37; padding-bottom: 10px; }
+        #comment-input { width: 100%; min-height: 100px; border-radius: 10px; border: 1px solid #ddd; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        .auth-btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
+        #login-btn { background: #4285f4; color: white; }
+           pre {
+         white-space: pre-wrap; 
+         font-family: 'Times New Roman', serif; 
+         background: #fafafa; 
+         padding: 20px; 
+        border-radius: 10px; 
+        border-left: 5px solid #d4af37; 
+        font-size: 1.1rem;
+       line-height: 1.6;
 }
-     
-.card {background:white; padding:15px; margin:15px 0; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-h2 {color:#5c4033;}
-pre {white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa; padding:10px; border-radius:5px; border:1px solid #ccc;}
-footer {text-align:center; padding:15px; background:#5c4033; color:white; margin-top:20px;}
-.back-btn {display:inline-block; margin-top:15px; padding:10px 18px; background:#8b5e3c; color:white; text-decoration:none; border-radius:6px; font-weight:bold;}
-.back-btn:hover {background:#6e472c;}
-</style>
-<style>
-  .comments-section { max-width: 760px; margin: 60px auto 40px; padding: 0 20px; font-family: 'Segoe UI', sans-serif; }
-  .comments-title { font-size: 1.4rem; font-weight: 700; color: #3b1f0a; border-bottom: 2px solid #c8a06a; padding-bottom: 10px; margin-bottom: 24px; }
-  .auth-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-  #user-info { display: none; align-items: center; gap: 10px; }
-  #user-photo { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; }
-  #user-name { font-size: 0.95rem; color: #3b1f0a; font-weight: 600; }
-  .auth-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  #login-btn { background: #4285f4; color: #fff; }
-  #login-btn:hover { background: #2f6fd8; }
-  #logout-btn { display: none; background: #f1e8db; color: #7a4520; }
-  #logout-btn:hover { background: #e2d0bb; }
-  #comment-form { display: none; margin-bottom: 28px; }
-  #comment-input { width: 100%; min-height: 90px; padding: 12px 14px; border: 1.5px solid #d4b896; border-radius: 10px; font-size: 0.95rem; color: #2c1a0a; background: #fffaf5; resize: vertical; box-sizing: border-box; font-family: inherit; transition: border-color 0.2s; }
-  #comment-input:focus { outline: none; border-color: #a0622a; }
-  #submit-btn { margin-top: 10px; padding: 10px 24px; background: #8B4513; color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-  #submit-btn:hover { background: #6b3410; }
-  #submit-btn:disabled { background: #c4a882; cursor: not-allowed; }
-  #login-note { color: #9a7a5a; font-size: 0.9rem; margin-bottom: 20px; }
-  .comment-card { display: flex; gap: 14px; padding: 16px; background: #fffaf5; border: 1px solid #e8d5ba; border-radius: 12px; margin-bottom: 14px; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .comment-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; flex-shrink: 0; }
-  .comment-body { flex: 1; }
-  .comment-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
-  .comment-name { font-weight: 700; font-size: 0.95rem; color: #3b1f0a; }
-  .comment-date { font-size: 0.8rem; color: #b08060; }
-  .comment-text { font-size: 0.95rem; color: #4a3020; line-height: 1.6; margin: 0; white-space: pre-wrap; }
-  .loading-text, .no-comments, .error-text { text-align: center; color: #9a7a5a; padding: 20px 0; font-size: 0.95rem; 
     </style>
 </head>
 <body>
-    <div class="container" id="profile-content">
-        <h2 id="author-name">Жүктелуде...</h2>
-        <img id="photo" src="" alt="">
-        <p id="bio"></p>
-        <div id="work" class="poem-text"></div>
-    </div>
+
+<header>
+    <img id="author-photo" src="images/logo.png" alt="Автор суреті" class="author-img">
+    <h1 id="author-name">Жүктелуде...</h1>
+</header>
+
+<div class="container">
+    <p id="author-bio"></p>
+    <div id="author-work" class="work-section"></div>
+
+<div class="card">
+    <h2>Шығармадан үзінді</h2>
+    <pre id="author-work">Жүктелуде...</pre>
+</div>
+    
+    <button onclick="searchAuthorPoems()" class="back-btn">
+        🔍 Осы автордың барлық шығармалары
+    </button>
+</div>
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-<button onclick="location.href='poets.html'">✍️ Ақындар</button>
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+    <button onclick="location.href='index.html'">🏠 Басты бет</button>
+    <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+    <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+    <button onclick="location.href='poets.html'">✍️ Ақындар</button>
+    <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
 </nav>
-     
-<div id="menu-container"></div>
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // ӨЗІҢНІҢ FIREBASE CONFIG ДЕРЕКТЕРІҢДІ ҚОЙ
-        const firebaseConfig = {
-            apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-            projectId: "adebiet-ordasy",
-            appId: "1:331787955330:web:a77853b5bffdb44bed989b"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id');
-
-        async function getAuthor() {
-            if (id) {
-                const docRef = doc(db, "published_content", id);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById('name').innerText = data.name;
-                    document.getElementById('photo').src = data.photoUrl || 'images/logo.png';
-                    document.getElementById('bio').innerText = data.description;
-                    document.getElementById('work').innerText = data.work;
-                }
-            }
-        }
-        getAuthor();
-    </script>
-
-<!-- Автордың аты шығатын жердің астына қой -->
-<button onclick="searchAuthorPoems()" style="margin-top: 15px; background: #d4af37; color: white; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;">
-  🔍 Осы автордың барлық шығармалары
-</button>
-
-<script>
-  function searchAuthorPoems() {
-    // Автордың атын базадан алынған id арқылы емес, экрандағы аты арқылы аламыз
-    const authorName = document.getElementById('author-name').innerText;
-    // poems.html бетіне автордың атын параметр ретінде жібереміз
-    window.location.href = `poems.html?search=${encodeURIComponent(authorName)}`;
-  }
-</script>
-
-  <script src="js/menu.js"></script>
-     
-<script>
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("show");
-  document.getElementById("overlay").classList.toggle("show");
-}
-</script>
+<!-- Пікірлер бөлімі -->
 <section class="comments-section">
-  <h2 class="comments-title">💬 Пікірлер</h2>
-  <div class="auth-bar">
-    <button id="login-btn" class="auth-btn">
-      <svg width="18" height="18" viewBox="0 0 48 48">
-        <path fill="#4285F4" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.5 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 28.9 5 24 5 13 5 4 14 4 25s9 20 20 20c11 0 20-9 20-20 0-1.5-.2-3-.4-4.5z"/>
-        <path fill="#34A853" d="M6.3 15.7l6.6 4.8C14.5 17 19 14 24 14c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 28.9 5 24 5c-7.7 0-14.3 4.4-17.7 10.7z"/>
-        <path fill="#FBBC05" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.5 36.4 26.9 37 24 37c-5.2 0-9.6-3.4-11.2-8.1l-6.5 5C9.5 40.5 16.2 45 24 45z"/>
-        <path fill="#EA4335" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2C37 39.1 44 34 44 25c0-1.5-.2-3-.4-4.5z"/>
-      </svg>
-      Google арқылы кіру
-    </button>
-    <div id="user-info">
-      <img id="user-photo" src="" alt="avatar">
-      <span id="user-name"></span>
+    <h2 class="comments-title">💬 Пікірлер</h2>
+    <div id="comments-container">
+        <!-- Бұл жерге comments.js пікірлерді шығарады -->
     </div>
-    <button id="logout-btn" class="auth-btn">Шығу</button>
-  </div>
-  <div id="comment-form">
-    <textarea id="comment-input" placeholder="Пікіріңізді жазыңыз..."></textarea>
-    <button id="submit-btn">Жіберу</button>
-  </div>
-  <p id="login-note">Пікір қалдыру үшін Google аккаунтымен кіріңіз.</p>
-  <div id="comments-list"></div>
 </section>
 
-<script type="module" src="comments.js"></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    
-<script>
-// 1. Firebase конфигурациясы (Тырнақшаларды ұмытпа!)
-const firebaseConfig = {
-    apiKey: "AIzaSyC...", // Осы жерді міндетті түрде тырнақшаға ал!
-    authDomain: "adebiet-ordasy.firebaseapp.com",
-    projectId: "adebiet-ordasy",
-    storageBucket: "adebiet-ordasy.appspot.com",
-    messagingSenderId: "776364024545",
-    appId: "1:776364024545:web:..."
-};
+    // ӨЗІҢНІҢ FIREBASE CONFIG ДЕРЕКТЕРІҢДІ ҚОЙ
+    const firebaseConfig = {
+        apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+        authDomain: "adebiet-ordasy.firebaseapp.com",
+        projectId: "adebiet-ordasy",
+        storageBucket: "adebiet-ordasy.appspot.com",
+        messagingSenderId: "776364024545",
+        appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+    };
 
-// 2. Firebase-ті іске қосу
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-// 3. URL-ден автордың ID-ін алу (мысалы: ?id=WjMbm...)
-const urlParams = new URLSearchParams(window.location.search);
-const authorId = urlParams.get('id');
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
 
-// 4. Деректерді базадан тарту функциясы
-function loadAuthorData() {
-    if (!authorId) {
-        console.error("ID табылмады");
-        return;
+    async function loadAuthorData() {
+        if (!id) {
+            console.error("ID табылмады");
+            document.getElementById('author-name').innerText = "Автор табылмады";
+            return;
+        }
+
+        try {
+            const docRef = doc(db, "published_content", id);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                
+                // HTML элементтерін толтыру (ID-лерді тексердім)
+                document.getElementById('author-name').innerText = data.name || "Аты жоқ";
+                document.getElementById('author-bio').innerText = data.description || "Биогрфиясы жоқ";
+                document.getElementById('author-work').innerText = data.work || "";
+                
+                // Суретті салу
+                if (data.photoUrl) {
+                    document.getElementById('author-photo').src = data.photoUrl;
+                }
+            } else {
+                document.getElementById('author-name').innerText = "Құжат табылмады";
+            }
+        } catch (error) {
+            console.error("Қате:", error);
+        }
     }
 
-    db.collection("published_content").doc(authorId).get().then((doc) => {
-        if (doc.exists) {
-            const data = doc.data();
-            
-            // HTML-дегі элементтерді толтыру
-            document.getElementById('author-name').innerText = data.name;
-            
-            // Суретті тексеріп салу
-            const photoImg = document.getElementById('author-photo');
-            if (photoImg && data.photoUrl) {
-                photoImg.src = data.photoUrl;
-            }
+    loadAuthorData();
 
-            // Биографияны салу
-            const bioText = document.getElementById('author-bio');
-            if (bioText) {
-                bioText.innerText = data.description;
-            }
-        } else {
-            document.getElementById('author-name').innerText = "Автор табылмады";
-        }
-    }).catch((error) => {
-        console.error("Қате шықты:", error);
-    });
-}
+    // Жаһандық функция (түйме үшін)
+    window.searchAuthorPoems = function() {
+        const name = document.getElementById('author-name').innerText;
+        window.location.href = `poems.html?search=${encodeURIComponent(name)}`;
+    };
+</script>
 
-// Бет жүктелгенде функцияны іске қосу
-window.onload = loadAuthorData;
-            </script>
+<script src="js/menu.js"></script>
+<script>
+    function toggleMenu(){
+        document.getElementById("menu").classList.toggle("show");
+        document.getElementById("overlay").classList.toggle("show");
+    }
+</script>
+
+<!-- Пікірлер үшін бөлек скрипт (егер ол v10 болса) -->
+<script type="module" src="comments.js"></script>
 
 </body>
 </html>
