@@ -52,6 +52,20 @@
         getAuthor();
     </script>
 
+<!-- Автордың аты шығатын жердің астына қой -->
+<button onclick="searchAuthorPoems()" style="margin-top: 15px; background: #d4af37; color: white; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;">
+  🔍 Осы автордың барлық шығармалары
+</button>
+
+<script>
+  function searchAuthorPoems() {
+    // Автордың атын базадан алынған id арқылы емес, экрандағы аты арқылы аламыз
+    const authorName = document.getElementById('author-name').innerText;
+    // poems.html бетіне автордың атын параметр ретінде жібереміз
+    window.location.href = `poems.html?search=${encodeURIComponent(authorName)}`;
+  }
+</script>
+
   <script src="../js/menu.js"></script>
      
 <script>
