@@ -1,483 +1,171 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Өлеңдер | Әдебиет ордасы</title>
-<meta name="description" content="Әдебиет ордасы сайтындағы қазақ тіліндегі үздік өлеңдер жинағы мен поэзия әлемі.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Өлеңдер | Әдебиет ордасы</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link rel="stylesheet" href="css/menu.css">
+    
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, sans-serif; background: #f4f1ea; color: #333; line-height: 1.5; }
 
-<meta name="keywords" content="әдебиет ордасы, өлеңдер, поэзия, қазақ өлеңдері, ақындар">
-  
-<link rel="icon" href="images/logo.png" type="image/png">
-<link rel="stylesheet" href="css/menu.css">
-  
-<style>
-* {box-sizing:border-box;}
-body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;line-height:1.5;}
+        header {
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+            color: white; text-align: center; padding: 60px 20px;
+        }
+        header h1 { font-size: 42px; margin-bottom: 10px; }
 
-header {
-  background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("images/kazakh-dalasy.jpg") center/cover no-repeat;
-  color:white;
-  text-align:center;
-  padding:50px 20px;
-}
-header h1 {font-size:42px;margin-bottom:10px;}
-header p {font-size:18px;opacity:0.9;}
+        /* SEARCH BOX */
+        .search-box { text-align: center; margin: 30px 0; }
+        .search-box input {
+            width: 85%; max-width: 500px; padding: 12px 15px;
+            font-size: 16px; border-radius: 25px; border: 2px solid #8b5e3c;
+            outline: none; transition: 0.3s;
+        }
+        .search-box input:focus { box-shadow: 0 0 10px rgba(139, 94, 60, 0.3); }
 
-/* NAVIGATION */
-nav {
-  display:none;
-  flex-direction:column;
-  background:#8b5e3c;
-}
-nav button {
-  background:none;
-  border:none;
-  color:white;
-  padding:14px;
-  cursor:pointer;
-  font-size:16px;
-  font-weight:bold;
-  border-top:1px solid rgba(255,255,255,0.2);
-}
-nav button:hover {background:#6e472c;}
-nav.show{display:flex;}
+        section { padding: 0 15px 50px 15px; max-width: 900px; margin: auto; }
+        
+        /* КАРТОЧКАЛАР */
+        .card {
+            background: white; padding: 25px; margin: 20px 0;
+            border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer; transition: 0.3s; border-left: 5px solid #8b5e3c;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .card h2 { color: #5c4033; font-size: 22px; margin: 0 0 10px 0; }
+        .card pre {
+            white-space: pre-wrap; word-wrap: break-word;
+            font-family: 'Georgia', serif; font-size: 16px; color: #555;
+            display: -webkit-box; -webkit-line-clamp: 4; /* Тек 4 жол көрсетеді */
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .read-more { display: inline-block; margin-top: 15px; color: #8b5e3c; font-weight: bold; text-decoration: none; }
 
-/* SEARCH BOX */
-.search-box {
-  text-align:center;
-  margin:20px 0;
-}
-.search-box input {
-  width:80%;
-  max-width:400px;
-  padding:10px 12px;
-  font-size:16px;
-  border-radius:5px;
-  border:1px solid #ccc;
-}
+        .loading { text-align: center; font-size: 1.2rem; color: #8b5e3c; padding: 40px; }
 
-section {padding:0 15px 50px 15px; max-width:900px; margin:auto;}
-.card {
-  background:white;
-  padding:20px;
-  margin:15px 0;
-  border-radius:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-.card h2 {color:#5c4033; font-size:20px; margin-bottom:10px;}
-.card pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-family: 'Georgia', serif;
-  font-size:16px;
-  margin-bottom:10px;
-}
-.card a {
-  display:inline-block;
-  margin-top:10px;
-  color:#8b5e3c;
-  font-weight:bold;
-  text-decoration:none;
-}
-.card a:hover {text-decoration:underline;}
+        footer { background: #5c4033; color: white; text-align: center; padding: 20px; font-size: 14px; }
 
-.card {
-  cursor: pointer;
-  transition: 0.3s;
-}
-.card:hover {
-  transform: translateY(-5px);
-}
-  
-footer {
-  background:#5c4033;
-  color:white;
-  text-align:center;
-  padding:15px;
-  margin-top:30px;
-  font-size:14px;
-}
-
-@media(max-width:800px){
-  .menu-btn{display:block;}
-  nav{display:none;}
-  nav.show{display:flex;}
-}
-@media(max-width:600px){
-  nav button {width:90%; margin:3px 0;}
-  .search-box input {width:95%;}
-  .card h2 {font-size:18px;}
-  .card pre {font-size:15px;}
-}
-</style>
+        @media(max-width:600px){
+            header h1 { font-size: 30px; }
+            .card h2 { font-size: 18px; }
+        }
+    </style>
 </head>
 <body>
 
 <header>
-<h1>📚 Әдебиет ордасы</h1>
-<p>Қазақ руханиятының әдеби ордасы</p>
+    <h1>📚 Әдебиет ордасы</h1>
+    <p>Қазақ руханиятының әдеби ордасы</p>
 </header>
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
-
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-
-<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-
-<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-
-<button onclick="location.href='poets.html'">✍️ Ақындар</button>
-
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-
-<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-
+    <button onclick="location.href='index.html'">🏠 Басты бет</button>
+    <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+    <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+    <button onclick="location.href='poets.html'">✍️ Ақындар</button>
+    <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+    <button onclick="location.href='contact.html'">📩 Байланыс</button>
 </nav>
-  
+
 <div class="search-box">
-<input type="text" id="searchInput" placeholder="Іздеу авторлар мен шығармалар бойынша...">
+    <input type="text" id="searchInput" placeholder="Автор немесе өлең атымен іздеу...">
 </div>
 
-<section>
-  <div class="card" onclick="location.href='create/esine-meni-algaysyn.html'">
-    <h2>Мұқағали Мақатаев "Есіңе мені алғайсың"</h2>
-    <pre>
-     Нұр жауып тұрған көктемде,
-     Гүл тере барсаң бөктерге,
-     Қоңыраулатқан аспанды
-     Найзағай шаншып өткенде,
-     Есіңе мені алғайсың?
-    </pre>
-    <a href="create/esine-meni-algaysyn.html">Толығырақ →</a>
-  </div>
-
- <div class="card" onclick="location.href='create/carlygashym-keldin-be.html'">
-    <h2>Мұқағали Мақатаев "Қарлығашым келдің бе?"</h2>
-    <pre>
-    Қарлығашым, келдің бе, қаршығадан саумысың?
-    Аман-есен жеттің бе, айыр құйрық нау-құсым?
-    Оралдың ба, тағы да өзің өскен ұяға,
-    Оралдың ба, сүйіктім, екеуің де бармысың?
-    </pre>
-    <a href="create/carlygashym-keldin-be.html">Толығырақ →</a>
-  </div>
-
-   <div class="card" onclick="location.href='create/bulkynyp-jatyr.html'">
-    <h2>Мұқағали Мақатаев "Бұлқынып жатыр"</h2>
-    <pre>
-     Бұлқынып жатыр.
-     Келмейді-ау құрғыр шамасы,
-     Бұлқынып жатыр.
-     Таусылды-ау айла-шарасы.
-    <a href="create/bulkynyp-jatyr.html">Толығырақ →</a>
-  </div>
-
-
-  <div class="card" onclick="location.href='create/keta-balyktyn-erligi.html'">
-    <h2> Мұхтар Шаханов "Кета балықтың ерлігі"</h2>
-    <pre>
-    Өріс ашқан сан кеме, сан қайыққа
-    Біздің сонау айтолқын Ақжайықта
-    Кета деген балық бар.
-    Уылдырық шашар кезде сол балық.
-    </pre>
-    <a href="create/keta-balyktyn-erligi.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/mangurt.html'">
-    <h2> Мұхтар Шаханов "Мәңгүрттенбеу марсельезасы"</h2>
-    <pre>
-    Қазақ ұлты, мың сүрініп, мың жығылып, мың тұрған,
-    Даңқыңды ешкім бүркей алмас ізгілікке ұмтылған.
-    Жомарттығың сорға айналып, туып өскен жеріңде,
-    Ана тілің шетте қалды, орын жетпей төріңде.
-    </pre>
-    <a href="create/mangurt.html">Толығырақ →</a>
-  </div>
-  
- <div class="card" onclick="location.href='create/ustazdarga.html'">
-    <h2>Еркін Жұмабекұлы "Ұстаздарға"</h2>
-    <pre>
-     Білімге арнап өмірін,
-     Таңдамай кәсіп жеңілін,
-     Нұр таңы болып үйінің,
-     Ұлтаны болған елінің.
-    </pre>
-    <a href="create/ustazdarga.html">Толығырақ →</a>
-  </div>
-
- <div class="card" onclick="location.href='create/ruh-pen-til.html'">
-    <h2> Мұхтар Шаханов "Рух пен Тіл"</h2>
-    <pre>
-    Табиғаттың өзгермейтін заңына бұр бетіңді,
-    Қай кезде де туған тілің туған анаң секілді.
-    Бабалардың арманы бар мына қызыл гүлдерде,
-    Олар елін, тілін қорғап жанын қиған бұл жерде.
-    </pre>
-    <a href="create/ruh-pen-til.html">Толығырақ →</a>
-  </div>
-  
-  <div class="card" onclick="location.href='create/oyan-kazakh.html'">
-    <h2>Міржақып Дулатұлы "Оян қазақ"</h2>
-    <pre>
-     Көзіңді аш, оян қазақ, көтер басты,
-     Өткізбей қараңғыда бекер жасты.
-     Жер кетті, дін нашарлап, хал арам боп,
-     Қарағым, енді жату жарамас-ты.
-    </pre>
-    <a href="create/oyan-kazakh.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/adamdyk-dikanshysy.html'">
-    <h2>Ахмет Байтұрсынұлы "Адамдық диқаншысы"</h2>
-    <pre>
-     Адамдық диқаншысы қырға шықтым,
-     Көлі жоқ, көгалы жоқ құрға шықтым.
-     Тұқымын адамдықтың шаштым, ектім,
-     Көңілін көгертуге құл халықтың.
-    </pre>
-    <a href="create/adamdyk-dikanshysy.html">Толығырақ →</a>
-  </div>
-
- <div class="card" onclick="location.href='create/men-zhastarga-senemin.html'">
-    <h2>Мағжан Жұмабаев "Мен жастарға сенемін!"</h2>
-    <pre>
-    Арыстандай айбатты,
-    Жолбарыстай қайратты –
-    Қырандай күштi қанатты.
-    Мен жастарға сенемiн!
-    </pre>
-    <a href="create/men-zhastarga-senemin.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/burabai.html'">
-    <h2>Сәкен Сейфуллин "Бурабай"</h2>
-    <pre>
-   Тағы бір ақбас бура, - емес атан,
-   Жүріпті Көкшетауды қылып Отан.
-   Мұны да "көзі көрген" қартайтады,
-   Тыңдаған әлеуметке алқа-қотан.
-    </pre>
-    <a href="create/burabai.html">Толығырақ →</a>
-</div>
-
- <div class="card" onclick="location.href='create/nura.html'">
-    <h2>Сәкен Сейфуллин "Нұра"</h2>
-    <pre>
-    Сағынып, Нұра, мен келдім,
-    Бұрынғы иең — байғұстың.
-    Айрылған сенен көп елдің
-    Жатырсың көрмей қайғысын.
-    </pre>
-    <a href="create/nura.html">Толығырақ →</a>
-</div>
-
- <div class="card" onclick="location.href='create/zhailauga-koshu.html'">
-    <h2>Сәкен Сейфуллин "Жайлауға көшу"</h2>
-    <pre>
-    Ел көшкенде кең жайлауға таласып,
-    Жүк артысар аяқтарын тез басып,
-    Таң белгісі білінгенде сарғайып,
-    Ақырындап дүниеге нұр шашып.
-    </pre>
-    <a href="create/zhailauga-koshu.html">Толығырақ →</a>
-</div>
-  
- <div class="card" onclick="location.href='create/tutkyn.html'">
-    <h2>Мағжан Жұмабаев "Тұтқын"</h2>
-    <pre>
-    Кеудеде – от, iште – жалын, көзде – жас,
-    Күнi-түнi қайғы жұтқан сорлы бас.
-    Сабан төсек, дым, қараңғы жатағы,
-    Наны қара, шайы қара, қарны аш.
-    </pre>
-    <a href="create/tutkyn.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/zhurektesin.html'">
-    <h2>Бақдәулет Арыстан "Жүректесің"</h2>
-    <pre>
-     Көрінбейді көріктім көзің мүлде,
-     Сені ойға алып айтылар сөзім бірде.
-     Сені есімнен шығарам деп жүргенде,
-     Есім шығып кетіпті өзімніңде.
-    </pre>
-    <a href="create/zhurektesin.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/sharshadym.html'">
-    <h2>Бақдәулет Арыстан "Шаршадым"</h2>
-    <pre>
-     Кездесейік көріктім кездесейік,
-     Бірімізден алыстап кете бермей
-     Кеттің бе? Тез бойжетіп, лезде есейіп.
-     Кеудеңді көк аспанға көтерердей,
-    </pre>
-    <a href="create/sharshadym.html">Толығырақ →</a>
-    </div>
-
-   <div class="card" onclick="location.href='create/men-sagan.html'">
-    <h2>Бақдәулет Арыстан "Мен саған"</h2>
-    <pre>
-     Сен мені ойламайсың оны білем,
-     Сен мені түсінбейсің толығымен!
-     Мен саған ақ бозатпен барғым келед
-     Басқа жан келіп тұрса көлігімен.
-    </pre>
-    <a href="create/men-sagan.html">Толығырақ →</a>
-  </div>
-
-
-  <div class="card">
-    <h2>Еркін Жұмабекұлы "Сенім"</h2>
-    <pre>
-     Тағдыр қатал деп жүрегім қуарма,
-     Қайғы келсе, бақыт күтіп тұр алда.
-     Жығылуың  жығуыңа бір себеп,
-     Қазіргі сәт ертең қайта туар ма?
-    </pre>
-    <a href="create/senim.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/omir-kures.html'">
-    <h2>Еркін Жұмабекұлы "Өмір-күрес"</h2>
-    <pre>
-     Төсек пе едің жайылар кімге болсын,
-     Есептегін, болашақ болар тосын.
-     Жаман десе, жаман боп қалмайсың ғой,
-     Өсекте кім, қалмайды айтшы досым?
-    </pre>
-    <a href="create/omir-kures.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/kobylandy-batyr.html'">
-    <h2>Мұхтар Әуезов "Қобыланды батыр"</h2>
-    <pre>
-     Қараман айтты: — Құрдасжан,
-     Мен, Сейілдің ұлы Қараман!
-     Қазанға кетіп барамын,
-     Жүрмейсің бе, құрдасжан?
-    </pre>
-    <a href="create/kobylandy-batyr.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/konilim.html'">
-    <h2>Сәбит Мұқанов "Көңілім"</h2>
-    <pre>
-     Көңілім, мұнша қамықтың,
-     Әр нәрсені ойға сап.
-     Не нәрседен тарықтың?
-     Осыншама ойда қап.
-    </pre>
-    <a href="create/konilim.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/uly-kosh.html'">
-    <h2>Жамбыл Жабаев "Ұлы көш"</h2>
-    <pre>
-     Кавказ бен Алтай, Алатау,
-     Асқар, асу белімсің,
-     Шығысым — қиыр зор тайга,
-     Құрсанған болат темірсің.
-    </pre>
-    <a href="create/uly-kosh.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/bik-shyn.html'">
-    <h2>Марқабай Диас "Биік шың"</h2>
-    <pre>
-      Шығып бірде Алатаудың шыңына,
-      Көз тастадым Алматының маңына.
-      Табиғатты етіп алып сырласым,
-      Тәнті болдым Алматының халқына.
-    </pre>
-    <a href="create/bik-shyn.html">Толығырақ →</a>
-  </div>
-
-  
-  <div class="card" onclick="location.href='create/almaty-arman-kala.html'">
-    <h2>Құдайбергенов Дархан "Алматы-арман қала"</h2>
-    <pre>
-      Арман қалам, ару қалам, гүл қалам,
-      Сен дегенде өз-өзімнен нұрланам.
-      Дәл өзіңдей туған анам секілді,
-      Мейірімін төгеді екен кім маған?....
-    </pre>
-    <a href="create/almaty-arman-kala.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/kozimnin-karasy.html'">
-    <h2>Абай Құнанбайұлы "Көзімнің қарасы"</h2>
-    <pre>
-     Көзімнің қарасы,
-     Көңілімнің санасы.
-     Бітпейді іштегі,
-     Ғашықтық жарасы.
-    </pre>
-    <a href="create/kozimnin-karasy.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/uly-ustaz.html'">
-    <h2>Марқабай Диас "Ұлы ұстаз"</h2>
-    <pre>
-     Кешірген жастығымды, мастығымды,
-     Кешірген еркелікті азды-көпті.
-     Білмеймін, қатты бұзық болғанмын ба,
-     Ұстазымның самайына ақ түсіпті.
-    </pre>
-    <a href="create/uly-ustaz.html">Толығырақ →</a>
-  </div>
-
- <div class="card" onclick="location.href='create/izgy-izdenis.html'">
-    <h2>Марқабай Диас "Ізгі ізденіс"</h2>
-    <pre>
-     Қанша тағдыр бір-бірімен тоғысқан,
-     Танығандар жұптарымен табысқан.
-     Қанша жанның ішінен тапты екен,
-     Рухтардың арасынан жан ұшқан
-    </pre>
-    <a href="create/izgy-izdenis.html">Толығырақ →</a>
-  </div>
-
-  <div class="card" onclick="location.href='create/baurlarym.html'">
-    <h2>Марқабай Диас "Бауырларым"</h2>
-    <pre>
-     Тай құлындай тебісіп бірге өскен,
-     Перзенті едік асылдардың көпті көрген.
-     Қайран қарттар үйретті ау, бар білгенін,
-     Сүрінеді екен деп неше жерден.
-    </pre>
-    <a href="create/baurlarym.html">Толығырақ →</a>
-  </div>
+<section id="poems-container">
+    <div class="loading">Өлеңдер базадан жүктелуде...</div>
 </section>
 
-
 <footer>
-© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+    © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-<script src="search.js"></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+        authDomain: "adebiet-ordasy.firebaseapp.com",
+        projectId: "adebiet-ordasy",
+        storageBucket: "adebiet-ordasy.appspot.com",
+        messagingSenderId: "776364024545",
+        appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let allPoems = [];
+
+    async function fetchPoems() {
+        const container = document.getElementById('poems-container');
+        try {
+            const querySnapshot = await getDocs(collection(db, "published_content"));
+            allPoems = [];
+            
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.work) { // Тек өлеңі бар жазбаларды аламыз
+                    allPoems.push({ id: doc.id, ...data });
+                }
+            });
+
+            renderPoems(allPoems);
+        } catch (error) {
+            console.error("Firebase қатесі:", error);
+            container.innerHTML = "<p>Өлеңдерді жүктеу кезінде қате кетті.</p>";
+        }
+    }
+
+    function renderPoems(poemsList) {
+        const container = document.getElementById('poems-container');
+        container.innerHTML = "";
+
+        if (poemsList.length === 0) {
+            container.innerHTML = "<p style='text-align:center;'>Өлең табылмады.</p>";
+            return;
+        }
+
+        poemsList.forEach(poem => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            // Басқанда автордың жеке профиліне өтеді
+            card.onclick = () => location.href = `author-profile.html?id=${poem.id}`;
+
+            card.innerHTML = `
+                <h2>${poem.name} "${poem.workTitle || 'Өлең'}"</h2>
+                <pre>${poem.work}</pre>
+                <span class="read-more">Толығырақ →</span>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Іздеу логикасы
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = allPoems.filter(p => 
+            p.name.toLowerCase().includes(term) || 
+            (p.workTitle && p.workTitle.toLowerCase().includes(term))
+        );
+        renderPoems(filtered);
+    });
+
+    fetchPoems();
+</script>
 
 <script>
-
-function toggleMenu(){
-document.getElementById("menu").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-
+    function toggleMenu(){
+        document.getElementById("menu").classList.toggle("show");
+        document.getElementById("overlay").classList.toggle("show");
+    }
 </script>
 
 </body>
 </html>
-
-
-
