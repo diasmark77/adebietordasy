@@ -2,7 +2,7 @@
 <html lang="kk">
 <head>
     <meta charset="UTF-8">
-    <title>Автор профилі</title>
+    <title>Автор профилі | Әдебиет ордасы</title>
     <link rel="stylesheet" href="/adebietordasy/css/menu.css">
     <link rel="icon" href="/adebietordasy/images/logo.png" type="image/png">
          <link rel="stylesheet" href="/adebietordasy/css/style.css">
@@ -162,6 +162,10 @@ function toggleMenu(){
 
 <script type="module" src="/adebietordasy/comments.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    
 <script>
 // 1. Firebase конфигурациясы (Тырнақшаларды ұмытпа!)
 const firebaseConfig = {
@@ -219,5 +223,6 @@ function loadAuthorData() {
 // Бет жүктелгенде функцияны іске қосу
 window.onload = loadAuthorData;
             </script>
+
 </body>
 </html>
