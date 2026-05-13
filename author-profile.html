@@ -85,7 +85,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // ӨЗІҢНІҢ FIREBASE CONFIG ДЕРЕКТЕРІҢДІ ҚОЙ
+    // Firebase конфигурациясы
     const firebaseConfig = {
         apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
         authDomain: "adebiet-ordasy.firebaseapp.com",
@@ -103,8 +103,7 @@
 
     async function loadAuthorData() {
         if (!id) {
-            console.error("ID табылмады");
-            document.getElementById('author-name').innerText = "Автор табылмады";
+            document.getElementById('author-name').innerText = "ID табылмады";
             return;
         }
 
@@ -115,33 +114,45 @@
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 
-                // HTML элементтерін толтыру (ID-лерді тексердім)
-                document.getElementById('author-name').innerText = data.name || "Аты жоқ";
-                document.getElementById('author-bio').innerText = data.description || "Биогрфиясы жоқ";
-                document.getElementById('author-work').innerText = data.work || "";
+                // 1. Аты мен Биографиясы
+                document.getElementById('author-name').innerText = data.name || "Аты жазылмаған";
+                document.getElementById('author-bio').innerText = data.description || "Мәлімет жоқ";
                 
-                // Суретті салу
+                // 2. СУРЕТТІ ШЫҒАРУ (ID-ді тексер: author-photo)
+                const photoImg = document.getElementById('author-photo');
                 if (data.photoUrl) {
-                    document.getElementById('author-photo').src = data.photoUrl;
+                    photoImg.src = data.photoUrl;
                 }
+
+                // 3. ӨЛЕҢДІ/ҮЗІНДІНІ ШЫҒАРУ (ID: author-work)
+                const workBox = document.getElementById('author-work');
+                if (data.work) {
+                    workBox.innerText = data.work;
+                } else {
+                    // Егер өлең жоқ болса, бұл бөлімді жасырамыз
+                    workBox.parentElement.style.display = 'none';
+                }
+
             } else {
-                document.getElementById('author-name').innerText = "Құжат табылмады";
+                document.getElementById('author-name').innerText = "Автор табылмады";
             }
         } catch (error) {
-            console.error("Қате:", error);
+            console.error("Дерек алу қатесі:", error);
         }
     }
 
-    loadAuthorData();
-
-    // Жаһандық функция (түйме үшін)
+    // Батырма жұмыс істеуі үшін функцияны жаһандық деңгейге шығару
     window.searchAuthorPoems = function() {
         const name = document.getElementById('author-name').innerText;
         window.location.href = `poems.html?search=${encodeURIComponent(name)}`;
     };
-</script>
 
+    // Бет жүктелгенде іске қосу
+    loadAuthorData();
+</script>
+    
 <script src="js/menu.js"></script>
+    
 <script>
     function toggleMenu(){
         document.getElementById("menu").classList.toggle("show");
