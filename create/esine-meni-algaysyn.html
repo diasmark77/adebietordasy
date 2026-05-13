@@ -63,6 +63,192 @@ pre { white-space: pre-wrap; font-family: Arial, sans-serif; background:#fafafa;
 <body>
 <img src="../images/mukagali.jpg" alt="Мұқағали Мақатаев" class="author-img">
 
+<!-- ========== МУЗЫКАЛЫҚ ПЛЕЕР — авторының суретінен кейін осыны қойыңыз ========== -->
+
+<div style="text-align:center; margin: 16px 0 0;">
+  <button id="zhurek-toggle" onclick="togglePlayer()" style="
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #8B4513;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(139,46,46,0.25);
+    transition: opacity 0.15s;
+  ">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm-2 13V8l6 4-6 4z"/></svg>
+    Әнді тыңдау
+  </button>
+</div>
+
+<div id="zhurek-player-wrap" style="
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  opacity: 0;
+">
+  <div style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    background: #fdf6f0;
+    border: 1px solid #d4a97a;
+    border-radius: 16px;
+    padding: 20px 24px;
+    max-width: 360px;
+    margin: 14px auto 0;
+    box-shadow: 0 2px 12px rgba(139,69,19,0.08);
+  ">
+    <!-- ✅ ТҮЗЕТУ 1: preload="none" → preload="metadata" -->
+    <audio id="zhurek-audio" src="https://res.cloudinary.com/dz8wbqvn1/video/upload/v1778681852/esine_meni_algysyn_h3ei8t.mp3" preload="metadata"></audio>
+
+    <div style="font-size:15px; font-weight:600; color:#5a2a00;">🎵 Есіңе мені алғайсың-М.Мақатаев өз дауысы</div>
+
+    <div style="display:flex; align-items:center; gap:10px; width:100%;">
+      <span id="zhurek-cur" style="font-size:12px; color:#999; min-width:32px; text-align:center;">0:00</span>
+      <input type="range" id="zhurek-seek" min="0" max="100" step="0.1" value="0"
+        style="flex:1; accent-color:#8B4513; cursor:pointer;">
+      <span id="zhurek-dur" style="font-size:12px; color:#999; min-width:32px; text-align:center;">0:00</span>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:16px;">
+
+      <button onclick="zhurekRew()" title="10 сек кері" style="
+        width:38px; height:38px; border-radius:50%;
+        border:1.5px solid #c8914f; background:none;
+        color:#7a2020; cursor:pointer;
+        display:flex; align-items:center; justify-content:center;
+      ">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 .49-3.28"/>
+        </svg>
+      </button>
+
+      <button id="zhurek-play" onclick="zhurekPlayPause()" title="Ойнату / Пауза" style="
+        width:52px; height:52px; border-radius:50%;
+        background:#8B4513; border:none; color:#fff;
+        cursor:pointer; display:flex; align-items:center; justify-content:center;
+        box-shadow:0 2px 8px rgba(139,69,19,0.35);
+      ">
+        <svg id="zhurek-play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5,3 19,12 5,21"/>
+        </svg>
+        <svg id="zhurek-pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+          <rect x="6" y="4" width="4" height="16"/>
+          <rect x="14" y="4" width="4" height="16"/>
+        </svg>
+      </button>
+
+      <button onclick="zhurekFwd()" title="10 сек алға" style="
+        width:38px; height:38px; border-radius:50%;
+        border:1.5px solid #8B4513; background:none;
+        color:#8B4513; cursor:pointer;
+        display:flex; align-items:center; justify-content:center;
+      ">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-.49-3.28"/>
+        </svg>
+      </button>
+
+    </div>
+
+    <a href="https://res.cloudinary.com/dz8wbqvn1/video/upload/v1778681852/esine_meni_algysyn_h3ei8t.mp3"
+       download="🎵 Есіңе мені алғайсың-М.Мақатаев өз дауысы"
+       style="
+         display:inline-flex; align-items:center; gap:6px;
+         font-size:13px; color:#8b2e2e; text-decoration:none;
+         border:1px solid #d4a090; border-radius:8px;
+         padding:6px 16px; transition:background 0.15s;
+       "
+       onmouseover="this.style.background='#fdecea'"
+       onmouseout="this.style.background='none'">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Жүктеп алу
+    </a>
+  </div>
+</div>
+
+<script>
+var zhurekOpen = false;
+var zhurekAudio = document.getElementById('zhurek-audio');
+var zhurekSeek  = document.getElementById('zhurek-seek');
+var zhurekCur   = document.getElementById('zhurek-cur');
+var zhurekDur   = document.getElementById('zhurek-dur');
+
+function togglePlayer() {
+  var wrap = document.getElementById('zhurek-player-wrap');
+  var btn  = document.getElementById('zhurek-toggle');
+  zhurekOpen = !zhurekOpen;
+  if (zhurekOpen) {
+    if (zhurekAudio.readyState === 0) {
+      zhurekAudio.load();
+    }
+    wrap.style.maxHeight = '400px';
+    wrap.style.opacity   = '1';
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H7.83l4.88-4.88c.39-.39.39-1.03 0-1.42-.39-.39-1.02-.39-1.41 0l-6.59 6.59c-.39.39-.39 1.02 0 1.41l6.59 6.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.83 13H19c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg> Жабу';
+  } else {
+    wrap.style.maxHeight = '0';
+    wrap.style.opacity   = '0';
+    zhurekAudio.pause();
+    document.getElementById('zhurek-play-icon').style.display  = '';
+    document.getElementById('zhurek-pause-icon').style.display = 'none';
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm-2 13V8l6 4-6 4z"/></svg> Әнді тыңда';
+  }
+}
+
+function zhurekPlayPause() {
+  if (zhurekAudio.paused) {
+    zhurekAudio.play();
+    document.getElementById('zhurek-play-icon').style.display  = 'none';
+    document.getElementById('zhurek-pause-icon').style.display = '';
+  } else {
+    zhurekAudio.pause();
+    document.getElementById('zhurek-play-icon').style.display  = '';
+    document.getElementById('zhurek-pause-icon').style.display = 'none';
+  }
+}
+
+function zhurekRew() { zhurekAudio.currentTime = Math.max(0, zhurekAudio.currentTime - 10); }
+function zhurekFwd() { zhurekAudio.currentTime = Math.min(zhurekAudio.duration || 0, zhurekAudio.currentTime + 10); }
+
+function zhurekFmt(s) {
+  s = Math.floor(s || 0);
+  var m = Math.floor(s / 60), sec = s % 60;
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+zhurekAudio.addEventListener('timeupdate', function() {
+  if (zhurekAudio.duration) zhurekSeek.value = (zhurekAudio.currentTime / zhurekAudio.duration) * 100;
+  zhurekCur.textContent = zhurekFmt(zhurekAudio.currentTime);
+});
+zhurekAudio.addEventListener('loadedmetadata', function() {
+  zhurekDur.textContent = zhurekFmt(zhurekAudio.duration);
+});
+zhurekAudio.addEventListener('ended', function() {
+  document.getElementById('zhurek-play-icon').style.display  = '';
+  document.getElementById('zhurek-pause-icon').style.display = 'none';
+  zhurekSeek.value = 0;
+  zhurekCur.textContent = '0:00';
+});
+zhurekSeek.addEventListener('input', function() {
+  if (zhurekAudio.duration) zhurekAudio.currentTime = (zhurekSeek.value / 100) * zhurekAudio.duration;
+});
+</script>
+
+<!-- ========== ПЛЕЕР АЯҚТАЛДЫ ========== -->
+     
+
 <div id="menu-container"></div>
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
