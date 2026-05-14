@@ -5,89 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="dynamic-title">Жүктелуде... | Әдебиет ордасы</title>
     
-    <!-- СЫРТТАН КЕЛЕТІН CSS -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/menu.css">
-    
-    
 </head>
 <body>
 
-    <!-- 1) МЕНЮ БАТЫРМАСЫ ЖӘНЕ МЕНЮ (Сыртқы JS арқылы жүктеледі) -->
+    <!-- 1. Контейнерлер (Функциялар осы жерлерге дерек салады) -->
     <div id="menu-container"></div>
-
-    <!-- 3) АВТОР СУРЕТІ -->
     <div id="author-image-container" class="author-img-wrapper"></div>
-
-    <!-- 4) ӘН ТЫҢДАУ БАТЫРМАСЫ ЖӘНЕ ПЛЕЕР (Сыртқы JS) -->
     <div id="audio-player-container"></div>
 
-    <!-- 5) ӨЛЕҢНІҢ ӨЗІ -->
     <div class="card">
         <h2 id="poem-title-display"></h2>
-        <pre id="poem-content-display"></pre>
+        <pre id="poem-content-display" style="white-space: pre-wrap; font-family: inherit;"></pre>
     </div>
 
-    <!-- 6) АВТОР БЕТІНЕ ЖӘНЕ ӨЛЕҢДЕРГЕ ҚАЙТУ БАТЫРМАЛАРЫ -->
     <div id="navigation-buttons" class="nav-wrapper"></div>
-
-    <!-- 7) СІЗГЕ ҰНАУЫ МҮМКІН (Сыртқы JS) -->
     <div id="related-poems-container"></div>
-
-    <!-- 8) ПІКІР ЖАЗУ (Сыртқы JS) -->
     <section id="comments-section" class="comments-section"></section>
-
-    <!-- 2) ЖОҒАРЫ-ТӨМЕН БАТЫРМАЛАРЫ (Сыртқы JS) -->
     <div id="scroll-tools-container"></div>
 
+    <!-- 2. Скрипттерді жүктеу (Реттілік маңызды!) -->
+    <script src="../js/menu.js"></script>
+    <script src="../js/audio-script.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script src="../js/related.js"></script>
+    <script src="../js/scroll-tools.js"></script>
 
-<div id="audio-player-container"></div>
-
-    <!-- НЕГІЗГІ ЛОГИКА (FIREBASE ЖӘНЕ ДЕРЕКТЕРДІ ТАРАТУ) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = { /* СЕНІҢ CONFIG */ };
+        // ✅ ОСЫ ЖЕРГЕ FIREBASE-ТЕН ӨЗ КОНФИГІҢДІ КӨШІРІП ҚОЙ!
+        const firebaseConfig = { 
+            apiKey: "AIza...",
+            authDomain: "adebiet-ordasy.firebaseapp.com",
+            projectId: "adebiet-ordasy",
+            storageBucket: "adebiet-ordasy.appspot.com",
+            messagingSenderId: "...",
+            appId: "..."
+        };
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id');
-
         async function initPage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
             if (!id) return;
-            const docRef = doc(db, "published_content", id);
-            const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()) {
-                const data = docSnap.data();
+            try {
+                const docRef = doc(db, "published_content", id);
+                const docSnap = await getDoc(docRef);
 
-                // Мәліметтерді тарату
-                document.getElementById('poem-title-display').innerText = data.workTitle;
-                document.getElementById('poem-content-display').innerText = data.work;
-                document.getElementById('dynamic-title').innerText = data.workTitle + " | Әдебиет ордасы";
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
 
-                // СЫРТҚЫ СКРИПТТЕРДІ ІСКЕ ҚОСУ
-                // Бұл функциялар сыртқы файлдарда жазылады
-                renderAuthorImage(data.authorImg);
-                renderAudioPlayer(data.audioUrl, data.workTitle);
-                renderNavButtons(data.authorPageUrl);
+                    // Мәтіндік деректерді толтыру
+                    document.getElementById('poem-title-display').innerText = data.workTitle || "";
+                    document.getElementById('poem-content-display').innerText = data.work || "";
+                    document.title = (data.workTitle || "Өлең") + " | Әдебиет ордасы";
+
+                    // Функцияларды іске қосу
+                    if (data.audioUrl && typeof initDynamicPlayer === "function") {
+                        initDynamicPlayer(data); // Плеерді іске қосу
+                    }
+
+                    // Сыртқы файлдардағы басқа функциялар
+                    if (window.renderAuthorImage) renderAuthorImage(data.authorImg);
+                    if (window.renderNavButtons) renderNavButtons(data.authorPageUrl);
+                }
+            } catch (error) {
+                console.error("Қате:", error);
             }
         }
         initPage();
     </script>
 
-    <!-- СЫРТҚЫ ЖҮЙЕЛІК СКРИПТТЕР -->
-    <script src="../js/menu.js"></script>
-    <script src="../js/player-logic.js"></script>
-    <script src="../js/navigation.js"></script>
-    <script src="../js/related.js"></script> <!-- Сізге ұнауы мүмкін -->
-    <script type="module" src="../js/comments.js"></script> <!-- Пікірлер -->
-    <script src="../js/scroll-tools.js"></script> <!-- Жоғары-төмен -->
-
-
-<script src="../js/audio-script.js"></script>
-    
+    <script type="module" src="../js/comments.js"></script>
 </body>
 </html>
