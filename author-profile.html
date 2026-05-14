@@ -3,203 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Автор профилі | Әдебиет ордасы</title>
-    <link rel="stylesheet" href="css/menu.css">
-    <link rel="icon" href="images/logo.png" type="image/png">
+    <title id="dynamic-title">Жүктелуде... | Әдебиет ордасы</title>
     
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f4f1ea; color: #333; line-height: 1.6; }
-        header { text-align: center; padding: 40px 20px; background: #5c4033; color: white; }
-        
-        .author-img { 
-            width: 100%; max-width: 320px; height: auto; 
-            border-radius: 15px; margin: 20px 0; 
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3); 
-            border: 4px solid white;
-        }
-
-        .container { 
-            width: 90%; max-width: 800px; 
-            margin: -30px auto 20px; background: white; 
-            padding: 25px; border-radius: 15px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
-            position: relative; 
-            box-sizing: border-box;
-        }
-
-        h1#author-name { margin: 10px 0; font-size: 1.8rem; }
-        #author-bio { font-size: 1.05rem; color: #444; margin-bottom: 25px; }
-        
-        .work-section { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
-        .work-title { color: #5c4033; font-size: 1.4rem; margin-bottom: 15px; }
-        
-        pre#author-work {
-            white-space: pre-wrap; 
-            font-family: 'Times New Roman', serif; 
-            background: #fafafa; 
-            padding: 15px; 
-            border-radius: 10px; 
-            border-left: 5px solid #d4af37; 
-            font-size: 1rem;
-            color: #2c3e50;
-            overflow-x: auto;
-        }
-
-        .back-btn { display: inline-block; margin-top: 20px; padding: 12px 20px; background: #d4af37; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; font-size: 0.9rem; }
-
-        /* Пікірлер бөлімі стилі */
-          .comments-section { max-width: 760px; margin: 60px auto 40px; padding: 0 20px; font-family: 'Segoe UI', sans-serif; }
-  .comments-title { font-size: 1.4rem; font-weight: 700; color: #3b1f0a; border-bottom: 2px solid #c8a06a; padding-bottom: 10px; margin-bottom: 24px; }
-  .auth-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-  #user-info { display: none; align-items: center; gap: 10px; }
-  #user-photo { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; }
-  #user-name { font-size: 0.95rem; color: #3b1f0a; font-weight: 600; }
-  .auth-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  #login-btn { background: #4285f4; color: #fff; }
-  #login-btn:hover { background: #2f6fd8; }
-  #logout-btn { display: none; background: #f1e8db; color: #7a4520; }
-  #logout-btn:hover { background: #e2d0bb; }
-  #comment-form { display: none; margin-bottom: 28px; }
-  #comment-input { width: 100%; min-height: 90px; padding: 12px 14px; border: 1.5px solid #d4b896; border-radius: 10px; font-size: 0.95rem; color: #2c1a0a; background: #fffaf5; resize: vertical; box-sizing: border-box; font-family: inherit; transition: border-color 0.2s; }
-  #comment-input:focus { outline: none; border-color: #a0622a; }
-  #submit-btn { margin-top: 10px; padding: 10px 24px; background: #8B4513; color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-  #submit-btn:hover { background: #6b3410; }
-  #submit-btn:disabled { background: #c4a882; cursor: not-allowed; }
-  #login-note { color: #9a7a5a; font-size: 0.9rem; margin-bottom: 20px; }
-  .comment-card { display: flex; gap: 14px; padding: 16px; background: #fffaf5; border: 1px solid #e8d5ba; border-radius: 12px; margin-bottom: 14px; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .comment-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; flex-shrink: 0; }
-  .comment-body { flex: 1; }
-  .comment-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
-  .comment-name { font-weight: 700; font-size: 0.95rem; color: #3b1f0a; }
-  .comment-date { font-size: 0.8rem; color: #b08060; }
-  .comment-text { font-size: 0.95rem; color: #4a3020; line-height: 1.6; margin: 0; white-space: pre-wrap; }
-  .loading-text, .no-comments, .error-text { text-align: center; color: #9a7a5a; padding: 20px 0; font-size: 0.95rem; }
-    </style>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/menu.css">
 </head>
 <body>
 
-<header>
-    <img id="author-photo" src="images/logo.png" alt="Автор суреті" class="author-img">
-    <h1 id="author-name">Жүктелуде...</h1>
-</header>
+    <!-- 1. Контейнерлер (Функциялар осы жерлерге дерек салады) -->
+    <div id="menu-container"></div>
+    <div id="author-image-container" class="author-img-wrapper"></div>
+    <div id="audio-player-container"></div>
 
-<div class="container">
-    <p id="author-bio">Мәлімет жүктелуде...</p>
-
-    <div id="work-container" class="work-section">
-        <h2 class="work-title">Шығармадан үзінді</h2>
-        <pre id="author-work">Жүктелуде...</pre>
-    </div>
-    
-    <button onclick="searchAuthorPoems()" class="back-btn">
-        🔍 Осы автордың барлық шығармалары
-    </button>
-</div>
-
-<!-- Мәзір түймесі -->
-<button class="menu-btn" onclick="toggleMenu()">☰</button>
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<nav id="menu">
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-<button onclick="location.href='poets.html'">✍️ Ақындар</button>
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-<button onclick="location.href='shygarms.html'">📖 Шығармалар</button>
-</nav>
-     
-
-<!-- ПІКІРЛЕР БӨЛІМІ (ТЕК БІР РЕТ) -->
-<section class="comments-section">
-    <h2 class="comments-title">💬 Пікірлер</h2>
-    
-    <div class="auth-bar">
-        <button id="login-btn" class="auth-btn">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/split_chrome_button/google.svg" width="18">
-            Google арқылы кіру
-        </button>
-        
-        <div id="user-info">
-            <img id="user-photo" src="" alt="avatar">
-            <span id="user-name"></span>
-        </div>
-        <button id="logout-btn" class="auth-btn">Шығу</button>
+    <div class="card">
+        <h2 id="poem-title-display"></h2>
+        <pre id="poem-content-display" style="white-space: pre-wrap; font-family: inherit;"></pre>
     </div>
 
-    <div id="comment-form">
-        <textarea id="comment-input" placeholder="Пікіріңізді жазыңыз..."></textarea>
-        <button id="submit-btn">Жіберу</button>
-    </div>
-    
-    <p id="login-note">Пікір қалдыру үшін Google аккаунтымен кіріңіз.</p>
-    
-    <div id="comments-list"></div> <!-- comments.js осы жерге пікірлерді салады -->
-</section>
+    <div id="navigation-buttons" class="nav-wrapper"></div>
+    <div id="related-poems-container"></div>
+    <section id="comments-section" class="comments-section"></section>
+    <div id="scroll-tools-container"></div>
 
-<!-- FIREBASE ЛОГИКАСЫ -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <!-- 2. Скрипттерді жүктеу (Реттілік маңызды!) -->
+    <script src="../js/menu.js"></script>
+    <script src="../js/audio-script.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script src="../js/related.js"></script>
+    <script src="../js/scroll-tools.js"></script>
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-        authDomain: "adebiet-ordasy.firebaseapp.com",
-        projectId: "adebiet-ordasy",
-        storageBucket: "adebiet-ordasy.appspot.com",
-        messagingSenderId: "776364024545",
-        appId: "1:331787955330:web:a77853b5bffdb44bed989b"
-    };
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+        // ✅ ОСЫ ЖЕРГЕ FIREBASE-ТЕН ӨЗ КОНФИГІҢДІ КӨШІРІП ҚОЙ!
+        const firebaseConfig = { 
+            apiKey: "AIza...",
+            authDomain: "adebiet-ordasy.firebaseapp.com",
+            projectId: "adebiet-ordasy",
+            storageBucket: "adebiet-ordasy.appspot.com",
+            messagingSenderId: "...",
+            appId: "..."
+        };
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-    async function loadAuthorData() {
-        if (!id) return;
-        try {
-            const docRef = doc(db, "published_content", id);
-            const docSnap = await getDoc(docRef);
+        async function initPage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
 
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                document.getElementById('author-name').innerText = data.name || "Аты жоқ";
-                document.getElementById('author-bio').innerText = data.description || "Мәлімет жоқ";
-                if (data.photoUrl) document.getElementById('author-photo').src = data.photoUrl;
+            if (!id) return;
 
-                const workBox = document.getElementById('author-work');
-                if (data.work) {
-                    workBox.innerText = data.work;
-                } else {
-                    document.getElementById('work-container').style.display = 'none';
+            try {
+                const docRef = doc(db, "published_content", id);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+
+                    // Мәтіндік деректерді толтыру
+                    document.getElementById('poem-title-display').innerText = data.workTitle || "";
+                    document.getElementById('poem-content-display').innerText = data.work || "";
+                    document.title = (data.workTitle || "Өлең") + " | Әдебиет ордасы";
+
+                    // Функцияларды іске қосу
+                    if (data.audioUrl && typeof initDynamicPlayer === "function") {
+                        initDynamicPlayer(data); // Плеерді іске қосу
+                    }
+
+                    // Сыртқы файлдардағы басқа функциялар
+                    if (window.renderAuthorImage) renderAuthorImage(data.authorImg);
+                    if (window.renderNavButtons) renderNavButtons(data.authorPageUrl);
                 }
+            } catch (error) {
+                console.error("Қате:", error);
             }
-        } catch (e) { console.error(e); }
-    }
+        }
+        initPage();
+    </script>
 
-    window.searchAuthorPoems = function() {
-        const name = document.getElementById('author-name').innerText;
-        window.location.href = `poems.html?search=${encodeURIComponent(name)}`;
-    };
-
-    loadAuthorData();
-</script>
-
-<script src="js/menu.js"></script>
-<script>
-    function toggleMenu(){
-        document.getElementById("menu").classList.toggle("show");
-        document.getElementById("overlay").classList.toggle("show");
-    }
-</script>
-
-<!-- Пікірлер скрипті -->
-<script type="module" src="comments.js"></script>
-
+    <script type="module" src="../js/comments.js"></script>
 </body>
 </html>
