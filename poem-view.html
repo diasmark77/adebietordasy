@@ -10,64 +10,106 @@
     <link rel="icon" href="images/logo.png" type="image/png">
 
     <style>
-        /* Беттің негізгі стилі */
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f1ea; margin: 0; padding-bottom: 50px; }
         .card { background: white; padding: 30px; margin: 20px auto; max-width: 700px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        #poem-title-display { color: #5c4033; text-align: center; font-size: 1.8rem; margin-bottom: 20px; border-bottom: 2px solid #d4af37; padding-bottom: 10px; }
-        #poem-content-display { white-space: pre-wrap; font-size: 1.1rem; line-height: 1.8; color: #2c3e50; text-align: center; }
-        
-        /* 3. Автор суреті стилі */
-        .author-img-wrapper img { display: block; width: 100%; max-width: 400px; height: auto; border-radius: 15px; margin: 20px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border: 3px solid white; }
-        
-        /* 6. Батырмалар стилі */
-        .nav-wrapper { text-align: center; margin: 20px 0; }
-        .back-btn { display: inline-block; padding: 10px 20px; margin: 5px; background: #8b5e3c; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.3s; }
-        .back-btn:hover { background: #d4af37; }
 
-        /* 2. Жоғары-төмен батырмалары */
+        /* Өлең тақырыбы */
+        #poem-title-display { color: #5c4033; text-align: center; font-size: 1.8rem; margin-bottom: 20px; border-bottom: 2px solid #d4af37; padding-bottom: 10px; }
+        #poem-content-display { white-space: pre-wrap; font-family: Arial, sans-serif; font-size: 1.1rem; line-height: 1.8; color: #2c3e50; text-align: center; background: #fafafa; padding: 10px; border-radius: 5px; border: 1px solid #ccc; min-height: 120px; }
+
+        /* Автор суреті — ескі беттегідей толық ені */
+        .author-img-wrapper { display: block; text-align: center; }
+        .author-img-wrapper img { display: block; width: 100%; max-width: 500px; height: auto; border-radius: 10px; margin: 0 auto 15px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+
+        /* Батырмалар — ескі беттегі стиль */
+        .nav-wrapper { text-align: center; margin: 20px 0; }
+        .back-btn { display: inline-block; margin-top: 15px; padding: 10px 18px; margin: 5px; background: #8b5e3c; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; }
+        .back-btn:hover { background: #6e472c; }
+
+        /* Жоғары-төмен батырмалары */
         .scroll-tools { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
         .scroll-btn { width: 45px; height: 45px; background: rgba(139, 94, 60, 0.8); color: white; border: none; border-radius: 50%; cursor: pointer; font-size: 20px; }
+        .scroll-btn:hover { background: rgba(139, 94, 60, 1); }
+
+        /* Ұсыныстар */
+        #related-poems-container { border-left: 5px solid #d4af37; }
+        #related-poems-container h3 { color: #5c4033; margin-top: 0; }
+
+        /* Пікірлер секциясы */
+        .comments-section { max-width: 760px; margin: 60px auto 40px; padding: 0 20px; font-family: 'Segoe UI', sans-serif; }
+        .comments-title { font-size: 1.4rem; font-weight: 700; color: #3b1f0a; border-bottom: 2px solid #c8a06a; padding-bottom: 10px; margin-bottom: 24px; }
+        .auth-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        #user-info { display: none; align-items: center; gap: 10px; }
+        #user-photo { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; }
+        #user-name { font-size: 0.95rem; color: #3b1f0a; font-weight: 600; }
+        .auth-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        #login-btn { background: #4285f4; color: #fff; }
+        #login-btn:hover { background: #2f6fd8; }
+        #logout-btn { display: none; background: #f1e8db; color: #7a4520; }
+        #logout-btn:hover { background: #e2d0bb; }
+        #comment-form { display: none; margin-bottom: 28px; }
+        #comment-input { width: 100%; min-height: 90px; padding: 12px 14px; border: 1.5px solid #d4b896; border-radius: 10px; font-size: 0.95rem; color: #2c1a0a; background: #fffaf5; resize: vertical; box-sizing: border-box; font-family: inherit; transition: border-color 0.2s; }
+        #comment-input:focus { outline: none; border-color: #a0622a; }
+        #submit-btn { margin-top: 10px; padding: 10px 24px; background: #8B4513; color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        #submit-btn:hover { background: #6b3410; }
+        #submit-btn:disabled { background: #c4a882; cursor: not-allowed; }
+        #login-note { color: #9a7a5a; font-size: 0.9rem; margin-bottom: 20px; }
+        .comment-card { display: flex; gap: 14px; padding: 16px; background: #fffaf5; border: 1px solid #e8d5ba; border-radius: 12px; margin-bottom: 14px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .comment-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; flex-shrink: 0; }
+        .comment-body { flex: 1; }
+        .comment-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+        .comment-name { font-weight: 700; font-size: 0.95rem; color: #3b1f0a; }
+        .comment-date { font-size: 0.8rem; color: #b08060; }
+        .comment-text { font-size: 0.95rem; color: #4a3020; line-height: 1.6; margin: 0; white-space: pre-wrap; }
+        .loading-text, .no-comments, .error-text { text-align: center; color: #9a7a5a; padding: 20px 0; font-size: 0.95rem; }
     </style>
 </head>
 <body>
 
-    <!-- 1. Мәзір батырмасы (menu.js ішіндегі функцияларды шақырады) -->
+    <!-- Мәзір -->
     <div id="menu-container"></div>
     <button class="menu-btn" onclick="toggleMenu()" style="position: fixed; top: 20px; right: 20px; z-index: 1001;">☰</button>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
     <nav id="menu">
         <button onclick="location.href='index.html'">🏠 Басты бет</button>
+        <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+        <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
         <button onclick="location.href='poets.html'">✍️ Ақындар</button>
+        <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+        <button onclick="location.href='contact.html'">📩 Байланыс</button>
         <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+        <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
     </nav>
 
-    <!-- 3. Автор суреті -->
+    <!-- Автор суреті -->
     <div id="author-image-container" class="author-img-wrapper"></div>
 
-    <!-- 4. Ән тыңдау батырмасы (Плеер) -->
+    <!-- Аудио плеер -->
     <div id="audio-player-container"></div>
 
-    <!-- 5. Өлеңнің өзі -->
+    <!-- Өлең мәтіні -->
     <div class="card">
         <h2 id="poem-title-display"></h2>
         <pre id="poem-content-display"></pre>
     </div>
 
-    <!-- 6. Автор бетіне және өлеңдер бетіне батырмалар -->
+    <!-- Навигация батырмалары — ескі беттегідей 2 батырма -->
     <div id="navigation-buttons" class="nav-wrapper">
         <a href="poems.html" class="back-btn">📋 Барлық өлеңдер</a>
         <a id="author-link" href="#" class="back-btn">👤 Автор профилі</a>
     </div>
 
-    <!-- 7. Сізге ұнауы мүмкін (Ұсыныстар) -->
-    <div id="related-poems-container" class="card" style="border-left: 5px solid #d4af37;">
-        <h3 style="color: #5c4033; margin-top: 0;">✨ Сізге ұнауы мүмкін</h3>
+    <!-- Ұсыныстар -->
+    <div id="related-poems-container" class="card">
+        <h3>✨ Сізге ұнауы мүмкін</h3>
         <div id="suggestions-list">Жүктелуде...</div>
     </div>
 
-    <!-- 8. Пікір жазу бөлімі -->
+    <!-- Пікірлер -->
     <section id="comments-section" class="comments-section"></section>
 
-    <!-- 2. Жоғары төмен батырмалары -->
+    <!-- Жоғары / төмен батырмалары -->
     <div class="scroll-tools">
         <button class="scroll-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
         <button class="scroll-btn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})">↓</button>
@@ -78,9 +120,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Firebase конфигіңді осы жерде қалдыр
         const firebaseConfig = { 
             apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
             authDomain: "adebiet-ordasy.firebaseapp.com",
@@ -95,56 +136,78 @@
 
         async function initPage() {
             const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');
-            if (!id) return;
+            const poemId = urlParams.get('id');
+            if (!poemId) {
+                document.getElementById('poem-title-display').innerText = "Өлең табылмады";
+                return;
+            }
 
             try {
-                const docRef = doc(db, "published_content", id);
+                const docRef = doc(db, "published_content", poemId);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
 
-                    // Деректерді толтыру
+                    // Тақырып пен мәтін
                     document.getElementById('poem-title-display').innerText = data.workTitle || "Тақырыпсыз";
                     document.getElementById('poem-content-display').innerText = data.work || "Мәтін жоқ";
-                    document.title = data.workTitle + " | Әдебиет ордасы";
+                    document.title = (data.workTitle || "Өлең") + " | Әдебиет ордасы";
 
-                    // 3. Автор суретін шығару
-                    if (data.photoUrl || data.authorImg) {
-                        document.getElementById('author-image-container').innerHTML = `<img src="${data.photoUrl || data.authorImg}" alt="Author">`;
+                    // Автор суреті
+                    const imgSrc = data.photoUrl || data.authorImg;
+                    if (imgSrc) {
+                        document.getElementById('author-image-container').innerHTML =
+                            `<img src="${imgSrc}" alt="${data.authorName || 'Автор'}">`;
                     }
 
-                    // 4. Плеерді іске қосу
+                    // Аудио плеер
                     if (data.audioUrl && typeof initDynamicPlayer === "function") {
                         initDynamicPlayer(data);
                     }
 
-                    // 6. Автор профиліне сілтеме
+                    // Автор профиліне сілтеме
                     if (data.authorId) {
                         document.getElementById('author-link').href = `author-profile.html?id=${data.authorId}`;
                     }
 
-                    // 7. Ұсыныстар (кездейсоқ 2 шығарма)
-                    loadSuggestions();
+                    // Ұсыныстар
+                    loadSuggestions(poemId);
+
+                } else {
+                    document.getElementById('poem-title-display').innerText = "Өлең табылмады";
+                    document.getElementById('poem-content-display').innerText = "";
                 }
-            } catch (error) { console.error("Қате:", error); }
+            } catch (error) {
+                console.error("Firebase қатесі:", error);
+                document.getElementById('poem-title-display').innerText = "Қате орын алды";
+            }
         }
 
-        async function loadSuggestions() {
-            const querySnapshot = await getDocs(collection(db, "published_content"), limit(3));
-            let html = "";
-            querySnapshot.forEach((doc) => {
-                const d = doc.data();
-                if (doc.id !== new URLSearchParams(window.location.search).get('id')) {
-                    html += `<p><a href="poem.html?id=${doc.id}" style="color: #8b5e3c; text-decoration: none; font-weight: bold;">📖 ${d.workTitle}</a></p>`;
-                }
-            });
-            document.getElementById('suggestions-list').innerHTML = html;
+        async function loadSuggestions(currentId) {
+            try {
+                // ✅ ТҮЗЕТУ: query() + limit() дұрыс пайдалану
+                const q = query(collection(db, "published_content"), limit(4));
+                const querySnapshot = await getDocs(q);
+                let html = "";
+                querySnapshot.forEach((docItem) => {
+                    if (docItem.id !== currentId) {
+                        const d = docItem.data();
+                        html += `<p><a href="poem-view.html?id=${docItem.id}" style="color: #8b5e3c; text-decoration: none; font-weight: bold;">📖 ${d.workTitle || "Өлең"}</a></p>`;
+                    }
+                });
+                document.getElementById('suggestions-list').innerHTML = html || "<p>Ұсыныс жоқ</p>";
+            } catch (error) {
+                console.error("Ұсыныстар қатесі:", error);
+                document.getElementById('suggestions-list').innerHTML = "<p>Жүктеу қатесі</p>";
+            }
         }
 
         initPage();
     </script>
-    <script type="module" src="comments.js"></script>
+
+    <!-- ✅ ТҮЗЕТУ: comments.js жолы — жобаның түбірінен -->
+    <script type="module" src="/adebietordasy/comments.js"></script>
+
 </body>
 </html>
