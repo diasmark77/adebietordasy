@@ -7,40 +7,87 @@
     
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/menu.css">
+    <link rel="icon" href="images/logo.png" type="image/png">
+
+    <style>
+        /* Беттің негізгі стилі */
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f1ea; margin: 0; padding-bottom: 50px; }
+        .card { background: white; padding: 30px; margin: 20px auto; max-width: 700px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        #poem-title-display { color: #5c4033; text-align: center; font-size: 1.8rem; margin-bottom: 20px; border-bottom: 2px solid #d4af37; padding-bottom: 10px; }
+        #poem-content-display { white-space: pre-wrap; font-size: 1.1rem; line-height: 1.8; color: #2c3e50; text-align: center; }
+        
+        /* 3. Автор суреті стилі */
+        .author-img-wrapper img { display: block; width: 100%; max-width: 400px; height: auto; border-radius: 15px; margin: 20px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border: 3px solid white; }
+        
+        /* 6. Батырмалар стилі */
+        .nav-wrapper { text-align: center; margin: 20px 0; }
+        .back-btn { display: inline-block; padding: 10px 20px; margin: 5px; background: #8b5e3c; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .back-btn:hover { background: #d4af37; }
+
+        /* 2. Жоғары-төмен батырмалары */
+        .scroll-tools { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
+        .scroll-btn { width: 45px; height: 45px; background: rgba(139, 94, 60, 0.8); color: white; border: none; border-radius: 50%; cursor: pointer; font-size: 20px; }
+    </style>
 </head>
 <body>
 
-    <!-- 1. Контейнерлер (Функциялар осы жерлерге дерек салады) -->
+    <!-- 1. Мәзір батырмасы (menu.js ішіндегі функцияларды шақырады) -->
     <div id="menu-container"></div>
+    <button class="menu-btn" onclick="toggleMenu()" style="position: fixed; top: 20px; right: 20px; z-index: 1001;">☰</button>
+    <nav id="menu">
+        <button onclick="location.href='index.html'">🏠 Басты бет</button>
+        <button onclick="location.href='poets.html'">✍️ Ақындар</button>
+        <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+    </nav>
+
+    <!-- 3. Автор суреті -->
     <div id="author-image-container" class="author-img-wrapper"></div>
+
+    <!-- 4. Ән тыңдау батырмасы (Плеер) -->
     <div id="audio-player-container"></div>
 
+    <!-- 5. Өлеңнің өзі -->
     <div class="card">
         <h2 id="poem-title-display"></h2>
-        <pre id="poem-content-display" style="white-space: pre-wrap; font-family: inherit;"></pre>
+        <pre id="poem-content-display"></pre>
     </div>
 
-    <div id="navigation-buttons" class="nav-wrapper"></div>
-    <div id="related-poems-container"></div>
-    <section id="comments-section" class="comments-section"></section>
-    <div id="scroll-tools-container"></div>
+    <!-- 6. Автор бетіне және өлеңдер бетіне батырмалар -->
+    <div id="navigation-buttons" class="nav-wrapper">
+        <a href="poems.html" class="back-btn">📋 Барлық өлеңдер</a>
+        <a id="author-link" href="#" class="back-btn">👤 Автор профилі</a>
+    </div>
 
-    <!-- 2. Скрипттерді жүктеу (Реттілік маңызды!) -->
+    <!-- 7. Сізге ұнауы мүмкін (Ұсыныстар) -->
+    <div id="related-poems-container" class="card" style="border-left: 5px solid #d4af37;">
+        <h3 style="color: #5c4033; margin-top: 0;">✨ Сізге ұнауы мүмкін</h3>
+        <div id="suggestions-list">Жүктелуде...</div>
+    </div>
+
+    <!-- 8. Пікір жазу бөлімі -->
+    <section id="comments-section" class="comments-section"></section>
+
+    <!-- 2. Жоғары төмен батырмалары -->
+    <div class="scroll-tools">
+        <button class="scroll-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+        <button class="scroll-btn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})">↓</button>
+    </div>
+
     <script src="js/menu.js"></script>
     <script src="js/audio-script.js"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // ✅ ОСЫ ЖЕРГЕ FIREBASE-ТЕН ӨЗ КОНФИГІҢДІ КӨШІРІП ҚОЙ!
+        // Firebase конфигіңді осы жерде қалдыр
         const firebaseConfig = { 
-            apiKey: "AIza...",
+            apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
             authDomain: "adebiet-ordasy.firebaseapp.com",
             projectId: "adebiet-ordasy",
             storageBucket: "adebiet-ordasy.appspot.com",
-            messagingSenderId: "...",
-            appId: "..."
+            messagingSenderId: "776364024545",
+            appId: "1:331787955330:web:a77853b5bffdb44bed989b"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -49,7 +96,6 @@
         async function initPage() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
-
             if (!id) return;
 
             try {
@@ -59,27 +105,46 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
 
-                    // Мәтіндік деректерді толтыру
-                    document.getElementById('poem-title-display').innerText = data.workTitle || "";
-                    document.getElementById('poem-content-display').innerText = data.work || "";
-                    document.title = (data.workTitle || "Өлең") + " | Әдебиет ордасы";
+                    // Деректерді толтыру
+                    document.getElementById('poem-title-display').innerText = data.workTitle || "Тақырыпсыз";
+                    document.getElementById('poem-content-display').innerText = data.work || "Мәтін жоқ";
+                    document.title = data.workTitle + " | Әдебиет ордасы";
 
-                    // Функцияларды іске қосу
-                    if (data.audioUrl && typeof initDynamicPlayer === "function") {
-                        initDynamicPlayer(data); // Плеерді іске қосу
+                    // 3. Автор суретін шығару
+                    if (data.photoUrl || data.authorImg) {
+                        document.getElementById('author-image-container').innerHTML = `<img src="${data.photoUrl || data.authorImg}" alt="Author">`;
                     }
 
-                    // Сыртқы файлдардағы басқа функциялар
-                    if (window.renderAuthorImage) renderAuthorImage(data.authorImg);
-                    if (window.renderNavButtons) renderNavButtons(data.authorPageUrl);
+                    // 4. Плеерді іске қосу
+                    if (data.audioUrl && typeof initDynamicPlayer === "function") {
+                        initDynamicPlayer(data);
+                    }
+
+                    // 6. Автор профиліне сілтеме
+                    if (data.authorId) {
+                        document.getElementById('author-link').href = `author-profile.html?id=${data.authorId}`;
+                    }
+
+                    // 7. Ұсыныстар (кездейсоқ 2 шығарма)
+                    loadSuggestions();
                 }
-            } catch (error) {
-                console.error("Қате:", error);
-            }
+            } catch (error) { console.error("Қате:", error); }
         }
+
+        async function loadSuggestions() {
+            const querySnapshot = await getDocs(collection(db, "published_content"), limit(3));
+            let html = "";
+            querySnapshot.forEach((doc) => {
+                const d = doc.data();
+                if (doc.id !== new URLSearchParams(window.location.search).get('id')) {
+                    html += `<p><a href="poem.html?id=${doc.id}" style="color: #8b5e3c; text-decoration: none; font-weight: bold;">📖 ${d.workTitle}</a></p>`;
+                }
+            });
+            document.getElementById('suggestions-list').innerHTML = html;
+        }
+
         initPage();
     </script>
-
     <script type="module" src="comments.js"></script>
 </body>
 </html>
