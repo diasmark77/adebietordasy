@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Өлең қосу | Әдебиет ордасы</title>
+
+<link rel="stylesheet" href="css/menu.css">
+<link rel="icon" href="images/logo.png" type="image/png">
+
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Georgia', serif; background: #f4f1ea; color: #333; line-height: 1.6; }
+
+header {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/kazakh-dalasy.jpg') center/cover no-repeat;
+    color: white; text-align: center; padding: 50px 20px;
+}
+header h1 { font-size: 38px; margin-bottom: 10px; letter-spacing: 1px; }
+header p { font-size: 16px; opacity: 0.85; margin: 0; }
+
+.form-container {
+    max-width: 700px;
+    margin: -40px auto 40px;
+    background: rgba(255,255,255,0.98);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 10;
+}
+
+.form-group { margin-bottom: 20px; }
+label { display: block; font-weight: bold; color: #5c4033; margin-bottom: 8px; }
+
+input, textarea, select {
+    width: 100%; padding: 12px; border: 1px solid #d3cdc0; border-radius: 8px;
+    background: #fdfcf9; font-family: inherit; font-size: 16px; transition: 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none; border-color: #8b5e3c; background: #fff;
+    box-shadow: 0 0 8px rgba(139,94,60,0.2);
+}
+
+/* Автор іздеу */
+.author-search-wrapper { position: relative; }
+#author-suggestions {
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: white; border: 1px solid #d3cdc0; border-top: none;
+    border-radius: 0 0 8px 8px; z-index: 100; max-height: 200px;
+    overflow-y: auto; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.suggestion-item {
+    padding: 10px 14px; cursor: pointer; display: flex;
+    align-items: center; gap: 10px; transition: 0.2s;
+}
+.suggestion-item:hover { background: #f4f1ea; }
+.suggestion-item img {
+    width: 36px; height: 36px; border-radius: 50%;
+    object-fit: cover; border: 2px solid #d4af37;
+}
+.suggestion-name { font-weight: bold; color: #5c4033; }
+
+/* Таңдалған автор */
+#selected-author-card {
+    display: none; align-items: center; gap: 14px;
+    background: #fdf6ec; border: 1px solid #d4af37;
+    border-radius: 8px; padding: 12px 16px; margin-top: 10px;
+}
+#selected-author-card img {
+    width: 48px; height: 48px; border-radius: 50%;
+    object-fit: cover; border: 2px solid #d4af37;
+}
+#selected-author-card .author-info { flex: 1; }
+#selected-author-card .author-name { font-weight: bold; color: #5c4033; }
+.clear-author {
+    background: none; border: none; color: #999; cursor: pointer;
+    font-size: 20px; padding: 0 4px; transition: 0.2s;
+}
+.clear-author:hover { color: #e74c3c; }
+
+/* Өлең мәтіні */
+#poem-textarea {
+    font-family: 'Georgia', serif;
+    line-height: 1.9;
+    min-height: 200px;
+    resize: vertical;
+}
+
+/* Char counter */
+.char-counter { font-size: 13px; color: #999; text-align: right; margin-top: 4px; }
+.char-counter.warn { color: #e74c3c; }
+
+/* Notice */
+.notice {
+    font-size: 14px; color: #777; background: #fdf5e6;
+    padding: 15px; border-left: 4px solid #d4af37; margin-bottom: 25px;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Жіберу батырмасы */
+.btn-submit {
+    background: #8b5e3c; color: white; border: none; padding: 15px 30px;
+    border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;
+    width: 100%; transition: 0.3s; margin-top: 10px;
+}
+.btn-submit:hover { background: #5c4033; transform: translateY(-2px); }
+.btn-submit:disabled { background: #c4a882; cursor: not-allowed; transform: none; }
+
+/* Status */
+#status { text-align: center; margin-top: 20px; font-weight: bold; font-size: 16px; padding: 10px; border-radius: 8px; }
+
+/* Секция белгілегіш */
+.section-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 28px 0 20px; color: #8b5e3c;
+}
+.section-divider::before, .section-divider::after {
+    content: ''; flex: 1; height: 1px; background: #d3cdc0;
+}
+.section-divider span { font-weight: bold; font-size: 14px; white-space: nowrap; }
+
+footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
+
+@media(max-width: 600px) {
+    header h1 { font-size: 28px; }
+    .form-container { margin: 20px; padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>✍️ Өлең қосу</h1>
+    <p>Жаңа өлеңді порталға жариялаңыз</p>
+</header>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+    <button onclick="location.href='index.html'">🏠 Басты бет</button>
+    <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+    <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+    <button onclick="location.href='poets.html'">✍️ Ақындар</button>
+    <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+    <button onclick="location.href='contact.html'">📩 Байланыс</button>
+    <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+    <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+    <button onclick="location.href='add-author.html'">➕ Автор қосу</button>
+</nav>
+
+<section>
+<div class="form-container">
+
+    <div class="notice">
+        <b>Ескерту:</b><br>
+        • Өлең мәтіні кем дегенде 50 таңбадан тұруы тиіс.<br>
+        • Автор міндетті түрде таңдалуы керек.<br>
+        • Жарияланған өлең бетте бірден көрінеді.
+    </div>
+
+    <form id="poemForm">
+
+        <!-- ── АВТОР ТАҢДАУ ── -->
+        <div class="section-divider"><span>📌 Автор</span></div>
+
+        <div class="form-group">
+            <label>Автор іздеу:</label>
+            <div class="author-search-wrapper">
+                <input type="text" id="author-search" placeholder="Автор атын жазыңыз..." autocomplete="off">
+                <div id="author-suggestions"></div>
+            </div>
+            <div id="selected-author-card">
+                <img id="sel-author-img" src="" alt="">
+                <div class="author-info">
+                    <div class="author-name" id="sel-author-name"></div>
+                </div>
+                <button type="button" class="clear-author" onclick="clearAuthor()">✕</button>
+            </div>
+            <input type="hidden" id="author-id">
+        </div>
+
+        <!-- ── ӨЛЕҢ МӘЛІМЕТТЕРІ ── -->
+        <div class="section-divider"><span>📝 Өлең</span></div>
+
+        <div class="form-group">
+            <label>Өлең тақырыбы:</label>
+            <input type="text" id="poem-title" placeholder="Өлең атауын енгізіңіз" required>
+        </div>
+
+        <div class="form-group">
+            <label>Өлең мәтіні:</label>
+            <textarea id="poem-textarea" rows="12" placeholder="Өлең жолдарын осы жерге енгізіңіз..." required minlength="50"></textarea>
+            <div class="char-counter" id="char-count">0 таңба</div>
+        </div>
+
+        <!-- ── ҚОСЫМША ── -->
+        <div class="section-divider"><span>🔗 Қосымша</span></div>
+
+        <div class="form-group">
+            <label>Аудио сілтемесі (міндетті емес):</label>
+            <input type="url" id="audio-url" placeholder="https://...mp3 немесе YouTube сілтемесі">
+        </div>
+
+        <div class="form-group">
+            <label>Суретке сілтеме (міндетті емес):</label>
+            <input type="url" id="photo-url" placeholder="https://image-link.com/photo.jpg">
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">📤 Өлеңді жариялау</button>
+    </form>
+
+    <div id="status"></div>
+</div>
+</section>
+
+<footer>
+    © 2026 Әдебиет ордасы | Қазақ әдеби порталы
+</footer>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+    getFirestore, collection, addDoc, getDocs, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+    authDomain: "adebiet-ordasy.firebaseapp.com",
+    projectId: "adebiet-ordasy",
+    storageBucket: "adebiet-ordasy.appspot.com",
+    messagingSenderId: "776364024545",
+    appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+const TG_TOKEN   = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
+const TG_CHAT_ID = "5616776281";
+
+// ── Авторлар тізімін жүктеу ──
+let allAuthors = [];
+
+async function loadAuthors() {
+    try {
+        const snap = await getDocs(collection(db, "authors"));
+        snap.forEach(d => allAuthors.push({ id: d.id, ...d.data() }));
+    } catch(e) {
+        console.error("Авторлар жүктелмеді:", e);
+    }
+}
+loadAuthors();
+
+// ── Автор іздеу ──
+const searchInput = document.getElementById('author-search');
+const suggestBox  = document.getElementById('author-suggestions');
+
+searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    suggestBox.innerHTML = '';
+    if (!q) { suggestBox.style.display = 'none'; return; }
+
+    const filtered = allAuthors.filter(a =>
+        (a.authorName || a.name || '').toLowerCase().includes(q)
+    );
+
+    if (!filtered.length) { suggestBox.style.display = 'none'; return; }
+
+    filtered.forEach(a => {
+        const name  = a.authorName || a.name || 'Белгісіз';
+        const photo = a.photoUrl   || a.authorImg || 'images/default-author.png';
+        const div   = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = `<img src="${photo}" alt="${name}" onerror="this.src='images/default-author.png'">
+                         <span class="suggestion-name">${name}</span>`;
+        div.addEventListener('click', () => selectAuthor(a));
+        suggestBox.appendChild(div);
+    });
+    suggestBox.style.display = 'block';
+});
+
+document.addEventListener('click', e => {
+    if (!e.target.closest('.author-search-wrapper')) suggestBox.style.display = 'none';
+});
+
+function selectAuthor(a) {
+    const name  = a.authorName || a.name || 'Белгісіз';
+    const photo = a.photoUrl   || a.authorImg || 'images/default-author.png';
+
+    document.getElementById('author-id').value   = a.id;
+    document.getElementById('sel-author-name').innerText = name;
+    document.getElementById('sel-author-img').src        = photo;
+    document.getElementById('selected-author-card').style.display = 'flex';
+
+    searchInput.value          = '';
+    suggestBox.style.display   = 'none';
+}
+
+window.clearAuthor = function() {
+    document.getElementById('author-id').value   = '';
+    document.getElementById('selected-author-card').style.display = 'none';
+};
+
+// ── Таңба санауыш ──
+const poemTA   = document.getElementById('poem-textarea');
+const charDisp = document.getElementById('char-count');
+poemTA.addEventListener('input', () => {
+    const n = poemTA.value.length;
+    charDisp.textContent = n + ' таңба';
+    charDisp.classList.toggle('warn', n < 50 && n > 0);
+});
+
+// ── Форм жіберу ──
+const form   = document.getElementById('poemForm');
+const status = document.getElementById('status');
+const btn    = document.getElementById('submitBtn');
+
+form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const authorId  = document.getElementById('author-id').value;
+    const authorName = document.getElementById('sel-author-name').innerText;
+    const workTitle = document.getElementById('poem-title').value.trim();
+    const work      = poemTA.value.trim();
+    const audioUrl  = document.getElementById('audio-url').value.trim();
+    const photoUrl  = document.getElementById('photo-url').value.trim();
+
+    // Тексеру
+    if (!authorId) {
+        status.innerHTML = '⚠️ Автор таңдалмады!';
+        status.style.color = '#e67e22';
+        return;
+    }
+    if (work.length < 50) {
+        status.innerHTML = '⚠️ Өлең тым қысқа (кем дегенде 50 таңба)!';
+        status.style.color = '#e67e22';
+        return;
+    }
+
+    btn.disabled   = true;
+    status.innerHTML = '⏳ Жариялануда...';
+    status.style.color = '#8b5e3c';
+
+    try {
+        // Firebase-ке сақтау
+        const docRef = await addDoc(collection(db, "published_content"), {
+            authorId,
+            authorName,
+            workTitle,
+            work,
+            audioUrl:  audioUrl  || null,
+            photoUrl:  photoUrl  || null,
+            type:      'poem',
+            timestamp: serverTimestamp()
+        });
+
+        // Telegram хабарлама
+        const msg = `📝 *Жаңа өлең жарияланды!*\n\n` +
+                    `✍️ *Автор:* ${authorName}\n` +
+                    `📖 *Тақырып:* ${workTitle}\n\n` +
+                    `${work.substring(0, 200)}${work.length > 200 ? '...' : ''}`;
+
+        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: 'Markdown' })
+        });
+
+        status.innerHTML = `✅ Өлең сәтті жарияланды! <a href="poem-view.html?id=${docRef.id}" style="color:#8b5e3c;">Өлеңді көру →</a>`;
+        status.style.color = 'green';
+        form.reset();
+        clearAuthor();
+        charDisp.textContent = '0 таңба';
+
+    } catch(err) {
+        console.error(err);
+        status.innerHTML = '❌ Қате орын алды. Қайта көріңіз.';
+        status.style.color = 'red';
+        btn.disabled = false;
+    }
+});
+</script>
+
+<script>
+function toggleMenu() {
+    document.getElementById("menu").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
+}
+</script>
+
+</body>
+</html>
