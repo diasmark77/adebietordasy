@@ -4,39 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="dynamic-title">Жүктелуде... | Әдебиет ордасы</title>
-    
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/menu.css">
     <link rel="icon" href="images/logo.png" type="image/png">
 
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f1ea; margin: 0; padding-bottom: 50px; }
-        .card { background: white; padding: 30px; margin: 20px auto; max-width: 700px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f1ea; color: #333; text-align: left; padding-bottom: 80px; }
+        .card { background: white; padding: 20px; margin: 20px auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 900px; text-align: left; }
+        h2 { color: #5c4033; text-align: center; }
 
-        /* Өлең тақырыбы */
-        #poem-title-display { color: #5c4033; text-align: center; font-size: 1.8rem; margin-bottom: 20px; border-bottom: 2px solid #d4af37; padding-bottom: 10px; }
-        #poem-content-display { white-space: pre-wrap; font-family: Arial, sans-serif; font-size: 1.1rem; line-height: 1.8; color: #2c3e50; text-align: center; background: #fafafa; padding: 10px; border-radius: 5px; border: 1px solid #ccc; min-height: 120px; }
+        /* Өлең мәтіні */
+        #poem-content-display {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            line-height: 1.7;
+        }
 
-        /* Автор суреті — ескі беттегідей толық ені */
-        .author-img-wrapper { display: block; text-align: center; }
-        .author-img-wrapper img { display: block; width: 100%; max-width: 500px; height: auto; border-radius: 10px; margin: 0 auto 15px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        /* 5. Автор hero баннері */
+        .author-hero {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(135deg, #3b1a08 0%, #7a3e1e 40%, #c8922a 100%);
+            padding: 70px 20px 40px;
+            text-align: center;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+        .author-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        .author-hero img {
+            display: block;
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+            border: 3px solid rgba(255,255,255,0.25);
+            position: relative;
+            z-index: 1;
+        }
+        .author-hero-name {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-top: 14px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 1;
+        }
+        .author-hero.empty { display: none; }
 
-        /* Батырмалар — ескі беттегі стиль */
+        /* Навигация батырмалары */
         .nav-wrapper { text-align: center; margin: 20px 0; }
-        .back-btn { display: inline-block; margin-top: 15px; padding: 10px 18px; margin: 5px; background: #8b5e3c; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; }
+        .back-btn { display: inline-block; margin: 10px 10px 0 0; padding: 10px 18px; background: #8b5e3c; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; }
         .back-btn:hover { background: #6e472c; }
 
-        /* Жоғары-төмен батырмалары */
-        .scroll-tools { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-        .scroll-btn { width: 45px; height: 45px; background: rgba(139, 94, 60, 0.8); color: white; border: none; border-radius: 50%; cursor: pointer; font-size: 20px; }
-        .scroll-btn:hover { background: rgba(139, 94, 60, 1); }
+        /* 2. Scroll батырмалары — жоғарыда, меню қасында горизонталь */
+        .scroll-buttons { position: fixed; top: 15px; left: 70px; display: flex; gap: 6px; z-index: 1001; }
+        .scroll-btn { background: #8b5e3c; color: white; border: none; padding: 10px 14px; border-radius: 6px; font-size: 18px; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.3); transition: transform 0.2s; }
+        .scroll-btn:hover { transform: scale(1.05); }
 
         /* Ұсыныстар */
-        #related-poems-container { border-left: 5px solid #d4af37; }
-        #related-poems-container h3 { color: #5c4033; margin-top: 0; }
+        .related-poems { margin: 20px auto; max-width: 900px; padding: 15px; background: #fdf6f0; border-left: 4px solid #8b5e3c; border-radius: 6px; }
+        .related-poems p { font-weight: bold; margin-bottom: 10px; color: #333; }
+        .poem-btn { display: block; text-decoration: none; color: white; background: #8b5e3c; padding: 10px 15px; border-radius: 6px; margin: 6px 0; text-align: center; font-weight: bold; transition: all 0.3s ease; }
+        .poem-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.3); background: #6e472c; }
 
-        /* Пікірлер секциясы */
-        .comments-section { max-width: 760px; margin: 60px auto 40px; padding: 0 20px; font-family: 'Segoe UI', sans-serif; }
+        /* Пікірлер */
+        .comments-section { max-width: 900px; margin: 60px auto 40px; padding: 0 20px; font-family: Arial, sans-serif; }
         .comments-title { font-size: 1.4rem; font-weight: 700; color: #3b1f0a; border-bottom: 2px solid #c8a06a; padding-bottom: 10px; margin-bottom: 24px; }
         .auth-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
         #user-info { display: none; align-items: center; gap: 10px; }
@@ -63,13 +113,14 @@
         .comment-date { font-size: 0.8rem; color: #b08060; }
         .comment-text { font-size: 0.95rem; color: #4a3020; line-height: 1.6; margin: 0; white-space: pre-wrap; }
         .loading-text, .no-comments, .error-text { text-align: center; color: #9a7a5a; padding: 20px 0; font-size: 0.95rem; }
+        .delete-btn { background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 0.8rem; margin-left: 10px; padding: 0; text-decoration: underline; }
+        .delete-btn:hover { color: #cc0000; }
     </style>
 </head>
 <body>
 
-    <!-- Мәзір -->
-    <div id="menu-container"></div>
-    <button class="menu-btn" onclick="toggleMenu()" style="position: fixed; top: 20px; right: 20px; z-index: 1001;">☰</button>
+    <!-- 1. Мәзір — menu.css: сол жақта fixed sidebar -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
     <nav id="menu">
         <button onclick="location.href='index.html'">🏠 Басты бет</button>
@@ -82,8 +133,17 @@
         <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
     </nav>
 
-    <!-- Автор суреті -->
-    <div id="author-image-container" class="author-img-wrapper"></div>
+    <!-- 2. Scroll батырмалары — жоғарыда горизонталь, меню қасында -->
+    <div class="scroll-buttons">
+        <button class="scroll-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+        <button class="scroll-btn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})">↓</button>
+    </div>
+
+    <!-- 5. Автор hero баннері — түсті фон үстінде сурет + аты -->
+    <div id="author-hero" class="author-hero empty">
+        <img id="author-hero-img" src="" alt="Автор">
+        <div id="author-hero-name" class="author-hero-name"></div>
+    </div>
 
     <!-- Аудио плеер -->
     <div id="audio-player-container"></div>
@@ -94,26 +154,20 @@
         <pre id="poem-content-display"></pre>
     </div>
 
-    <!-- Навигация батырмалары — ескі беттегідей 2 батырма -->
+    <!-- 3 & 4. Батырмалар дұрыс мәтінмен -->
     <div id="navigation-buttons" class="nav-wrapper">
-        <a href="poems.html" class="back-btn">📋 Барлық өлеңдер</a>
-        <a id="author-link" href="#" class="back-btn">👤 Автор профилі</a>
+        <a href="poems.html" class="back-btn">← Өлеңдер бетіне</a>
+        <a id="author-link" href="#" class="back-btn">← Автор бетіне</a>
     </div>
 
     <!-- Ұсыныстар -->
-    <div id="related-poems-container" class="card">
-        <h3>✨ Сізге ұнауы мүмкін</h3>
+    <div id="related-poems-container" class="related-poems">
+        <p>Сізге ұнауы мүмкін ⬇️</p>
         <div id="suggestions-list">Жүктелуде...</div>
     </div>
 
     <!-- Пікірлер -->
     <section id="comments-section" class="comments-section"></section>
-
-    <!-- Жоғары / төмен батырмалары -->
-    <div class="scroll-tools">
-        <button class="scroll-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
-        <button class="scroll-btn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})">↓</button>
-    </div>
 
     <script src="js/menu.js"></script>
     <script src="js/audio-script.js"></script>
@@ -122,7 +176,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, query, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = { 
+        const firebaseConfig = {
             apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
             authDomain: "adebiet-ordasy.firebaseapp.com",
             projectId: "adebiet-ordasy",
@@ -154,11 +208,16 @@
                     document.getElementById('poem-content-display').innerText = data.work || "Мәтін жоқ";
                     document.title = (data.workTitle || "Өлең") + " | Әдебиет ордасы";
 
-                    // Автор суреті
+                    // 5. Hero баннері
                     const imgSrc = data.photoUrl || data.authorImg;
                     if (imgSrc) {
-                        document.getElementById('author-image-container').innerHTML =
-                            `<img src="${imgSrc}" alt="${data.authorName || 'Автор'}">`;
+                        const hero = document.getElementById('author-hero');
+                        document.getElementById('author-hero-img').src = imgSrc;
+                        document.getElementById('author-hero-img').alt = data.authorName || 'Автор';
+                        if (data.authorName) {
+                            document.getElementById('author-hero-name').innerText = data.authorName;
+                        }
+                        hero.classList.remove('empty');
                     }
 
                     // Аудио плеер
@@ -166,17 +225,15 @@
                         initDynamicPlayer(data);
                     }
 
-                    // Автор профиліне сілтеме
+                    // 4. Автор бетіне сілтеме
                     if (data.authorId) {
                         document.getElementById('author-link').href = `author-profile.html?id=${data.authorId}`;
                     }
 
-                    // Ұсыныстар
                     loadSuggestions(poemId);
 
                 } else {
                     document.getElementById('poem-title-display').innerText = "Өлең табылмады";
-                    document.getElementById('poem-content-display').innerText = "";
                 }
             } catch (error) {
                 console.error("Firebase қатесі:", error);
@@ -186,14 +243,13 @@
 
         async function loadSuggestions(currentId) {
             try {
-                // ✅ ТҮЗЕТУ: query() + limit() дұрыс пайдалану
                 const q = query(collection(db, "published_content"), limit(4));
                 const querySnapshot = await getDocs(q);
                 let html = "";
                 querySnapshot.forEach((docItem) => {
                     if (docItem.id !== currentId) {
                         const d = docItem.data();
-                        html += `<p><a href="poem-view.html?id=${docItem.id}" style="color: #8b5e3c; text-decoration: none; font-weight: bold;">📖 ${d.workTitle || "Өлең"}</a></p>`;
+                        html += `<a href="poem-view.html?id=${docItem.id}" class="poem-btn">📖 ${d.workTitle || "Өлең"}</a>`;
                     }
                 });
                 document.getElementById('suggestions-list').innerHTML = html || "<p>Ұсыныс жоқ</p>";
@@ -206,7 +262,6 @@
         initPage();
     </script>
 
-    <!-- ✅ ТҮЗЕТУ: comments.js жолы — жобаның түбірінен -->
     <script type="module" src="/adebietordasy/comments.js"></script>
 
 </body>
