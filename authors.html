@@ -9,19 +9,18 @@
 <link rel="icon" href="images/logo.png" type="image/png">
     
 <style>
-*{box-sizing:border-box;}
-body{margin:0;font-family:'Georgia',serif;background:#f4f1ea;color:#333;line-height:1.6;}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Georgia', serif; background: #f4f1ea; color: #333; line-height: 1.6; }
 
-/* Төбесі сайтыңыздың стилінде */
-header{
-    background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url('images/kazakh-dalasy.jpg') center/cover no-repeat;
-    color:white;text-align:center;padding:50px 20px;
+header {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/kazakh-dalasy.jpg') center/cover no-repeat;
+    color: white; text-align: center; padding: 50px 20px;
 }
-header h1{font-size:38px;margin-bottom:10px;letter-spacing:1px;}
+header h1 { font-size: 38px; margin-bottom: 10px; letter-spacing: 1px; }
 
 .form-container {
     max-width: 700px;
-    margin: -40px auto 40px; /* Header-дің үстіне сәл шығып тұру үшін */
+    margin: -40px auto 40px;
     background: rgba(255,255,255,0.98);
     padding: 35px;
     border-radius: 15px;
@@ -39,7 +38,8 @@ input, textarea {
 }
 
 input:focus, textarea:focus {
-    outline: none; border-color: #8b5e3c; background: #fff; box-shadow: 0 0 8px rgba(139,94,60,0.2);
+    outline: none; border-color: #8b5e3c; background: #fff;
+    box-shadow: 0 0 8px rgba(139,94,60,0.2);
 }
 
 .btn-submit {
@@ -47,20 +47,24 @@ input:focus, textarea:focus {
     border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;
     width: 100%; transition: 0.3s; margin-top: 10px;
 }
-
 .btn-submit:hover { background: #5c4033; transform: translateY(-2px); }
+.btn-submit:disabled { background: #c4a882; cursor: not-allowed; transform: none; }
 
 .notice {
     font-size: 14px; color: #777; background: #fdf5e6;
     padding: 15px; border-left: 4px solid #d4af37; margin-bottom: 25px;
+    border-radius: 0 8px 8px 0;
 }
 
-#status { text-align: center; margin-top: 20px; font-weight: bold; }
+#status {
+    text-align: center; margin-top: 20px; font-weight: bold;
+    font-size: 16px; padding: 10px; border-radius: 8px;
+}
 
-footer{ background:#5c4033; color:white; text-align:center; padding:20px; }
+footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
 
-@media(max-width:600px){
-    header h1{font-size:28px;}
+@media(max-width: 600px) {
+    header h1 { font-size: 28px; }
     .form-container { margin: 20px; padding: 20px; }
 }
 </style>
@@ -73,59 +77,66 @@ footer{ background:#5c4033; color:white; text-align:center; padding:20px; }
 </header>
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
-
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-<button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-<button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-<button onclick="location.href='poets.html'">✍️ Ақындар</button>
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+    <button onclick="location.href='index.html'">🏠 Басты бет</button>
+    <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+    <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+    <button onclick="location.href='poets.html'">✍️ Ақындар</button>
+    <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+    <button onclick="location.href='contact.html'">📩 Байланыс</button>
+    <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+    <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+    <button onclick="location.href='add-poem.html'">➕ Өлең қосу</button>
 </nav>
 
 <section>
-    
 <div class="form-container">
+
     <div class="notice">
         <b>Шарттар:</b><br>
-        • Шығармаңыз кем дегенде 100 таңбадан тұруы тиіс.<br>
+        • Өмірбаяныңыз кем дегенде 100 таңбадан тұруы тиіс.<br>
         • Мәтін сауатты және өзіңіздің төл туындыңыз болуы міндетті.
     </div>
 
     <form id="authorForm">
+
         <div class="form-group">
             <label>Толық есіміңіз (немесе бүркеншік есім):</label>
-            <input type="text" id="name" placeholder="Аты-жөніңізді жазыңыз" required>
+            <input type="text" id="author-name" placeholder="Аты-жөніңізді жазыңыз" required>
         </div>
 
         <div class="form-group">
             <label>Байланыс мәліметі:</label>
-            <input type="text" id="contact" placeholder="Telegram немесе Email" required>
+            <input type="text" id="contact-info" placeholder="Telegram немесе Email" required>
         </div>
 
-         <div class="form-group">
+        <div class="form-group">
             <label>Өмірбаяныңыз:</label>
-            <textarea id="work" rows="10" placeholder="Мәтінді осы жерге енгізіңіз..." required minlength="100"></textarea>
+            <textarea id="biography" rows="8"
+                placeholder="Өзіңіз туралы жазыңыз: туған жылы, қала, шығармашылық жолы..."
+                required minlength="100"></textarea>
         </div>
 
         <div class="form-group">
-           <label>Суретіңізге сілтеме (немесе Telegram,WhatsApp арқылы):</label>
-           <input type="url" id="photoUrl" placeholder="https://image-link.com/photo.jpg">
-       </div>
-        
+            <label>Суретіңізге сілтеме (міндетті емес):</label>
+            <input type="url" id="photo-url" placeholder="https://image-link.com/photo.jpg">
+        </div>
+
         <div class="form-group">
-            <label>Шығармаңыз (өлең, әңгіме немесе материал жарияланған желінің сілтемесі):</label>
-            <textarea id="work" rows="10" placeholder="Мәтінді осы жерге енгізіңіз..." required minlength="100"></textarea>
+            <label>Үлгі шығармаңыз (өлең немесе әңгіме үзіндісі):</label>
+            <textarea id="sample-work" rows="8"
+                placeholder="Бір өлеңіңізді немесе әңгімеңіздің үзіндісін жазыңыз..."
+                required minlength="100"></textarea>
         </div>
 
         <button type="submit" class="btn-submit" id="submitBtn">Өтініш жіберу</button>
     </form>
+
     <div id="status"></div>
 </div>
+</section>
 
 <footer>
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
@@ -133,73 +144,102 @@ footer{ background:#5c4033; color:white; text-align:center; padding:20px; }
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+    getFirestore, collection, addDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Firebase мәліметтері
 const firebaseConfig = {
-  apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-  projectId: "adebiet-ordasy"
+    apiKey:            "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+    authDomain:        "adebiet-ordasy.firebaseapp.com",
+    projectId:         "adebiet-ordasy",
+    storageBucket:     "adebiet-ordasy.appspot.com",
+    messagingSenderId: "776364024545",
+    appId:             "1:331787955330:web:a77853b5bffdb44bed989b"
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db  = getFirestore(app);
 
-// Telegram мәліметтері
-const TG_TOKEN = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
+const TG_TOKEN   = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
 const TG_CHAT_ID = "5616776281";
 
-const form = document.getElementById('authorForm');
+const form   = document.getElementById('authorForm');
 const status = document.getElementById('status');
+const btn    = document.getElementById('submitBtn');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
-    const name = document.getElementById('name').value;
-    const contact = document.getElementById('contact').value;
-    const work = document.getElementById('work').value;
+
+    const authorName = document.getElementById('author-name').value.trim();
+    const contactInfo = document.getElementById('contact-info').value.trim();
+    const biography  = document.getElementById('biography').value.trim();
+    const photoUrl   = document.getElementById('photo-url').value.trim();
+    const sampleWork = document.getElementById('sample-work').value.trim();
+
+    // Қосымша тексеру
+    if (biography.length < 100) {
+        status.innerHTML = '⚠️ Өмірбаян тым қысқа (кем дегенде 100 таңба болуы керек)!';
+        status.style.color = '#e67e22';
+        return;
+    }
+    if (sampleWork.length < 100) {
+        status.innerHTML = '⚠️ Шығарма тым қысқа (кем дегенде 100 таңба болуы керек)!';
+        status.style.color = '#e67e22';
+        return;
+    }
+
+    btn.disabled = true;
+    status.innerHTML = '⏳ Жіберілуде...';
+    status.style.color = '#8b5e3c';
 
     try {
-        status.innerHTML = "Жіберілуде...";
-        status.style.color = "#8b5e3c";
-
         // 1. Firebase-ке сақтау
         await addDoc(collection(db, "requests"), {
-            authorName: name,
-            contactInfo: contact,
-            content: work,
-            timestamp: serverTimestamp()
+            authorName,
+            contactInfo,
+            biography,
+            photoUrl:   photoUrl || null,
+            sampleWork,
+            timestamp:  serverTimestamp()
         });
 
-        // 2. Telegram-ға хабарлама жіберу
-        const text = `✍️ *Жаңа автордан өтініш!*\n\n👤 *Аты:* ${name}\n📞 *Байланыс:* ${contact}\n\n📝 *Шығарма:* \n${work.substring(0, 300)}...`;
-        
+        // 2. Telegram-ға хабарлама
+        const text =
+            `✍️ *Жаңа автордан өтініш!*\n\n` +
+            `👤 *Аты:* ${authorName}\n` +
+            `📞 *Байланыс:* ${contactInfo}\n\n` +
+            `📋 *Өмірбаян:*\n${biography.substring(0, 200)}...\n\n` +
+            `📝 *Үлгі шығарма:*\n${sampleWork.substring(0, 300)}...`;
+
         await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 chat_id: TG_CHAT_ID,
-                text: text,
+                text,
                 parse_mode: 'Markdown'
             })
         });
 
-        status.innerHTML = "✅ Өтінішіңіз сәтті жіберілді! Жақында хабарласамыз.";
-        status.style.color = "green";
+        status.innerHTML = '✅ Өтінішіңіз сәтті жіберілді! Жақында хабарласамыз.';
+        status.style.color = 'green';
         form.reset();
 
     } catch (err) {
-        status.innerHTML = "❌ Қате орын алды. Қайта көріңіз.";
-        status.style.color = "red";
+        console.error("Қате:", err);
+        status.innerHTML = `❌ Қате орын алды: ${err.message}`;
+        status.style.color = 'red';
+        btn.disabled = false;
     }
 });
 </script>
 
 <script>
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("show");
-  document.getElementById("overlay").classList.toggle("show");
+function toggleMenu() {
+    document.getElementById("menu").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
 }
 </script>
-    
+
 </body>
 </html>
