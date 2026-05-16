@@ -8,40 +8,40 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Georgia', serif;
-    background: #1a1208;
-    color: #e8dcc8;
-    min-height: 100vh;
+  font-family: 'Georgia', serif;
+  background: #1a1208;
+  color: #e8dcc8;
+  min-height: 100vh;
 }
 
 /* ── LOGIN SCREEN ── */
 #login-screen {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 100vh;
-    background: radial-gradient(ellipse at center, #2d1f0e 0%, #1a1208 70%);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at center, #2d1f0e 0%, #1a1208 70%);
 }
 .login-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(212,175,55,0.3);
-    border-radius: 16px;
-    padding: 48px 40px;
-    width: 360px;
-    text-align: center;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(212,175,55,0.3);
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 360px;
+  text-align: center;
 }
 .login-box h1 { font-size: 22px; color: #d4af37; margin-bottom: 6px; letter-spacing: 1px; }
 .login-box p  { font-size: 13px; color: #9a8866; margin-bottom: 32px; }
 .login-box input {
-    width: 100%; padding: 13px 16px; margin-bottom: 14px;
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(212,175,55,0.25);
-    border-radius: 8px; color: #e8dcc8; font-size: 15px; font-family: inherit;
-    outline: none; transition: border-color .2s;
+  width: 100%; padding: 13px 16px; margin-bottom: 14px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 8px; color: #e8dcc8; font-size: 15px; font-family: inherit;
+  outline: none; transition: border-color .2s;
 }
 .login-box input:focus { border-color: #d4af37; }
 .login-box input::placeholder { color: #6b5d47; }
 .btn-login {
-    width: 100%; padding: 13px; background: #d4af37; color: #1a1208;
-    border: none; border-radius: 8px; font-size: 15px; font-weight: bold;
-    cursor: pointer; font-family: inherit; transition: .2s;
+  width: 100%; padding: 13px; background: #d4af37; color: #1a1208;
+  border: none; border-radius: 8px; font-size: 15px; font-weight: bold;
+  cursor: pointer; font-family: inherit; transition: .2s;
 }
 .btn-login:hover { background: #e8c84a; }
 #login-err { color: #e07070; font-size: 13px; margin-top: 12px; min-height: 18px; }
@@ -50,43 +50,45 @@ body {
 #main-panel { display: none; }
 
 header {
-    background: rgba(0,0,0,0.4);
-    border-bottom: 1px solid rgba(212,175,55,0.2);
-    padding: 18px 32px;
-    display: flex; align-items: center; justify-content: space-between;
+  background: rgba(0,0,0,0.4);
+  border-bottom: 1px solid rgba(212,175,55,0.2);
+  padding: 18px 32px;
+  display: flex; align-items: center; justify-content: space-between;
 }
 header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .header-right { display: flex; align-items: center; gap: 16px; }
 .stats-pill {
-    background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.25);
-    border-radius: 20px; padding: 5px 14px; font-size: 13px; color: #d4af37;
+  background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 20px; padding: 5px 14px; font-size: 13px; color: #d4af37;
 }
 .btn-logout {
-    padding: 7px 16px; background: transparent;
-    border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
-    color: #9a8866; font-size: 13px; cursor: pointer; transition: .2s;
-    font-family: inherit;
+  padding: 7px 16px; background: transparent;
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+  color: #9a8866; font-size: 13px; cursor: pointer; transition: .2s;
+  font-family: inherit;
 }
 .btn-logout:hover { border-color: #e07070; color: #e07070; }
 
 /* ── TABS ── */
 .tabs {
-    display: flex; gap: 4px; padding: 20px 32px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex; gap: 4px; padding: 20px 32px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  overflow-x: auto;
 }
 .tab {
-    padding: 10px 22px; border: none; background: transparent;
-    color: #9a8866; font-size: 14px; cursor: pointer; border-radius: 8px 8px 0 0;
-    font-family: inherit; transition: .2s; position: relative; bottom: -1px;
+  padding: 10px 20px; border: none; background: transparent;
+  color: #9a8866; font-size: 14px; cursor: pointer; border-radius: 8px 8px 0 0;
+  font-family: inherit; transition: .2s; position: relative; bottom: -1px;
+  white-space: nowrap;
 }
 .tab.active {
-    background: rgba(212,175,55,0.12); color: #d4af37;
-    border: 1px solid rgba(212,175,55,0.25); border-bottom-color: #1a1208;
+  background: rgba(212,175,55,0.12); color: #d4af37;
+  border: 1px solid rgba(212,175,55,0.25); border-bottom-color: #1a1208;
 }
 .tab-count {
-    display: inline-block; background: #d4af37; color: #1a1208;
-    border-radius: 10px; font-size: 11px; font-weight: bold;
-    padding: 1px 7px; margin-left: 6px;
+  display: inline-block; background: #d4af37; color: #1a1208;
+  border-radius: 10px; font-size: 11px; font-weight: bold;
+  padding: 1px 7px; margin-left: 6px;
 }
 
 /* ── CONTENT ── */
@@ -97,9 +99,9 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 /* Loading */
 .loading-state { text-align: center; padding: 60px 20px; color: #6b5d47; }
 .spinner {
-    width: 36px; height: 36px; border: 2px solid rgba(212,175,55,0.2);
-    border-top-color: #d4af37; border-radius: 50%;
-    animation: spin .8s linear infinite; margin: 0 auto 16px;
+  width: 36px; height: 36px; border: 2px solid rgba(212,175,55,0.2);
+  border-top-color: #d4af37; border-radius: 50%;
+  animation: spin .8s linear infinite; margin: 0 auto 16px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .empty-state { text-align: center; padding: 60px 20px; color: #6b5d47; font-size: 15px; }
@@ -107,36 +109,36 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 
 /* ── CATEGORY BADGE ── */
 .cat-badge {
-    display: inline-block; font-size: 11px; font-weight: bold;
-    padding: 3px 10px; border-radius: 20px; margin-left: 8px;
+  display: inline-block; font-size: 11px; font-weight: bold;
+  padding: 3px 10px; border-radius: 20px; margin-left: 8px;
 }
 .cat-aqyn       { background: rgba(139,94,188,0.15); color: #b07adf; border: 1px solid rgba(139,94,188,0.3); }
-.cat-jazushy    { background: rgba(76,130,175,0.15); color: #5aabdf; border: 1px solid rgba(76,130,175,0.3); }
-.cat-alash      { background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.3); }
-.cat-kompozitor { background: rgba(76,175,130,0.15); color: #4caf82; border: 1px solid rgba(76,175,130,0.3); }
+.cat-jazushy    { background: rgba(76,130,175,0.15);  color: #5aabdf; border: 1px solid rgba(76,130,175,0.3); }
+.cat-alash      { background: rgba(212,175,55,0.15);  color: #d4af37; border: 1px solid rgba(212,175,55,0.3); }
+.cat-kompozitor { background: rgba(76,175,130,0.15);  color: #4caf82; border: 1px solid rgba(76,175,130,0.3); }
 
-/* ── FILTER BAR (авторлар табы) ── */
+/* ── FILTER BAR ── */
 .filter-bar {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
 }
 .filter-btn {
-    padding: 6px 16px; border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: transparent; color: #9a8866;
-    font-size: 13px; cursor: pointer; font-family: inherit; transition: .2s;
+  padding: 6px 16px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent; color: #9a8866;
+  font-size: 13px; cursor: pointer; font-family: inherit; transition: .2s;
 }
 .filter-btn:hover { border-color: rgba(212,175,55,0.4); color: #d4af37; }
 .filter-btn.active {
-    background: rgba(212,175,55,0.12); color: #d4af37;
-    border-color: rgba(212,175,55,0.4);
+  background: rgba(212,175,55,0.12); color: #d4af37;
+  border-color: rgba(212,175,55,0.4);
 }
 
 /* ── REQUEST CARDS ── */
 .request-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px; padding: 24px 28px; margin-bottom: 16px;
-    transition: border-color .2s;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 24px 28px; margin-bottom: 16px;
+  transition: border-color .2s;
 }
 .request-card:hover { border-color: rgba(212,175,55,0.3); }
 .request-card.approved { border-left: 3px solid #4caf82; }
@@ -145,18 +147,18 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; gap: 12px; }
 .author-info { display: flex; align-items: center; gap: 14px; }
 .avatar {
-    width: 48px; height: 48px; border-radius: 50%;
-    background: linear-gradient(135deg, #8b5e3c, #d4af37);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; font-weight: bold; color: #1a1208; flex-shrink: 0;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg, #8b5e3c, #d4af37);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: bold; color: #1a1208; flex-shrink: 0;
 }
 .author-name { font-size: 18px; color: #f0e6c8; font-weight: bold; }
 .author-contact { font-size: 13px; color: #9a8866; margin-top: 3px; }
 .card-date { font-size: 12px; color: #6b5d47; white-space: nowrap; }
 
 .status-badge {
-    display: inline-block; font-size: 11px; font-weight: bold;
-    padding: 3px 10px; border-radius: 20px; margin-left: 10px;
+  display: inline-block; font-size: 11px; font-weight: bold;
+  padding: 3px 10px; border-radius: 20px; margin-left: 10px;
 }
 .badge-pending  { background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.3); }
 .badge-approved { background: rgba(76,175,130,0.15); color: #4caf82; border: 1px solid rgba(76,175,130,0.3); }
@@ -164,77 +166,232 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 
 /* Expandable sections */
 .section-toggle {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; cursor: pointer;
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 13px; color: #9a8866; transition: .2s; user-select: none;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; color: #9a8866; transition: .2s; user-select: none;
 }
 .section-toggle:hover { background: rgba(255,255,255,0.07); color: #d4af37; }
 .section-toggle .arrow { transition: transform .2s; }
 .section-toggle.open .arrow { transform: rotate(180deg); }
 .section-content {
-    display: none; background: rgba(0,0,0,0.2); border-radius: 8px;
-    padding: 16px; margin-bottom: 10px; font-size: 14px; line-height: 1.7;
-    color: #c8bca8; white-space: pre-wrap; word-break: break-word;
+  display: none; background: rgba(0,0,0,0.2); border-radius: 8px;
+  padding: 16px; margin-bottom: 10px; font-size: 14px; line-height: 1.7;
+  color: #c8bca8; white-space: pre-wrap; word-break: break-word;
 }
 .section-content.show { display: block; }
 
 /* Action buttons */
 .card-actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
 .btn-approve {
-    padding: 10px 24px; background: rgba(76,175,130,0.15);
-    border: 1px solid rgba(76,175,130,0.4); border-radius: 8px;
-    color: #4caf82; font-size: 14px; font-weight: bold; cursor: pointer;
-    font-family: inherit; transition: .2s;
+  padding: 10px 24px; background: rgba(76,175,130,0.15);
+  border: 1px solid rgba(76,175,130,0.4); border-radius: 8px;
+  color: #4caf82; font-size: 14px; font-weight: bold; cursor: pointer;
+  font-family: inherit; transition: .2s;
 }
 .btn-approve:hover { background: rgba(76,175,130,0.28); }
 .btn-reject {
-    padding: 10px 24px; background: rgba(224,112,112,0.1);
-    border: 1px solid rgba(224,112,112,0.3); border-radius: 8px;
-    color: #e07070; font-size: 14px; cursor: pointer;
-    font-family: inherit; transition: .2s;
+  padding: 10px 24px; background: rgba(224,112,112,0.1);
+  border: 1px solid rgba(224,112,112,0.3); border-radius: 8px;
+  color: #e07070; font-size: 14px; cursor: pointer;
+  font-family: inherit; transition: .2s;
 }
 .btn-reject:hover { background: rgba(224,112,112,0.2); }
 
-/* Authors tab */
+/* ── AUTHORS TAB ── */
 .author-card {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px; padding: 20px 24px; margin-bottom: 12px;
-    display: flex; align-items: center; gap: 16px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 20px 24px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 16px;
 }
 .author-card-info { flex: 1; }
 .author-card-name { font-size: 16px; color: #f0e6c8; font-weight: bold; }
 .author-card-bio {
-    font-size: 13px; color: #9a8866; margin-top: 4px;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 500px;
+  font-size: 13px; color: #9a8866; margin-top: 4px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 500px;
 }
 .btn-delete {
-    padding: 8px 16px; background: transparent;
-    border: 1px solid rgba(224,112,112,0.25); border-radius: 8px;
-    color: #e07070; font-size: 13px; cursor: pointer; font-family: inherit; transition: .2s;
+  padding: 8px 16px; background: transparent;
+  border: 1px solid rgba(224,112,112,0.25); border-radius: 8px;
+  color: #e07070; font-size: 13px; cursor: pointer; font-family: inherit; transition: .2s;
 }
 .btn-delete:hover { background: rgba(224,112,112,0.15); }
 
-/* Toast */
+/* ══════════════════════════════════════════════
+   ── ӨЛЕҢДЕР & ШЫҒАРМАЛАР БӨЛІМІ ──
+══════════════════════════════════════════════ */
+
+/* Section header with add button */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.section-header h2 {
+  font-size: 18px; color: #d4af37; letter-spacing: .5px;
+}
+.section-header p {
+  font-size: 13px; color: #6b5d47; margin-top: 4px;
+}
+.btn-add {
+  padding: 10px 20px;
+  background: rgba(212,175,55,0.12);
+  border: 1px solid rgba(212,175,55,0.4);
+  border-radius: 10px; color: #d4af37;
+  font-size: 14px; font-weight: bold;
+  cursor: pointer; font-family: inherit;
+  transition: .2s; white-space: nowrap;
+}
+.btn-add:hover { background: rgba(212,175,55,0.22); }
+
+/* Poem / Work cards */
+.poem-card, .work-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 22px 26px;
+  margin-bottom: 14px; transition: border-color .2s;
+}
+.poem-card:hover, .work-card:hover {
+  border-color: rgba(212,175,55,0.35);
+}
+.poem-card-header, .work-card-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+  margin-bottom: 14px;
+}
+.poem-title, .work-title {
+  font-size: 17px; color: #f0e6c8; font-weight: bold;
+  line-height: 1.3;
+}
+.poem-meta, .work-meta {
+  font-size: 12px; color: #6b5d47; margin-top: 5px;
+  display: flex; gap: 14px; flex-wrap: wrap;
+}
+.poem-meta span, .work-meta span {
+  display: flex; align-items: center; gap: 4px;
+}
+.poem-preview, .work-preview {
+  font-size: 14px; color: #9a8866; line-height: 1.75;
+  white-space: pre-wrap; border-left: 2px solid rgba(212,175,55,0.2);
+  padding-left: 14px; margin: 12px 0;
+  max-height: 120px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+.poem-preview.expanded, .work-preview.expanded {
+  max-height: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.genre-badge {
+  display: inline-block; font-size: 11px; font-weight: bold;
+  padding: 3px 10px; border-radius: 20px; margin-left: 8px;
+  background: rgba(176,122,223,0.15); color: #b07adf;
+  border: 1px solid rgba(176,122,223,0.3);
+}
+.work-type-badge {
+  display: inline-block; font-size: 11px; font-weight: bold;
+  padding: 3px 10px; border-radius: 20px; margin-left: 8px;
+  background: rgba(90,171,223,0.15); color: #5aabdf;
+  border: 1px solid rgba(90,171,223,0.3);
+}
+.card-footer {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 14px; flex-wrap: wrap;
+}
+.btn-expand {
+  padding: 7px 16px; background: transparent;
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
+  color: #9a8866; font-size: 12px; cursor: pointer;
+  font-family: inherit; transition: .2s;
+}
+.btn-expand:hover { border-color: rgba(212,175,55,0.3); color: #d4af37; }
+.btn-edit {
+  padding: 7px 16px; background: transparent;
+  border: 1px solid rgba(212,175,55,0.25); border-radius: 8px;
+  color: #d4af37; font-size: 12px; cursor: pointer;
+  font-family: inherit; transition: .2s;
+}
+.btn-edit:hover { background: rgba(212,175,55,0.1); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75); z-index: 100;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #1e1710;
+  border: 1px solid rgba(212,175,55,0.3);
+  border-radius: 18px; padding: 32px;
+  width: 100%; max-width: 600px;
+  max-height: 90vh; overflow-y: auto;
+}
+.modal h2 { font-size: 18px; color: #d4af37; margin-bottom: 22px; }
+.modal label {
+  display: block; font-size: 13px; color: #9a8866;
+  margin-bottom: 6px; margin-top: 16px;
+}
+.modal label:first-of-type { margin-top: 0; }
+.modal input, .modal select, .modal textarea {
+  width: 100%; padding: 11px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(212,175,55,0.2);
+  border-radius: 8px; color: #e8dcc8;
+  font-size: 14px; font-family: 'Georgia', serif;
+  outline: none; transition: border-color .2s;
+}
+.modal input:focus, .modal select:focus, .modal textarea:focus {
+  border-color: #d4af37;
+}
+.modal select option { background: #1e1710; color: #e8dcc8; }
+.modal textarea { resize: vertical; min-height: 180px; line-height: 1.7; }
+.modal-actions {
+  display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px;
+}
+.btn-cancel {
+  padding: 10px 22px; background: transparent;
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+  color: #9a8866; font-size: 14px; cursor: pointer;
+  font-family: inherit; transition: .2s;
+}
+.btn-cancel:hover { border-color: #e07070; color: #e07070; }
+.btn-save {
+  padding: 10px 28px; background: #d4af37; color: #1a1208;
+  border: none; border-radius: 8px; font-size: 14px; font-weight: bold;
+  cursor: pointer; font-family: inherit; transition: .2s;
+}
+.btn-save:hover { background: #e8c84a; }
+.btn-save:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Divider between sections in scroll mode */
+.section-divider {
+  border: none; border-top: 1px solid rgba(255,255,255,0.06);
+  margin: 40px 0;
+}
+
+/* ── Toast ── */
 #toast {
-    position: fixed; bottom: 28px; right: 28px;
-    background: #2d2416; border: 1px solid rgba(212,175,55,0.3);
-    border-radius: 10px; padding: 14px 20px; font-size: 14px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-    transform: translateY(80px); opacity: 0;
-    transition: all .3s cubic-bezier(.34,1.56,.64,1);
-    pointer-events: none; z-index: 999; max-width: 320px;
+  position: fixed; bottom: 28px; right: 28px;
+  background: #2d2416; border: 1px solid rgba(212,175,55,0.3);
+  border-radius: 10px; padding: 14px 20px; font-size: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  transform: translateY(80px); opacity: 0;
+  transition: all .3s cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none; z-index: 999; max-width: 320px;
 }
 #toast.show { transform: translateY(0); opacity: 1; }
 #toast.success { border-color: rgba(76,175,130,0.4); color: #4caf82; }
 #toast.error   { border-color: rgba(224,112,112,0.4); color: #e07070; }
 
 @media(max-width: 600px) {
-    header { padding: 14px 16px; }
-    .tabs  { padding: 16px 16px 0; }
-    .content { padding: 16px; }
-    .request-card { padding: 18px; }
-    .card-header { flex-direction: column; }
+  header { padding: 14px 16px; }
+  .tabs  { padding: 16px 16px 0; }
+  .content { padding: 16px; }
+  .request-card, .poem-card, .work-card { padding: 18px; }
+  .card-header, .poem-card-header, .work-card-header { flex-direction: column; }
+  .modal { padding: 22px 18px; }
 }
 </style>
 </head>
@@ -242,339 +399,815 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 
 <!-- LOGIN -->
 <div id="login-screen">
-    <div class="login-box">
-        <h1>⚜️ Админ панелі</h1>
-        <p>Әдебиет ордасы — басқару жүйесі</p>
-        <input type="password" id="pwd-input" placeholder="Құпия сөз" onkeydown="if(event.key==='Enter') doLogin()">
-        <button class="btn-login" onclick="doLogin()">Кіру</button>
-        <div id="login-err"></div>
-    </div>
+  <div class="login-box">
+    <h1>⚜️ Админ панелі</h1>
+    <p>Әдебиет ордасы — басқару жүйесі</p>
+    <input type="password" id="pwd-input" placeholder="Құпия сөз"
+           onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="btn-login" onclick="doLogin()">Кіру</button>
+    <div id="login-err"></div>
+  </div>
 </div>
 
 <!-- MAIN -->
 <div id="main-panel">
-    <header>
-        <h1>⚜️ Әдебиет ордасы — Админ</h1>
-        <div class="header-right">
-            <span class="stats-pill" id="stats-pill">Жүктелуде...</span>
-            <button class="btn-logout" onclick="logout()">Шығу</button>
-        </div>
-    </header>
+  <header>
+    <h1>⚜️ Әдебиет ордасы — Админ</h1>
+    <div class="header-right">
+      <span class="stats-pill" id="stats-pill">Жүктелуде...</span>
+      <button class="btn-logout" onclick="logout()">Шығу</button>
+    </div>
+  </header>
 
-    <div class="tabs">
-        <button class="tab active" onclick="switchTab('requests')" id="tab-requests">
-            Өтініштер <span class="tab-count" id="cnt-pending">0</span>
-        </button>
-        <button class="tab" onclick="switchTab('authors')" id="tab-authors">
-            Авторлар <span class="tab-count" id="cnt-authors">0</span>
-        </button>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('requests')" id="tab-requests">
+      Өтініштер <span class="tab-count" id="cnt-pending">0</span>
+    </button>
+    <button class="tab" onclick="switchTab('authors')" id="tab-authors">
+      Авторлар <span class="tab-count" id="cnt-authors">0</span>
+    </button>
+    <button class="tab" onclick="switchTab('writings')" id="tab-writings">
+      📜 Өлеңдер & Шығармалар <span class="tab-count" id="cnt-writings">0</span>
+    </button>
+  </div>
+
+  <div class="content">
+
+    <!-- REQUESTS PANE -->
+    <div class="pane active" id="pane-requests">
+      <div class="loading-state" id="req-loading">
+        <div class="spinner"></div>
+        <p>Өтініштер жүктелуде...</p>
+      </div>
+      <div id="requests-list"></div>
     </div>
 
-    <div class="content">
-        <!-- REQUESTS PANE -->
-        <div class="pane active" id="pane-requests">
-            <div class="loading-state" id="req-loading">
-                <div class="spinner"></div>
-                <p>Өтініштер жүктелуде...</p>
-            </div>
-            <div id="requests-list"></div>
+    <!-- AUTHORS PANE -->
+    <div class="pane" id="pane-authors">
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterAuthors('all', this)">Барлығы</button>
+        <button class="filter-btn" onclick="filterAuthors('aqyn', this)">✍️ Ақындар</button>
+        <button class="filter-btn" onclick="filterAuthors('jazushy', this)">📚 Жазушылар</button>
+        <button class="filter-btn" onclick="filterAuthors('alash', this)">📜 Алаш зиялылары</button>
+        <button class="filter-btn" onclick="filterAuthors('kompozitor', this)">🎵 Композиторлар</button>
+      </div>
+      <div class="loading-state" id="auth-loading">
+        <div class="spinner"></div>
+        <p>Авторлар жүктелуде...</p>
+      </div>
+      <div id="authors-list"></div>
+    </div>
+
+    <!-- WRITINGS PANE: өлеңдер + шығармалар (scroll) -->
+    <div class="pane" id="pane-writings">
+
+      <!-- ─── ӨЛЕҢДЕР бөлімі ─── -->
+      <div id="poems-section">
+        <div class="section-header">
+          <div>
+            <h2>🪶 Өлеңдер</h2>
+            <p id="poems-count-label">Жүктелуде...</p>
+          </div>
+          <button class="btn-add" onclick="openPoemModal()">+ Өлең қосу</button>
         </div>
 
-        <!-- AUTHORS PANE -->
-        <div class="pane" id="pane-authors">
-            <!-- Фильтр -->
-            <div class="filter-bar">
-                <button class="filter-btn active" onclick="filterAuthors('all', this)">Барлығы</button>
-                <button class="filter-btn" onclick="filterAuthors('aqyn', this)">✍️ Ақындар</button>
-                <button class="filter-btn" onclick="filterAuthors('jazushy', this)">📚 Жазушылар</button>
-                <button class="filter-btn" onclick="filterAuthors('alash', this)">📜 Алаш зиялылары</button>
-                <button class="filter-btn" onclick="filterAuthors('kompozitor', this)">🎵 Композиторлар</button>
-            </div>
-            <div class="loading-state" id="auth-loading">
-                <div class="spinner"></div>
-                <p>Авторлар жүктелуде...</p>
-            </div>
-            <div id="authors-list"></div>
+        <!-- Фильтр -->
+        <div class="filter-bar" id="poem-filter-bar">
+          <button class="filter-btn active" onclick="filterPoems('all', this)">Барлығы</button>
+          <button class="filter-btn" onclick="filterPoems('aqyn', this)">✍️ Ақын</button>
+          <button class="filter-btn" onclick="filterPoems('jazushy', this)">📚 Жазушы</button>
+          <button class="filter-btn" onclick="filterPoems('alash', this)">📜 Алаш</button>
+          <button class="filter-btn" onclick="filterPoems('kompozitor', this)">🎵 Композитор</button>
         </div>
+
+        <div class="loading-state" id="poems-loading">
+          <div class="spinner"></div><p>Өлеңдер жүктелуде...</p>
+        </div>
+        <div id="poems-list"></div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- ─── ШЫҒАРМАЛАР бөлімі ─── -->
+      <div id="works-section">
+        <div class="section-header">
+          <div>
+            <h2>📚 Шығармалар</h2>
+            <p id="works-count-label">Жүктелуде...</p>
+          </div>
+          <button class="btn-add" onclick="openWorkModal()">+ Шығарма қосу</button>
+        </div>
+
+        <!-- Жанр фильтр -->
+        <div class="filter-bar" id="work-filter-bar">
+          <button class="filter-btn active" onclick="filterWorks('all', this)">Барлығы</button>
+          <button class="filter-btn" onclick="filterWorks('angime', this)">🖊 Әңгіме</button>
+          <button class="filter-btn" onclick="filterWorks('roman', this)">📖 Роман</button>
+          <button class="filter-btn" onclick="filterWorks('esse', this)">✒️ Эссе</button>
+          <button class="filter-btn" onclick="filterWorks('drama', this)">🎭 Драма</button>
+          <button class="filter-btn" onclick="filterWorks('other', this)">🗂 Басқа</button>
+        </div>
+
+        <div class="loading-state" id="works-loading">
+          <div class="spinner"></div><p>Шығармалар жүктелуде...</p>
+        </div>
+        <div id="works-list"></div>
+      </div>
+
+    </div><!-- /pane-writings -->
+
+  </div>
+</div><!-- /main-panel -->
+
+<!-- ══ ӨЛЕҢ MODAL ══ -->
+<div class="modal-overlay" id="poem-modal">
+  <div class="modal">
+    <h2 id="poem-modal-title">🪶 Жаңа өлең қосу</h2>
+
+    <label>Өлең атауы *</label>
+    <input type="text" id="pm-title" placeholder="Мысалы: Менің елім">
+
+    <label>Автор *</label>
+    <input type="text" id="pm-author" placeholder="Автор аты-жөні">
+
+    <label>Автор санаты</label>
+    <select id="pm-category">
+      <option value="">— Таңдаңыз —</option>
+      <option value="aqyn">✍️ Ақын</option>
+      <option value="jazushy">📚 Жазушы</option>
+      <option value="alash">📜 Алаш зиялысы</option>
+      <option value="kompozitor">🎵 Композитор</option>
+    </select>
+
+    <label>Жанр</label>
+    <input type="text" id="pm-genre" placeholder="Мысалы: Лирика, Эпикалық...">
+
+    <label>Жазылған жылы</label>
+    <input type="text" id="pm-year" placeholder="Мысалы: 1917">
+
+    <label>Өлең мәтіні *</label>
+    <textarea id="pm-text" placeholder="Өлең жолдарын осында жазыңыз..."></textarea>
+
+    <label>Қосымша ескертпе</label>
+    <input type="text" id="pm-note" placeholder="Қысқаша түсіндірме (міндетті емес)">
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closePoemModal()">Болдырмау</button>
+      <button class="btn-save" id="pm-save-btn" onclick="savePoem()">💾 Сақтау</button>
     </div>
+  </div>
+</div>
+
+<!-- ══ ШЫҒАРМА MODAL ══ -->
+<div class="modal-overlay" id="work-modal">
+  <div class="modal">
+    <h2 id="work-modal-title">📚 Жаңа шығарма қосу</h2>
+
+    <label>Шығарма атауы *</label>
+    <input type="text" id="wm-title" placeholder="Мысалы: Абай жолы">
+
+    <label>Автор *</label>
+    <input type="text" id="wm-author" placeholder="Автор аты-жөні">
+
+    <label>Автор санаты</label>
+    <select id="wm-category">
+      <option value="">— Таңдаңыз —</option>
+      <option value="aqyn">✍️ Ақын</option>
+      <option value="jazushy">📚 Жазушы</option>
+      <option value="alash">📜 Алаш зиялысы</option>
+      <option value="kompozitor">🎵 Композитор</option>
+    </select>
+
+    <label>Жанр *</label>
+    <select id="wm-genre">
+      <option value="">— Таңдаңыз —</option>
+      <option value="angime">🖊 Әңгіме</option>
+      <option value="roman">📖 Роман</option>
+      <option value="esse">✒️ Эссе</option>
+      <option value="drama">🎭 Драма</option>
+      <option value="other">🗂 Басқа</option>
+    </select>
+
+    <label>Жазылған жылы</label>
+    <input type="text" id="wm-year" placeholder="Мысалы: 1942–1956">
+
+    <label>Мазмұны / Үзіндісі *</label>
+    <textarea id="wm-text" placeholder="Шығарма үзіндісін немесе толық мәтінін осында жазыңыз..."></textarea>
+
+    <label>Қосымша ескертпе</label>
+    <input type="text" id="wm-note" placeholder="Қысқаша түсіндірме (міндетті емес)">
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeWorkModal()">Болдырмау</button>
+      <button class="btn-save" id="wm-save-btn" onclick="saveWork()">💾 Сақтау</button>
+    </div>
+  </div>
 </div>
 
 <div id="toast"></div>
 
 <script type="module">
-import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
-    getFirestore, collection, getDocs, addDoc, doc,
-    updateDoc, deleteDoc, serverTimestamp, query, orderBy
+  getFirestore, collection, getDocs, addDoc, doc,
+  updateDoc, deleteDoc, serverTimestamp, query, orderBy
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const ADMIN_PASSWORD = "admin2026";
 
 const firebaseConfig = {
-    apiKey:            "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-    authDomain:        "adebiet-ordasy.firebaseapp.com",
-    projectId:         "adebiet-ordasy",
-    storageBucket:     "adebiet-ordasy.appspot.com",
-    messagingSenderId: "776364024545",
-    appId:             "1:331787955330:web:a77853b5bffdb44bed989b"
+  apiKey:            "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+  authDomain:        "adebiet-ordasy.firebaseapp.com",
+  projectId:         "adebiet-ordasy",
+  storageBucket:     "adebiet-ordasy.appspot.com",
+  messagingSenderId: "776364024545",
+  appId:             "1:331787955330:web:a77853b5bffdb44bed989b"
 };
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
 const categoryLabels = {
-    aqyn:       '✍️ Ақын',
-    jazushy:    '📚 Жазушы',
-    alash:      '📜 Алаш зиялысы',
-    kompozitor: '🎵 Композитор'
+  aqyn:       '✍️ Ақын',
+  jazushy:    '📚 Жазушы',
+  alash:      '📜 Алаш зиялысы',
+  kompozitor: '🎵 Композитор'
 };
 
-// Барлық авторларды кэштеу (фильтр үшін)
+const genreLabels = {
+  angime: '🖊 Әңгіме',
+  roman:  '📖 Роман',
+  esse:   '✒️ Эссе',
+  drama:  '🎭 Драма',
+  other:  '🗂 Басқа'
+};
+
 let allAuthors = [];
+let allPoems   = [];
+let allWorks   = [];
+
+// editing state
+let editingPoemId = null;
+let editingWorkId = null;
 
 // ── LOGIN ──
 window.doLogin = function() {
-    const pwd = document.getElementById('pwd-input').value;
-    if (pwd === ADMIN_PASSWORD) {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-panel').style.display = 'block';
-        loadRequests();
-        loadAuthors();
-    } else {
-        document.getElementById('login-err').textContent = '❌ Құпия сөз қате!';
-        document.getElementById('pwd-input').value = '';
-    }
+  const pwd = document.getElementById('pwd-input').value;
+  if (pwd === ADMIN_PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-panel').style.display = 'block';
+    loadRequests();
+    loadAuthors();
+    loadPoems();
+    loadWorks();
+  } else {
+    document.getElementById('login-err').textContent = '❌ Құпия сөз қате!';
+    document.getElementById('pwd-input').value = '';
+  }
 };
 
 window.logout = function() {
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('main-panel').style.display  = 'none';
-    document.getElementById('pwd-input').value = '';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('main-panel').style.display  = 'none';
+  document.getElementById('pwd-input').value = '';
 };
 
 // ── TABS ──
 window.switchTab = function(tab) {
-    document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('pane-' + tab).classList.add('active');
-    document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('pane-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
 };
 
 // ── TOAST ──
 function toast(msg, type = 'success') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'show ' + type;
-    setTimeout(() => { t.className = ''; }, 3000);
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  setTimeout(() => { t.className = ''; }, 3000);
 }
 
 // ── TOGGLE ──
 window.toggleSection = function(el) {
-    el.classList.toggle('open');
-    el.nextElementSibling.classList.toggle('show');
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('show');
 };
 
 // ── FORMAT DATE ──
 function fmtDate(ts) {
-    if (!ts) return '';
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
-    return d.toLocaleDateString('kk-KZ', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString('kk-KZ', {
+    day:'2-digit', month:'2-digit', year:'numeric',
+    hour:'2-digit', minute:'2-digit'
+  });
 }
 
 function avatarLetter(name) {
-    return (name || '?')[0].toUpperCase();
+  return (name || '?')[0].toUpperCase();
 }
 
-// ── LOAD REQUESTS ──
+// ══════════════════════════════════════════
+//   REQUESTS
+// ══════════════════════════════════════════
 async function loadRequests() {
-    document.getElementById('req-loading').style.display = 'block';
-    document.getElementById('requests-list').innerHTML = '';
-    try {
-        const q = query(collection(db, 'requests'), orderBy('timestamp', 'desc'));
-        const snap = await getDocs(q);
-        document.getElementById('req-loading').style.display = 'none';
+  document.getElementById('req-loading').style.display = 'block';
+  document.getElementById('requests-list').innerHTML = '';
+  try {
+    const q = query(collection(db, 'requests'), orderBy('timestamp', 'desc'));
+    const snap = await getDocs(q);
+    document.getElementById('req-loading').style.display = 'none';
 
-        const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
-        document.getElementById('cnt-pending').textContent = pending.length;
-        document.getElementById('stats-pill').textContent = `Барлығы: ${snap.size} өтініш`;
+    const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
+    document.getElementById('cnt-pending').textContent = pending.length;
+    document.getElementById('stats-pill').textContent = `Барлығы: ${snap.size} өтініш`;
 
-        if (snap.empty) {
-            document.getElementById('requests-list').innerHTML = '<div class="empty-state"><div class="icon">📭</div>Өтініш жоқ</div>';
-            return;
-        }
-
-        snap.forEach(docSnap => {
-            const d = docSnap.data();
-            const id = docSnap.id;
-            const status = d.status || 'pending';
-            const badgeMap = { pending: 'badge-pending', approved: 'badge-approved', rejected: 'badge-rejected' };
-            const labelMap = { pending: 'Күтуде', approved: 'Рұқсат берілді', rejected: 'Қабылданбады' };
-            const catClass = d.category ? `cat-${d.category}` : '';
-            const catLabel = d.category ? categoryLabels[d.category] : '—';
-
-            const card = document.createElement('div');
-            card.className = `request-card ${status !== 'pending' ? status : ''}`;
-            card.id = 'req-' + id;
-            card.innerHTML = `
-                <div class="card-header">
-                    <div class="author-info">
-                        <div class="avatar">${avatarLetter(d.authorName)}</div>
-                        <div>
-                            <div class="author-name">
-                                ${d.authorName || 'Белгісіз'}
-                                <span class="status-badge ${badgeMap[status]}">${labelMap[status]}</span>
-                                ${d.category ? `<span class="cat-badge ${catClass}">${catLabel}</span>` : ''}
-                            </div>
-                            <div class="author-contact">📞 ${d.contactInfo || '—'}</div>
-                        </div>
-                    </div>
-                    <div class="card-date">${fmtDate(d.timestamp)}</div>
-                </div>
-
-                <div class="section-toggle" onclick="toggleSection(this)">
-                    📋 Өмірбаян <span class="arrow">▾</span>
-                </div>
-                <div class="section-content">${d.biography || '—'}</div>
-
-                <div class="section-toggle" onclick="toggleSection(this)">
-                    📝 Үлгі шығарма <span class="arrow">▾</span>
-                </div>
-                <div class="section-content">${d.sampleWork || '—'}</div>
-
-                ${d.photoUrl ? `<div style="margin:10px 0;font-size:13px;color:#9a8866;">🖼 Сурет: <a href="${d.photoUrl}" target="_blank" style="color:#d4af37;">${d.photoUrl.substring(0,60)}...</a></div>` : ''}
-
-                ${status === 'pending' ? `
-                <div class="card-actions">
-                    <button class="btn-approve" onclick="approveRequest('${id}')">✅ Рұқсат беру</button>
-                    <button class="btn-reject"  onclick="rejectRequest('${id}')">❌ Қабылдамау</button>
-                </div>` : `
-                <div class="card-actions" style="margin-top:14px;">
-                    <span style="font-size:13px;color:#6b5d47;">Шешім қабылданды</span>
-                    ${status === 'approved'
-                        ? `<button class="btn-reject" onclick="rejectRequest('${id}')">Кері қайтару</button>`
-                        : `<button class="btn-approve" onclick="approveRequest('${id}')">Рұқсат беру</button>`}
-                </div>`}
-            `;
-            document.getElementById('requests-list').appendChild(card);
-        });
-    } catch (e) {
-        document.getElementById('req-loading').style.display = 'none';
-        document.getElementById('requests-list').innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+    if (snap.empty) {
+      document.getElementById('requests-list').innerHTML =
+        '<div class="empty-state"><div class="icon">📭</div>Өтініш жоқ</div>';
+      return;
     }
-}
 
-// ── APPROVE ──
-window.approveRequest = async function(reqId) {
-    try {
-        const reqSnap = await getDocs(query(collection(db, 'requests')));
-        const reqData = reqSnap.docs.find(d => d.id === reqId)?.data();
-        const reqRef  = doc(db, 'requests', reqId);
+    snap.forEach(docSnap => {
+      const d = docSnap.data();
+      const id = docSnap.id;
+      const status = d.status || 'pending';
+      const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
+      const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
+      const catClass = d.category ? `cat-${d.category}` : '';
+      const catLabel = d.category ? categoryLabels[d.category] : '—';
 
-        await updateDoc(reqRef, { status: 'approved', approvedAt: serverTimestamp() });
-
-        if (reqData) {
-            // ✅ category өрісі де авторлар коллекциясына сақталады
-            await addDoc(collection(db, 'authors'), {
-                name:       reqData.authorName,
-                contact:    reqData.contactInfo,
-                biography:  reqData.biography,
-                photoUrl:   reqData.photoUrl || null,
-                sampleWork: reqData.sampleWork,
-                category:   reqData.category || null,
-                requestId:  reqId,
-                addedAt:    serverTimestamp()
-            });
-        }
-
-        toast('✅ Автор рұқсат алды және авторлар тізіміне қосылды!');
-        loadRequests();
-        loadAuthors();
-    } catch (e) {
-        toast('❌ Қате: ' + e.message, 'error');
-    }
-};
-
-// ── REJECT ──
-window.rejectRequest = async function(reqId) {
-    if (!confirm('Бұл өтінішті қабылдамауға сенімдісіз бе?')) return;
-    try {
-        await updateDoc(doc(db, 'requests', reqId), {
-            status: 'rejected', rejectedAt: serverTimestamp()
-        });
-        toast('Өтініш қабылданбады.');
-        loadRequests();
-    } catch (e) {
-        toast('❌ Қате: ' + e.message, 'error');
-    }
-};
-
-// ── LOAD AUTHORS ──
-async function loadAuthors() {
-    document.getElementById('auth-loading').style.display = 'block';
-    document.getElementById('authors-list').innerHTML = '';
-    try {
-        const snap = await getDocs(query(collection(db, 'authors'), orderBy('addedAt', 'desc')));
-        document.getElementById('auth-loading').style.display = 'none';
-        document.getElementById('cnt-authors').textContent = snap.size;
-
-        allAuthors = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        renderAuthors(allAuthors);
-    } catch (e) {
-        document.getElementById('auth-loading').style.display = 'none';
-        document.getElementById('authors-list').innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
-    }
-}
-
-// ── RENDER AUTHORS ──
-function renderAuthors(list) {
-    const container = document.getElementById('authors-list');
-    if (list.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="icon">✍️</div>Автор табылмады</div>';
-        return;
-    }
-    container.innerHTML = '';
-    list.forEach(d => {
-        const catClass = d.category ? `cat-${d.category}` : '';
-        const catLabel = d.category ? categoryLabels[d.category] : '';
-        const el = document.createElement('div');
-        el.className = 'author-card';
-        el.innerHTML = `
-            <div class="avatar" style="width:44px;height:44px;font-size:18px;">${(d.name || '?')[0].toUpperCase()}</div>
-            <div class="author-card-info">
-                <div class="author-card-name">
-                    ${d.name || 'Белгісіз'}
-                    ${catLabel ? `<span class="cat-badge ${catClass}" style="font-size:11px;">${catLabel}</span>` : ''}
-                </div>
-                <div class="author-card-bio">${d.biography || '—'}</div>
+      const card = document.createElement('div');
+      card.className = `request-card ${status !== 'pending' ? status : ''}`;
+      card.id = 'req-' + id;
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="author-info">
+            <div class="avatar">${avatarLetter(d.authorName)}</div>
+            <div>
+              <div class="author-name">
+                ${d.authorName || 'Белгісіз'}
+                <span class="status-badge ${badgeMap[status]}">${labelMap[status]}</span>
+                ${d.category ? `<span class="cat-badge ${catClass}">${catLabel}</span>` : ''}
+              </div>
+              <div class="author-contact">📞 ${d.contactInfo || '—'}</div>
             </div>
-            <button class="btn-delete" onclick="deleteAuthor('${d.id}')">🗑 Жою</button>
-        `;
-        container.appendChild(el);
+          </div>
+          <div class="card-date">${fmtDate(d.timestamp)}</div>
+        </div>
+
+        <div class="section-toggle" onclick="toggleSection(this)">
+          📋 Өмірбаян <span class="arrow">▾</span>
+        </div>
+        <div class="section-content">${d.biography || '—'}</div>
+
+        <div class="section-toggle" onclick="toggleSection(this)">
+          📝 Үлгі шығарма <span class="arrow">▾</span>
+        </div>
+        <div class="section-content">${d.sampleWork || '—'}</div>
+
+        ${d.photoUrl ? `<div style="margin:10px 0;font-size:13px;color:#9a8866;">
+          🖼 Сурет: <a href="${d.photoUrl}" target="_blank" style="color:#d4af37;">
+          ${d.photoUrl.substring(0,60)}...</a></div>` : ''}
+
+        ${status === 'pending' ? `
+        <div class="card-actions">
+          <button class="btn-approve" onclick="approveRequest('${id}')">✅ Рұқсат беру</button>
+          <button class="btn-reject"  onclick="rejectRequest('${id}')">❌ Қабылдамау</button>
+        </div>` : `
+        <div class="card-actions" style="margin-top:14px;">
+          <span style="font-size:13px;color:#6b5d47;">Шешім қабылданды</span>
+          ${status === 'approved'
+            ? `<button class="btn-reject" onclick="rejectRequest('${id}')">Кері қайтару</button>`
+            : `<button class="btn-approve" onclick="approveRequest('${id}')">Рұқсат беру</button>`}
+        </div>`}
+      `;
+      document.getElementById('requests-list').appendChild(card);
     });
+  } catch (e) {
+    document.getElementById('req-loading').style.display = 'none';
+    document.getElementById('requests-list').innerHTML =
+      `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+  }
 }
 
-// ── FILTER AUTHORS ──
-window.filterAuthors = function(category, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    if (category === 'all') {
-        renderAuthors(allAuthors);
-    } else {
-        renderAuthors(allAuthors.filter(a => a.category === category));
+window.approveRequest = async function(reqId) {
+  try {
+    const reqSnap = await getDocs(query(collection(db, 'requests')));
+    const reqData = reqSnap.docs.find(d => d.id === reqId)?.data();
+    const reqRef  = doc(db, 'requests', reqId);
+
+    await updateDoc(reqRef, { status: 'approved', approvedAt: serverTimestamp() });
+
+    if (reqData) {
+      await addDoc(collection(db, 'authors'), {
+        name:       reqData.authorName,
+        contact:    reqData.contactInfo,
+        biography:  reqData.biography,
+        photoUrl:   reqData.photoUrl || null,
+        sampleWork: reqData.sampleWork,
+        category:   reqData.category || null,
+        requestId:  reqId,
+        addedAt:    serverTimestamp()
+      });
     }
+
+    toast('✅ Автор рұқсат алды және авторлар тізіміне қосылды!');
+    loadRequests();
+    loadAuthors();
+  } catch (e) {
+    toast('❌ Қате: ' + e.message, 'error');
+  }
 };
 
-// ── DELETE AUTHOR ──
-window.deleteAuthor = async function(authorId) {
-    if (!confirm('Авторды жоюға сенімдісіз бе?')) return;
-    try {
-        await deleteDoc(doc(db, 'authors', authorId));
-        toast('Автор жойылды.');
-        loadAuthors();
-    } catch (e) {
-        toast('❌ Қате: ' + e.message, 'error');
-    }
+window.rejectRequest = async function(reqId) {
+  if (!confirm('Бұл өтінішті қабылдамауға сенімдісіз бе?')) return;
+  try {
+    await updateDoc(doc(db, 'requests', reqId), {
+      status: 'rejected', rejectedAt: serverTimestamp()
+    });
+    toast('Өтініш қабылданбады.');
+    loadRequests();
+  } catch (e) {
+    toast('❌ Қате: ' + e.message, 'error');
+  }
 };
+
+// ══════════════════════════════════════════
+//   AUTHORS
+// ══════════════════════════════════════════
+async function loadAuthors() {
+  document.getElementById('auth-loading').style.display = 'block';
+  document.getElementById('authors-list').innerHTML = '';
+  try {
+    const snap = await getDocs(query(collection(db, 'authors'), orderBy('addedAt', 'desc')));
+    document.getElementById('auth-loading').style.display = 'none';
+    document.getElementById('cnt-authors').textContent = snap.size;
+
+    allAuthors = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderAuthors(allAuthors);
+  } catch (e) {
+    document.getElementById('auth-loading').style.display = 'none';
+    document.getElementById('authors-list').innerHTML =
+      `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+  }
+}
+
+function renderAuthors(list) {
+  const container = document.getElementById('authors-list');
+  if (list.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">✍️</div>Автор табылмады</div>';
+    return;
+  }
+  container.innerHTML = '';
+  list.forEach(d => {
+    const catClass = d.category ? `cat-${d.category}` : '';
+    const catLabel = d.category ? categoryLabels[d.category] : '';
+    const el = document.createElement('div');
+    el.className = 'author-card';
+    el.innerHTML = `
+      <div class="avatar" style="width:44px;height:44px;font-size:18px;">
+        ${(d.name || '?')[0].toUpperCase()}
+      </div>
+      <div class="author-card-info">
+        <div class="author-card-name">
+          ${d.name || 'Белгісіз'}
+          ${catLabel ? `<span class="cat-badge ${catClass}" style="font-size:11px;">${catLabel}</span>` : ''}
+        </div>
+        <div class="author-card-bio">${d.biography || '—'}</div>
+      </div>
+      <button class="btn-delete" onclick="deleteAuthor('${d.id}')">🗑 Жою</button>
+    `;
+    container.appendChild(el);
+  });
+}
+
+window.filterAuthors = function(category, btn) {
+  document.querySelectorAll('#pane-authors .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAuthors(category === 'all' ? allAuthors : allAuthors.filter(a => a.category === category));
+};
+
+window.deleteAuthor = async function(authorId) {
+  if (!confirm('Авторды жоюға сенімдісіз бе?')) return;
+  try {
+    await deleteDoc(doc(db, 'authors', authorId));
+    toast('Автор жойылды.');
+    loadAuthors();
+  } catch (e) {
+    toast('❌ Қате: ' + e.message, 'error');
+  }
+};
+
+// ══════════════════════════════════════════
+//   ӨЛЕҢДЕР (poems)
+// ══════════════════════════════════════════
+async function loadPoems() {
+  document.getElementById('poems-loading').style.display = 'block';
+  document.getElementById('poems-list').innerHTML = '';
+  try {
+    const snap = await getDocs(query(collection(db, 'poems'), orderBy('addedAt', 'desc')));
+    document.getElementById('poems-loading').style.display = 'none';
+    allPoems = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    updateWritingsCount();
+    document.getElementById('poems-count-label').textContent =
+      `${allPoems.length} өлең сақталған`;
+    renderPoems(allPoems);
+  } catch (e) {
+    document.getElementById('poems-loading').style.display = 'none';
+    document.getElementById('poems-list').innerHTML =
+      `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+  }
+}
+
+function renderPoems(list) {
+  const container = document.getElementById('poems-list');
+  if (list.length === 0) {
+    container.innerHTML =
+      '<div class="empty-state"><div class="icon">🪶</div>Өлең жоқ. Алғашқы өлеңді қосыңыз!</div>';
+    return;
+  }
+  container.innerHTML = '';
+  list.forEach(d => {
+    const catClass = d.category ? `cat-${d.category}` : '';
+    const catLabel = d.category ? categoryLabels[d.category] : '';
+    const card = document.createElement('div');
+    card.className = 'poem-card';
+    card.id = 'poem-' + d.id;
+    card.innerHTML = `
+      <div class="poem-card-header">
+        <div>
+          <div class="poem-title">
+            ${d.title || 'Атаусыз'}
+            ${d.genre ? `<span class="genre-badge">${d.genre}</span>` : ''}
+          </div>
+          <div class="poem-meta">
+            <span>✍️ ${d.author || '—'}</span>
+            ${catLabel ? `<span><span class="cat-badge ${catClass}" style="margin:0;font-size:11px;">${catLabel}</span></span>` : ''}
+            ${d.year ? `<span>📅 ${d.year}</span>` : ''}
+            ${d.addedAt ? `<span>🕐 ${fmtDate(d.addedAt)}</span>` : ''}
+          </div>
+          ${d.note ? `<div style="font-size:12px;color:#6b5d47;margin-top:6px;font-style:italic;">💬 ${d.note}</div>` : ''}
+        </div>
+      </div>
+      <div class="poem-preview" id="preview-poem-${d.id}">${d.text || '—'}</div>
+      <div class="card-footer">
+        <button class="btn-expand" onclick="toggleExpand('poem', '${d.id}', this)">▼ Толығырақ</button>
+        <button class="btn-edit" onclick="editPoem('${d.id}')">✏️ Өзгерту</button>
+        <button class="btn-delete" onclick="deletePoem('${d.id}')">🗑 Жою</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+window.filterPoems = function(category, btn) {
+  document.querySelectorAll('#poem-filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPoems(category === 'all' ? allPoems : allPoems.filter(p => p.category === category));
+};
+
+window.toggleExpand = function(type, id, btn) {
+  const preview = document.getElementById(`preview-${type}-${id}`);
+  const expanded = preview.classList.toggle('expanded');
+  btn.textContent = expanded ? '▲ Жию' : '▼ Толығырақ';
+};
+
+// Modal open/close
+window.openPoemModal = function() {
+  editingPoemId = null;
+  document.getElementById('poem-modal-title').textContent = '🪶 Жаңа өлең қосу';
+  ['pm-title','pm-author','pm-genre','pm-year','pm-text','pm-note'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('pm-category').value = '';
+  document.getElementById('poem-modal').classList.add('open');
+};
+window.closePoemModal = function() {
+  document.getElementById('poem-modal').classList.remove('open');
+};
+
+window.editPoem = function(poemId) {
+  const d = allPoems.find(p => p.id === poemId);
+  if (!d) return;
+  editingPoemId = poemId;
+  document.getElementById('poem-modal-title').textContent = '✏️ Өлеңді өзгерту';
+  document.getElementById('pm-title').value    = d.title    || '';
+  document.getElementById('pm-author').value   = d.author   || '';
+  document.getElementById('pm-category').value = d.category || '';
+  document.getElementById('pm-genre').value    = d.genre    || '';
+  document.getElementById('pm-year').value     = d.year     || '';
+  document.getElementById('pm-text').value     = d.text     || '';
+  document.getElementById('pm-note').value     = d.note     || '';
+  document.getElementById('poem-modal').classList.add('open');
+};
+
+window.savePoem = async function() {
+  const title  = document.getElementById('pm-title').value.trim();
+  const author = document.getElementById('pm-author').value.trim();
+  const text   = document.getElementById('pm-text').value.trim();
+  if (!title || !author || !text) {
+    toast('⚠️ Атауы, авторы және мәтіні міндетті!', 'error'); return;
+  }
+  const btn = document.getElementById('pm-save-btn');
+  btn.disabled = true; btn.textContent = 'Сақталуда...';
+
+  const data = {
+    title,
+    author,
+    category: document.getElementById('pm-category').value || null,
+    genre:    document.getElementById('pm-genre').value.trim() || null,
+    year:     document.getElementById('pm-year').value.trim()  || null,
+    text,
+    note:     document.getElementById('pm-note').value.trim()  || null,
+  };
+
+  try {
+    if (editingPoemId) {
+      await updateDoc(doc(db, 'poems', editingPoemId), { ...data, updatedAt: serverTimestamp() });
+      toast('✅ Өлең жаңартылды!');
+    } else {
+      await addDoc(collection(db, 'poems'), { ...data, addedAt: serverTimestamp() });
+      toast('✅ Өлең қосылды!');
+    }
+    closePoemModal();
+    loadPoems();
+  } catch (e) {
+    toast('❌ Қате: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = '💾 Сақтау';
+  }
+};
+
+window.deletePoem = async function(poemId) {
+  if (!confirm('Өлеңді жоюға сенімдісіз бе?')) return;
+  try {
+    await deleteDoc(doc(db, 'poems', poemId));
+    toast('Өлең жойылды.');
+    loadPoems();
+  } catch (e) {
+    toast('❌ Қате: ' + e.message, 'error');
+  }
+};
+
+// ══════════════════════════════════════════
+//   ШЫҒАРМАЛАР (works)
+// ══════════════════════════════════════════
+async function loadWorks() {
+  document.getElementById('works-loading').style.display = 'block';
+  document.getElementById('works-list').innerHTML = '';
+  try {
+    const snap = await getDocs(query(collection(db, 'works'), orderBy('addedAt', 'desc')));
+    document.getElementById('works-loading').style.display = 'none';
+    allWorks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    updateWritingsCount();
+    document.getElementById('works-count-label').textContent =
+      `${allWorks.length} шығарма сақталған`;
+    renderWorks(allWorks);
+  } catch (e) {
+    document.getElementById('works-loading').style.display = 'none';
+    document.getElementById('works-list').innerHTML =
+      `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+  }
+}
+
+function updateWritingsCount() {
+  document.getElementById('cnt-writings').textContent = allPoems.length + allWorks.length;
+}
+
+function renderWorks(list) {
+  const container = document.getElementById('works-list');
+  if (list.length === 0) {
+    container.innerHTML =
+      '<div class="empty-state"><div class="icon">📚</div>Шығарма жоқ. Алғашқы шығарманы қосыңыз!</div>';
+    return;
+  }
+  container.innerHTML = '';
+  list.forEach(d => {
+    const catClass   = d.category ? `cat-${d.category}` : '';
+    const catLabel   = d.category ? categoryLabels[d.category] : '';
+    const genreLabel = d.genre    ? (genreLabels[d.genre] || d.genre) : '';
+    const card = document.createElement('div');
+    card.className = 'work-card';
+    card.id = 'work-' + d.id;
+    card.innerHTML = `
+      <div class="work-card-header">
+        <div>
+          <div class="work-title">
+            ${d.title || 'Атаусыз'}
+            ${genreLabel ? `<span class="work-type-badge">${genreLabel}</span>` : ''}
+          </div>
+          <div class="work-meta">
+            <span>✍️ ${d.author || '—'}</span>
+            ${catLabel ? `<span><span class="cat-badge ${catClass}" style="margin:0;font-size:11px;">${catLabel}</span></span>` : ''}
+            ${d.year ? `<span>📅 ${d.year}</span>` : ''}
+            ${d.addedAt ? `<span>🕐 ${fmtDate(d.addedAt)}</span>` : ''}
+          </div>
+          ${d.note ? `<div style="font-size:12px;color:#6b5d47;margin-top:6px;font-style:italic;">💬 ${d.note}</div>` : ''}
+        </div>
+      </div>
+      <div class="work-preview" id="preview-work-${d.id}">${d.text || '—'}</div>
+      <div class="card-footer">
+        <button class="btn-expand" onclick="toggleExpand('work', '${d.id}', this)">▼ Толығырақ</button>
+        <button class="btn-edit" onclick="editWork('${d.id}')">✏️ Өзгерту</button>
+        <button class="btn-delete" onclick="deleteWork('${d.id}')">🗑 Жою</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+window.filterWorks = function(genre, btn) {
+  document.querySelectorAll('#work-filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderWorks(genre === 'all' ? allWorks : allWorks.filter(w => w.genre === genre));
+};
+
+window.openWorkModal = function() {
+  editingWorkId = null;
+  document.getElementById('work-modal-title').textContent = '📚 Жаңа шығарма қосу';
+  ['wm-title','wm-author','wm-year','wm-text','wm-note'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('wm-category').value = '';
+  document.getElementById('wm-genre').value    = '';
+  document.getElementById('work-modal').classList.add('open');
+};
+window.closeWorkModal = function() {
+  document.getElementById('work-modal').classList.remove('open');
+};
+
+window.editWork = function(workId) {
+  const d = allWorks.find(w => w.id === workId);
+  if (!d) return;
+  editingWorkId = workId;
+  document.getElementById('work-modal-title').textContent = '✏️ Шығарманы өзгерту';
+  document.getElementById('wm-title').value    = d.title    || '';
+  document.getElementById('wm-author').value   = d.author   || '';
+  document.getElementById('wm-category').value = d.category || '';
+  document.getElementById('wm-genre').value    = d.genre    || '';
+  document.getElementById('wm-year').value     = d.year     || '';
+  document.getElementById('wm-text').value     = d.text     || '';
+  document.getElementById('wm-note').value     = d.note     || '';
+  document.getElementById('work-modal').classList.add('open');
+};
+
+window.saveWork = async function() {
+  const title  = document.getElementById('wm-title').value.trim();
+  const author = document.getElementById('wm-author').value.trim();
+  const text   = document.getElementById('wm-text').value.trim();
+  if (!title || !author || !text) {
+    toast('⚠️ Атауы, авторы және мәтіні міндетті!', 'error'); return;
+  }
+  const btn = document.getElementById('wm-save-btn');
+  btn.disabled = true; btn.textContent = 'Сақталуда...';
+
+  const data = {
+    title,
+    author,
+    category: document.getElementById('wm-category').value || null,
+    genre:    document.getElementById('wm-genre').value    || null,
+    year:     document.getElementById('wm-year').value.trim()  || null,
+    text,
+    note:     document.getElementById('wm-note').value.trim()  || null,
+  };
+
+  try {
+    if (editingWorkId) {
+      await updateDoc(doc(db, 'works', editingWorkId), { ...data, updatedAt: serverTimestamp() });
+      toast('✅ Шығарма жаңартылды!');
+    } else {
+      await addDoc(collection(db, 'works'), { ...data, addedAt: serverTimestamp() });
+      toast('✅ Шығарма қосылды!');
+    }
+    closeWorkModal();
+    loadWorks();
+  } catch (e) {
+    toast('❌ Қате: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = '💾 Сақтау';
+  }
+};
+
+window.deleteWork = async function(workId) {
+  if (!confirm('Шығарманы жоюға сенімдісіз бе?')) return;
+  try {
+    await deleteDoc(doc(db, 'works', workId));
+    toast('Шығарма жойылды.');
+    loadWorks();
+  } catch (e) {
+    toast('❌ Қате: ' + e.message, 'error');
+  }
+};
+
+// Close modals on overlay click
+document.getElementById('poem-modal').addEventListener('click', function(e) {
+  if (e.target === this) closePoemModal();
+});
+document.getElementById('work-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeWorkModal();
+});
 </script>
 
 </body>
