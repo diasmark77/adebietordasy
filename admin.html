@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ панелі | Әдебиет ордасы</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Georgia', serif;
+    background: #1a1208;
+    color: #e8dcc8;
+    min-height: 100vh;
+}
+
+/* ── LOGIN SCREEN ── */
+#login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at center, #2d1f0e 0%, #1a1208 70%);
+}
+.login-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 16px;
+    padding: 48px 40px;
+    width: 360px;
+    text-align: center;
+}
+.login-box h1 { font-size: 22px; color: #d4af37; margin-bottom: 6px; letter-spacing: 1px; }
+.login-box p  { font-size: 13px; color: #9a8866; margin-bottom: 32px; }
+.login-box input {
+    width: 100%; padding: 13px 16px; margin-bottom: 14px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 8px; color: #e8dcc8; font-size: 15px; font-family: inherit;
+    outline: none; transition: border-color .2s;
+}
+.login-box input:focus { border-color: #d4af37; }
+.login-box input::placeholder { color: #6b5d47; }
+.btn-login {
+    width: 100%; padding: 13px; background: #d4af37; color: #1a1208;
+    border: none; border-radius: 8px; font-size: 15px; font-weight: bold;
+    cursor: pointer; font-family: inherit; transition: .2s;
+}
+.btn-login:hover { background: #e8c84a; }
+#login-err { color: #e07070; font-size: 13px; margin-top: 12px; min-height: 18px; }
+
+/* ── MAIN PANEL ── */
+#main-panel { display: none; }
+
+header {
+    background: rgba(0,0,0,0.4);
+    border-bottom: 1px solid rgba(212,175,55,0.2);
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.stats-pill {
+    background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 20px; padding: 5px 14px; font-size: 13px; color: #d4af37;
+}
+.btn-logout {
+    padding: 7px 16px; background: transparent;
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+    color: #9a8866; font-size: 13px; cursor: pointer; transition: .2s;
+    font-family: inherit;
+}
+.btn-logout:hover { border-color: #e07070; color: #e07070; }
+
+/* ── TABS ── */
+.tabs {
+    display: flex; gap: 4px; padding: 20px 32px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.tab {
+    padding: 10px 22px; border: none; background: transparent;
+    color: #9a8866; font-size: 14px; cursor: pointer; border-radius: 8px 8px 0 0;
+    font-family: inherit; transition: .2s; position: relative; bottom: -1px;
+}
+.tab.active {
+    background: rgba(212,175,55,0.12); color: #d4af37;
+    border: 1px solid rgba(212,175,55,0.25); border-bottom-color: #1a1208;
+}
+.tab-count {
+    display: inline-block; background: #d4af37; color: #1a1208;
+    border-radius: 10px; font-size: 11px; font-weight: bold;
+    padding: 1px 7px; margin-left: 6px;
+}
+
+/* ── CONTENT ── */
+.content { padding: 28px 32px; }
+
+.pane { display: none; }
+.pane.active { display: block; }
+
+/* Loading */
+.loading-state {
+    text-align: center; padding: 60px 20px; color: #6b5d47;
+}
+.spinner {
+    width: 36px; height: 36px; border: 2px solid rgba(212,175,55,0.2);
+    border-top-color: #d4af37; border-radius: 50%;
+    animation: spin .8s linear infinite; margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty-state {
+    text-align: center; padding: 60px 20px; color: #6b5d47;
+    font-size: 15px;
+}
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+
+/* ── REQUEST CARDS ── */
+.request-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 24px 28px; margin-bottom: 16px;
+    transition: border-color .2s;
+}
+.request-card:hover { border-color: rgba(212,175,55,0.3); }
+.request-card.approved { border-left: 3px solid #4caf82; }
+.request-card.rejected { border-left: 3px solid #e07070; opacity: .65; }
+
+.card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; gap: 12px; }
+.author-info { display: flex; align-items: center; gap: 14px; }
+.avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, #8b5e3c, #d4af37);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: bold; color: #1a1208; flex-shrink: 0;
+}
+.author-name { font-size: 18px; color: #f0e6c8; font-weight: bold; }
+.author-contact { font-size: 13px; color: #9a8866; margin-top: 3px; }
+.card-date { font-size: 12px; color: #6b5d47; white-space: nowrap; }
+
+.status-badge {
+    display: inline-block; font-size: 11px; font-weight: bold;
+    padding: 3px 10px; border-radius: 20px; margin-left: 10px;
+}
+.badge-pending  { background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.3); }
+.badge-approved { background: rgba(76,175,130,0.15); color: #4caf82; border: 1px solid rgba(76,175,130,0.3); }
+.badge-rejected { background: rgba(224,112,112,0.15); color: #e07070; border: 1px solid rgba(224,112,112,0.3); }
+
+/* Expandable sections */
+.section-toggle {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: #9a8866; transition: .2s; user-select: none;
+}
+.section-toggle:hover { background: rgba(255,255,255,0.07); color: #d4af37; }
+.section-toggle .arrow { transition: transform .2s; }
+.section-toggle.open .arrow { transform: rotate(180deg); }
+.section-content {
+    display: none; background: rgba(0,0,0,0.2); border-radius: 8px;
+    padding: 16px; margin-bottom: 10px; font-size: 14px; line-height: 1.7;
+    color: #c8bca8; white-space: pre-wrap; word-break: break-word;
+}
+.section-content.show { display: block; }
+
+/* Action buttons */
+.card-actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.btn-approve {
+    padding: 10px 24px; background: rgba(76,175,130,0.15);
+    border: 1px solid rgba(76,175,130,0.4); border-radius: 8px;
+    color: #4caf82; font-size: 14px; font-weight: bold; cursor: pointer;
+    font-family: inherit; transition: .2s;
+}
+.btn-approve:hover { background: rgba(76,175,130,0.28); }
+.btn-reject {
+    padding: 10px 24px; background: rgba(224,112,112,0.1);
+    border: 1px solid rgba(224,112,112,0.3); border-radius: 8px;
+    color: #e07070; font-size: 14px; cursor: pointer;
+    font-family: inherit; transition: .2s;
+}
+.btn-reject:hover { background: rgba(224,112,112,0.2); }
+.btn-view-author {
+    padding: 10px 20px; background: transparent;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
+    color: #9a8866; font-size: 13px; cursor: pointer;
+    font-family: inherit; transition: .2s; margin-left: auto;
+}
+.btn-view-author:hover { border-color: rgba(212,175,55,0.3); color: #d4af37; }
+
+/* Authors tab */
+.author-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 20px 24px; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 16px;
+}
+.author-card-info { flex: 1; }
+.author-card-name { font-size: 16px; color: #f0e6c8; font-weight: bold; }
+.author-card-bio { font-size: 13px; color: #9a8866; margin-top: 4px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 500px; }
+.btn-delete {
+    padding: 8px 16px; background: transparent;
+    border: 1px solid rgba(224,112,112,0.25); border-radius: 8px;
+    color: #e07070; font-size: 13px; cursor: pointer; font-family: inherit; transition: .2s;
+}
+.btn-delete:hover { background: rgba(224,112,112,0.15); }
+
+/* Toast */
+#toast {
+    position: fixed; bottom: 28px; right: 28px;
+    background: #2d2416; border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 10px; padding: 14px 20px; font-size: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    transform: translateY(80px); opacity: 0;
+    transition: all .3s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none; z-index: 999; max-width: 320px;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+#toast.success { border-color: rgba(76,175,130,0.4); color: #4caf82; }
+#toast.error   { border-color: rgba(224,112,112,0.4); color: #e07070; }
+
+@media(max-width: 600px) {
+    header { padding: 14px 16px; }
+    .tabs  { padding: 16px 16px 0; }
+    .content { padding: 16px; }
+    .request-card { padding: 18px; }
+    .card-header { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+    <div class="login-box">
+        <h1>⚜️ Админ панелі</h1>
+        <p>Әдебиет ордасы — басқару жүйесі</p>
+        <input type="password" id="pwd-input" placeholder="Құпия сөз" onkeydown="if(event.key==='Enter') doLogin()">
+        <button class="btn-login" onclick="doLogin()">Кіру</button>
+        <div id="login-err"></div>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div id="main-panel">
+    <header>
+        <h1>⚜️ Әдебиет ордасы — Админ</h1>
+        <div class="header-right">
+            <span class="stats-pill" id="stats-pill">Жүктелуде...</span>
+            <button class="btn-logout" onclick="logout()">Шығу</button>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('requests')" id="tab-requests">
+            Өтініштер <span class="tab-count" id="cnt-pending">0</span>
+        </button>
+        <button class="tab" onclick="switchTab('authors')" id="tab-authors">
+            Авторлар <span class="tab-count" id="cnt-authors">0</span>
+        </button>
+    </div>
+
+    <div class="content">
+        <!-- REQUESTS PANE -->
+        <div class="pane active" id="pane-requests">
+            <div class="loading-state" id="req-loading">
+                <div class="spinner"></div>
+                <p>Өтініштер жүктелуде...</p>
+            </div>
+            <div id="requests-list"></div>
+        </div>
+
+        <!-- AUTHORS PANE -->
+        <div class="pane" id="pane-authors">
+            <div class="loading-state" id="auth-loading">
+                <div class="spinner"></div>
+                <p>Авторлар жүктелуде...</p>
+            </div>
+            <div id="authors-list"></div>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+    getFirestore, collection, getDocs, addDoc, doc,
+    updateDoc, deleteDoc, serverTimestamp, query, orderBy, where
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// ── CONFIG ── (өзіңіздікін қойыңыз)
+const ADMIN_PASSWORD = "admin2026"; // ← осыны өзгертіңіз!
+
+const firebaseConfig = {
+    apiKey:            "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+    authDomain:        "adebiet-ordasy.firebaseapp.com",
+    projectId:         "adebiet-ordasy",
+    storageBucket:     "adebiet-ordasy.appspot.com",
+    messagingSenderId: "776364024545",
+    appId:             "1:331787955330:web:a77853b5bffdb44bed989b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── LOGIN ──
+window.doLogin = function() {
+    const pwd = document.getElementById('pwd-input').value;
+    if (pwd === ADMIN_PASSWORD) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-panel').style.display = 'block';
+        loadRequests();
+        loadAuthors();
+    } else {
+        document.getElementById('login-err').textContent = '❌ Құпия сөз қате!';
+        document.getElementById('pwd-input').value = '';
+    }
+};
+
+window.logout = function() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('main-panel').style.display  = 'none';
+    document.getElementById('pwd-input').value = '';
+};
+
+// ── TABS ──
+window.switchTab = function(tab) {
+    document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('pane-' + tab).classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+};
+
+// ── TOAST ──
+function toast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    setTimeout(() => { t.className = ''; }, 3000);
+}
+
+// ── TOGGLE ──
+window.toggleSection = function(el) {
+    el.classList.toggle('open');
+    const content = el.nextElementSibling;
+    content.classList.toggle('show');
+};
+
+// ── FORMAT DATE ──
+function fmtDate(ts) {
+    if (!ts) return '';
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleDateString('kk-KZ', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+// ── AVATAR LETTER ──
+function avatarLetter(name) {
+    return (name || '?')[0].toUpperCase();
+}
+
+// ── LOAD REQUESTS ──
+async function loadRequests() {
+    document.getElementById('req-loading').style.display = 'block';
+    document.getElementById('requests-list').innerHTML = '';
+    try {
+        const q = query(collection(db, 'requests'), orderBy('timestamp', 'desc'));
+        const snap = await getDocs(q);
+        document.getElementById('req-loading').style.display = 'none';
+
+        const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
+        document.getElementById('cnt-pending').textContent = pending.length;
+
+        const total = snap.size;
+        document.getElementById('stats-pill').textContent = `Барлығы: ${total} өтініш`;
+
+        if (snap.empty) {
+            document.getElementById('requests-list').innerHTML = '<div class="empty-state"><div class="icon">📭</div>Өтініш жоқ</div>';
+            return;
+        }
+
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const id = docSnap.id;
+            const status = d.status || 'pending';
+            const badgeMap = { pending: 'badge-pending', approved: 'badge-approved', rejected: 'badge-rejected' };
+            const labelMap = { pending: 'Күтуде', approved: 'Рұқсат берілді', rejected: 'Қабылданбады' };
+            const card = document.createElement('div');
+            card.className = `request-card ${status !== 'pending' ? status : ''}`;
+            card.id = 'req-' + id;
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="author-info">
+                        <div class="avatar">${avatarLetter(d.authorName)}</div>
+                        <div>
+                            <div class="author-name">
+                                ${d.authorName || 'Белгісіз'}
+                                <span class="status-badge ${badgeMap[status]}">${labelMap[status]}</span>
+                            </div>
+                            <div class="author-contact">📞 ${d.contactInfo || '—'}</div>
+                        </div>
+                    </div>
+                    <div class="card-date">${fmtDate(d.timestamp)}</div>
+                </div>
+
+                <div class="section-toggle" onclick="toggleSection(this)">
+                    📋 Өмірбаян <span class="arrow">▾</span>
+                </div>
+                <div class="section-content">${d.biography || '—'}</div>
+
+                <div class="section-toggle" onclick="toggleSection(this)">
+                    📝 Үлгі шығарма <span class="arrow">▾</span>
+                </div>
+                <div class="section-content">${d.sampleWork || '—'}</div>
+
+                ${d.photoUrl ? `<div style="margin: 10px 0; font-size: 13px; color: #9a8866;">🖼 Сурет: <a href="${d.photoUrl}" target="_blank" style="color:#d4af37;">${d.photoUrl.substring(0,60)}...</a></div>` : ''}
+
+                ${status === 'pending' ? `
+                <div class="card-actions">
+                    <button class="btn-approve" onclick="approveRequest('${id}')">✅ Рұқсат беру</button>
+                    <button class="btn-reject"  onclick="rejectRequest('${id}')">❌ Қабылдамау</button>
+                </div>` : `
+                <div class="card-actions" style="margin-top:14px;">
+                    <span style="font-size:13px; color:#6b5d47;">Шешім қабылданды</span>
+                    ${status === 'approved' ? `<button class="btn-reject" onclick="rejectRequest('${id}')">Кері қайтару</button>` : `<button class="btn-approve" onclick="approveRequest('${id}')">Рұқсат беру</button>`}
+                </div>`}
+            `;
+            document.getElementById('requests-list').appendChild(card);
+        });
+    } catch (e) {
+        document.getElementById('req-loading').style.display = 'none';
+        document.getElementById('requests-list').innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+    }
+}
+
+// ── APPROVE ──
+window.approveRequest = async function(reqId) {
+    try {
+        // 1. requests коллекциясын жаңарту
+        const reqRef = doc(db, 'requests', reqId);
+        const reqSnap = await getDocs(query(collection(db, 'requests')));
+        const reqData = reqSnap.docs.find(d => d.id === reqId)?.data();
+
+        await updateDoc(reqRef, { status: 'approved', approvedAt: serverTimestamp() });
+
+        // 2. authors коллекциясына қосу
+        if (reqData) {
+            await addDoc(collection(db, 'authors'), {
+                name:       reqData.authorName,
+                contact:    reqData.contactInfo,
+                biography:  reqData.biography,
+                photoUrl:   reqData.photoUrl || null,
+                sampleWork: reqData.sampleWork,
+                requestId:  reqId,
+                addedAt:    serverTimestamp()
+            });
+        }
+
+        toast('✅ Автор рұқсат алды және авторлар тізіміне қосылды!');
+        loadRequests();
+        loadAuthors();
+    } catch (e) {
+        toast('❌ Қате: ' + e.message, 'error');
+    }
+};
+
+// ── REJECT ──
+window.rejectRequest = async function(reqId) {
+    if (!confirm('Бұл өтінішті қабылдамауға сенімдісіз бе?')) return;
+    try {
+        await updateDoc(doc(db, 'requests', reqId), {
+            status: 'rejected', rejectedAt: serverTimestamp()
+        });
+        toast('Өтініш қабылданбады.');
+        loadRequests();
+    } catch (e) {
+        toast('❌ Қате: ' + e.message, 'error');
+    }
+};
+
+// ── LOAD AUTHORS ──
+async function loadAuthors() {
+    document.getElementById('auth-loading').style.display = 'block';
+    document.getElementById('authors-list').innerHTML = '';
+    try {
+        const snap = await getDocs(query(collection(db, 'authors'), orderBy('addedAt', 'desc')));
+        document.getElementById('auth-loading').style.display = 'none';
+        document.getElementById('cnt-authors').textContent = snap.size;
+
+        if (snap.empty) {
+            document.getElementById('authors-list').innerHTML = '<div class="empty-state"><div class="icon">✍️</div>Авторлар жоқ</div>';
+            return;
+        }
+
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const id = docSnap.id;
+            const el = document.createElement('div');
+            el.className = 'author-card';
+            el.innerHTML = `
+                <div class="avatar" style="width:44px;height:44px;font-size:18px;">${avatarLetter(d.name)}</div>
+                <div class="author-card-info">
+                    <div class="author-card-name">${d.name || 'Белгісіз'}</div>
+                    <div class="author-card-bio">${d.biography || '—'}</div>
+                </div>
+                <button class="btn-delete" onclick="deleteAuthor('${id}')">🗑 Жою</button>
+            `;
+            document.getElementById('authors-list').appendChild(el);
+        });
+    } catch (e) {
+        document.getElementById('auth-loading').style.display = 'none';
+        document.getElementById('authors-list').innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+    }
+}
+
+// ── DELETE AUTHOR ──
+window.deleteAuthor = async function(authorId) {
+    if (!confirm('Авторды жоюға сенімдісіз бе?')) return;
+    try {
+        await deleteDoc(doc(db, 'authors', authorId));
+        toast('Автор жойылды.');
+        loadAuthors();
+    } catch (e) {
+        toast('❌ Қате: ' + e.message, 'error');
+    }
+};
+</script>
+
+</body>
+</html>
