@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Авторлар | Әдебиет ордасы</title>
+<meta name="description" content="Әдебиет ордасы сайтындағы қазақ авторларының өмірбаяны, шығармашылығы және танымал шығармаларымен танысыңыз.">
+<meta name="keywords" content="әдебиет ордасы, қазақ ақындары, жазушылар, алаш зиялылары, композиторлар">
+
+<link rel="icon" href="images/logo.png" type="image/png">
+<link rel="stylesheet" href="css/menu.css">
+
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: #f4f1ea; color: #333; }
+
+header {
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 25px;
+}
+header h1 { margin: 0 0 6px; font-size: 2em; }
+header p  { margin: 0; opacity: 0.85; }
+
+/* ── FILTER BAR ── */
+.filter-section {
+  text-align: center;
+  padding: 24px 16px 8px;
+}
+.filter-bar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+.filter-btn {
+  padding: 8px 20px;
+  border-radius: 24px;
+  border: 2px solid #d3cdc0;
+  background: white;
+  color: #5c4033;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: inherit;
+}
+.filter-btn:hover {
+  border-color: #8b5e3c;
+  background: #fdf5e6;
+}
+.filter-btn.active {
+  background: #8b5e3c;
+  border-color: #8b5e3c;
+  color: white;
+}
+
+/* ── SEARCH ── */
+.search-box {
+  text-align: center;
+  margin: 16px 0 24px;
+}
+.search-box input {
+  width: 60%;
+  max-width: 600px;
+  padding: 12px 15px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: #8b5e3c;
+  box-shadow: 0 0 6px rgba(139,94,60,0.2);
+}
+
+/* ── CATEGORY LABEL on card ── */
+.cat-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.cat-aqyn       { background: #ede8fb; color: #6b3fa0; }
+.cat-jazushy    { background: #e0f0fb; color: #1a6fa0; }
+.cat-alash      { background: #fdf5e0; color: #8a6000; }
+.cat-kompozitor { background: #e0fbf0; color: #0a6e45; }
+.cat-static     { background: #f4ede8; color: #5c4033; }
+
+/* ── CARDS ── */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 0 20px 40px;
+}
+.card {
+  background: white;
+  color: #333;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.card img {
+  width: 120px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+.card h2 { color: #5c4033; margin: 6px 0 5px; font-size: 1.1em; }
+.card p  { margin-bottom: 10px; font-size: 0.9em; flex: 1; }
+.card a  { text-decoration: none; color: #d4af37; font-weight: bold; }
+.card a:hover { color: #b8962e; }
+.card:hover { transform: translateY(-5px); }
+.card.hidden { display: none; }
+
+/* Empty state */
+.empty-msg {
+  text-align: center;
+  padding: 40px;
+  color: #9a8866;
+  font-size: 16px;
+  width: 100%;
+  display: none;
+}
+
+/* Loading */
+.loading-msg {
+  text-align: center;
+  padding: 30px;
+  color: #8b5e3c;
+  font-size: 15px;
+  width: 100%;
+}
+
+footer { background: #5c4033; color: white; text-align: center; padding: 15px; margin-top: 10px; }
+
+@media(max-width: 600px) {
+  .search-box input { width: 95%; }
+  .filter-btn { font-size: 13px; padding: 7px 14px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Авторлар</h1>
+  <p>Қазақ әдебиетінің көрнекті тұлғалары</p>
+</header>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+  <button onclick="location.href='index.html'">🏠 Басты бет</button>
+  <button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
+  <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+  <button onclick="location.href='contact.html'">📩 Байланыс</button>
+  <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+  <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+  <button onclick="location.href='add-poem.html'">➕ Өлең қосу</button>
+</nav>
+
+<!-- ФИЛЬТР -->
+<div class="filter-section">
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="setFilter('all', this)">Барлығы</button>
+    <button class="filter-btn" onclick="setFilter('aqyn', this)">✍️ Ақындар</button>
+    <button class="filter-btn" onclick="setFilter('jazushy', this)">📚 Жазушылар</button>
+    <button class="filter-btn" onclick="setFilter('alash', this)">📜 Алаш зиялылары</button>
+    <button class="filter-btn" onclick="setFilter('kompozitor', this)">🎵 Композиторлар</button>
+  </div>
+</div>
+
+<!-- ІЗДЕУ -->
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Автор іздеу..." oninput="applyFilters()">
+</div>
+
+<!-- КАРТОЧКАЛАР -->
+<section>
+  <div class="cards-container" id="all-cards">
+
+    <!-- ── СТАТИКАЛЫҚ АВТОРЛАР (aqyn санаты) ── -->
+    <div class="card" data-category="aqyn" onclick="location.href='poet/muhtar-shahanov.html'">
+      <img src="images/muhtar.jpg" alt="Мұхтар Шаханов" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-aqyn">✍️ Ақын</span>
+      <h2>Мұхтар Шаханов (1942–2026)</h2>
+      <p>Қазақ ақыны, драматургі, қоғам қайраткері.</p>
+      <a href="poet/muhtar-shahanov.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" data-category="aqyn" onclick="location.href='poet/qudaybergenov.html'">
+      <img src="images/qudaybergenov.jpg" alt="Құдайбергенов Дархан" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-aqyn">✍️ Ақын</span>
+      <h2>Құдайбергенов Дархан (1979)</h2>
+      <p>№119-мектеп лицейінің қазақ тілі ұстазы, айтыскер ақын.</p>
+      <a href="poet/qudaybergenov.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" data-category="aqyn" onclick="location.href='poet/marqabai.html'">
+      <img src="images/marqabai.jpg" alt="Марқабай Диас" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-aqyn">✍️ Ақын</span>
+      <h2>Марқабай Диас (2009)</h2>
+      <p>Жас ақын.</p>
+      <a href="poet/marqabai.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" data-category="aqyn" onclick="location.href='poet/abay.html'">
+      <img src="images/abay.jpg" alt="Абай Құнанбайұлы" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-aqyn">✍️ Ақын</span>
+      <h2>Абай Құнанбайұлы (1845–1904)</h2>
+      <p>Қазақтың ұлы ақыны, ойшыл, ағартушы.</p>
+      <a href="poet/abay.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" data-category="alash" onclick="location.href='poet/magzhan.html'">
+      <img src="images/magzhan.jpeg" alt="Мағжан Жұмабаев" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-alash">📜 Алаш зиялысы</span>
+      <h2>Мағжан Жұмабаев (1893–1938)</h2>
+      <p>Алаш қозғалысының қайраткері, ақын.</p>
+      <a href="poet/magzhan.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" data-category="alash" onclick="location.href='poet/saken.html'">
+      <img src="images/saken.jpg" alt="Сәкен Сейфуллин" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-alash">📜 Алаш зиялысы</span>
+      <h2>Сәкен Сейфуллин (1894–1938)</h2>
+      <p>Ақын, жазушы, мемлекет қайраткері.</p>
+      <a href="poet/saken.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" data-category="aqyn" onclick="location.href='poet/erkin.html'">
+      <img src="images/erkin.jpeg" alt="Еркін Жұмабекұлы" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-aqyn">✍️ Ақын</span>
+      <h2>Еркін Жұмабекұлы (1976)</h2>
+      <p>№119-мектеп лицейінің дене шынықтыру ұстазы, ақын.</p>
+      <a href="poet/erkin.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" data-category="aqyn" onclick="location.href='poet/bakdaulet.html'">
+      <img src="images/bakdaulet.jpg" alt="Бақдәулет Арыстан" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-aqyn">✍️ Ақын</span>
+      <h2>Бақдәулет Арыстан (1992)</h2>
+      <p>Ақын, көптеген әндер мәтінінің авторы.</p>
+      <a href="poet/bakdaulet.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" data-category="aqyn" onclick="location.href='poet/mukagali.html'">
+      <img src="images/mukagali.jpg" alt="Мұқағали Мақатаев" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-aqyn">✍️ Ақын</span>
+      <h2>Мұқағали Мақатаев (1931–1976)</h2>
+      <p>Лирик ақын, қазақ поэзиясының биік шыңы.</p>
+      <a href="poet/mukagali.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" data-category="aqyn" onclick="location.href='poet/zhambyl.html'">
+      <img src="images/zhambyl.jpg" alt="Жамбыл Жабаев" onerror="this.src='images/logo.png'">
+      <span class="cat-label cat-aqyn">✍️ Ақын</span>
+      <h2>Жамбыл Жабаев (1846–1945)</h2>
+      <p>Халық ақыны, жыр алыбы.</p>
+      <a href="poet/zhambyl.html">Толығырақ →</a>
+    </div>
+
+    <!-- ── FIREBASE-ТЕН ДИНАМИКАЛЫҚ АВТОРЛАР ── -->
+    <div id="dynamic-list" style="display: contents;"></div>
+
+    <!-- Ештеңе табылмаса -->
+    <div class="empty-msg" id="empty-msg">Автор табылмады</div>
+
+  </div>
+</section>
+
+<footer>
+  © 2026 Әдебиет ордасы | Қазақ әдеби порталы
+</footer>
+
+<script>
+// ── ГЛОБАЛ КҮЙЛЕР ──
+let activeFilter = 'all';
+
+const categoryLabels = {
+  aqyn:       '✍️ Ақын',
+  jazushy:    '📚 Жазушы',
+  alash:      '📜 Алаш зиялысы',
+  kompozitor: '🎵 Композитор'
+};
+
+// ── ФИЛЬТР БАТЫРМАСЫ ──
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+// ── ІЗДЕУ + ФИЛЬТР БІРГЕ ──
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cards  = document.querySelectorAll('#all-cards .card');
+  let visible  = 0;
+
+  cards.forEach(card => {
+    const cat  = card.getAttribute('data-category') || '';
+    const text = card.innerText.toLowerCase();
+
+    const catMatch    = activeFilter === 'all' || cat === activeFilter;
+    const searchMatch = search === '' || text.includes(search);
+
+    if (catMatch && searchMatch) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  document.getElementById('empty-msg').style.display = visible === 0 ? 'block' : 'none';
+}
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs, orderBy, query }
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:    "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+  projectId: "adebiet-ordasy",
+  appId:     "1:331787955330:web:a77853b5bffdb44bed989b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+const categoryLabels = {
+  aqyn:       '✍️ Ақын',
+  jazushy:    '📚 Жазушы',
+  alash:      '📜 Алаш зиялысы',
+  kompozitor: '🎵 Композитор'
+};
+
+async function loadAuthors() {
+  const container = document.getElementById('dynamic-list');
+
+  try {
+    const q    = query(collection(db, "authors"), orderBy("addedAt", "desc"));
+    const snap = await getDocs(q);
+
+    snap.forEach(docSnap => {
+      const author   = docSnap.data();
+      const id       = docSnap.id;
+      const category = author.category || 'aqyn';
+      const catLabel = categoryLabels[category] || '';
+      const catClass = `cat-${category}`;
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-category', category);  // ← фильтр осыны оқиды
+      card.onclick = () => { location.href = `author-profile.html?id=${id}`; };
+
+      card.innerHTML = `
+        <img src="${author.photoUrl || 'images/logo.png'}" alt="${author.name || ''}"
+             onerror="this.src='images/logo.png'">
+        <span class="cat-label ${catClass}">${catLabel}</span>
+        <h2>${author.name || 'Белгісіз'}</h2>
+        <p>${(author.biography || '').substring(0, 100)}...</p>
+        <a href="author-profile.html?id=${id}">Толығырақ →</a>
+      `;
+
+      container.appendChild(card);
+    });
+
+    // Firebase жүктелгеннен кейін фильтрді қайта қолдан
+    applyFilters();
+
+  } catch (e) {
+    console.error("Firebase қатесі:", e);
+  }
+}
+
+loadAuthors();
+</script>
+
+<script>
+function toggleMenu() {
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("overlay").classList.toggle("show");
+}
+</script>
+
+</body>
+</html>
