@@ -220,11 +220,9 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
 <script src="search.js"></script>
 
 <script type="module">
-  // FIREBASE БАЙЛАНЫСЫ
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  // СЕНІҢ FIREBASE CONFIG ДЕРЕКТЕРІҢДІ ОСЫНДА ҚОЙ
   const firebaseConfig = {
     apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
     projectId: "adebiet-ordasy",
@@ -234,14 +232,14 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async function loadFirebasePoets() {
+  async function loadAuthors() {
     const dynamicContainer = document.getElementById('dynamic-list');
-    
-    try {
-      const q = query(collection(db, "published_content"), where("category", "==", "poet"));
-      const querySnapshot = await getDocs(q);
 
-      querySnapshot.forEach((doc) => {
+    try {
+      const q = query(collection(db, "authors"), orderBy("addedAt", "desc"));
+      const snapshot = await getDocs(q);
+
+      snapshot.forEach((doc) => {
         const author = doc.data();
         const id = doc.id;
 
@@ -250,19 +248,21 @@ footer {background:#5c4033;color:white;text-align:center;padding:15px;margin-top
         card.onclick = () => { location.href = `author-profile.html?id=${id}`; };
 
         card.innerHTML = `
-          <img src="${author.photoUrl || 'images/logo.png'}" alt="${author.name}">
-          <h2>${author.name}</h2>
-          <p>${author.description || 'Жас ақын'}</p>
+          <img src="${author.photoUrl || 'images/logo.png'}" alt="${author.name}"
+               onerror="this.src='images/logo.png'">
+          <h2>${author.name || 'Белгісіз'}</h2>
+          <p>${(author.biography || '').substring(0, 100)}...</p>
           <a href="author-profile.html?id=${id}">Толығырақ →</a>
         `;
         dynamicContainer.appendChild(card);
       });
+
     } catch (e) {
       console.error("Firebase қатесі:", e);
     }
   }
 
-  loadFirebasePoets();
+  loadAuthors();
 </script>
 
 <script>
