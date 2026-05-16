@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Өлең қосу | Әдебиет ордасы</title>
 
+<link rel="stylesheet" href="css/menu.css">
 <link rel="icon" href="images/logo.png" type="image/png">
 
 <style>
@@ -131,6 +132,31 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     header h1 { font-size: 28px; }
     .form-container { margin: 20px; padding: 20px; }
 }
+
+/* ── Мәзір (menu.css резервтік стильдер) ── */
+.menu-btn {
+    position: fixed; top: 15px; left: 15px; z-index: 1000;
+    background: #8b5e3c; color: white; border: none;
+    border-radius: 8px; padding: 10px 14px; font-size: 20px;
+    cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+#menu {
+    position: fixed; top: 0; left: -280px; width: 260px; height: 100%;
+    background: #5c4033; z-index: 999; padding: 70px 20px 20px;
+    transition: left 0.3s ease; overflow-y: auto;
+}
+#menu.show { left: 0; }
+#menu button {
+    display: block; width: 100%; background: none; border: none;
+    color: white; font-size: 16px; padding: 12px 10px; text-align: left;
+    cursor: pointer; border-radius: 6px; margin-bottom: 4px; transition: 0.2s;
+}
+#menu button:hover { background: rgba(255,255,255,0.15); }
+.overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4); z-index: 998;
+}
+.overlay.show { display: block; }
 </style>
 </head>
 <body>
@@ -140,6 +166,22 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     <p>Жаңа өлеңді порталға жариялаңыз</p>
 </header>
 
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav id="menu">
+    <button onclick="location.href='index.html'">🏠 Басты бет</button>
+    <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
+    <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
+    <button onclick="location.href='poets.html'">✍️ Ақындар</button>
+    <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+    <button onclick="location.href='contact.html'">📩 Байланыс</button>
+    <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+    <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+    <button onclick="location.href='add-author.html'">➕ Автор қосу</button>
+</nav>
+
 <section>
 <div class="form-container">
 
@@ -147,7 +189,7 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
         <b>Ескерту:</b><br>
         • Өлең мәтіні кем дегенде 50 таңбадан тұруы тиіс.<br>
         • Автор міндетті түрде таңдалуы керек.<br>
-        • Жарияланған өлең бетте бірден көрінеді.
+        • Жіберілген өлең <b>әкімші бекіткеннен кейін</b> жарияланады.
     </div>
 
     <form id="poemForm">
@@ -215,9 +257,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import {
     getFirestore, collection, addDoc, getDocs, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import {
-    getAuth, signInAnonymously, onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
@@ -228,12 +267,9 @@ const firebaseConfig = {
     appId: "1:331787955330:web:a77853b5bffdb44bed989b"
 };
 
-const app  = initializeApp(firebaseConfig);
-const db   = getFirestore(app);
-const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
 
-// Анонимді логин — Rules "request.auth != null" үшін
-signInAnonymously(auth).catch(e => console.warn('Анонимді логин қатесі:', e));
 
 const TG_TOKEN   = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
 const TG_CHAT_ID = "5616776281";
@@ -398,8 +434,8 @@ form.addEventListener('submit', async (e) => {
     showStatus('⏳ Сақталуда, күте тұрыңыз...', '#8b5e3c');
 
     try {
-        // Firebase-ке сақтау
-        const docRef = await addDoc(collection(db, "published_content"), {
+        // Firebase-ке сақтау (requests — әкімші бекіту үшін)
+        const docRef = await addDoc(collection(db, "requests"), {
             authorId,
             authorName,
             workTitle,
@@ -407,17 +443,18 @@ form.addEventListener('submit', async (e) => {
             audioUrl:  audioUrl  || null,
             photoUrl:  photoUrl  || null,
             type:      'poem',
+            status:    'pending',
             timestamp: serverTimestamp()
         });
 
-        console.log('✅ Өлең сақталды, ID:', docRef.id);
+        console.log('✅ Өлең жіберілді, ID:', docRef.id);
 
         // Telegram (қате болса да тоқтамайды)
         await sendTelegram(authorName, workTitle, work);
 
-        // Сәтті жарияланды
+        // Сәтті жіберілді
         showStatus(
-            `✅ Өлең сәтті жарияланды! <a href="poem-view.html?id=${docRef.id}" style="color:#8b5e3c;">Өлеңді көру →</a>`,
+            '✅ Өлең сәтті жіберілді! Әкімші бекіткеннен кейін жарияланады.',
             'green'
         );
 
@@ -447,5 +484,11 @@ form.addEventListener('submit', async (e) => {
 });
 </script>
 
+<script>
+function toggleMenu() {
+    document.getElementById("menu").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
+}
+</script>
 </body>
 </html>
