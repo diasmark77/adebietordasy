@@ -170,13 +170,12 @@ const btn    = document.getElementById('submitBtn');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const authorName = document.getElementById('author-name').value.trim();
+    const authorName  = document.getElementById('author-name').value.trim();
     const contactInfo = document.getElementById('contact-info').value.trim();
-    const biography  = document.getElementById('biography').value.trim();
-    const photoUrl   = document.getElementById('photo-url').value.trim();
-    const sampleWork = document.getElementById('sample-work').value.trim();
+    const biography   = document.getElementById('biography').value.trim();
+    const photoUrl    = document.getElementById('photo-url').value.trim();
+    const sampleWork  = document.getElementById('sample-work').value.trim();
 
-    // Қосымша тексеру
     if (biography.length < 100) {
         status.innerHTML = '⚠️ Өмірбаян тым қысқа (кем дегенде 100 таңба болуы керек)!';
         status.style.color = '#e67e22';
@@ -193,40 +192,48 @@ form.addEventListener('submit', async (e) => {
     status.style.color = '#8b5e3c';
 
     try {
-        // 1. Firebase-ке сақтау
+        // 1. Firebase-ке сақтау — НЕГІЗГІ
         await addDoc(collection(db, "requests"), {
             authorName,
             contactInfo,
             biography,
-            photoUrl:   photoUrl || null,
+            photoUrl:  photoUrl || null,
             sampleWork,
-            timestamp:  serverTimestamp()
+            timestamp: serverTimestamp()
         });
 
-        // 2. Telegram-ға хабарлама
-        const text =
-            `✍️ *Жаңа автордан өтініш!*\n\n` +
-            `👤 *Аты:* ${authorName}\n` +
-            `📞 *Байланыс:* ${contactInfo}\n\n` +
-            `📋 *Өмірбаян:*\n${biography.substring(0, 200)}...\n\n` +
-            `📝 *Үлгі шығарма:*\n${sampleWork.substring(0, 300)}...`;
-
-        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: TG_CHAT_ID,
-                text,
-                parse_mode: 'Markdown'
-            })
-        });
-
+        // ✅ Firebase сәтті болса — бірден жетістік көрсет
         status.innerHTML = '✅ Өтінішіңіз сәтті жіберілді! Жақында хабарласамыз.';
         status.style.color = 'green';
         form.reset();
+        btn.disabled = false;
+
+        // 2. Telegram — бөлек блокта, форманы блоктамайды
+        try {
+            const text =
+                `✍️ *Жаңа автордан өтініш!*\n\n` +
+                `👤 *Аты:* ${authorName}\n` +
+                `📞 *Байланыс:* ${contactInfo}\n\n` +
+                `📋 *Өмірбаян:*\n${biography.substring(0, 200)}...\n\n` +
+                `📝 *Үлгі шығарма:*\n${sampleWork.substring(0, 300)}...`;
+
+            await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: TG_CHAT_ID,
+                    text,
+                    parse_mode: 'Markdown'
+                })
+            });
+        } catch (tgErr) {
+            // Telegram жетпесе де — пайдаланушыға әсер етпейді
+            console.warn("Telegram хабары жетпеді:", tgErr);
+        }
 
     } catch (err) {
-        console.error("Қате:", err);
+        // Тек Firebase қатесі болса ғана шығады
+        console.error("Firebase қате:", err);
         status.innerHTML = `❌ Қате орын алды: ${err.message}`;
         status.style.color = 'red';
         btn.disabled = false;
