@@ -772,25 +772,51 @@ async function loadRequests() {
           ${d.photoUrl.substring(0,60)}...</a></div>` : ''}
 
         ${status === 'pending' ? `
-        <div class="card-actions">
-          <button class="btn-approve" onclick="approveRequest('${id}')">✅ Рұқсат беру</button>
-          <button class="btn-reject"  onclick="rejectRequest('${id}')">❌ Қабылдамау</button>
-        </div>` : `
-        <div class="card-actions" style="margin-top:14px;">
-          <span style="font-size:13px;color:#6b5d47;">Шешім қабылданды</span>
-          ${status === 'approved'
-            ? `<button class="btn-reject" onclick="rejectRequest('${id}')">Кері қайтару</button>`
-            : `<button class="btn-approve" onclick="approveRequest('${id}')">Рұқсат беру</button>`}
-        </div>`}
-      `;
-      document.getElementById('requests-list').appendChild(card);
-    });
+ window.approveRequest = async function(reqId) {
+  try {
+    const reqSnap = await getDocs(query(collection(db, 'requests')));
+    const reqData = reqSnap.docs.find(d => d.id === reqId)?.data();
+    const reqRef  = doc(db, 'requests', reqId);
+
+    await updateDoc(reqRef, { status: 'approved', approvedAt: serverTimestamp() });
+
+    if (reqData) {
+      // ── Өлең өтінішін poems коллекциясына қос ──
+      if (reqData.type === 'poem') {
+        await addDoc(collection(db, 'poems'), {
+          title:    reqData.workTitle  || null,
+          author:   reqData.authorName || null,
+          text:     reqData.work       || null,
+          audioUrl: reqData.audioUrl   || null,
+          photoUrl: reqData.photoUrl   || null,
+          requestId: reqId,
+          addedAt:  serverTimestamp()
+        });
+        toast('✅ Өлең бекітілді және өлеңдер тізіміне қосылды!');
+
+      // ── Автор өтінішін authors коллекциясына қос ──
+      } else {
+        await addDoc(collection(db, 'authors'), {
+          name:       reqData.authorName,
+          contact:    reqData.contactInfo,
+          biography:  reqData.biography,
+          photoUrl:   reqData.photoUrl || null,
+          sampleWork: reqData.sampleWork,
+          category:   reqData.category || null,
+          requestId:  reqId,
+          addedAt:    serverTimestamp()
+        });
+        toast('✅ Автор бекітілді және авторлар тізіміне қосылды!');
+      }
+    }
+
+    loadRequests();
+    loadAuthors();
+    loadPoems();
   } catch (e) {
-    document.getElementById('req-loading').style.display = 'none';
-    document.getElementById('requests-list').innerHTML =
-      `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+    toast('❌ Қате: ' + e.message, 'error');
   }
-}
+};
 
 window.approveRequest = async function(reqId) {
   try {
@@ -875,6 +901,10 @@ function renderAuthors(list) {
           ${d.name || 'Белгісіз'}
           ${catLabel ? `<span class="cat-badge ${catClass}" style="font-size:11px;">${catLabel}</span>` : ''}
         </div>
+        // card.innerHTML ішіндегі author-name div-ына қосыңыз:
+${d.type === 'poem' 
+  ? `<span class="work-type-badge" style="margin-left:8px;">🪶 Өлең</span>` 
+  : `<span class="cat-badge cat-aqyn" style="margin-left:8px;">✍️ Автор</span>`}
         <div class="author-card-bio">${d.biography || '—'}</div>
       </div>
       <button class="btn-delete" onclick="deleteAuthor('${d.id}')">🗑 Жою</button>
