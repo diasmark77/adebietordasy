@@ -161,28 +161,38 @@
     const id = urlParams.get('id');
 
     async function loadAuthorData() {
-        if (!id) return;
-        try {
-            const docRef = doc(db, "published_content", id);
-            const docSnap = await getDoc(docRef);
+    if (!id) return;
+    try {
+        // published_content → authors
+        const docRef = doc(db, "authors", id);
+        const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                document.getElementById('author-name').innerText = data.name || "Аты жоқ";
-                document.getElementById('author-bio').innerText = data.description || "Мәлімет жоқ";
-                if (data.photoUrl) document.getElementById('author-photo').src = data.photoUrl;
+        if (docSnap.exists()) {
+            const data = docSnap.data();
 
-                const workBox = document.getElementById('author-work');
-                if (data.work) {
-                    workBox.innerText = data.work;
-                } else {
-                    document.getElementById('work-container').style.display = 'none';
-                }
+            document.getElementById('author-name').innerText = data.name || "Аты жоқ";
+            document.getElementById('author-bio').innerText = data.biography || "Мәлімет жоқ";
 
-
+            if (data.photoUrl) {
+                document.getElementById('author-photo').src = data.photoUrl;
             }
-        } catch (e) { console.error(e); }
+
+            const workBox = document.getElementById('author-work');
+            if (data.sampleWork) {
+                workBox.innerText = data.sampleWork;
+            } else {
+                document.getElementById('work-container').style.display = 'none';
+            }
+
+        } else {
+            document.getElementById('author-name').innerText = "Автор табылмады";
+            document.getElementById('author-bio').innerText = "";
+        }
+    } catch (e) {
+        console.error(e);
     }
+}
+
 
     window.searchAuthorPoems = function() {
         const name = document.getElementById('author-name').innerText;
