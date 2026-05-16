@@ -166,7 +166,7 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
                 <div class="author-info">
                     <div class="author-name" id="sel-author-name"></div>
                 </div>
-                <button type="button" class="clear-author" id="clearBtn">✕</button>
+                <button type="button" class="clear-author" onclick="clearAuthor()">✕</button>
             </div>
             <input type="hidden" id="author-id">
         </div>
@@ -320,12 +320,12 @@ function selectAuthor(a) {
     statusEl.classList.remove('show');
 }
 
-// ── Авторды тазалау ──
-document.getElementById('clearBtn').addEventListener('click', () => {
+// ── Авторды тазалау (global scope, onclick үшін) ──
+window.clearAuthor = function() {
     authorIdInput.value      = '';
     authorCard.style.display = 'none';
     searchInput.value        = '';
-});
+};
 
 // ── Таңба санауыш ──
 poemTA.addEventListener('input', () => {
