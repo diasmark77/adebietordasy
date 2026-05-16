@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Өлең қосу | Әдебиет ордасы</title>
 
-<link rel="stylesheet" href="css/menu.css">
 <link rel="icon" href="images/logo.png" type="image/png">
 
 <style>
@@ -105,11 +104,16 @@ input:focus, textarea:focus, select:focus {
     border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;
     width: 100%; transition: 0.3s; margin-top: 10px;
 }
-.btn-submit:hover { background: #5c4033; transform: translateY(-2px); }
+.btn-submit:hover:not(:disabled) { background: #5c4033; transform: translateY(-2px); }
 .btn-submit:disabled { background: #c4a882; cursor: not-allowed; transform: none; }
 
 /* Status */
-#status { text-align: center; margin-top: 20px; font-weight: bold; font-size: 16px; padding: 10px; border-radius: 8px; }
+#status {
+    text-align: center; margin-top: 20px; font-weight: bold;
+    font-size: 16px; padding: 10px; border-radius: 8px;
+    display: none;
+}
+#status.show { display: block; }
 
 /* Секция белгілегіш */
 .section-divider {
@@ -135,21 +139,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     <h1>✍️ Өлең қосу</h1>
     <p>Жаңа өлеңді порталға жариялаңыз</p>
 </header>
-
-<button class="menu-btn" onclick="toggleMenu()">☰</button>
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<nav id="menu">
-    <button onclick="location.href='index.html'">🏠 Басты бет</button>
-    <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-    <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-    <button onclick="location.href='poets.html'">✍️ Ақындар</button>
-    <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-    <button onclick="location.href='contact.html'">📩 Байланыс</button>
-    <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-    <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-    <button onclick="location.href='add-author.html'">➕ Автор қосу</button>
-</nav>
 
 <section>
 <div class="form-container">
@@ -177,7 +166,7 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
                 <div class="author-info">
                     <div class="author-name" id="sel-author-name"></div>
                 </div>
-                <button type="button" class="clear-author" onclick="clearAuthor()">✕</button>
+                <button type="button" class="clear-author" id="clearBtn">✕</button>
             </div>
             <input type="hidden" id="author-id">
         </div>
@@ -192,7 +181,7 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
 
         <div class="form-group">
             <label>Өлең мәтіні:</label>
-            <textarea id="poem-textarea" rows="12" placeholder="Өлең жолдарын осы жерге енгізіңіз..." required minlength="50"></textarea>
+            <textarea id="poem-textarea" rows="12" placeholder="Өлең жолдарын осы жерге енгізіңіз..." required></textarea>
             <div class="char-counter" id="char-count">0 таңба</div>
         </div>
 
@@ -242,6 +231,19 @@ const db  = getFirestore(app);
 const TG_TOKEN   = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
 const TG_CHAT_ID = "5616776281";
 
+// ── Элементтер ──
+const searchInput   = document.getElementById('author-search');
+const suggestBox    = document.getElementById('author-suggestions');
+const authorCard    = document.getElementById('selected-author-card');
+const authorIdInput = document.getElementById('author-id');
+const selName       = document.getElementById('sel-author-name');
+const selImg        = document.getElementById('sel-author-img');
+const poemTA        = document.getElementById('poem-textarea');
+const charDisp      = document.getElementById('char-count');
+const form          = document.getElementById('poemForm');
+const statusEl      = document.getElementById('status');
+const btn           = document.getElementById('submitBtn');
+
 // ── Авторлар тізімін жүктеу ──
 let allAuthors = [];
 
@@ -249,101 +251,144 @@ async function loadAuthors() {
     try {
         const snap = await getDocs(collection(db, "authors"));
         snap.forEach(d => allAuthors.push({ id: d.id, ...d.data() }));
+        console.log(`✅ ${allAuthors.length} автор жүктелді`);
     } catch(e) {
-        console.error("Авторлар жүктелмеді:", e);
+        console.error("❌ Авторлар жүктелмеді:", e);
+        showStatus('⚠️ Авторлар тізімі жүктелмеді. Бетті жаңартып көріңіз.', 'orange');
     }
 }
 loadAuthors();
 
-// ── Автор іздеу ──
-const searchInput = document.getElementById('author-search');
-const suggestBox  = document.getElementById('author-suggestions');
+// ── Статус көрсету функциясы ──
+function showStatus(msg, color = '#333') {
+    statusEl.innerHTML = msg;
+    statusEl.style.color = color;
+    statusEl.classList.add('show');
+}
 
+// ── Автор іздеу ──
 searchInput.addEventListener('input', () => {
     const q = searchInput.value.trim().toLowerCase();
     suggestBox.innerHTML = '';
-    if (!q) { suggestBox.style.display = 'none'; return; }
+    suggestBox.style.display = 'none';
+
+    if (!q || q.length < 1) return;
 
     const filtered = allAuthors.filter(a =>
         (a.authorName || a.name || '').toLowerCase().includes(q)
     );
 
-    if (!filtered.length) { suggestBox.style.display = 'none'; return; }
+    if (!filtered.length) return;
 
-    filtered.forEach(a => {
+    filtered.slice(0, 8).forEach(a => {
         const name  = a.authorName || a.name || 'Белгісіз';
-        const photo = a.photoUrl   || a.authorImg || 'images/default-author.png';
+        const photo = a.photoUrl || a.authorImg || 'images/default-author.png';
         const div   = document.createElement('div');
         div.className = 'suggestion-item';
-        div.innerHTML = `<img src="${photo}" alt="${name}" onerror="this.src='images/default-author.png'">
-                         <span class="suggestion-name">${name}</span>`;
+        div.innerHTML = `
+            <img src="${photo}" alt="${name}" onerror="this.src='images/default-author.png'">
+            <span class="suggestion-name">${name}</span>
+        `;
         div.addEventListener('click', () => selectAuthor(a));
         suggestBox.appendChild(div);
     });
     suggestBox.style.display = 'block';
 });
 
+// Тышқан тізімнен тыс шыққанда жабу
 document.addEventListener('click', e => {
-    if (!e.target.closest('.author-search-wrapper')) suggestBox.style.display = 'none';
+    if (!e.target.closest('.author-search-wrapper')) {
+        suggestBox.style.display = 'none';
+    }
 });
 
+// ── Автор таңдау ──
 function selectAuthor(a) {
     const name  = a.authorName || a.name || 'Белгісіз';
-    const photo = a.photoUrl   || a.authorImg || 'images/default-author.png';
+    const photo = a.photoUrl || a.authorImg || 'images/default-author.png';
 
-    document.getElementById('author-id').value   = a.id;
-    document.getElementById('sel-author-name').innerText = name;
-    document.getElementById('sel-author-img').src        = photo;
-    document.getElementById('selected-author-card').style.display = 'flex';
+    authorIdInput.value = a.id;
+    selName.textContent = name;
+    selImg.src          = photo;
+    selImg.onerror      = () => { selImg.src = 'images/default-author.png'; };
+    authorCard.style.display = 'flex';
 
-    searchInput.value          = '';
-    suggestBox.style.display   = 'none';
+    searchInput.value        = '';
+    suggestBox.style.display = 'none';
+
+    // Статусты тазалау
+    statusEl.classList.remove('show');
 }
 
-window.clearAuthor = function() {
-    document.getElementById('author-id').value   = '';
-    document.getElementById('selected-author-card').style.display = 'none';
-};
+// ── Авторды тазалау ──
+document.getElementById('clearBtn').addEventListener('click', () => {
+    authorIdInput.value      = '';
+    authorCard.style.display = 'none';
+    searchInput.value        = '';
+});
 
 // ── Таңба санауыш ──
-const poemTA   = document.getElementById('poem-textarea');
-const charDisp = document.getElementById('char-count');
 poemTA.addEventListener('input', () => {
     const n = poemTA.value.length;
     charDisp.textContent = n + ' таңба';
     charDisp.classList.toggle('warn', n < 50 && n > 0);
 });
 
-// ── Форм жіберу ──
-const form   = document.getElementById('poemForm');
-const status = document.getElementById('status');
-const btn    = document.getElementById('submitBtn');
+// ── Telegram хабарлама (қате болса да форм жіберілсін) ──
+async function sendTelegram(authorName, workTitle, work) {
+    try {
+        const msg = `📝 *Жаңа өлең жарияланды!*\n\n` +
+                    `✍️ *Автор:* ${authorName}\n` +
+                    `📖 *Тақырып:* ${workTitle}\n\n` +
+                    `${work.substring(0, 200)}${work.length > 200 ? '...' : ''}`;
 
-form.addEventListener('submit', async e => {
+        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: TG_CHAT_ID,
+                text: msg,
+                parse_mode: 'Markdown'
+            })
+        });
+    } catch(e) {
+        // Telegram қатесі болса да өлең жарияланды деп санаймыз
+        console.warn('Telegram хабарлама жіберілмеді (маңызды емес):', e);
+    }
+}
+
+// ── Форм жіберу ──
+form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const authorId  = document.getElementById('author-id').value;
-    const authorName = document.getElementById('sel-author-name').innerText;
-    const workTitle = document.getElementById('poem-title').value.trim();
-    const work      = poemTA.value.trim();
-    const audioUrl  = document.getElementById('audio-url').value.trim();
-    const photoUrl  = document.getElementById('photo-url').value.trim();
+    const authorId   = authorIdInput.value.trim();
+    const authorName = selName.textContent.trim();
+    const workTitle  = document.getElementById('poem-title').value.trim();
+    const work       = poemTA.value.trim();
+    const audioUrl   = document.getElementById('audio-url').value.trim();
+    const photoUrl   = document.getElementById('photo-url').value.trim();
 
-    // Тексеру
+    // ── Тексерулер ──
     if (!authorId) {
-        status.innerHTML = '⚠️ Автор таңдалмады!';
-        status.style.color = '#e67e22';
+        showStatus('⚠️ Автор таңдалмады! Алдымен автор іздеп таңдаңыз.', '#e67e22');
+        searchInput.focus();
+        return;
+    }
+    if (!workTitle) {
+        showStatus('⚠️ Өлең тақырыбын жазыңыз!', '#e67e22');
+        document.getElementById('poem-title').focus();
         return;
     }
     if (work.length < 50) {
-        status.innerHTML = '⚠️ Өлең тым қысқа (кем дегенде 50 таңба)!';
-        status.style.color = '#e67e22';
+        showStatus(`⚠️ Өлең тым қысқа! Қазір: ${work.length} таңба. Кем дегенде 50 таңба болуы керек.`, '#e67e22');
+        poemTA.focus();
         return;
     }
 
-    btn.disabled   = true;
-    status.innerHTML = '⏳ Жариялануда...';
-    status.style.color = '#8b5e3c';
+    // ── Жариялау ──
+    btn.disabled     = true;
+    btn.textContent  = '⏳ Жариялануда...';
+    showStatus('⏳ Сақталуда, күте тұрыңыз...', '#8b5e3c');
 
     try {
         // Firebase-ке сақтау
@@ -358,38 +403,41 @@ form.addEventListener('submit', async e => {
             timestamp: serverTimestamp()
         });
 
-        // Telegram хабарлама
-        const msg = `📝 *Жаңа өлең жарияланды!*\n\n` +
-                    `✍️ *Автор:* ${authorName}\n` +
-                    `📖 *Тақырып:* ${workTitle}\n\n` +
-                    `${work.substring(0, 200)}${work.length > 200 ? '...' : ''}`;
+        console.log('✅ Өлең сақталды, ID:', docRef.id);
 
-        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: 'Markdown' })
-        });
+        // Telegram (қате болса да тоқтамайды)
+        await sendTelegram(authorName, workTitle, work);
 
-        status.innerHTML = `✅ Өлең сәтті жарияланды! <a href="poem-view.html?id=${docRef.id}" style="color:#8b5e3c;">Өлеңді көру →</a>`;
-        status.style.color = 'green';
+        // Сәтті жарияланды
+        showStatus(
+            `✅ Өлең сәтті жарияланды! <a href="poem-view.html?id=${docRef.id}" style="color:#8b5e3c;">Өлеңді көру →</a>`,
+            'green'
+        );
+
+        // Форм тазалау
         form.reset();
-        clearAuthor();
-        charDisp.textContent = '0 таңба';
+        authorIdInput.value      = '';
+        authorCard.style.display = 'none';
+        charDisp.textContent     = '0 таңба';
+        charDisp.classList.remove('warn');
 
     } catch(err) {
-        console.error(err);
-        status.innerHTML = '❌ Қате орын алды. Қайта көріңіз.';
-        status.style.color = 'red';
-        btn.disabled = false;
+        console.error('❌ Firebase қатесі:', err);
+        let errMsg = '❌ Сақтау кезінде қате орын алды.';
+
+        if (err.code === 'permission-denied') {
+            errMsg = '❌ Рұқсат жоқ. Firebase ережелерін тексеріңіз.';
+        } else if (err.code === 'unavailable') {
+            errMsg = '❌ Интернет байланысы жоқ. Желіні тексеріңіз.';
+        }
+
+        showStatus(errMsg + ' Қайта көріңіз.', 'red');
+    } finally {
+        // Батырманы әрқашан қайта қосу
+        btn.disabled    = false;
+        btn.textContent = '📤 Өлеңді жариялау';
     }
 });
-</script>
-
-<script>
-function toggleMenu() {
-    document.getElementById("menu").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
-}
 </script>
 
 </body>
