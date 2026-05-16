@@ -32,15 +32,44 @@ header h1 { font-size: 38px; margin-bottom: 10px; letter-spacing: 1px; }
 .form-group { margin-bottom: 20px; }
 label { display: block; font-weight: bold; color: #5c4033; margin-bottom: 8px; }
 
-input, textarea {
+input, textarea, select {
     width: 100%; padding: 12px; border: 1px solid #d3cdc0; border-radius: 8px;
     background: #fdfcf9; font-family: inherit; font-size: 16px; transition: 0.3s;
+    color: #333;
 }
 
-input:focus, textarea:focus {
+input:focus, textarea:focus, select:focus {
     outline: none; border-color: #8b5e3c; background: #fff;
     box-shadow: 0 0 8px rgba(139,94,60,0.2);
 }
+
+/* Категория карточкалары */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 4px;
+}
+.cat-card {
+    border: 2px solid #d3cdc0;
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #fdfcf9;
+    user-select: none;
+}
+.cat-card:hover { border-color: #8b5e3c; background: #fdf5e6; }
+.cat-card.selected {
+    border-color: #8b5e3c;
+    background: #fdf5e6;
+    box-shadow: 0 0 0 3px rgba(139,94,60,0.15);
+}
+.cat-card .cat-icon { font-size: 26px; margin-bottom: 6px; }
+.cat-card .cat-name { font-size: 14px; font-weight: bold; color: #5c4033; }
+.cat-card .cat-desc { font-size: 11px; color: #9a8070; margin-top: 2px; }
+#category-hidden { display: none; }
 
 .btn-submit {
     background: #8b5e3c; color: white; border: none; padding: 15px 30px;
@@ -66,6 +95,7 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
 @media(max-width: 600px) {
     header h1 { font-size: 28px; }
     .form-container { margin: 20px; padding: 20px; }
+    .category-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -112,6 +142,34 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
             <input type="text" id="contact-info" placeholder="Telegram немесе Email" required>
         </div>
 
+        <!-- ✅ ЖАҢА: Санат таңдау -->
+        <div class="form-group">
+            <label>Санатыңыз:</label>
+            <div class="category-grid">
+                <div class="cat-card" onclick="selectCategory('aqyn', this)">
+                    <div class="cat-icon">✍️</div>
+                    <div class="cat-name">Ақын</div>
+                    <div class="cat-desc">Өлең, жыр</div>
+                </div>
+                <div class="cat-card" onclick="selectCategory('jazushy', this)">
+                    <div class="cat-icon">📚</div>
+                    <div class="cat-name">Жазушы</div>
+                    <div class="cat-desc">Проза, әңгіме</div>
+                </div>
+                <div class="cat-card" onclick="selectCategory('alash', this)">
+                    <div class="cat-icon">📜</div>
+                    <div class="cat-name">Алаш зиялысы</div>
+                    <div class="cat-desc">Тарихи тұлға</div>
+                </div>
+                <div class="cat-card" onclick="selectCategory('kompozitor', this)">
+                    <div class="cat-icon">🎵</div>
+                    <div class="cat-name">Композитор</div>
+                    <div class="cat-desc">Ән, күй</div>
+                </div>
+            </div>
+            <input type="hidden" id="category-hidden">
+        </div>
+
         <div class="form-group">
             <label>Өмірбаяныңыз:</label>
             <textarea id="biography" rows="8"
@@ -142,6 +200,15 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
+<script>
+// Санат таңдау
+function selectCategory(value, el) {
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('category-hidden').value = value;
+}
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
@@ -163,6 +230,13 @@ const db  = getFirestore(app);
 const TG_TOKEN   = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
 const TG_CHAT_ID = "5616776281";
 
+const categoryLabels = {
+    aqyn:       '✍️ Ақын',
+    jazushy:    '📚 Жазушы',
+    alash:      '📜 Алаш зиялысы',
+    kompozitor: '🎵 Композитор'
+};
+
 const form   = document.getElementById('authorForm');
 const status = document.getElementById('status');
 const btn    = document.getElementById('submitBtn');
@@ -175,7 +249,14 @@ form.addEventListener('submit', async (e) => {
     const biography   = document.getElementById('biography').value.trim();
     const photoUrl    = document.getElementById('photo-url').value.trim();
     const sampleWork  = document.getElementById('sample-work').value.trim();
+    const category    = document.getElementById('category-hidden').value;
 
+    // Валидация
+    if (!category) {
+        status.innerHTML = '⚠️ Санатты таңдаңыз!';
+        status.style.color = '#e67e22';
+        return;
+    }
     if (biography.length < 100) {
         status.innerHTML = '⚠️ Өмірбаян тым қысқа (кем дегенде 100 таңба болуы керек)!';
         status.style.color = '#e67e22';
@@ -192,27 +273,29 @@ form.addEventListener('submit', async (e) => {
     status.style.color = '#8b5e3c';
 
     try {
-        // 1. Firebase-ке сақтау — НЕГІЗГІ
+        // 1. Firebase-ке сақтау
         await addDoc(collection(db, "requests"), {
             authorName,
             contactInfo,
             biography,
             photoUrl:  photoUrl || null,
             sampleWork,
+            category,          // ✅ санат сақталады
             timestamp: serverTimestamp()
         });
 
-        // ✅ Firebase сәтті болса — бірден жетістік көрсет
         status.innerHTML = '✅ Өтінішіңіз сәтті жіберілді! Жақында хабарласамыз.';
         status.style.color = 'green';
         form.reset();
+        document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
         btn.disabled = false;
 
-        // 2. Telegram — бөлек блокта, форманы блоктамайды
+        // 2. Telegram хабарлама
         try {
             const text =
                 `✍️ *Жаңа автордан өтініш!*\n\n` +
                 `👤 *Аты:* ${authorName}\n` +
+                `🏷️ *Санаты:* ${categoryLabels[category] || category}\n` +
                 `📞 *Байланыс:* ${contactInfo}\n\n` +
                 `📋 *Өмірбаян:*\n${biography.substring(0, 200)}...\n\n` +
                 `📝 *Үлгі шығарма:*\n${sampleWork.substring(0, 300)}...`;
@@ -227,12 +310,10 @@ form.addEventListener('submit', async (e) => {
                 })
             });
         } catch (tgErr) {
-            // Telegram жетпесе де — пайдаланушыға әсер етпейді
             console.warn("Telegram хабары жетпеді:", tgErr);
         }
 
     } catch (err) {
-        // Тек Firebase қатесі болса ғана шығады
         console.error("Firebase қате:", err);
         status.innerHTML = `❌ Қате орын алды: ${err.message}`;
         status.style.color = 'red';
