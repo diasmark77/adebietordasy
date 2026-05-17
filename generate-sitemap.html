@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sitemap Generator — Әдебиет ордасы</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0f0e0a;
+      color: #e8e0d0;
+      font-family: 'Georgia', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #c9a84c;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .subtitle {
+      color: #7a6f5a;
+      font-size: 0.9rem;
+      margin-bottom: 36px;
+      text-align: center;
+    }
+
+    .card {
+      background: #1a1812;
+      border: 1px solid #2e2a1f;
+      border-radius: 12px;
+      padding: 28px;
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      color: #c9a84c;
+      margin-bottom: 16px;
+      font-weight: normal;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .collections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .collection-tag {
+      background: #252016;
+      border: 1px solid #3a3420;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      color: #b5a882;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .collection-tag .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #5a5040;
+    }
+
+    .collection-tag.active .dot {
+      background: #c9a84c;
+    }
+
+    .collection-tag.active {
+      border-color: #5a4820;
+      color: #e8d8a0;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #c9a84c;
+      color: #0f0e0a;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Georgia', serif;
+      cursor: pointer;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      transition: background 0.2s;
+    }
+
+    button:hover { background: #e0bf6a; }
+    button:disabled { background: #3a3020; color: #6a5f48; cursor: not-allowed; }
+
+    #status {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: #7a6f5a;
+      min-height: 24px;
+    }
+
+    #status.running { color: #c9a84c; }
+    #status.done { color: #6ab87a; }
+    #status.error { color: #c06060; }
+
+    .progress-bar {
+      height: 3px;
+      background: #2e2a1f;
+      border-radius: 2px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #c9a84c;
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 2px;
+    }
+
+    .result-box {
+      display: none;
+      background: #0a0906;
+      border: 1px solid #2e2a1f;
+      border-radius: 8px;
+      padding: 20px;
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .result-box.visible { display: block; }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .result-header span {
+      color: #6ab87a;
+      font-size: 0.9rem;
+    }
+
+    .copy-btn {
+      background: #1a1812;
+      color: #c9a84c;
+      border: 1px solid #3a3420;
+      border-radius: 6px;
+      padding: 6px 16px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      width: auto;
+      font-weight: normal;
+    }
+
+    .copy-btn:hover { background: #252016; }
+
+    textarea {
+      width: 100%;
+      height: 320px;
+      background: transparent;
+      border: none;
+      color: #8a9e78;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      resize: vertical;
+      outline: none;
+      line-height: 1.6;
+    }
+
+    .download-btn {
+      margin-top: 14px;
+      background: #1e3a1e;
+      color: #6ab87a;
+      border: 1px solid #2a4a2a;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      width: 100%;
+      font-weight: normal;
+      letter-spacing: 0.03em;
+      transition: background 0.2s;
+    }
+
+    .download-btn:hover { background: #243a24; }
+
+    .stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .stat {
+      background: #1a1812;
+      border: 1px solid #2e2a1f;
+      border-radius: 8px;
+      padding: 12px 18px;
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 1.6rem;
+      color: #c9a84c;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #5a5040;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📜 Sitemap Generator</h1>
+  <p class="subtitle">Әдебиет ордасы — Firebase Firestore</p>
+
+  <div class="card">
+    <h2>Коллекциялар</h2>
+    <div class="collections" id="collectionList">
+      <div class="collection-tag active"><span class="dot"></span> posts</div>
+      <div class="collection-tag active"><span class="dot"></span> authors</div>
+      <div class="collection-tag active"><span class="dot"></span> poems</div>
+      <div class="collection-tag active"><span class="dot"></span> shygarmalar</div>
+      <div class="collection-tag active"><span class="dot"></span> alash</div>
+    </div>
+
+    <button id="generateBtn" onclick="generateSitemap()">🔄 Sitemap жасау</button>
+    <div id="status"></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="stats" id="statsBox" style="display:none; width:100%; max-width:680px;">
+    <div class="stat"><span class="stat-num" id="statTotal">0</span><span class="stat-label">Жалпы URL</span></div>
+    <div class="stat"><span class="stat-num" id="statStatic">39</span><span class="stat-label">Статикалық</span></div>
+    <div class="stat"><span class="stat-num" id="statDynamic">0</span><span class="stat-label">Firebase</span></div>
+  </div>
+
+  <div class="result-box" id="resultBox">
+    <div class="result-header">
+      <span id="resultInfo">✓ Дайын</span>
+      <button class="copy-btn" onclick="copySitemap()">Көшіру</button>
+    </div>
+    <textarea id="sitemapOutput" readonly></textarea>
+    <button class="download-btn" onclick="downloadSitemap()">⬇ sitemap.xml жүктеу</button>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+      authDomain: "adebiet-ordasy.firebaseapp.com",
+      projectId: "adebiet-ordasy",
+      storageBucket: "adebiet-ordasy.appspot.com",
+      messagingSenderId: "776364024545",
+      appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const BASE_URL = 'https://diasmark77.github.io/adebietordasy';
+
+    // Статикалық беттер (бұрыннан бар sitemap.xml-дегі)
+    const STATIC_URLS = [
+      { loc: `${BASE_URL}/index.html`, priority: '1.0', changefreq: 'weekly' },
+      { loc: `${BASE_URL}/writers.html`, priority: '0.9', changefreq: 'monthly' },
+      { loc: `${BASE_URL}/writers/mauezov.html`, priority: '0.8', changefreq: 'monthly' },
+      { loc: `${BASE_URL}/writers/gabitm.html`, priority: '0.8', changefreq: 'monthly' },
+      { loc: `${BASE_URL}/writers/sabitm.html`, priority: '0.8', changefreq: 'monthly' },
+      { loc: `${BASE_URL}/writers/zhenisbek.html`, priority: '0.8', changefreq: 'monthly' },
+      { loc: `${BASE_URL}/writers/sainm.html`, priority: '0.8', changefreq: 'monthly' },
+      { loc: `${BASE_URL}/writers/dulat.html`, priority: '0.8', changefreq: 'monthly' },
+      { loc: `${BASE_URL}/poems.html`, priority: '0.9', changefreq: 'monthly' },
+      { loc: `${BASE_URL}/create/esine-meni-algaysyn.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/keta-balyktyn-erligi.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/mangurt.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/ustazdarga.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/ruh-pen-til.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/oyan-kazakh.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/adamdyk-dikanshysy.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/men-zhastarga-senemin.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/tutkyn.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/zhurektesin.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/men-sagan.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/senim.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/omir-kures.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/kobylandy-batyr.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/konilim.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/uly-kosh.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/bik-shyn.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/almaty-arman-kala.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/kozimnin-karasy.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/uly-ustaz.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/izgy-izdenis.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/create/baurlarym.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/shygarms.html`, priority: '0.9', changefreq: 'monthly' },
+      { loc: `${BASE_URL}/shygarma/ulpan.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/shygarma/gauhartas.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/shygarma/ormanda.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/shygarma/zhusan-isi.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/shygarma/eskertkish.html`, priority: '0.7', changefreq: 'yearly' },
+      { loc: `${BASE_URL}/shygarma/irim.html`, priority: '0.7', changefreq: 'yearly' },
+    ];
+
+    // Коллекция → URL mapping
+    const COLLECTION_URL_MAP = {
+      posts:       (id) => `${BASE_URL}/index.html?post=${id}`,
+      authors:     (id) => `${BASE_URL}/index.html?author=${id}`,
+      poems:       (id) => `${BASE_URL}/index.html?poem=${id}`,
+      shygarmalar: (id) => `${BASE_URL}/index.html?shygarma=${id}`,
+      alash:       (id) => `${BASE_URL}/index.html?alash=${id}`,
+    };
+
+    function setStatus(msg, cls = '') {
+      const el = document.getElementById('status');
+      el.textContent = msg;
+      el.className = cls;
+    }
+
+    function setProgress(pct) {
+      document.getElementById('progressFill').style.width = pct + '%';
+    }
+
+    function buildXML(urls) {
+      const today = new Date().toISOString().split('T')[0];
+      const entries = urls.map(u => `  <url>
+    <loc>${u.loc}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${u.changefreq || 'monthly'}</changefreq>
+    <priority>${u.priority || '0.7'}</priority>
+  </url>`).join('\n');
+
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+${entries}
+
+</urlset>`;
+    }
+
+    window.generateSitemap = async function () {
+      const btn = document.getElementById('generateBtn');
+      btn.disabled = true;
+      setStatus('Firebase-ке қосылуда...', 'running');
+      setProgress(10);
+
+      const collections = ['posts', 'authors', 'poems', 'shygarmalar', 'alash'];
+      const dynamicUrls = [];
+      let found = 0;
+
+      try {
+        for (let i = 0; i < collections.length; i++) {
+          const colName = collections[i];
+          setStatus(`"${colName}" коллекциясы оқылуда...`, 'running');
+          setProgress(10 + (i / collections.length) * 70);
+
+          try {
+            const snap = await getDocs(collection(db, colName));
+            snap.forEach(doc => {
+              const urlFn = COLLECTION_URL_MAP[colName];
+              if (urlFn) {
+                dynamicUrls.push({
+                  loc: urlFn(doc.id),
+                  priority: '0.8',
+                  changefreq: 'weekly'
+                });
+                found++;
+              }
+            });
+
+            // Коллекция тегін белгіле
+            const tags = document.querySelectorAll('.collection-tag');
+            tags.forEach(t => {
+              if (t.textContent.trim().includes(colName)) {
+                t.querySelector('.dot').style.background = snap.size > 0 ? '#6ab87a' : '#c06060';
+              }
+            });
+
+          } catch (e) {
+            // Коллекция жоқ болуы мүмкін — жалғастыру
+          }
+        }
+
+        setProgress(90);
+        setStatus('XML жасалуда...', 'running');
+
+        const allUrls = [...STATIC_URLS, ...dynamicUrls];
+        const xml = buildXML(allUrls);
+
+        document.getElementById('sitemapOutput').value = xml;
+        document.getElementById('resultBox').classList.add('visible');
+
+        // Stats
+        document.getElementById('statTotal').textContent = allUrls.length;
+        document.getElementById('statDynamic').textContent = dynamicUrls.length;
+        document.getElementById('statsBox').style.display = 'flex';
+        document.getElementById('resultInfo').textContent = `✓ ${allUrls.length} URL табылды`;
+
+        setProgress(100);
+        setStatus(`Дайын! ${allUrls.length} URL (${found} Firebase-тен)`, 'done');
+
+      } catch (err) {
+        setStatus('Қате: ' + err.message, 'error');
+        setProgress(0);
+      }
+
+      btn.disabled = false;
+    };
+
+    window.copySitemap = function () {
+      const ta = document.getElementById('sitemapOutput');
+      ta.select();
+      navigator.clipboard.writeText(ta.value).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.textContent = '✓ Көшірілді';
+        setTimeout(() => btn.textContent = 'Көшіру', 2000);
+      });
+    };
+
+    window.downloadSitemap = function () {
+      const xml = document.getElementById('sitemapOutput').value;
+      const blob = new Blob([xml], { type: 'application/xml' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'sitemap.xml';
+      a.click();
+    };
+  </script>
+</body>
+</html>
