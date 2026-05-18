@@ -39,12 +39,25 @@
         .card pre {
             white-space: pre-wrap; word-wrap: break-word;
             font-family: 'Georgia', serif; font-size: 16px; color: #555;
-            display: -webkit-box; -webkit-line-clamp: 4; /* Тек 4 жол көрсетеді */
+            display: -webkit-box; -webkit-line-clamp: 4;
             -webkit-box-orient: vertical; overflow: hidden;
         }
         .read-more { display: inline-block; margin-top: 15px; color: #8b5e3c; font-weight: bold; text-decoration: none; }
 
+        /* Firebase-тен жүктелген карточкалар үшін белгі */
+        .card.from-db { border-left-color: #d4af37; }
+        .card.from-db .new-badge {
+            display: inline-block; background: #d4af37; color: #1a1208;
+            font-size: 11px; font-weight: bold; padding: 2px 8px;
+            border-radius: 10px; margin-left: 10px; vertical-align: middle;
+        }
+
         .loading { text-align: center; font-size: 1.2rem; color: #8b5e3c; padding: 40px; }
+        .section-title {
+            font-size: 18px; color: #8b5e3c; font-weight: bold;
+            margin: 30px 0 10px; padding-bottom: 8px;
+            border-bottom: 2px solid #d3cdc0;
+        }
 
         footer { background: #5c4033; color: white; text-align: center; padding: 20px; font-size: 14px; }
 
@@ -65,23 +78,32 @@
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-<button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-<button onclick="location.href='shygarms.html'">📖 Шығармалар</button>
+    <button onclick="location.href='index.html'">🏠 Басты бет</button>
+    <button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
+    <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+    <button onclick="location.href='contact.html'">📩 Байланыс</button>
+    <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+    <button onclick="location.href='shygarms.html'">📖 Шығармалар</button>
 </nav>
 
 <div class="search-box">
     <input type="text" id="searchInput" placeholder="Автор немесе өлең атымен іздеу...">
 </div>
 
-<section id="poems-container">
-    <div class="loading">Өлеңдер базадан жүктелуде...</div>
+<!-- Firebase-тен жүктелген өлеңдер -->
+<section>
+    <div id="db-poems-section" style="display:none;">
+        <div class="section-title">🆕 Жаңа қосылған өлеңдер</div>
+        <div id="poems-container">
+            <div class="loading">Өлеңдер жүктелуде...</div>
+        </div>
+        <div class="section-title" style="margin-top:40px;">📚 Классикалық өлеңдер</div>
+    </div>
+    <div id="no-db-poems" style="display:none;"></div>
 </section>
 
-<section>
+<!-- Статикалық өлеңдер -->
+<section id="static-poems">
   <div class="card" onclick="location.href='create/esine-meni-algaysyn.html'">
     <h2>Мұқағали Мақатаев "Есіңе мені алғайсың"</h2>
     <pre>
@@ -91,10 +113,10 @@
      Найзағай шаншып өткенде,
      Есіңе мені алғайсың?
     </pre>
-    <a href="create/esine-meni-algaysyn.html">Толығырақ →</a>
+    <a class="read-more" href="create/esine-meni-algaysyn.html">Толығырақ →</a>
   </div>
 
- <div class="card" onclick="location.href='create/carlygashym-keldin-be.html'">
+  <div class="card" onclick="location.href='create/carlygashym-keldin-be.html'">
     <h2>Мұқағали Мақатаев "Қарлығашым келдің бе?"</h2>
     <pre>
     Қарлығашым, келдің бе, қаршығадан саумысың?
@@ -102,43 +124,43 @@
     Оралдың ба, тағы да өзің өскен ұяға,
     Оралдың ба, сүйіктім, екеуің де бармысың?
     </pre>
-    <a href="create/carlygashym-keldin-be.html">Толығырақ →</a>
+    <a class="read-more" href="create/carlygashym-keldin-be.html">Толығырақ →</a>
   </div>
 
-   <div class="card" onclick="location.href='create/bulkynyp-jatyr.html'">
+  <div class="card" onclick="location.href='create/bulkynyp-jatyr.html'">
     <h2>Мұқағали Мақатаев "Бұлқынып жатыр"</h2>
     <pre>
      Бұлқынып жатыр.
      Келмейді-ау құрғыр шамасы,
      Бұлқынып жатыр.
      Таусылды-ау айла-шарасы.
-    <a href="create/bulkynyp-jatyr.html">Толығырақ →</a>
+    </pre>
+    <a class="read-more" href="create/bulkynyp-jatyr.html">Толығырақ →</a>
   </div>
 
-
   <div class="card" onclick="location.href='create/keta-balyktyn-erligi.html'">
-    <h2> Мұхтар Шаханов "Кета балықтың ерлігі"</h2>
+    <h2>Мұхтар Шаханов "Кета балықтың ерлігі"</h2>
     <pre>
     Өріс ашқан сан кеме, сан қайыққа
     Біздің сонау айтолқын Ақжайықта
     Кета деген балық бар.
     Уылдырық шашар кезде сол балық.
     </pre>
-    <a href="create/keta-balyktyn-erligi.html">Толығырақ →</a>
+    <a class="read-more" href="create/keta-balyktyn-erligi.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/mangurt.html'">
-    <h2> Мұхтар Шаханов "Мәңгүрттенбеу марсельезасы"</h2>
+    <h2>Мұхтар Шаханов "Мәңгүрттенбеу марсельезасы"</h2>
     <pre>
     Қазақ ұлты, мың сүрініп, мың жығылып, мың тұрған,
     Даңқыңды ешкім бүркей алмас ізгілікке ұмтылған.
     Жомарттығың сорға айналып, туып өскен жеріңде,
     Ана тілің шетте қалды, орын жетпей төріңде.
     </pre>
-    <a href="create/mangurt.html">Толығырақ →</a>
+    <a class="read-more" href="create/mangurt.html">Толығырақ →</a>
   </div>
-  
- <div class="card" onclick="location.href='create/ustazdarga.html'">
+
+  <div class="card" onclick="location.href='create/ustazdarga.html'">
     <h2>Еркін Жұмабекұлы "Ұстаздарға"</h2>
     <pre>
      Білімге арнап өмірін,
@@ -146,20 +168,20 @@
      Нұр таңы болып үйінің,
      Ұлтаны болған елінің.
     </pre>
-    <a href="create/ustazdarga.html">Толығырақ →</a>
+    <a class="read-more" href="create/ustazdarga.html">Толығырақ →</a>
   </div>
 
- <div class="card" onclick="location.href='create/ruh-pen-til.html'">
-    <h2> Мұхтар Шаханов "Рух пен Тіл"</h2>
+  <div class="card" onclick="location.href='create/ruh-pen-til.html'">
+    <h2>Мұхтар Шаханов "Рух пен Тіл"</h2>
     <pre>
     Табиғаттың өзгермейтін заңына бұр бетіңді,
     Қай кезде де туған тілің туған анаң секілді.
     Бабалардың арманы бар мына қызыл гүлдерде,
     Олар елін, тілін қорғап жанын қиған бұл жерде.
     </pre>
-    <a href="create/ruh-pen-til.html">Толығырақ →</a>
+    <a class="read-more" href="create/ruh-pen-til.html">Толығырақ →</a>
   </div>
-  
+
   <div class="card" onclick="location.href='create/oyan-kazakh.html'">
     <h2>Міржақып Дулатұлы "Оян қазақ"</h2>
     <pre>
@@ -168,7 +190,7 @@
      Жер кетті, дін нашарлап, хал арам боп,
      Қарағым, енді жату жарамас-ты.
     </pre>
-    <a href="create/oyan-kazakh.html">Толығырақ →</a>
+    <a class="read-more" href="create/oyan-kazakh.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/adamdyk-dikanshysy.html'">
@@ -179,10 +201,10 @@
      Тұқымын адамдықтың шаштым, ектім,
      Көңілін көгертуге құл халықтың.
     </pre>
-    <a href="create/adamdyk-dikanshysy.html">Толығырақ →</a>
+    <a class="read-more" href="create/adamdyk-dikanshysy.html">Толығырақ →</a>
   </div>
 
- <div class="card" onclick="location.href='create/men-zhastarga-senemin.html'">
+  <div class="card" onclick="location.href='create/men-zhastarga-senemin.html'">
     <h2>Мағжан Жұмабаев "Мен жастарға сенемін!"</h2>
     <pre>
     Арыстандай айбатты,
@@ -190,7 +212,7 @@
     Қырандай күштi қанатты.
     Мен жастарға сенемiн!
     </pre>
-    <a href="create/men-zhastarga-senemin.html">Толығырақ →</a>
+    <a class="read-more" href="create/men-zhastarga-senemin.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/burabai.html'">
@@ -201,10 +223,10 @@
    Мұны да "көзі көрген" қартайтады,
    Тыңдаған әлеуметке алқа-қотан.
     </pre>
-    <a href="create/burabai.html">Толығырақ →</a>
-</div>
+    <a class="read-more" href="create/burabai.html">Толығырақ →</a>
+  </div>
 
- <div class="card" onclick="location.href='create/nura.html'">
+  <div class="card" onclick="location.href='create/nura.html'">
     <h2>Сәкен Сейфуллин "Нұра"</h2>
     <pre>
     Сағынып, Нұра, мен келдім,
@@ -212,10 +234,10 @@
     Айрылған сенен көп елдің
     Жатырсың көрмей қайғысын.
     </pre>
-    <a href="create/nura.html">Толығырақ →</a>
-</div>
+    <a class="read-more" href="create/nura.html">Толығырақ →</a>
+  </div>
 
- <div class="card" onclick="location.href='create/zhailauga-koshu.html'">
+  <div class="card" onclick="location.href='create/zhailauga-koshu.html'">
     <h2>Сәкен Сейфуллин "Жайлауға көшу"</h2>
     <pre>
     Ел көшкенде кең жайлауға таласып,
@@ -223,10 +245,10 @@
     Таң белгісі білінгенде сарғайып,
     Ақырындап дүниеге нұр шашып.
     </pre>
-    <a href="create/zhailauga-koshu.html">Толығырақ →</a>
-</div>
-  
- <div class="card" onclick="location.href='create/tutkyn.html'">
+    <a class="read-more" href="create/zhailauga-koshu.html">Толығырақ →</a>
+  </div>
+
+  <div class="card" onclick="location.href='create/tutkyn.html'">
     <h2>Мағжан Жұмабаев "Тұтқын"</h2>
     <pre>
     Кеудеде – от, iште – жалын, көзде – жас,
@@ -234,7 +256,7 @@
     Сабан төсек, дым, қараңғы жатағы,
     Наны қара, шайы қара, қарны аш.
     </pre>
-    <a href="create/tutkyn.html">Толығырақ →</a>
+    <a class="read-more" href="create/tutkyn.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/zhurektesin.html'">
@@ -245,7 +267,7 @@
      Сені есімнен шығарам деп жүргенде,
      Есім шығып кетіпті өзімніңде.
     </pre>
-    <a href="create/zhurektesin.html">Толығырақ →</a>
+    <a class="read-more" href="create/zhurektesin.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/sharshadym.html'">
@@ -256,10 +278,10 @@
      Кеттің бе? Тез бойжетіп, лезде есейіп.
      Кеудеңді көк аспанға көтерердей,
     </pre>
-    <a href="create/sharshadym.html">Толығырақ →</a>
-    </div>
+    <a class="read-more" href="create/sharshadym.html">Толығырақ →</a>
+  </div>
 
-   <div class="card" onclick="location.href='create/men-sagan.html'">
+  <div class="card" onclick="location.href='create/men-sagan.html'">
     <h2>Бақдәулет Арыстан "Мен саған"</h2>
     <pre>
      Сен мені ойламайсың оны білем,
@@ -267,9 +289,8 @@
      Мен саған ақ бозатпен барғым келед
      Басқа жан келіп тұрса көлігімен.
     </pre>
-    <a href="create/men-sagan.html">Толығырақ →</a>
+    <a class="read-more" href="create/men-sagan.html">Толығырақ →</a>
   </div>
-
 
   <div class="card">
     <h2>Еркін Жұмабекұлы "Сенім"</h2>
@@ -279,7 +300,7 @@
      Жығылуың  жығуыңа бір себеп,
      Қазіргі сәт ертең қайта туар ма?
     </pre>
-    <a href="create/senim.html">Толығырақ →</a>
+    <a class="read-more" href="create/senim.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/omir-kures.html'">
@@ -290,7 +311,7 @@
      Жаман десе, жаман боп қалмайсың ғой,
      Өсекте кім, қалмайды айтшы досым?
     </pre>
-    <a href="create/omir-kures.html">Толығырақ →</a>
+    <a class="read-more" href="create/omir-kures.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/kobylandy-batyr.html'">
@@ -301,7 +322,7 @@
      Қазанға кетіп барамын,
      Жүрмейсің бе, құрдасжан?
     </pre>
-    <a href="create/kobylandy-batyr.html">Толығырақ →</a>
+    <a class="read-more" href="create/kobylandy-batyr.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/konilim.html'">
@@ -312,7 +333,7 @@
      Не нәрседен тарықтың?
      Осыншама ойда қап.
     </pre>
-    <a href="create/konilim.html">Толығырақ →</a>
+    <a class="read-more" href="create/konilim.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/uly-kosh.html'">
@@ -323,7 +344,7 @@
      Шығысым — қиыр зор тайга,
      Құрсанған болат темірсің.
     </pre>
-    <a href="create/uly-kosh.html">Толығырақ →</a>
+    <a class="read-more" href="create/uly-kosh.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/bik-shyn.html'">
@@ -334,10 +355,9 @@
       Табиғатты етіп алып сырласым,
       Тәнті болдым Алматының халқына.
     </pre>
-    <a href="create/bik-shyn.html">Толығырақ →</a>
+    <a class="read-more" href="create/bik-shyn.html">Толығырақ →</a>
   </div>
 
-  
   <div class="card" onclick="location.href='create/almaty-arman-kala.html'">
     <h2>Құдайбергенов Дархан "Алматы-арман қала"</h2>
     <pre>
@@ -346,7 +366,7 @@
       Дәл өзіңдей туған анам секілді,
       Мейірімін төгеді екен кім маған?....
     </pre>
-    <a href="create/almaty-arman-kala.html">Толығырақ →</a>
+    <a class="read-more" href="create/almaty-arman-kala.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/kozimnin-karasy.html'">
@@ -357,7 +377,7 @@
      Бітпейді іштегі,
      Ғашықтық жарасы.
     </pre>
-    <a href="create/kozimnin-karasy.html">Толығырақ →</a>
+    <a class="read-more" href="create/kozimnin-karasy.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/uly-ustaz.html'">
@@ -368,10 +388,10 @@
      Білмеймін, қатты бұзық болғанмын ба,
      Ұстазымның самайына ақ түсіпті.
     </pre>
-    <a href="create/uly-ustaz.html">Толығырақ →</a>
+    <a class="read-more" href="create/uly-ustaz.html">Толығырақ →</a>
   </div>
 
- <div class="card" onclick="location.href='create/izgy-izdenis.html'">
+  <div class="card" onclick="location.href='create/izgy-izdenis.html'">
     <h2>Марқабай Диас "Ізгі ізденіс"</h2>
     <pre>
      Қанша тағдыр бір-бірімен тоғысқан,
@@ -379,7 +399,7 @@
      Қанша жанның ішінен тапты екен,
      Рухтардың арасынан жан ұшқан
     </pre>
-    <a href="create/izgy-izdenis.html">Толығырақ →</a>
+    <a class="read-more" href="create/izgy-izdenis.html">Толығырақ →</a>
   </div>
 
   <div class="card" onclick="location.href='create/baurlarym.html'">
@@ -387,21 +407,20 @@
     <pre>
      Тай құлындай тебісіп бірге өскен,
      Перзенті едік асылдардың көпті көрген.
-     Қайран қарттар үйретті ау, бар білгенін,
+     Қайран қартар үйретті ау, бар білгенін,
      Сүрінеді екен деп неше жерден.
     </pre>
-    <a href="create/baurlarym.html">Толығырақ →</a>
+    <a class="read-more" href="create/baurlarym.html">Толығырақ →</a>
   </div>
 </section>
 
-    
 <footer>
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
@@ -415,60 +434,86 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    let allPoems = [];
+    let dbPoems = [];
 
     async function fetchPoems() {
         const container = document.getElementById('poems-container');
         try {
-            const querySnapshot = await getDocs(collection(db, "published_content"));
-            allPoems = [];
-            
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                if (data.work) { // Тек өлеңі бар жазбаларды аламыз
-                    allPoems.push({ id: doc.id, ...data });
-                }
-            });
+            // ✅ ТҮЗЕТІЛДІ: poems коллекциясынан оқиды (admin бекіткен өлеңдер)
+            const q = query(collection(db, "poems"), orderBy("addedAt", "desc"));
+            const snap = await getDocs(q);
 
-            renderPoems(allPoems);
+            dbPoems = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+            if (dbPoems.length > 0) {
+                // Жаңа өлеңдер секциясын көрсету
+                document.getElementById('db-poems-section').style.display = 'block';
+                renderDbPoems(dbPoems);
+            } else {
+                container.innerHTML = '';
+                document.getElementById('db-poems-section').style.display = 'none';
+            }
         } catch (error) {
             console.error("Firebase қатесі:", error);
-            container.innerHTML = "<p>Өлеңдерді жүктеу кезінде қате кетті.</p>";
+            container.innerHTML = '';
+            document.getElementById('db-poems-section').style.display = 'none';
         }
     }
 
-    function renderPoems(poemsList) {
+    function renderDbPoems(list) {
         const container = document.getElementById('poems-container');
-        container.innerHTML = "";
+        container.innerHTML = '';
 
-        if (poemsList.length === 0) {
-            container.innerHTML = "<p style='text-align:center;'>Өлең табылмады.</p>";
+        if (list.length === 0) {
+            container.innerHTML = '';
+            document.getElementById('db-poems-section').style.display = 'none';
             return;
         }
 
-        poemsList.forEach(poem => {
+        list.forEach(poem => {
             const card = document.createElement('div');
-            card.className = 'card';
-            // Басқанда автордың жеке профиліне өтеді
-            card.onclick = () => location.href = `author-profile.html?id=${poem.id}`;
+            card.className = 'card from-db';
+
+            // ✅ ТҮЗЕТІЛДІ: title, poemText, authorName өрістерін оқиды
+            const title      = poem.title      || 'Өлең';
+            const authorName = poem.authorName || 'Белгісіз автор';
+            const poemText   = poem.poemText   || '';
+            const preview    = poemText.substring(0, 200);
 
             card.innerHTML = `
-                <h2>${poem.name} "${poem.workTitle || 'Өлең'}"</h2>
-                <pre>${poem.work}</pre>
+                <h2>${authorName} "${title}" <span class="new-badge">🆕 Жаңа</span></h2>
+                <pre>${preview}</pre>
                 <span class="read-more">Толығырақ →</span>
             `;
             container.appendChild(card);
         });
     }
 
-    // Іздеу логикасы
+    // ── Іздеу логикасы (статикалық + динамикалық) ──
     document.getElementById('searchInput').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = allPoems.filter(p => 
-            p.name.toLowerCase().includes(term) || 
-            (p.workTitle && p.workTitle.toLowerCase().includes(term))
-        );
-        renderPoems(filtered);
+        const term = e.target.value.toLowerCase().trim();
+
+        // Firebase өлеңдерін іздеу
+        if (term) {
+            const filtered = dbPoems.filter(p =>
+                // ✅ ТҮЗЕТІЛДІ: title, authorName өрістерінен іздейді
+                (p.authorName || '').toLowerCase().includes(term) ||
+                (p.title      || '').toLowerCase().includes(term)
+            );
+            renderDbPoems(filtered);
+            if (dbPoems.length > 0) {
+                document.getElementById('db-poems-section').style.display = 'block';
+            }
+        } else {
+            renderDbPoems(dbPoems);
+        }
+
+        // Статикалық карточкаларды іздеу
+        const staticCards = document.querySelectorAll('#static-poems .card');
+        staticCards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            card.style.display = text.includes(term) ? '' : 'none';
+        });
     });
 
     fetchPoems();
