@@ -133,7 +133,7 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     .form-container { margin: 20px; padding: 20px; }
 }
 
-/* ── Мәзір (menu.css резервтік стильдер) ── */
+/* ── Мәзір ── */
 .menu-btn {
     position: fixed; top: 15px; left: 15px; z-index: 1000;
     background: #8b5e3c; color: white; border: none;
@@ -165,7 +165,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     <h1>✍️ Өлең қосу</h1>
     <p>Жаңа өлеңді порталға жариялаңыз</p>
 </header>
-
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
@@ -267,7 +266,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-
 const TG_TOKEN   = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
 const TG_CHAT_ID = "5616776281";
 
@@ -299,7 +297,7 @@ async function loadAuthors() {
 }
 loadAuthors();
 
-// ── Статус көрсету функциясы ──
+// ── Статус көрсету ──
 function showStatus(msg, color = '#333') {
     statusEl.innerHTML = msg;
     statusEl.style.color = color;
@@ -311,13 +309,11 @@ searchInput.addEventListener('input', () => {
     const q = searchInput.value.trim().toLowerCase();
     suggestBox.innerHTML = '';
     suggestBox.style.display = 'none';
-
     if (!q || q.length < 1) return;
 
     const filtered = allAuthors.filter(a =>
         (a.authorName || a.name || '').toLowerCase().includes(q)
     );
-
     if (!filtered.length) return;
 
     filtered.slice(0, 8).forEach(a => {
@@ -335,7 +331,6 @@ searchInput.addEventListener('input', () => {
     suggestBox.style.display = 'block';
 });
 
-// Тышқан тізімнен тыс шыққанда жабу
 document.addEventListener('click', e => {
     if (!e.target.closest('.author-search-wrapper')) {
         suggestBox.style.display = 'none';
@@ -346,21 +341,16 @@ document.addEventListener('click', e => {
 function selectAuthor(a) {
     const name  = a.authorName || a.name || 'Белгісіз';
     const photo = a.photoUrl || a.authorImg || 'images/default-author.png';
-
     authorIdInput.value = a.id;
     selName.textContent = name;
     selImg.src          = photo;
     selImg.onerror      = () => { selImg.src = 'images/default-author.png'; };
     authorCard.style.display = 'flex';
-
     searchInput.value        = '';
     suggestBox.style.display = 'none';
-
-    // Статусты тазалау
     statusEl.classList.remove('show');
 }
 
-// ── Авторды тазалау (global scope, onclick үшін) ──
 window.clearAuthor = function() {
     authorIdInput.value      = '';
     authorCard.style.display = 'none';
@@ -374,26 +364,20 @@ poemTA.addEventListener('input', () => {
     charDisp.classList.toggle('warn', n < 50 && n > 0);
 });
 
-// ── Telegram хабарлама (қате болса да форм жіберілсін) ──
-async function sendTelegram(authorName, workTitle, work) {
+// ── Telegram хабарлама ──
+async function sendTelegram(authorName, title, poemText) {
     try {
-        const msg = `📝 *Жаңа өлең жарияланды!*\n\n` +
+        const msg = `📝 *Жаңа өлең өтініші!*\n\n` +
                     `✍️ *Автор:* ${authorName}\n` +
-                    `📖 *Тақырып:* ${workTitle}\n\n` +
-                    `${work.substring(0, 200)}${work.length > 200 ? '...' : ''}`;
-
+                    `📖 *Тақырып:* ${title}\n\n` +
+                    `${poemText.substring(0, 200)}${poemText.length > 200 ? '...' : ''}`;
         await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: TG_CHAT_ID,
-                text: msg,
-                parse_mode: 'Markdown'
-            })
+            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: 'Markdown' })
         });
     } catch(e) {
-        // Telegram қатесі болса да өлең жарияланды деп санаймыз
-        console.warn('Telegram хабарлама жіберілмеді (маңызды емес):', e);
+        console.warn('Telegram хабарлама жіберілмеді:', e);
     }
 }
 
@@ -403,8 +387,8 @@ form.addEventListener('submit', async (e) => {
 
     const authorId   = authorIdInput.value.trim();
     const authorName = selName.textContent.trim();
-    const workTitle  = document.getElementById('poem-title').value.trim();
-    const work       = poemTA.value.trim();
+    const title      = document.getElementById('poem-title').value.trim();
+    const poemText   = poemTA.value.trim();
     const audioUrl   = document.getElementById('audio-url').value.trim();
     const photoUrl   = document.getElementById('photo-url').value.trim();
 
@@ -414,48 +398,40 @@ form.addEventListener('submit', async (e) => {
         searchInput.focus();
         return;
     }
-    if (!workTitle) {
+    if (!title) {
         showStatus('⚠️ Өлең тақырыбын жазыңыз!', '#e67e22');
         document.getElementById('poem-title').focus();
         return;
     }
-    if (work.length < 50) {
-        showStatus(`⚠️ Өлең тым қысқа! Қазір: ${work.length} таңба. Кем дегенде 50 таңба болуы керек.`, '#e67e22');
+    if (poemText.length < 50) {
+        showStatus(`⚠️ Өлең тым қысқа! Қазір: ${poemText.length} таңба. Кем дегенде 50 таңба болуы керек.`, '#e67e22');
         poemTA.focus();
         return;
     }
 
-    // ── Жариялау ──
-    btn.disabled     = true;
-    btn.textContent  = '⏳ Жариялануда...';
+    btn.disabled    = true;
+    btn.textContent = '⏳ Жариялануда...';
     showStatus('⏳ Сақталуда, күте тұрыңыз...', '#8b5e3c');
 
     try {
-        // Firebase-ке сақтау (requests — әкімші бекіту үшін)
-        const docRef = await addDoc(collection(db, "requests"), {
-            authorId,
-            authorName,
-            workTitle,
-            work,
-            audioUrl:  audioUrl  || null,
-            photoUrl:  photoUrl  || null,
-            type:      'poem',
-            status:    'pending',
-            timestamp: serverTimestamp()
+        // ✅ ТҮЗЕТІЛДІ: poem_requests коллекциясына сақтайды
+        // ✅ ТҮЗЕТІЛДІ: өріс атаулары admin панелімен сәйкес (title, poemText, authorName)
+        const docRef = await addDoc(collection(db, "poem_requests"), {
+            title:      title,
+            authorName: authorName,
+            authorId:   authorId,
+            poemText:   poemText,
+            audioUrl:   audioUrl  || null,
+            photoUrl:   photoUrl  || null,
+            status:     'pending',
+            timestamp:  serverTimestamp()
         });
 
         console.log('✅ Өлең жіберілді, ID:', docRef.id);
+        await sendTelegram(authorName, title, poemText);
 
-        // Telegram (қате болса да тоқтамайды)
-        await sendTelegram(authorName, workTitle, work);
+        showStatus('✅ Өлең сәтті жіберілді! Әкімші бекіткеннен кейін жарияланады.', 'green');
 
-        // Сәтті жіберілді
-        showStatus(
-            '✅ Өлең сәтті жіберілді! Әкімші бекіткеннен кейін жарияланады.',
-            'green'
-        );
-
-        // Форм тазалау
         form.reset();
         authorIdInput.value      = '';
         authorCard.style.display = 'none';
@@ -465,16 +441,13 @@ form.addEventListener('submit', async (e) => {
     } catch(err) {
         console.error('❌ Firebase қатесі:', err);
         let errMsg = '❌ Сақтау кезінде қате орын алды.';
-
         if (err.code === 'permission-denied') {
             errMsg = '❌ Рұқсат жоқ. Firebase ережелерін тексеріңіз.';
         } else if (err.code === 'unavailable') {
             errMsg = '❌ Интернет байланысы жоқ. Желіні тексеріңіз.';
         }
-
         showStatus(errMsg + ' Қайта көріңіз.', 'red');
     } finally {
-        // Батырманы әрқашан қайта қосу
         btn.disabled    = false;
         btn.textContent = '📤 Өлеңді жариялау';
     }
