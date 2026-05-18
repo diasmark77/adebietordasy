@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Админ панелі | Әдебиет ордасы</title>
+<link rel="stylesheet" href="css/menu.css">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,7 +15,6 @@ body {
     min-height: 100vh;
 }
 
-/* ── LOGIN SCREEN ── */
 #login-screen {
     display: flex; align-items: center; justify-content: center;
     min-height: 100vh;
@@ -23,10 +23,7 @@ body {
 .login-box {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(212,175,55,0.3);
-    border-radius: 16px;
-    padding: 48px 40px;
-    width: 360px;
-    text-align: center;
+    border-radius: 16px; padding: 48px 40px; width: 360px; text-align: center;
 }
 .login-box h1 { font-size: 22px; color: #d4af37; margin-bottom: 6px; letter-spacing: 1px; }
 .login-box p  { font-size: 13px; color: #9a8866; margin-bottom: 32px; }
@@ -46,14 +43,11 @@ body {
 .btn-login:hover { background: #e8c84a; }
 #login-err { color: #e07070; font-size: 13px; margin-top: 12px; min-height: 18px; }
 
-/* ── MAIN PANEL ── */
 #main-panel { display: none; }
 
 header {
-    background: rgba(0,0,0,0.4);
-    border-bottom: 1px solid rgba(212,175,55,0.2);
-    padding: 18px 32px;
-    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(0,0,0,0.4); border-bottom: 1px solid rgba(212,175,55,0.2);
+    padding: 18px 32px; display: flex; align-items: center; justify-content: space-between;
 }
 header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .header-right { display: flex; align-items: center; gap: 16px; }
@@ -64,31 +58,17 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .btn-logout {
     padding: 7px 16px; background: transparent;
     border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
-    color: #9a8866; font-size: 13px; cursor: pointer; transition: .2s;
-    font-family: inherit;
+    color: #9a8866; font-size: 13px; cursor: pointer; transition: .2s; font-family: inherit;
 }
 .btn-logout:hover { border-color: #e07070; color: #e07070; }
-
-/* ── S SITEMAP BUTTON ── */
 .btn-sitemap {
-    padding: 7px 18px;
-    background: #d4af37;
-    border: none;
-    border-radius: 8px;
-    color: #1a1208;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    font-family: inherit;
-    transition: .2s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+    padding: 7px 18px; background: #d4af37; border: none; border-radius: 8px;
+    color: #1a1208; font-size: 14px; font-weight: bold; cursor: pointer;
+    font-family: inherit; transition: .2s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
 }
 .btn-sitemap:hover { background: #e8c84a; }
 
-/* ── TABS ── */
 .tabs {
     display: flex; gap: 4px; padding: 20px 32px 0;
     border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -104,16 +84,13 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 }
 .tab-count {
     display: inline-block; background: #d4af37; color: #1a1208;
-    border-radius: 10px; font-size: 11px; font-weight: bold;
-    padding: 1px 7px; margin-left: 6px;
+    border-radius: 10px; font-size: 11px; font-weight: bold; padding: 1px 7px; margin-left: 6px;
 }
 
-/* ── CONTENT ── */
 .content { padding: 28px 32px; }
 .pane { display: none; }
 .pane.active { display: block; }
 
-/* Loading */
 .loading-state { text-align: center; padding: 60px 20px; color: #6b5d47; }
 .spinner {
     width: 36px; height: 36px; border: 2px solid rgba(212,175,55,0.2);
@@ -124,7 +101,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .empty-state { text-align: center; padding: 60px 20px; color: #6b5d47; font-size: 15px; }
 .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
 
-/* ── CATEGORY BADGE ── */
 .cat-badge {
     display: inline-block; font-size: 11px; font-weight: bold;
     padding: 3px 10px; border-radius: 20px; margin-left: 8px;
@@ -134,28 +110,17 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .cat-alash      { background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.3); }
 .cat-kompozitor { background: rgba(76,175,130,0.15); color: #4caf82; border: 1px solid rgba(76,175,130,0.3); }
 
-/* ── FILTER BAR ── */
-.filter-bar {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
-}
+.filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
 .filter-btn {
-    padding: 6px 16px; border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: transparent; color: #9a8866;
-    font-size: 13px; cursor: pointer; font-family: inherit; transition: .2s;
+    padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15);
+    background: transparent; color: #9a8866; font-size: 13px; cursor: pointer; font-family: inherit; transition: .2s;
 }
 .filter-btn:hover { border-color: rgba(212,175,55,0.4); color: #d4af37; }
-.filter-btn.active {
-    background: rgba(212,175,55,0.12); color: #d4af37;
-    border-color: rgba(212,175,55,0.4);
-}
+.filter-btn.active { background: rgba(212,175,55,0.12); color: #d4af37; border-color: rgba(212,175,55,0.4); }
 
-/* ── REQUEST CARDS ── */
 .request-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px; padding: 24px 28px; margin-bottom: 16px;
-    transition: border-color .2s;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 24px 28px; margin-bottom: 16px; transition: border-color .2s;
 }
 .request-card:hover { border-color: rgba(212,175,55,0.3); }
 .request-card.approved { border-left: 3px solid #4caf82; }
@@ -201,15 +166,13 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .btn-approve {
     padding: 10px 24px; background: rgba(76,175,130,0.15);
     border: 1px solid rgba(76,175,130,0.4); border-radius: 8px;
-    color: #4caf82; font-size: 14px; font-weight: bold; cursor: pointer;
-    font-family: inherit; transition: .2s;
+    color: #4caf82; font-size: 14px; font-weight: bold; cursor: pointer; font-family: inherit; transition: .2s;
 }
 .btn-approve:hover { background: rgba(76,175,130,0.28); }
 .btn-reject {
     padding: 10px 24px; background: rgba(224,112,112,0.1);
     border: 1px solid rgba(224,112,112,0.3); border-radius: 8px;
-    color: #e07070; font-size: 14px; cursor: pointer;
-    font-family: inherit; transition: .2s;
+    color: #e07070; font-size: 14px; cursor: pointer; font-family: inherit; transition: .2s;
 }
 .btn-reject:hover { background: rgba(224,112,112,0.2); }
 
@@ -268,11 +231,24 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 
 <!-- MAIN -->
 <div id="main-panel">
+
+    <!-- ☰ Сайт менюі (authors-filtre.html бетіндегідей) -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <nav id="menu">
+        <button onclick="location.href='index.html'">🏠 Басты бет</button>
+        <button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
+        <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+        <button onclick="location.href='contact.html'">📩 Байланыс</button>
+        <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+        <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+        <button onclick="location.href='add-poem.html'">➕ Өлең қосу</button>
+    </nav>
+
     <header>
         <h1>⚜️ Әдебиет ордасы — Админ</h1>
         <div class="header-right">
             <span class="stats-pill" id="stats-pill">Жүктелуде...</span>
-            <!-- S — Sitemap батырмасы -->
             <a href="generate-sitemap.html" class="btn-sitemap" title="Sitemap генерациялау">🗺 S</a>
             <button class="btn-logout" onclick="logout()">Шығу</button>
         </div>
@@ -316,7 +292,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 <div id="toast"></div>
 
 <script>
-// ── LOGIN (module емес, қарапайым script) ──
 const ADMIN_PASSWORD = "admin2026";
 
 window.doLogin = function() {
@@ -349,17 +324,21 @@ window.toggleSection = function(el) {
     el.nextElementSibling.classList.toggle('show');
 };
 
+window.toggleMenu = function() {
+    document.getElementById("menu").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
+};
+
 function toast(msg, type = 'success') {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'show ' + type;
+    t.textContent = msg; t.className = 'show ' + type;
     setTimeout(() => { t.className = ''; }, 3000);
 }
 window.toast = toast;
 </script>
 
 <script type="module">
-import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
     getFirestore, collection, getDocs, addDoc, doc,
     updateDoc, deleteDoc, serverTimestamp, query, orderBy
@@ -378,10 +357,8 @@ const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
 const categoryLabels = {
-    aqyn:       '✍️ Ақын',
-    jazushy:    '📚 Жазушы',
-    alash:      '📜 Алаш зиялысы',
-    kompozitor: '🎵 Композитор'
+    aqyn: '✍️ Ақын', jazushy: '📚 Жазушы',
+    alash: '📜 Алаш зиялысы', kompozitor: '🎵 Композитор'
 };
 
 let allAuthors = [];
@@ -391,12 +368,8 @@ function fmtDate(ts) {
     const d = ts.toDate ? ts.toDate() : new Date(ts);
     return d.toLocaleDateString('kk-KZ', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
 }
+function avatarLetter(name) { return (name || '?')[0].toUpperCase(); }
 
-function avatarLetter(name) {
-    return (name || '?')[0].toUpperCase();
-}
-
-// ── LOAD REQUESTS ──
 async function loadRequests() {
     document.getElementById('req-loading').style.display = 'block';
     document.getElementById('requests-list').innerHTML = '';
@@ -404,25 +377,20 @@ async function loadRequests() {
         const q = query(collection(db, 'requests'), orderBy('timestamp', 'desc'));
         const snap = await getDocs(q);
         document.getElementById('req-loading').style.display = 'none';
-
         const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
         document.getElementById('cnt-pending').textContent = pending.length;
         document.getElementById('stats-pill').textContent = `Барлығы: ${snap.size} өтініш`;
-
         if (snap.empty) {
             document.getElementById('requests-list').innerHTML = '<div class="empty-state"><div class="icon">📭</div>Өтініш жоқ</div>';
             return;
         }
-
         snap.forEach(docSnap => {
-            const d = docSnap.data();
-            const id = docSnap.id;
+            const d = docSnap.data(); const id = docSnap.id;
             const status = d.status || 'pending';
-            const badgeMap = { pending: 'badge-pending', approved: 'badge-approved', rejected: 'badge-rejected' };
-            const labelMap = { pending: 'Күтуде', approved: 'Рұқсат берілді', rejected: 'Қабылданбады' };
+            const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
+            const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
             const catClass = d.category ? `cat-${d.category}` : '';
             const catLabel = d.category ? categoryLabels[d.category] : '—';
-
             const card = document.createElement('div');
             card.className = `request-card ${status !== 'pending' ? status : ''}`;
             card.id = 'req-' + id;
@@ -441,23 +409,15 @@ async function loadRequests() {
                     </div>
                     <div class="card-date">${fmtDate(d.timestamp)}</div>
                 </div>
-
-                <div class="section-toggle" onclick="toggleSection(this)">
-                    📋 Өмірбаян <span class="arrow">▾</span>
-                </div>
+                <div class="section-toggle" onclick="toggleSection(this)">📋 Өмірбаян <span class="arrow">▾</span></div>
                 <div class="section-content">${d.biography || '—'}</div>
-
-                <div class="section-toggle" onclick="toggleSection(this)">
-                    📝 Үлгі шығарма <span class="arrow">▾</span>
-                </div>
+                <div class="section-toggle" onclick="toggleSection(this)">📝 Үлгі шығарма <span class="arrow">▾</span></div>
                 <div class="section-content">${d.sampleWork || '—'}</div>
-
                 ${d.photoUrl ? `<div style="margin:10px 0;font-size:13px;color:#9a8866;">🖼 Сурет: <a href="${d.photoUrl}" target="_blank" style="color:#d4af37;">${d.photoUrl.substring(0,60)}...</a></div>` : ''}
-
                 ${status === 'pending' ? `
                 <div class="card-actions">
                     <button class="btn-approve" onclick="approveRequest('${id}')">✅ Рұқсат беру</button>
-                    <button class="btn-reject"  onclick="rejectRequest('${id}')">❌ Қабылдамау</button>
+                    <button class="btn-reject" onclick="rejectRequest('${id}')">❌ Қабылдамау</button>
                 </div>` : `
                 <div class="card-actions" style="margin-top:14px;">
                     <span style="font-size:13px;color:#6b5d47;">Шешім қабылданды</span>
@@ -474,51 +434,33 @@ async function loadRequests() {
     }
 }
 
-// ── APPROVE ──
 window.approveRequest = async function(reqId) {
     try {
         const reqSnap = await getDocs(query(collection(db, 'requests')));
         const reqData = reqSnap.docs.find(d => d.id === reqId)?.data();
-        const reqRef  = doc(db, 'requests', reqId);
-
-        await updateDoc(reqRef, { status: 'approved', approvedAt: serverTimestamp() });
-
+        await updateDoc(doc(db, 'requests', reqId), { status: 'approved', approvedAt: serverTimestamp() });
         if (reqData) {
             await addDoc(collection(db, 'authors'), {
-                name:       reqData.authorName,
-                contact:    reqData.contactInfo,
-                biography:  reqData.biography,
-                photoUrl:   reqData.photoUrl || null,
-                sampleWork: reqData.sampleWork,
-                category:   reqData.category || null,
-                requestId:  reqId,
-                addedAt:    serverTimestamp()
+                name: reqData.authorName, contact: reqData.contactInfo,
+                biography: reqData.biography, photoUrl: reqData.photoUrl || null,
+                sampleWork: reqData.sampleWork, category: reqData.category || null,
+                requestId: reqId, addedAt: serverTimestamp()
             });
         }
-
         window.toast('✅ Автор рұқсат алды және авторлар тізіміне қосылды!');
-        loadRequests();
-        loadAuthors();
-    } catch (e) {
-        window.toast('❌ Қате: ' + e.message, 'error');
-    }
+        loadRequests(); loadAuthors();
+    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
 };
 
-// ── REJECT ──
 window.rejectRequest = async function(reqId) {
     if (!confirm('Бұл өтінішті қабылдамауға сенімдісіз бе?')) return;
     try {
-        await updateDoc(doc(db, 'requests', reqId), {
-            status: 'rejected', rejectedAt: serverTimestamp()
-        });
+        await updateDoc(doc(db, 'requests', reqId), { status: 'rejected', rejectedAt: serverTimestamp() });
         window.toast('Өтініш қабылданбады.');
         loadRequests();
-    } catch (e) {
-        window.toast('❌ Қате: ' + e.message, 'error');
-    }
+    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
 };
 
-// ── LOAD AUTHORS ──
 async function loadAuthors() {
     document.getElementById('auth-loading').style.display = 'block';
     document.getElementById('authors-list').innerHTML = '';
@@ -526,7 +468,6 @@ async function loadAuthors() {
         const snap = await getDocs(query(collection(db, 'authors'), orderBy('addedAt', 'desc')));
         document.getElementById('auth-loading').style.display = 'none';
         document.getElementById('cnt-authors').textContent = snap.size;
-
         allAuthors = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderAuthors(allAuthors);
     } catch (e) {
@@ -548,7 +489,7 @@ function renderAuthors(list) {
         const el = document.createElement('div');
         el.className = 'author-card';
         el.innerHTML = `
-            <div class="avatar" style="width:44px;height:44px;font-size:18px;">${(d.name || '?')[0].toUpperCase()}</div>
+            <div class="avatar" style="width:44px;height:44px;font-size:18px;">${(d.name||'?')[0].toUpperCase()}</div>
             <div class="author-card-info">
                 <div class="author-card-name">
                     ${d.name || 'Белгісіз'}
@@ -574,14 +515,10 @@ window.deleteAuthor = async function(authorId) {
         await deleteDoc(doc(db, 'authors', authorId));
         window.toast('Автор жойылды.');
         loadAuthors();
-    } catch (e) {
-        window.toast('❌ Қате: ' + e.message, 'error');
-    }
+    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
 };
 
-// Login болғаннан кейін деректерді жүктеу
-// doLogin функциясы module scope-тан тыс болғандықтан, override жасаймыз
-const _origLogin = window.doLogin;
+// Login кейін Firebase деректерін жүктеу
 window.doLogin = function() {
     const pwd = document.getElementById('pwd-input').value.trim();
     if (pwd === ADMIN_PASSWORD) {
