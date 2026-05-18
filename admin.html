@@ -634,11 +634,16 @@ window.filterPoems = function(filter, btn) {
 
 window.approvePoemRequest = async function(poemId) {
     try {
-        const data = allPoemRequests.find(p => p.id === poemId);
-        await updateDoc(doc(db, 'poem_requests', poemId), {
+        // allPoemRequests-тен емес, тікелей Firestore-дан оқу
+        const { getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+        const docRef = doc(db, 'poem_requests', poemId);
+        const docSnap = await getDoc(docRef);
+        const data = docSnap.exists() ? docSnap.data() : null;
+
+        await updateDoc(docRef, {
             status: 'approved', approvedAt: serverTimestamp()
         });
-        // Approved öleñdi poems kollektsiyasına köshiru
+
         if (data) {
             await addDoc(collection(db, 'poems'), {
                 title:      data.title      || '',
