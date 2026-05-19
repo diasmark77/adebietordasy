@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="dynamic-title">Жүктелуде... | Әдебиет ордасы</title>
+    <meta name="description" id="meta-description" content="Қазақ өлеңдері — Әдебиет ордасы">
+    <meta name="keywords" id="meta-keywords" content="қазақ өлеңдері, әдебиет ордасы">
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/menu.css">
@@ -30,7 +32,7 @@
             line-height: 1.7;
         }
 
-        /* 5. Автор hero баннері */
+        /* Автор hero баннері */
         .author-hero {
             position: relative;
             width: 100%;
@@ -74,7 +76,7 @@
         .back-btn { display: inline-block; margin: 10px 10px 0 0; padding: 10px 18px; background: #8b5e3c; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; }
         .back-btn:hover { background: #6e472c; }
 
-        /* 2. Scroll батырмалары — жоғарыда, меню қасында горизонталь */
+        /* Scroll батырмалары */
         .scroll-buttons { position: fixed; top: 15px; left: 70px; display: flex; gap: 6px; z-index: 1001; }
         .scroll-btn { background: #8b5e3c; color: white; border: none; padding: 10px 14px; border-radius: 6px; font-size: 18px; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.3); transition: transform 0.2s; }
         .scroll-btn:hover { transform: scale(1.05); }
@@ -119,7 +121,7 @@
 </head>
 <body>
 
-    <!-- 1. Мәзір — menu.css: сол жақта fixed sidebar -->
+    <!-- Мәзір -->
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
     <nav id="menu">
@@ -133,13 +135,13 @@
         <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
     </nav>
 
-    <!-- 2. Scroll батырмалары — жоғарыда горизонталь, меню қасында -->
+    <!-- Scroll батырмалары -->
     <div class="scroll-buttons">
         <button class="scroll-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
         <button class="scroll-btn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})">↓</button>
     </div>
 
-    <!-- 5. Автор hero баннері — түсті фон үстінде сурет + аты -->
+    <!-- Автор hero баннері -->
     <div id="author-hero" class="author-hero empty">
         <img id="author-hero-img" src="" alt="Автор">
         <div id="author-hero-name" class="author-hero-name"></div>
@@ -154,10 +156,10 @@
         <pre id="poem-content-display"></pre>
     </div>
 
-    <!-- 3 & 4. Батырмалар дұрыс мәтінмен -->
+    <!-- Навигация батырмалары -->
     <div id="navigation-buttons" class="nav-wrapper">
         <a href="poems.html" class="back-btn">← Өлеңдер бетіне</a>
-        <a id="author-link" href="#" class="back-btn">← Автор бетіне</a>
+        <a id="author-link" href="#" class="back-btn author-btn" style="display:none;">✍️ <span id="author-btn-name">Автор бетіне</span></a>
     </div>
 
     <!-- Ұсыныстар -->
@@ -174,7 +176,15 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            collection,
+            query,
+            limit,
+            getDocs
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
@@ -191,33 +201,47 @@
         async function initPage() {
             const urlParams = new URLSearchParams(window.location.search);
             const poemId = urlParams.get('id');
+
             if (!poemId) {
                 document.getElementById('poem-title-display').innerText = "Өлең табылмады";
+                document.getElementById('poem-content-display').innerText = "URL-де ?id= параметрі жоқ.";
                 return;
             }
 
             try {
-                const docRef = doc(db, "published_content", poemId);
+                // ✅ ТҮЗЕТІЛДІ: 'published_content' емес, 'poems' коллекциясы
+                const docRef = doc(db, "poems", poemId);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
 
-                    // Тақырып пен мәтін
-                    document.getElementById('poem-title-display').innerText = data.workTitle || "Тақырыпсыз";
-                    document.getElementById('poem-content-display').innerText = data.work || "Мәтін жоқ";
-                    document.title = (data.workTitle || "Өлең") + " | Әдебиет ордасы";
+                    // ✅ ТҮЗЕТІЛДІ: workTitle/work емес, title/poemText өрістері
+                    const poemTitle  = data.title      || "Тақырыпсыз";
+                    const poemText   = data.poemText   || "Мәтін жоқ";
+                    const authorName = data.authorName || "Белгісіз автор";
 
-                    // 5. Hero баннері
-                    const imgSrc = data.photoUrl || data.authorImg;
+                    document.getElementById('poem-title-display').innerText  = poemTitle;
+                    document.getElementById('poem-content-display').innerText = poemText;
+
+                    // ✅ Динамикалық title
+                    document.title = `${poemTitle} — ${authorName} | Әдебиет ордасы`;
+
+                    // ✅ Динамикалық meta description
+                    document.getElementById('meta-description').content =
+                        poemText.substring(0, 150).replace(/\n/g, ' ');
+
+                    // ✅ Динамикалық meta keywords
+                    document.getElementById('meta-keywords').content =
+                        `${poemTitle}, ${authorName}, қазақ өлеңдері, әдебиет ордасы`;
+
+                    // Hero баннері — photoUrl болса ғана көрсет
+                    const imgSrc = data.photoUrl || null;
                     if (imgSrc) {
-                        const hero = document.getElementById('author-hero');
                         document.getElementById('author-hero-img').src = imgSrc;
-                        document.getElementById('author-hero-img').alt = data.authorName || 'Автор';
-                        if (data.authorName) {
-                            document.getElementById('author-hero-name').innerText = data.authorName;
-                        }
-                        hero.classList.remove('empty');
+                        document.getElementById('author-hero-img').alt = authorName;
+                        document.getElementById('author-hero-name').innerText = authorName;
+                        document.getElementById('author-hero').classList.remove('empty');
                     }
 
                     // Аудио плеер
@@ -225,34 +249,51 @@
                         initDynamicPlayer(data);
                     }
 
-                    // 4. Автор бетіне сілтеме
+                    // Автор бетіне сілтеме
                     if (data.authorId) {
-                        document.getElementById('author-link').href = `author-profile.html?id=${data.authorId}`;
+                        const authorLink = document.getElementById('author-link');
+                        authorLink.href = `author-profile.html?id=${data.authorId}`;
+                        authorLink.style.display = 'inline-block';
+                        // Автор атын батырмада көрсет
+                        document.getElementById('author-btn-name').innerText =
+                            authorName + ' бетіне →';
                     }
 
                     loadSuggestions(poemId);
 
                 } else {
                     document.getElementById('poem-title-display').innerText = "Өлең табылмады";
+                    document.getElementById('poem-content-display').innerText =
+                        "Бұл ID-мен өлең базада жоқ. Мүмкін жойылған болуы мүмкін.";
+                    document.getElementById('suggestions-list').innerHTML = "";
                 }
+
             } catch (error) {
                 console.error("Firebase қатесі:", error);
                 document.getElementById('poem-title-display').innerText = "Қате орын алды";
+                document.getElementById('poem-content-display').innerText =
+                    "Деректерді жүктеу кезінде қате шықты: " + error.message;
             }
         }
 
         async function loadSuggestions(currentId) {
             try {
-                const q = query(collection(db, "published_content"), limit(4));
+                // ✅ ТҮЗЕТІЛДІ: 'published_content' емес, 'poems' коллекциясы
+                const q = query(collection(db, "poems"), limit(5));
                 const querySnapshot = await getDocs(q);
                 let html = "";
                 querySnapshot.forEach((docItem) => {
                     if (docItem.id !== currentId) {
                         const d = docItem.data();
-                        html += `<a href="poem-view.html?id=${docItem.id}" class="poem-btn">📖 ${d.workTitle || "Өлең"}</a>`;
+                        const title  = d.title      || "Өлең";
+                        const author = d.authorName || "";
+                        html += `<a href="poem-view.html?id=${docItem.id}" class="poem-btn">
+                                    📖 ${author ? author + ' — ' : ''}${title}
+                                 </a>`;
                     }
                 });
-                document.getElementById('suggestions-list').innerHTML = html || "<p>Ұсыныс жоқ</p>";
+                document.getElementById('suggestions-list').innerHTML =
+                    html || "<p>Ұсыныс жоқ</p>";
             } catch (error) {
                 console.error("Ұсыныстар қатесі:", error);
                 document.getElementById('suggestions-list').innerHTML = "<p>Жүктеу қатесі</p>";
