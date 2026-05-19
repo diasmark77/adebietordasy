@@ -390,6 +390,7 @@
             collection,
             query,
             limit,
+            where,
             getDocs
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -436,12 +437,32 @@
                     document.getElementById('meta-keywords').content =
                         `${poemTitle}, ${authorName}, қазақ өлеңдері, әдебиет ордасы`;
 
-                    // 🔍 DEBUG — Firebase деректерін тексеру
-                    console.log('Firebase data:', JSON.stringify(data));
+                    // ===== АВТОР ДЕРЕКТЕРІН AUTHORS КОЛЛЕКЦИЯСЫНАН АЛУ =====
+                    // poems-те photoUrl/audioUrl/authorId жоқ болса, authors-тан іздейміз
+                    let photoUrl = (data.photoUrl || '').trim();
+                    let audioUrl = (data.audioUrl || '').trim();
+                    let authorId = (data.authorId || '').trim();
+
+                    if (!photoUrl || !authorId) {
+                        try {
+                            const authQ    = query(
+                                collection(db, 'authors'),
+                                where('name', '==', authorName),
+                                limit(1)
+                            );
+                            const authSnap = await getDocs(authQ);
+                            if (!authSnap.empty) {
+                                const authData = authSnap.docs[0].data();
+                                if (!photoUrl) photoUrl = (authData.photoUrl || authData.authorImg || '').trim();
+                                if (!audioUrl) audioUrl = (authData.audioUrl || '').trim();
+                                if (!authorId) authorId = authSnap.docs[0].id;
+                            }
+                        } catch(e) {
+                            console.warn('Authors іздеу қатесі:', e);
+                        }
+                    }
 
                     // ===== АВТОР СУРЕТІ =====
-                    // Firebase-те null/undefined/'' — үшеуін де тексереміз
-                    const photoUrl = (data.photoUrl || '').trim();
                     document.getElementById('author-hero-name').innerText = authorName;
                     document.getElementById('author-hero').style.display  = 'block';
                     if (photoUrl) {
@@ -453,7 +474,6 @@
                     }
 
                     // ===== АУДИО ПЛЕЕР =====
-                    const audioUrl = (data.audioUrl || '').trim();
                     if (audioUrl) {
                         document.getElementById('poem-audio').src = audioUrl;
                         document.getElementById('audio-track-title').textContent =
@@ -463,9 +483,9 @@
                         document.getElementById('audio-toggle-wrap').style.display = 'block';
                     }
 
-                    // Автор бетіне сілтеме — әрдайым көрінеді
-                    const authorUrl = data.authorId
-                        ? `author-profile.html?id=${data.authorId}`
+                    // ===== АВТОР БАТЫРМАСЫ =====
+                    const authorUrl = authorId
+                        ? `author-profile.html?id=${authorId}`
                         : 'poets.html';
 
                     // Төменгі навигация батырмасы
