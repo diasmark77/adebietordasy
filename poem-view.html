@@ -436,17 +436,24 @@
                     document.getElementById('meta-keywords').content =
                         `${poemTitle}, ${authorName}, қазақ өлеңдері, әдебиет ордасы`;
 
+                    // 🔍 DEBUG — Firebase деректерін тексеру
+                    console.log('Firebase data:', JSON.stringify(data));
+
                     // ===== АВТОР СУРЕТІ =====
-                    const photoUrl = data.photoUrl || null;
+                    // Firebase-те null/undefined/'' — үшеуін де тексереміз
+                    const photoUrl = (data.photoUrl || '').trim();
+                    document.getElementById('author-hero-name').innerText = authorName;
+                    document.getElementById('author-hero').style.display  = 'block';
                     if (photoUrl) {
-                        document.getElementById('author-hero-img').src     = photoUrl;
-                        document.getElementById('author-hero-img').alt     = authorName;
-                        document.getElementById('author-hero-name').innerText = authorName;
-                        document.getElementById('author-hero').style.display  = 'block';
+                        document.getElementById('author-hero-img').src           = photoUrl;
+                        document.getElementById('author-hero-img').alt           = authorName;
+                        document.getElementById('author-hero-img').style.display = 'block';
+                    } else {
+                        document.getElementById('author-hero-img').style.display = 'none';
                     }
 
                     // ===== АУДИО ПЛЕЕР =====
-                    const audioUrl = data.audioUrl || null;
+                    const audioUrl = (data.audioUrl || '').trim();
                     if (audioUrl) {
                         document.getElementById('poem-audio').src = audioUrl;
                         document.getElementById('audio-track-title').textContent =
