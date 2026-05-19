@@ -119,7 +119,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .filter-btn:hover { border-color: rgba(212,175,55,0.4); color: #d4af37; }
 .filter-btn.active { background: rgba(212,175,55,0.12); color: #d4af37; border-color: rgba(212,175,55,0.4); }
 
-/* ── Request cards (authors) ── */
 .request-card {
     background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
     border-radius: 14px; padding: 24px 28px; margin-bottom: 16px; transition: border-color .2s;
@@ -178,7 +177,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 }
 .btn-reject:hover { background: rgba(224,112,112,0.2); }
 
-/* ── Author cards ── */
 .author-card {
     background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
     border-radius: 14px; padding: 20px 24px; margin-bottom: 12px;
@@ -197,7 +195,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 }
 .btn-delete:hover { background: rgba(224,112,112,0.15); }
 
-/* ── Poem request cards ── */
 .poem-card {
     background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
     border-radius: 14px; padding: 24px 28px; margin-bottom: 16px; transition: border-color .2s;
@@ -220,26 +217,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
     border: 1px solid rgba(138,43,226,0.3);
 }
 
-/* ── Poems list (approved) ── */
-.poem-list-card {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px; padding: 18px 22px; margin-bottom: 10px;
-    display: flex; align-items: flex-start; gap: 16px;
-}
-.poem-list-icon {
-    width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
-    background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(139,94,60,0.3));
-    display: flex; align-items: center; justify-content: center; font-size: 18px;
-}
-.poem-list-info { flex: 1; min-width: 0; }
-.poem-list-title { font-size: 16px; color: #f0e6c8; font-weight: bold; }
-.poem-list-author { font-size: 13px; color: #9a8866; margin-top: 3px; }
-.poem-list-preview {
-    font-size: 13px; color: #6b5d47; margin-top: 5px; font-style: italic;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 460px;
-}
-
-/* ── Toast ── */
 #toast {
     position: fixed; bottom: 28px; right: 28px;
     background: #2d2416; border: 1px solid rgba(212,175,55,0.3);
@@ -408,7 +385,7 @@ window.toast = toast;
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
-    getFirestore, collection, getDocs, addDoc, doc,
+    getFirestore, collection, getDocs, addDoc, doc, getDoc,
     updateDoc, deleteDoc, serverTimestamp, query, orderBy
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -571,7 +548,6 @@ function renderPoemRequests(list) {
         const status = d.status || 'pending';
         const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
         const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
-        // preview: first 80 chars of poem
         const preview = (d.poemText || '').substring(0, 80).replace(/\n/g, ' ');
 
         const card = document.createElement('div');
@@ -632,13 +608,16 @@ window.filterPoems = function(filter, btn) {
     renderPoemRequests(allPoemRequests.filter(p => (p.status || 'pending') === filter));
 };
 
+/* ════════════════════════════════════════
+   ✅ ТҮЗЕТІЛДІ: approvePoemRequest
+   authorId өрісі қосылды — poem-view.html-де
+   "Автор бетіне" батырмасы жұмыс істеу үшін
+════════════════════════════════════════ */
 window.approvePoemRequest = async function(poemId) {
     try {
-        // allPoemRequests-тен емес, тікелей Firestore-дан оқу
-        const { getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
-        const docRef = doc(db, 'poem_requests', poemId);
+        const docRef  = doc(db, 'poem_requests', poemId);
         const docSnap = await getDoc(docRef);
-        const data = docSnap.exists() ? docSnap.data() : null;
+        const data    = docSnap.exists() ? docSnap.data() : null;
 
         await updateDoc(docRef, {
             status: 'approved', approvedAt: serverTimestamp()
@@ -648,7 +627,10 @@ window.approvePoemRequest = async function(poemId) {
             await addDoc(collection(db, 'poems'), {
                 title:      data.title      || '',
                 authorName: data.authorName || '',
+                authorId:   data.authorId   || null,  // ✅ ҚОСЫЛДЫ
                 poemText:   data.poemText   || '',
+                audioUrl:   data.audioUrl   || null,
+                photoUrl:   data.photoUrl   || null,
                 genre:      data.genre      || null,
                 note:       data.note       || null,
                 requestId:  poemId,
