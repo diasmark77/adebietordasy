@@ -57,35 +57,6 @@
             border-bottom: 2px solid #d3cdc0;
         }
 
-        /* Модал */
-        #poem-modal-overlay {
-            display: none;
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        #poem-modal-overlay.show { display: flex; }
-        #poem-modal-box {
-            background: #fff; border-radius: 16px; padding: 32px;
-            max-width: 650px; width: 100%;
-            max-height: 80vh; overflow-y: auto;
-            position: relative;
-        }
-        #poem-modal-close {
-            position: absolute; top: 16px; right: 16px;
-            background: none; border: none;
-            font-size: 24px; cursor: pointer; color: #8b5e3c;
-        }
-        #poem-modal-title { color: #5c4033; margin-bottom: 6px; font-size: 22px; }
-        #poem-modal-author { color: #8b5e3c; margin-bottom: 20px; font-weight: bold; }
-        #poem-modal-text {
-            font-family: 'Georgia', serif; font-size: 16px; line-height: 2;
-            color: #333; white-space: pre-wrap; word-wrap: break-word;
-        }
-
         footer { background: #5c4033; color: white; text-align: center; padding: 20px; font-size: 14px; }
 
         @media(max-width:600px) {
@@ -438,27 +409,10 @@
   </div>
 </section>
 
-<!-- Модал терезесі -->
-<div id="poem-modal-overlay" onclick="closeModal(event)">
-    <div id="poem-modal-box">
-        <button id="poem-modal-close" onclick="document.getElementById('poem-modal-overlay').classList.remove('show')">✕</button>
-        <h2 id="poem-modal-title"></h2>
-        <p id="poem-modal-author"></p>
-        <pre id="poem-modal-text"></pre>
-    </div>
-</div>
-
 <footer>
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-<!-- ═══════════════════════════════════════════
-     FIREBASE СКРИПТІ — ТҮЗЕТІЛГЕН НҰСҚА
-     Мәселе: catch блогы section-ды жасырып тастайды
-     Шешім:  catch ішінде де section көрсетіледі,
-             orderBy жоқ (индекс талап етпейді),
-             console.log арқылы debug мүмкіндігі бар
-═══════════════════════════════════════════ -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import {
@@ -486,12 +440,10 @@
         container.innerHTML = '<div class="loading">Жүктелуде...</div>';
 
         try {
-            // orderBy жоқ — Firebase индексі талап етпейді
             const snap = await getDocs(collection(db, "poems"));
 
             console.log("✅ poems коллекциясы — жазба саны:", snap.size);
 
-            // JS жағында addedAt бойынша сорттаймыз (жаңасы жоғарыда)
             dbPoems = snap.docs
                 .map(d => ({ id: d.id, ...d.data() }))
                 .sort((a, b) => {
@@ -500,20 +452,15 @@
                     return bT - aT;
                 });
 
-            console.log("✅ Өлеңдер тізімі:", dbPoems.map(p => p.title));
-
             if (dbPoems.length > 0) {
                 section.style.display = 'block';
                 renderDbPoems(dbPoems);
             } else {
-                // Деректер жоқ — section-ды жасырамыз
                 container.innerHTML = '';
                 section.style.display = 'none';
             }
 
         } catch (error) {
-            // ❌ Бұрынғы код мұнда section-ды жасырып тастайтын — ҚАТЕ!
-            // ✅ Енді тек қатені консольге шығарамыз, section өзгермейді
             console.error("❌ Firebase қатесі:", error.code, error.message);
             container.innerHTML = '<p style="color:#c0392b;text-align:center;padding:20px;">' +
                 '⚠️ Өлеңдерді жүктеу мүмкін болмады. Желіні тексеріңіз.</p>';
@@ -550,31 +497,19 @@
                 <span class="read-more">Толығырақ →</span>
             `;
 
-            card.addEventListener('click', () => showModal(title, authorName, poemText));
+            // ✅ ТҮЗЕТІЛДІ: модал емес, poem-view.html бетіне өту
+            card.addEventListener('click', () => {
+                window.location.href = `poem-view.html?id=${poem.id}`;
+            });
+
             container.appendChild(card);
         });
     }
-
-    // ── Модал терезесі ──
-    window.showModal = function(title, author, text) {
-        document.getElementById('poem-modal-title').textContent  = title;
-        document.getElementById('poem-modal-author').textContent = '✍️ ' + author;
-        document.getElementById('poem-modal-text').textContent   = text;
-        document.getElementById('poem-modal-overlay').classList.add('show');
-    };
-
-    window.closeModal = function(e) {
-        // Модал фонын басқанда жабылады (контентті басқанда жабылмайды)
-        if (e.target === document.getElementById('poem-modal-overlay')) {
-            document.getElementById('poem-modal-overlay').classList.remove('show');
-        }
-    };
 
     // ── Іздеу логикасы ──
     document.getElementById('searchInput').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase().trim();
 
-        // Firebase өлеңдерін іздеу
         if (term) {
             const filtered = dbPoems.filter(p =>
                 (p.authorName || '').toLowerCase().includes(term) ||
@@ -586,14 +521,12 @@
             renderDbPoems(dbPoems);
         }
 
-        // Статикалық карточкаларды іздеу
         document.querySelectorAll('#static-poems .card').forEach(card => {
             const text = card.textContent.toLowerCase();
             card.style.display = text.includes(term) ? '' : 'none';
         });
     });
 
-    // Беттi жүктегенде Firebase-тен өлеңдерді аламыз
     fetchPoems();
 </script>
 
