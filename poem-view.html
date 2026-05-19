@@ -417,14 +417,17 @@
             }
 
             try {
-                const docRef  = doc(db, "poems", poemId);
-                const docSnap = await getDoc(docRef);
+                // Алдымен published_content-тен іздейміз, таппасақ poems-тен
+                let docSnap = await getDoc(doc(db, "published_content", poemId));
+                if (!docSnap.exists()) {
+                    docSnap = await getDoc(doc(db, "poems", poemId));
+                }
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
 
-                    const poemTitle  = data.title      || "Тақырыпсыз";
-                    const poemText   = data.poemText   || "Мәтін жоқ";
+                    const poemTitle  = data.workTitle  || data.title    || "Тақырыпсыз";
+                    const poemText   = data.work       || data.poemText || "Мәтін жоқ";
                     const authorName = data.authorName || "Белгісіз автор";
 
                     document.getElementById('poem-title-display').innerText  = poemTitle;
@@ -525,7 +528,7 @@
                 querySnapshot.forEach((docItem) => {
                     if (docItem.id !== currentId) {
                         const d      = docItem.data();
-                        const title  = d.title      || "Өлең";
+                        const title  = d.workTitle  || d.title || "Өлең";
                         const author = d.authorName || "";
                         html += `<a href="poem-view.html?id=${docItem.id}" class="poem-btn">
                                     📖 ${author ? author + ' — ' : ''}${title}
