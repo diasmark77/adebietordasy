@@ -5,12 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Байланыс | Әдебиет ордасы</title>
 <meta name="description" content="Әдебиет ордасы сайтындағы қазақ тіліндегі үздік өлеңдер жинағы мен поэзия әлемі.">
-
 <meta name="keywords" content="әдебиет ордасы, өлеңдер, поэзия, қазақ өлеңдері, ақындар">
-  
 <link rel="icon" href="images/logo.png" type="image/png">
 <link rel="stylesheet" href="css/menu.css">
-  
+
 <style>
 * {box-sizing:border-box;}
 body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;}
@@ -49,8 +47,6 @@ section {
   padding:20px;
   max-width:600px;
   margin:30px auto;
-
-  /* МІНЕ НЕГІЗГІ ФИКС */
   display:flex;
   flex-direction:column;
   gap:15px;
@@ -77,8 +73,10 @@ footer {
   padding:15px;
   margin-top:30px;
 }
-/* Автор болу батырмасының стилі */
-.author-btn {
+
+/* Батырмалардың жалпы стилі */
+.author-btn,
+.poem-add-btn {
   background: #8b5e3c;
   color: white;
   border: none;
@@ -91,17 +89,19 @@ footer {
   transition: all 0.3s ease;
   margin-top: 10px;
   box-shadow: 0 4px 15px rgba(139, 94, 60, 0.3);
-  width: 100%; /* Мобильді нұсқаға ыңғайлы болу үшін */
+  width: 100%;
 }
 
-.author-btn:hover {
+.author-btn:hover,
+.poem-add-btn:hover {
   background: #5c4033;
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(139, 94, 60, 0.5);
   border-bottom: 3px solid #d4af37;
 }
 
-.author-btn:active {
+.author-btn:active,
+.poem-add-btn:active {
   transform: translateY(-1px);
 }
 </style>
@@ -109,8 +109,8 @@ footer {
 <body>
 
 <header>
-<h1>Байланыс</h1>
-<p>Сайт редакциясына хабарласу</p>
+  <h1>Байланыс</h1>
+  <p>Сайт редакциясына хабарласу</p>
 </header>
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
@@ -118,12 +118,12 @@ footer {
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-<button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+  <button onclick="location.href='index.html'">🏠 Басты бет</button>
+  <button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
+  <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+  <button onclick="location.href='contact.html'">📩 Байланыс</button>
+  <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+  <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
 </nav>
 
 <section>
@@ -138,36 +138,33 @@ footer {
   <div class="card" style="text-align: center; border: 2px solid #d4af37;">
     <h2>Құрметті жас талап!</h2>
     <p>Егерде сіз өзіңізді, өзіңіздің шығармаларыңызды біздің парақшамызда көргіңіз келсе, төмендегі батырма арқылы өтініш қалдыра аласыз.</p>
-    
-    <!-- Автор болу батырмасы -->
+
     <button onclick="location.href='authors-add.html'" class="author-btn">
-       ✍️ Автор болуға өтініш тастау
+      ✍️ Автор болуға өтініш тастау
     </button>
 
     <p style="font-style: italic; margin-top: 15px; font-size: 0.9em;">
-       Құрметпен, "Әдебиет ордасы" сайтының редакторы!
+      Құрметпен, "Әдебиет ордасы" сайтының редакторы!
     </p>
   </div>
 
-  <!-- Өлең қосу батырмасы бар карточка -->
   <div class="card" style="text-align: center; border: 2px solid #3c6e8b;">
     <h2>Өз туындыңызды жариялаңыз</h2>
     <p>Сіздің қаламыңыздан шыққан інжу-маржан өлеңдер болса, біздің оқырмандармен бөлісіңіз.</p>
-    
-    <!-- Өлең қосу батырмасы -->
+
     <button onclick="location.href='add-poem.html'" class="poem-add-btn">
-        📖 Өлең қосу
+      📖 Өлең қосу
     </button>
 
     <p style="font-style: italic; margin-top: 15px; font-size: 0.9em;">
-        Әрбір шығарма — рухани қазына!
+      Әрбір шығарма — рухани қазына!
     </p>
   </div>
-  
+
 </section>
 
 <footer>
-© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+  © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
 <script>
@@ -176,6 +173,6 @@ function toggleMenu(){
   document.getElementById("overlay").classList.toggle("show");
 }
 </script>
-  
+
 </body>
 </html>
