@@ -88,17 +88,17 @@ section {
 }
 
 /* Firebase-тен келген шығармалар */
-.card.from-db { border-left: 5px solid #3c6e8b; }
+.card.from-db { border-left: 5px solid #8b5e3c; }
 .card.from-db .new-badge {
-  display: inline-block; background: #3c6e8b; color: white;
+  display: inline-block; background: #8b5e3c; color: white;
   font-size: 11px; font-weight: bold; padding: 2px 8px;
   border-radius: 10px; margin-left: 10px; vertical-align: middle;
 }
 .genre-badge {
   display: inline-block; font-size: 11px; font-weight: bold;
   padding: 2px 8px; border-radius: 10px; margin-left: 8px;
-  background: rgba(60,110,139,0.12); color: #3c6e8b;
-  border: 1px solid rgba(60,110,139,0.3); vertical-align: middle;
+  background: rgba(139,94,60,0.12); color: #8b5e3c;
+  border: 1px solid rgba(139,94,60,0.3); vertical-align: middle;
 }
 
 .card h2 {color:#5c4033; font-size:20px; margin-bottom:10px;}
@@ -288,7 +288,6 @@ function renderDbShygarmalar(list) {
         const preview    = text.substring(0, 200);
         const genreLabel = sh.genreLabel  || '';
 
-        // ── НЕГІЗГІ ӨЗГЕРІС: модал емес, шыгарма-view бетіне өтеді ──
         const card = document.createElement('a');
         card.className = 'card from-db';
         card.href = `shygarma-view.html?id=${sh.id}`;
