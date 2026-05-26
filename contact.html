@@ -76,7 +76,8 @@ footer {
 
 /* Батырмалардың жалпы стилі */
 .author-btn,
-.poem-add-btn {
+.poem-add-btn,
+.shygarma-add-btn {
   background: #8b5e3c;
   color: white;
   border: none;
@@ -93,7 +94,8 @@ footer {
 }
 
 .author-btn:hover,
-.poem-add-btn:hover {
+.poem-add-btn:hover,
+.shygarma-add-btn:hover {
   background: #5c4033;
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(139, 94, 60, 0.5);
@@ -101,8 +103,20 @@ footer {
 }
 
 .author-btn:active,
-.poem-add-btn:active {
+.poem-add-btn:active,
+.shygarma-add-btn:active {
   transform: translateY(-1px);
+}
+
+/* Шығарма батырмасы — ерекше түс */
+.shygarma-add-btn {
+  background: #3c6e8b;
+  box-shadow: 0 4px 15px rgba(60, 110, 139, 0.3);
+}
+.shygarma-add-btn:hover {
+  background: #2a4f65;
+  box-shadow: 0 6px 20px rgba(60, 110, 139, 0.5);
+  border-bottom: 3px solid #d4af37;
 }
 </style>
 </head>
@@ -148,7 +162,7 @@ footer {
     </p>
   </div>
 
-  <div class="card" style="text-align: center; border: 2px solid #3c6e8b;">
+  <div class="card" style="text-align: center; border: 2px solid #8b5e3c;">
     <h2>Өз туындыңызды жариялаңыз</h2>
     <p>Сіздің қаламыңыздан шыққан інжу-маржан өлеңдер болса, біздің оқырмандармен бөлісіңіз.</p>
 
@@ -158,6 +172,19 @@ footer {
 
     <p style="font-style: italic; margin-top: 15px; font-size: 0.9em;">
       Әрбір шығарма — рухани қазына!
+    </p>
+  </div>
+
+  <div class="card" style="text-align: center; border: 2px solid #3c6e8b;">
+    <h2>Проза немесе шығарма жариялаңыз</h2>
+    <p>Сіздің қаламыңыздан шыққан әңгіме, повесть, роман немесе поэма болса — оқырмандармен бөлісіңіз!</p>
+
+    <button onclick="location.href='add-shygarma.html'" class="shygarma-add-btn">
+      📑 Шығарма қосу
+    </button>
+
+    <p style="font-style: italic; margin-top: 15px; font-size: 0.9em;">
+      Сөз өнері — мәңгілік мұра!
     </p>
   </div>
 
