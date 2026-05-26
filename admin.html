@@ -195,26 +195,31 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 }
 .btn-delete:hover { background: rgba(224,112,112,0.15); }
 
-.poem-card {
+.poem-card, .shygarma-card {
     background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
     border-radius: 14px; padding: 24px 28px; margin-bottom: 16px; transition: border-color .2s;
 }
-.poem-card:hover { border-color: rgba(212,175,55,0.3); }
-.poem-card.approved { border-left: 3px solid #4caf82; }
-.poem-card.rejected { border-left: 3px solid #e07070; opacity: .65; }
+.poem-card:hover, .shygarma-card:hover { border-color: rgba(212,175,55,0.3); }
+.poem-card.approved, .shygarma-card.approved { border-left: 3px solid #4caf82; }
+.poem-card.rejected, .shygarma-card.rejected { border-left: 3px solid #e07070; opacity: .65; }
 
-.poem-body {
+.poem-body, .shygarma-body {
     background: rgba(0,0,0,0.25); border-radius: 10px; padding: 18px 20px;
     font-size: 15px; line-height: 2; color: #e0d4b8;
     white-space: pre-wrap; word-break: break-word;
     font-style: italic; border-left: 3px solid rgba(212,175,55,0.25);
     margin: 14px 0;
 }
-.poem-genre-badge {
+.poem-genre-badge, .shygarma-genre-badge {
     display: inline-block; font-size: 11px; font-weight: bold;
     padding: 3px 10px; border-radius: 20px; margin-left: 8px;
     background: rgba(138,43,226,0.15); color: #c084fc;
     border: 1px solid rgba(138,43,226,0.3);
+}
+/* Шығарма жанры — бөлек түс */
+.shygarma-genre-badge {
+    background: rgba(60,110,139,0.2); color: #5aabdf;
+    border: 1px solid rgba(60,110,139,0.4);
 }
 
 #toast {
@@ -234,9 +239,9 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
     header { padding: 14px 16px; }
     .tabs  { padding: 16px 16px 0; }
     .content { padding: 16px; }
-    .request-card, .poem-card { padding: 18px; }
+    .request-card, .poem-card, .shygarma-card { padding: 18px; }
     .card-header { flex-direction: column; }
-    .poem-body { font-size: 14px; }
+    .poem-body, .shygarma-body { font-size: 14px; }
 }
 </style>
 </head>
@@ -266,6 +271,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
         <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
         <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
         <button onclick="location.href='add-poem.html'">➕ Өлең қосу</button>
+        <button onclick="location.href='add-shygarma.html'">➕ Шығарма қосу</button>
     </nav>
 
     <header>
@@ -283,6 +289,9 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
         </button>
         <button class="tab" onclick="switchTab('poems')" id="tab-poems">
             Өлеңдер <span class="tab-count" id="cnt-poems-pending">—</span>
+        </button>
+        <button class="tab" onclick="switchTab('shygarmalar')" id="tab-shygarmalar">
+            Шығармалар <span class="tab-count" id="cnt-shygarma-pending">—</span>
         </button>
         <button class="tab" onclick="switchTab('authors')" id="tab-authors">
             Авторлар <span class="tab-count" id="cnt-authors">—</span>
@@ -315,6 +324,21 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
             <div id="poems-list"></div>
         </div>
 
+        <!-- ══ Шығармалар өтініштері ══ -->
+        <div class="pane" id="pane-shygarmalar">
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterShygarmalar('all', this)">Барлығы</button>
+                <button class="filter-btn" onclick="filterShygarmalar('pending', this)">⏳ Күтуде</button>
+                <button class="filter-btn" onclick="filterShygarmalar('approved', this)">✅ Рұқсат берілген</button>
+                <button class="filter-btn" onclick="filterShygarmalar('rejected', this)">❌ Қабылданбаған</button>
+            </div>
+            <div class="loading-state" id="shygarma-loading" style="display:none;">
+                <div class="spinner"></div>
+                <p>Шығармалар жүктелуде...</p>
+            </div>
+            <div id="shygarmalar-list"></div>
+        </div>
+
         <!-- ══ Авторлар тізімі ══ -->
         <div class="pane" id="pane-authors">
             <div class="filter-bar">
@@ -339,8 +363,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 <script>
 const ADMIN_PASSWORD = "admin2026";
 
-// Қай таб жүктелгенін бақылаймыз
-const tabLoaded = { requests: false, poems: false, authors: false };
+const tabLoaded = { requests: false, poems: false, shygarmalar: false, authors: false };
 
 window.switchTab = function(tab) {
     document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
@@ -348,11 +371,11 @@ window.switchTab = function(tab) {
     document.getElementById('pane-' + tab).classList.add('active');
     document.getElementById('tab-' + tab).classList.add('active');
 
-    // Тек бірінші рет ашылғанда жүктейді
     if (!tabLoaded[tab]) {
         tabLoaded[tab] = true;
-        if (tab === 'poems')   window._loadPoemRequests && window._loadPoemRequests();
-        if (tab === 'authors') window._loadAuthors && window._loadAuthors();
+        if (tab === 'poems')       window._loadPoemRequests     && window._loadPoemRequests();
+        if (tab === 'shygarmalar') window._loadShygarmaRequests && window._loadShygarmaRequests();
+        if (tab === 'authors')     window._loadAuthors          && window._loadAuthors();
     }
 };
 
@@ -379,7 +402,6 @@ window.doLogin = function() {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-panel').style.display = 'block';
         document.getElementById('login-err').textContent = '';
-        // Тек бірінші (белсенді) табты жүктейді
         tabLoaded.requests = true;
         window._loadRequests && window._loadRequests();
     } else {
@@ -392,10 +414,10 @@ window.logout = function() {
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('main-panel').style.display  = 'none';
     document.getElementById('pwd-input').value = '';
-    // Қайта кіргенде барлығын қайта жүктеу үшін reset
-    tabLoaded.requests = false;
-    tabLoaded.poems    = false;
-    tabLoaded.authors  = false;
+    tabLoaded.requests    = false;
+    tabLoaded.poems       = false;
+    tabLoaded.shygarmalar = false;
+    tabLoaded.authors     = false;
 };
 </script>
 
@@ -425,6 +447,7 @@ const categoryLabels = {
 
 let allAuthors = [];
 let allPoemRequests = [];
+let allShygarmaRequests = [];
 
 function fmtDate(ts) {
     if (!ts) return '';
@@ -520,7 +543,6 @@ window.approveRequest = async function(reqId) {
             });
         }
         window.toast('✅ Автор рұқсат алды және авторлар тізіміне қосылды!');
-        // Авторлар табын қайта жүктеу үшін reset
         window.tabLoaded && (window.tabLoaded.authors = false);
         loadRequests();
     } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
@@ -586,10 +608,7 @@ function renderPoemRequests(list) {
                             <span class="status-badge ${badgeMap[status]}">${labelMap[status]}</span>
                             ${d.genre ? `<span class="poem-genre-badge">${d.genre}</span>` : ''}
                         </div>
-                        <div class="author-contact">
-                            ✍️ ${d.authorName || 'Белгісіз'}
-                            ${d.contactInfo ? ` &nbsp;|&nbsp; 📞 ${d.contactInfo}` : ''}
-                        </div>
+                        <div class="author-contact">✍️ ${d.authorName || 'Белгісіз'}</div>
                     </div>
                 </div>
                 <div class="card-date">${fmtDate(d.timestamp)}</div>
@@ -599,9 +618,6 @@ function renderPoemRequests(list) {
                 <span class="arrow">▾</span>
             </div>
             <div class="section-content poem-body">${d.poemText || '—'}</div>
-            ${d.note ? `
-            <div class="section-toggle" onclick="toggleSection(this)">💬 Автордың ескертпесі <span class="arrow">▾</span></div>
-            <div class="section-content">${d.note}</div>` : ''}
             ${status === 'pending' ? `
             <div class="card-actions">
                 <button class="btn-approve" onclick="approvePoemRequest('${id}')">✅ Рұқсат беру</button>
@@ -641,7 +657,6 @@ window.approvePoemRequest = async function(poemId) {
                 audioUrl:   data.audioUrl   || null,
                 photoUrl:   data.photoUrl   || null,
                 genre:      data.genre      || null,
-                note:       data.note       || null,
                 requestId:  poemId,
                 addedAt:    serverTimestamp()
             });
@@ -654,9 +669,7 @@ window.approvePoemRequest = async function(poemId) {
 window.rejectPoemRequest = async function(poemId) {
     if (!confirm('Бұл өлеңді қабылдамауға сенімдісіз бе?')) return;
     try {
-        await updateDoc(doc(db, 'poem_requests', poemId), {
-            status: 'rejected', rejectedAt: serverTimestamp()
-        });
+        await updateDoc(doc(db, 'poem_requests', poemId), { status: 'rejected', rejectedAt: serverTimestamp() });
         window.toast('Өлең қабылданбады.');
         loadPoemRequests();
     } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
@@ -668,6 +681,142 @@ window.deletePoemRequest = async function(poemId) {
         await deleteDoc(doc(db, 'poem_requests', poemId));
         window.toast('Өтініш жойылды.');
         loadPoemRequests();
+    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+};
+
+/* ════════════════════════════════════════
+   ШЫҒАРМА ӨТІНІШТЕРІ  ← ЖАҢА
+════════════════════════════════════════ */
+async function loadShygarmaRequests() {
+    const loadingEl = document.getElementById('shygarma-loading');
+    const listEl    = document.getElementById('shygarmalar-list');
+    loadingEl.style.display = 'block';
+    listEl.innerHTML = '';
+    try {
+        const q = query(collection(db, 'shygarma_requests'), orderBy('timestamp', 'desc'));
+        const snap = await getDocs(q);
+        loadingEl.style.display = 'none';
+        const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
+        document.getElementById('cnt-shygarma-pending').textContent = pending.length;
+        allShygarmaRequests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderShygarmaRequests(allShygarmaRequests);
+    } catch (e) {
+        loadingEl.style.display = 'none';
+        listEl.innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+    }
+}
+window._loadShygarmaRequests = loadShygarmaRequests;
+
+function renderShygarmaRequests(list) {
+    const container = document.getElementById('shygarmalar-list');
+    if (!list.length) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">📭</div>Шығарма өтініші жоқ</div>';
+        return;
+    }
+    container.innerHTML = '';
+    list.forEach(d => {
+        const id = d.id;
+        const status = d.status || 'pending';
+        const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
+        const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
+        const preview = (d.textContent || '').substring(0, 80).replace(/\n/g, ' ');
+        const card = document.createElement('div');
+        card.className = `shygarma-card ${status !== 'pending' ? status : ''}`;
+        card.id = 'shygarma-' + id;
+        card.innerHTML = `
+            <div class="card-header">
+                <div class="author-info">
+                    <div class="avatar" style="background: linear-gradient(135deg,#3c6e8b,#5aabdf);">
+                        ${avatarLetter(d.authorName)}
+                    </div>
+                    <div>
+                        <div class="author-name">
+                            ${d.title || 'Атауы жоқ'}
+                            <span class="status-badge ${badgeMap[status]}">${labelMap[status]}</span>
+                            ${d.genreLabel ? `<span class="shygarma-genre-badge">${d.genreLabel}</span>` : ''}
+                        </div>
+                        <div class="author-contact">✍️ ${d.authorName || 'Белгісіз'}</div>
+                    </div>
+                </div>
+                <div class="card-date">${fmtDate(d.timestamp)}</div>
+            </div>
+            ${d.annotation ? `
+            <div class="section-toggle" onclick="toggleSection(this)">
+                📋 Аннотация <span class="arrow">▾</span>
+            </div>
+            <div class="section-content">${d.annotation}</div>` : ''}
+            <div class="section-toggle" onclick="toggleSection(this)">
+                📑 Шығарма мәтіні <span style="font-size:12px;color:#6b5d47;margin-left:8px;">"${preview}…"</span>
+                <span class="arrow">▾</span>
+            </div>
+            <div class="section-content shygarma-body">${d.textContent || '—'}</div>
+            ${status === 'pending' ? `
+            <div class="card-actions">
+                <button class="btn-approve" onclick="approveShygarmaRequest('${id}')">✅ Рұқсат беру</button>
+                <button class="btn-reject"  onclick="rejectShygarmaRequest('${id}')">❌ Қабылдамау</button>
+            </div>` : `
+            <div class="card-actions" style="margin-top:14px;">
+                <span style="font-size:13px;color:#6b5d47;">Шешім қабылданды</span>
+                ${status === 'approved'
+                    ? `<button class="btn-reject"  onclick="rejectShygarmaRequest('${id}')">Кері қайтару</button>`
+                    : `<button class="btn-approve" onclick="approveShygarmaRequest('${id}')">Рұқсат беру</button>`}
+                <button class="btn-delete" onclick="deleteShygarmaRequest('${id}')">🗑 Жою</button>
+            </div>`}
+        `;
+        container.appendChild(card);
+    });
+}
+
+window.filterShygarmalar = function(filter, btn) {
+    document.querySelectorAll('#pane-shygarmalar .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (filter === 'all') return renderShygarmaRequests(allShygarmaRequests);
+    renderShygarmaRequests(allShygarmaRequests.filter(s => (s.status || 'pending') === filter));
+};
+
+window.approveShygarmaRequest = async function(shygarmaId) {
+    try {
+        const docRef  = doc(db, 'shygarma_requests', shygarmaId);
+        const docSnap = await getDoc(docRef);
+        const data    = docSnap.exists() ? docSnap.data() : null;
+        await updateDoc(docRef, { status: 'approved', approvedAt: serverTimestamp() });
+        if (data) {
+            // shygarmalar коллекциясына қосады — shygarms.html оқиды
+            await addDoc(collection(db, 'shygarmalar'), {
+                title:       data.title       || '',
+                authorName:  data.authorName  || '',
+                authorId:    data.authorId    || null,
+                genre:       data.genre       || null,
+                genreLabel:  data.genreLabel  || null,
+                textContent: data.textContent || '',
+                photoUrl:    data.photoUrl    || null,
+                annotation:  data.annotation  || null,
+                requestId:   shygarmaId,
+                addedAt:     serverTimestamp()
+            });
+        }
+        window.toast('✅ Шығарма рұқсат алды және шығармалар тізіміне қосылды!');
+        loadShygarmaRequests();
+    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+};
+
+window.rejectShygarmaRequest = async function(shygarmaId) {
+    if (!confirm('Бұл шығарманы қабылдамауға сенімдісіз бе?')) return;
+    try {
+        await updateDoc(doc(db, 'shygarma_requests', shygarmaId), {
+            status: 'rejected', rejectedAt: serverTimestamp()
+        });
+        window.toast('Шығарма қабылданбады.');
+        loadShygarmaRequests();
+    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+};
+
+window.deleteShygarmaRequest = async function(shygarmaId) {
+    if (!confirm('Өтінішті толығымен жоюға сенімдісіз бе?')) return;
+    try {
+        await deleteDoc(doc(db, 'shygarma_requests', shygarmaId));
+        window.toast('Өтініш жойылды.');
+        loadShygarmaRequests();
     } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
 };
 
