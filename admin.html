@@ -111,6 +111,15 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .cat-alash      { background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.3); }
 .cat-kompozitor { background: rgba(76,175,130,0.15); color: #4caf82; border: 1px solid rgba(76,175,130,0.3); }
 
+/* ── Word белгісі ── */
+.badge-docx {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: bold;
+    padding: 3px 10px; border-radius: 20px; margin-left: 8px;
+    background: rgba(41,128,185,0.18); color: #5aabdf;
+    border: 1px solid rgba(41,128,185,0.35);
+}
+
 .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
 .filter-btn {
     padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15);
@@ -216,7 +225,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
     background: rgba(138,43,226,0.15); color: #c084fc;
     border: 1px solid rgba(138,43,226,0.3);
 }
-/* Шығарма жанры — бөлек түс */
 .shygarma-genre-badge {
     background: rgba(60,110,139,0.2); color: #5aabdf;
     border: 1px solid rgba(60,110,139,0.4);
@@ -331,6 +339,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
                 <button class="filter-btn" onclick="filterShygarmalar('pending', this)">⏳ Күтуде</button>
                 <button class="filter-btn" onclick="filterShygarmalar('approved', this)">✅ Рұқсат берілген</button>
                 <button class="filter-btn" onclick="filterShygarmalar('rejected', this)">❌ Қабылданбаған</button>
+                <button class="filter-btn" onclick="filterShygarmalar('docx', this)">📄 Word файлдан</button>
             </div>
             <div class="loading-state" id="shygarma-loading" style="display:none;">
                 <div class="spinner"></div>
@@ -685,7 +694,7 @@ window.deletePoemRequest = async function(poemId) {
 };
 
 /* ════════════════════════════════════════
-   ШЫҒАРМА ӨТІНІШТЕРІ  ← ЖАҢА
+   ШЫҒАРМА ӨТІНІШТЕРІ
 ════════════════════════════════════════ */
 async function loadShygarmaRequests() {
     const loadingEl = document.getElementById('shygarma-loading');
@@ -717,6 +726,7 @@ function renderShygarmaRequests(list) {
     list.forEach(d => {
         const id = d.id;
         const status = d.status || 'pending';
+        const isDocx = d.source === 'docx_upload';   // ← Word белгісі
         const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
         const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
         const preview = (d.textContent || '').substring(0, 80).replace(/\n/g, ' ');
@@ -734,6 +744,7 @@ function renderShygarmaRequests(list) {
                             ${d.title || 'Атауы жоқ'}
                             <span class="status-badge ${badgeMap[status]}">${labelMap[status]}</span>
                             ${d.genreLabel ? `<span class="shygarma-genre-badge">${d.genreLabel}</span>` : ''}
+                            ${isDocx ? `<span class="badge-docx">📄 Word</span>` : ''}
                         </div>
                         <div class="author-contact">✍️ ${d.authorName || 'Белгісіз'}</div>
                     </div>
@@ -770,7 +781,8 @@ function renderShygarmaRequests(list) {
 window.filterShygarmalar = function(filter, btn) {
     document.querySelectorAll('#pane-shygarmalar .filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    if (filter === 'all') return renderShygarmaRequests(allShygarmaRequests);
+    if (filter === 'all')   return renderShygarmaRequests(allShygarmaRequests);
+    if (filter === 'docx')  return renderShygarmaRequests(allShygarmaRequests.filter(s => s.source === 'docx_upload'));
     renderShygarmaRequests(allShygarmaRequests.filter(s => (s.status || 'pending') === filter));
 };
 
@@ -781,7 +793,6 @@ window.approveShygarmaRequest = async function(shygarmaId) {
         const data    = docSnap.exists() ? docSnap.data() : null;
         await updateDoc(docRef, { status: 'approved', approvedAt: serverTimestamp() });
         if (data) {
-            // shygarmalar коллекциясына қосады — shygarms.html оқиды
             await addDoc(collection(db, 'shygarmalar'), {
                 title:       data.title       || '',
                 authorName:  data.authorName  || '',
