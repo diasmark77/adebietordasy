@@ -279,13 +279,13 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 
     <div class="tabs">
         <button class="tab active" onclick="switchTab('requests')" id="tab-requests">
-            Өтініштер <span class="tab-count" id="cnt-pending">0</span>
+            Өтініштер <span class="tab-count" id="cnt-pending">—</span>
         </button>
         <button class="tab" onclick="switchTab('poems')" id="tab-poems">
-            Өлеңдер <span class="tab-count" id="cnt-poems-pending">0</span>
+            Өлеңдер <span class="tab-count" id="cnt-poems-pending">—</span>
         </button>
         <button class="tab" onclick="switchTab('authors')" id="tab-authors">
-            Авторлар <span class="tab-count" id="cnt-authors">0</span>
+            Авторлар <span class="tab-count" id="cnt-authors">—</span>
         </button>
     </div>
 
@@ -308,7 +308,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
                 <button class="filter-btn" onclick="filterPoems('approved', this)">✅ Рұқсат берілген</button>
                 <button class="filter-btn" onclick="filterPoems('rejected', this)">❌ Қабылданбаған</button>
             </div>
-            <div class="loading-state" id="poem-loading">
+            <div class="loading-state" id="poem-loading" style="display:none;">
                 <div class="spinner"></div>
                 <p>Өлеңдер жүктелуде...</p>
             </div>
@@ -324,7 +324,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
                 <button class="filter-btn" onclick="filterAuthors('alash', this)">📜 Алаш зиялылары</button>
                 <button class="filter-btn" onclick="filterAuthors('kompozitor', this)">🎵 Композиторлар</button>
             </div>
-            <div class="loading-state" id="auth-loading">
+            <div class="loading-state" id="auth-loading" style="display:none;">
                 <div class="spinner"></div>
                 <p>Авторлар жүктелуде...</p>
             </div>
@@ -339,29 +339,21 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 <script>
 const ADMIN_PASSWORD = "admin2026";
 
-window.doLogin = function() {
-    const pwd = document.getElementById('pwd-input').value.trim();
-    if (pwd === ADMIN_PASSWORD) {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-panel').style.display = 'block';
-        document.getElementById('login-err').textContent = '';
-    } else {
-        document.getElementById('login-err').textContent = '❌ Құпия сөз қате!';
-        document.getElementById('pwd-input').value = '';
-    }
-};
-
-window.logout = function() {
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('main-panel').style.display  = 'none';
-    document.getElementById('pwd-input').value = '';
-};
+// Қай таб жүктелгенін бақылаймыз
+const tabLoaded = { requests: false, poems: false, authors: false };
 
 window.switchTab = function(tab) {
     document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById('pane-' + tab).classList.add('active');
     document.getElementById('tab-' + tab).classList.add('active');
+
+    // Тек бірінші рет ашылғанда жүктейді
+    if (!tabLoaded[tab]) {
+        tabLoaded[tab] = true;
+        if (tab === 'poems')   window._loadPoemRequests && window._loadPoemRequests();
+        if (tab === 'authors') window._loadAuthors && window._loadAuthors();
+    }
 };
 
 window.toggleSection = function(el) {
@@ -380,6 +372,31 @@ function toast(msg, type = 'success') {
     setTimeout(() => { t.className = ''; }, 3000);
 }
 window.toast = toast;
+
+window.doLogin = function() {
+    const pwd = document.getElementById('pwd-input').value.trim();
+    if (pwd === ADMIN_PASSWORD) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-panel').style.display = 'block';
+        document.getElementById('login-err').textContent = '';
+        // Тек бірінші (белсенді) табты жүктейді
+        tabLoaded.requests = true;
+        window._loadRequests && window._loadRequests();
+    } else {
+        document.getElementById('login-err').textContent = '❌ Құпия сөз қате!';
+        document.getElementById('pwd-input').value = '';
+    }
+};
+
+window.logout = function() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('main-panel').style.display  = 'none';
+    document.getElementById('pwd-input').value = '';
+    // Қайта кіргенде барлығын қайта жүктеу үшін reset
+    tabLoaded.requests = false;
+    tabLoaded.poems    = false;
+    tabLoaded.authors  = false;
+};
 </script>
 
 <script type="module">
@@ -423,18 +440,19 @@ function avatarLetter(name) { return (name || '?')[0].toUpperCase(); }
    АВТОРЛАР ӨТІНІШТЕРІ
 ════════════════════════════════════════ */
 async function loadRequests() {
-    document.getElementById('req-loading').style.display = 'block';
-    document.getElementById('requests-list').innerHTML = '';
+    const loadingEl = document.getElementById('req-loading');
+    const listEl    = document.getElementById('requests-list');
+    loadingEl.style.display = 'block';
+    listEl.innerHTML = '';
     try {
         const q = query(collection(db, 'requests'), orderBy('timestamp', 'desc'));
         const snap = await getDocs(q);
-        document.getElementById('req-loading').style.display = 'none';
+        loadingEl.style.display = 'none';
         const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
         document.getElementById('cnt-pending').textContent = pending.length;
         document.getElementById('stats-pill').textContent = `Барлығы: ${snap.size} өтініш`;
         if (snap.empty) {
-            document.getElementById('requests-list').innerHTML =
-                '<div class="empty-state"><div class="icon">📭</div>Өтініш жоқ</div>';
+            listEl.innerHTML = '<div class="empty-state"><div class="icon">📭</div>Өтініш жоқ</div>';
             return;
         }
         snap.forEach(docSnap => {
@@ -479,14 +497,14 @@ async function loadRequests() {
                         : `<button class="btn-approve" onclick="approveRequest('${id}')">Рұқсат беру</button>`}
                 </div>`}
             `;
-            document.getElementById('requests-list').appendChild(card);
+            listEl.appendChild(card);
         });
     } catch (e) {
-        document.getElementById('req-loading').style.display = 'none';
-        document.getElementById('requests-list').innerHTML =
-            `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+        loadingEl.style.display = 'none';
+        listEl.innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
     }
 }
+window._loadRequests = loadRequests;
 
 window.approveRequest = async function(reqId) {
     try {
@@ -502,7 +520,9 @@ window.approveRequest = async function(reqId) {
             });
         }
         window.toast('✅ Автор рұқсат алды және авторлар тізіміне қосылды!');
-        loadRequests(); loadAuthors();
+        // Авторлар табын қайта жүктеу үшін reset
+        window.tabLoaded && (window.tabLoaded.authors = false);
+        loadRequests();
     } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
 };
 
@@ -516,25 +536,27 @@ window.rejectRequest = async function(reqId) {
 };
 
 /* ════════════════════════════════════════
-   ӨЛЕҢ ӨТІНІШТЕРІ  (poem_requests)
+   ӨЛЕҢ ӨТІНІШТЕРІ
 ════════════════════════════════════════ */
 async function loadPoemRequests() {
-    document.getElementById('poem-loading').style.display = 'block';
-    document.getElementById('poems-list').innerHTML = '';
+    const loadingEl = document.getElementById('poem-loading');
+    const listEl    = document.getElementById('poems-list');
+    loadingEl.style.display = 'block';
+    listEl.innerHTML = '';
     try {
         const q = query(collection(db, 'poem_requests'), orderBy('timestamp', 'desc'));
         const snap = await getDocs(q);
-        document.getElementById('poem-loading').style.display = 'none';
+        loadingEl.style.display = 'none';
         const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
         document.getElementById('cnt-poems-pending').textContent = pending.length;
         allPoemRequests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderPoemRequests(allPoemRequests);
     } catch (e) {
-        document.getElementById('poem-loading').style.display = 'none';
-        document.getElementById('poems-list').innerHTML =
-            `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+        loadingEl.style.display = 'none';
+        listEl.innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
     }
 }
+window._loadPoemRequests = loadPoemRequests;
 
 function renderPoemRequests(list) {
     const container = document.getElementById('poems-list');
@@ -549,7 +571,6 @@ function renderPoemRequests(list) {
         const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
         const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
         const preview = (d.poemText || '').substring(0, 80).replace(/\n/g, ' ');
-
         const card = document.createElement('div');
         card.className = `poem-card ${status !== 'pending' ? status : ''}`;
         card.id = 'poem-' + id;
@@ -573,17 +594,14 @@ function renderPoemRequests(list) {
                 </div>
                 <div class="card-date">${fmtDate(d.timestamp)}</div>
             </div>
-
             <div class="section-toggle" onclick="toggleSection(this)">
                 📜 Өлең мәтіні <span style="font-size:12px;color:#6b5d47;margin-left:8px;">"${preview}…"</span>
                 <span class="arrow">▾</span>
             </div>
             <div class="section-content poem-body">${d.poemText || '—'}</div>
-
             ${d.note ? `
             <div class="section-toggle" onclick="toggleSection(this)">💬 Автордың ескертпесі <span class="arrow">▾</span></div>
             <div class="section-content">${d.note}</div>` : ''}
-
             ${status === 'pending' ? `
             <div class="card-actions">
                 <button class="btn-approve" onclick="approvePoemRequest('${id}')">✅ Рұқсат беру</button>
@@ -608,26 +626,17 @@ window.filterPoems = function(filter, btn) {
     renderPoemRequests(allPoemRequests.filter(p => (p.status || 'pending') === filter));
 };
 
-/* ════════════════════════════════════════
-   ✅ ТҮЗЕТІЛДІ: approvePoemRequest
-   authorId өрісі қосылды — poem-view.html-де
-   "Автор бетіне" батырмасы жұмыс істеу үшін
-════════════════════════════════════════ */
 window.approvePoemRequest = async function(poemId) {
     try {
         const docRef  = doc(db, 'poem_requests', poemId);
         const docSnap = await getDoc(docRef);
         const data    = docSnap.exists() ? docSnap.data() : null;
-
-        await updateDoc(docRef, {
-            status: 'approved', approvedAt: serverTimestamp()
-        });
-
+        await updateDoc(docRef, { status: 'approved', approvedAt: serverTimestamp() });
         if (data) {
             await addDoc(collection(db, 'poems'), {
                 title:      data.title      || '',
                 authorName: data.authorName || '',
-                authorId:   data.authorId   || null,  // ✅ ҚОСЫЛДЫ
+                authorId:   data.authorId   || null,
                 poemText:   data.poemText   || '',
                 audioUrl:   data.audioUrl   || null,
                 photoUrl:   data.photoUrl   || null,
@@ -666,20 +675,22 @@ window.deletePoemRequest = async function(poemId) {
    АВТОРЛАР ТІЗІМІ
 ════════════════════════════════════════ */
 async function loadAuthors() {
-    document.getElementById('auth-loading').style.display = 'block';
-    document.getElementById('authors-list').innerHTML = '';
+    const loadingEl = document.getElementById('auth-loading');
+    const listEl    = document.getElementById('authors-list');
+    loadingEl.style.display = 'block';
+    listEl.innerHTML = '';
     try {
         const snap = await getDocs(query(collection(db, 'authors'), orderBy('addedAt', 'desc')));
-        document.getElementById('auth-loading').style.display = 'none';
+        loadingEl.style.display = 'none';
         document.getElementById('cnt-authors').textContent = snap.size;
         allAuthors = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderAuthors(allAuthors);
     } catch (e) {
-        document.getElementById('auth-loading').style.display = 'none';
-        document.getElementById('authors-list').innerHTML =
-            `<div class="empty-state">❌ Қате: ${e.message}</div>`;
+        loadingEl.style.display = 'none';
+        listEl.innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
     }
 }
+window._loadAuthors = loadAuthors;
 
 function renderAuthors(list) {
     const container = document.getElementById('authors-list');
@@ -723,23 +734,6 @@ window.deleteAuthor = async function(authorId) {
     } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
 };
 
-/* ════════════════════════════════════════
-   LOGIN
-════════════════════════════════════════ */
-window.doLogin = function() {
-    const pwd = document.getElementById('pwd-input').value.trim();
-    if (pwd === ADMIN_PASSWORD) {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-panel').style.display = 'block';
-        document.getElementById('login-err').textContent = '';
-        loadRequests();
-        loadPoemRequests();
-        loadAuthors();
-    } else {
-        document.getElementById('login-err').textContent = '❌ Құпия сөз қате!';
-        document.getElementById('pwd-input').value = '';
-    }
-};
 </script>
 
 </body>
