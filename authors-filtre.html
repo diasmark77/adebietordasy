@@ -212,9 +212,7 @@ footer {
 
 <nav id="menu">
   <button onclick="location.href='index.html'">🏠 Басты бет</button>
-  <button onclick="location.href='alash.html'">📜 Алаш зиялылары</button>
-  <button onclick="location.href='writers.html'">📚 Қазақ жазушылары</button>
-  <button onclick="location.href='poets.html'">✍️ Ақындар</button>
+  <button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
   <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
   <button onclick="location.href='contact.html'">📩 Байланыс</button>
   <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
@@ -228,126 +226,6 @@ footer {
 <div class="cards-container" id="all-cards">
 
   <!-- ── СТАТИКАЛЫҚ КАРТОЧКАЛАР ── -->
-
-  <div class="card" onclick="location.href='poet/muhtar-shahanov.html'">
-    <div class="card-img-wrap">
-      <img src="images/muhtar.jpg" alt="Мұхтар Шаханов" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Мұхтар Шаханов</p>
-      <p class="card-years">1942 – 2026</p>
-      <p class="card-bio">Қазақ ақыны, драматургі, қоғам қайраткері. Азаматтық лирикасымен халық жүрегіне жол тапқан тұлға.</p>
-      <a class="card-link" href="poet/muhtar-shahanov.html">Толығырақ →</a>
-    </div>
-  </div>
-
-  <div class="card" onclick="location.href='poet/qudaybergenov.html'">
-    <div class="card-img-wrap">
-      <img src="images/qudaybergenov.jpg" alt="Құдайбергенов Дархан" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Құдайбергенов Дархан</p>
-      <p class="card-years">1979 жылы туған</p>
-      <p class="card-bio">№119-мектеп лицейінің қазақ тілі және қазақ әдебиеті пәнінің ұстазы, айтыскер ақын.</p>
-      <a class="card-link" href="poet/qudaybergenov.html">Толығырақ →</a>
-    </div>
-  </div>
-
-  <div class="card" onclick="location.href='poet/marqabai.html'">
-    <div class="card-img-wrap">
-      <img src="images/marqabai.jpg" alt="Марқабай Диас" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Марқабай Диас</p>
-      <p class="card-years">2009 жылы туған</p>
-      <p class="card-bio">Жас ақын. Поэзияға деген ерте оянған талантымен көзге түсті.</p>
-      <a class="card-link" href="poet/marqabai.html">Толығырақ →</a>
-    </div>
-  </div>
-
-  <div class="card" onclick="location.href='poet/abay.html'">
-    <div class="card-img-wrap">
-      <img src="images/abay.jpg" alt="Абай Құнанбайұлы" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Абай Құнанбайұлы</p>
-      <p class="card-years">1845 – 1904</p>
-      <p class="card-bio">Қазақтың ұлы ақыны, ойшылы және ағартушысы. Қазіргі қазақ жазба әдебиетінің негізін қалаушы.</p>
-      <a class="card-link" href="poet/abay.html">Толығырақ →</a>
-    </div>
-  </div>
-
-  <div class="card" onclick="location.href='poet/magzhan.html'">
-    <div class="card-img-wrap">
-      <img src="images/magzhan.jpeg" alt="Мағжан Жұмабаев" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Мағжан Жұмабаев</p>
-      <p class="card-years">1893 – 1938</p>
-      <p class="card-bio">Алаш қозғалысының қайраткері, ақын. Романтикалық лирикасы қазақ поэзиясының асыл мұрасы.</p>
-      <a class="card-link" href="poet/magzhan.html">Толығырақ →</a>
-    </div>
-  </div>
-
-  <div class="card" onclick="location.href='poet/saken.html'">
-    <div class="card-img-wrap">
-      <img src="images/saken.jpg" alt="Сәкен Сейфуллин" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Сәкен Сейфуллин</p>
-      <p class="card-years">1894 – 1938</p>
-      <p class="card-bio">Ақын, жазушы, мемлекет қайраткері. Революциялық романтизм мен лирикалық тереңдіктің ұстасы.</p>
-      <a class="card-link" href="poet/saken.html">Толығырақ →</a>
-    </div>
-  </div>
-
-  <div class="card" onclick="location.href='poet/erkin.html'">
-    <div class="card-img-wrap">
-      <img src="images/erkin.jpeg" alt="Еркін Жұмабекұлы" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Еркін Жұмабекұлы</p>
-      <p class="card-years">1976 жылы туған</p>
-      <p class="card-bio">№119-мектеп лицейінің дене шынықтыру пәнінің ұстазы, ақын. Спорт пен өнерді ұштастырған тұлға.</p>
-      <a class="card-link" href="poet/erkin.html">Толығырақ →</a>
-    </div>
-  </div>
-
-  <div class="card" onclick="location.href='poet/bakdaulet.html'">
-    <div class="card-img-wrap">
-      <img src="images/bakdaulet.jpg" alt="Бақдәулет Арыстан" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Бақдәулет Арыстан</p>
-      <p class="card-years">1992 жылы туған</p>
-      <p class="card-bio">Ақын, көптеген әндер мәтінінің авторы. Қазіргі қазақ поп-мәдениетіне өзіндік із қалдырды.</p>
-      <a class="card-link" href="poet/bakdaulet.html">Толығырақ →</a>
-    </div>
-  </div>
-
-  <div class="card" onclick="location.href='poet/mukagali.html'">
-    <div class="card-img-wrap">
-      <img src="images/mukagali.jpg" alt="Мұқағали Мақатаев" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Мұқағали Мақатаев</p>
-      <p class="card-years">1931 – 1976</p>
-      <p class="card-bio">Лирик ақын, қазақ поэзиясының биік шыңы. Жүрек сырын жырға айналдырған ұлы дарын.</p>
-      <a class="card-link" href="poet/mukagali.html">Толығырақ →</a>
-    </div>
-  </div>
-
-  <div class="card" onclick="location.href='poet/zhambyl.html'">
-    <div class="card-img-wrap">
-      <img src="images/zhambyl.jpg" alt="Жамбыл Жабаев" onerror="this.src='images/logo.png'">
-    </div>
-    <div class="card-body">
-      <p class="card-name">Жамбыл Жабаев</p>
-      <p class="card-years">1846 – 1945</p>
-      <p class="card-bio">Халық ақыны, жыр алыбы. Жүз жыл өмір сүрген, мың жыл жасайтын өлеңдер қалдырған ақсақал.</p>
-      <a class="card-link" href="poet/zhambyl.html">Толығырақ →</a>
-    </div>
-  </div>
 
   <!-- ── FIREBASE-ТЕН ДИНАМИКАЛЫҚ АВТОРЛАР ── -->
   <div id="dynamic-list" style="display: contents;"></div>
