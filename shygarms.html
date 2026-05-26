@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Шығармалар | Әдебиет ордасы</title>
 <meta name="description" content="Әдебиет ордасы сайтында қазақ әдеби шығармаларының жинағы: әңгімелер, романдар және поэмалар ұсынылған.">
-
 <meta name="keywords" content="әдебиет ордасы, әдеби шығармалар, қазақ әдебиеті, әңгімелер, романдар, поэмалар">
   
 <link rel="icon" href="images/logo.png" type="image/png">
@@ -61,18 +60,42 @@ section {
   margin:auto;
 }
 
+.section-title {
+  font-size: 18px; color: #8b5e3c; font-weight: bold;
+  margin: 30px 0 10px; padding-bottom: 8px;
+  border-bottom: 2px solid #d3cdc0;
+}
+
 .card {
   background:white;
   padding:20px;
   margin:15px 0;
   border-radius:10px;
   box-shadow:0 4px 10px rgba(0,0,0,0.1);
-
-  /* БІРКЕЛКІ ҚЫЛУ */
   display:flex;
   flex-direction:column;
   justify-content:space-between;
   min-height:200px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Firebase-тен келген шығармалар */
+.card.from-db { border-left: 5px solid #3c6e8b; }
+.card.from-db .new-badge {
+  display: inline-block; background: #3c6e8b; color: white;
+  font-size: 11px; font-weight: bold; padding: 2px 8px;
+  border-radius: 10px; margin-left: 10px; vertical-align: middle;
+}
+.genre-badge {
+  display: inline-block; font-size: 11px; font-weight: bold;
+  padding: 2px 8px; border-radius: 10px; margin-left: 8px;
+  background: rgba(60,110,139,0.12); color: #3c6e8b;
+  border: 1px solid rgba(60,110,139,0.3); vertical-align: middle;
 }
 
 .card h2 {color:#5c4033; font-size:20px; margin-bottom:10px;}
@@ -82,7 +105,12 @@ section {
   word-wrap: break-word;
   font-family: 'Georgia', serif;
   font-size:16px;
-  margin:0; /* артық бос орындарды алып тастау */
+  margin:0;
+  display:-webkit-box;
+  -webkit-line-clamp:4;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  color: #555;
 }
 
 .card a {
@@ -92,15 +120,9 @@ section {
   font-weight:bold;
   text-decoration:none;
 }
-.card {
-  cursor: pointer;
-  transition: 0.3s;
-}
-.card:hover {
-  transform: translateY(-5px);
-}
-  
 .card a:hover {text-decoration:underline;}
+
+.loading { text-align: center; font-size: 1.2rem; color: #8b5e3c; padding: 40px; }
 
 footer {
   background:#5c4033;
@@ -110,6 +132,33 @@ footer {
   margin-top:30px;
   font-size:14px;
 }
+
+/* Шығарма толық оқу модалы */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7); z-index: 2000;
+  overflow-y: auto; padding: 20px;
+}
+.modal-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
+.modal-box {
+  background: #fff; border-radius: 14px; max-width: 750px; width: 100%;
+  padding: 35px; margin: auto; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-box h2 { color: #5c4033; margin-bottom: 6px; }
+.modal-author { color: #8b5e3c; font-size: 14px; margin-bottom: 20px; }
+.modal-text {
+  font-family: 'Georgia', serif; font-size: 16px;
+  line-height: 1.9; white-space: pre-wrap; word-break: break-word;
+  color: #333; border-top: 1px solid #e0d8cc; padding-top: 18px;
+  max-height: 60vh; overflow-y: auto;
+}
+.modal-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none; font-size: 26px;
+  cursor: pointer; color: #999; transition: 0.2s;
+}
+.modal-close:hover { color: #5c4033; }
 
 @media(max-width:800px){
   .menu-btn{display:block;}
@@ -121,6 +170,7 @@ footer {
   .search-box input {width:95%;}
   .card h2 {font-size:18px;}
   .card pre {font-size:15px;}
+  .modal-box { padding: 20px; }
 }
 </style>
 </head>
@@ -150,48 +200,207 @@ footer {
 
 <section>
 
-  <div class="card" onclick="location.href='shygarma/ulpan.html'">
-    <h2>Ғабит Мүсірепов "Ұлпан"</h2>
-    <pre>Есенейдің төрт қос жылқысы «Қаршығалы» шұбарына жақындап келіп, қапталдай төніп қалып еді. Тақырланып қалған...</pre>
-    <a href="shygarma/ulpan.html">Толығырақ →</a>
+  <!-- Firebase-тен жаңа шығармалар -->
+  <div id="db-shygarmalar-section" style="display:none;">
+    <div class="section-title">🆕 Жаңа қосылған шығармалар</div>
+    <div id="db-shygarmalar-container">
+      <div class="loading">Жүктелуде...</div>
+    </div>
+    <div class="section-title" style="margin-top:40px;">📚 Классикалық шығармалар</div>
   </div>
 
-  <div class="card" onclick="location.href='shygarma/irim.html'">
-    <h2>Көкенов Жеңісбек "Иірім"</h2>
-    <pre>– Е-е-ей, қайсың барсың? Батты ғой ана қыз. Е-е-ей, өлді ғой ана қыз.
+  <!-- Статикалық шығармалар -->
+  <div id="static-shygarmalar">
+    <div class="card" onclick="location.href='shygarma/ulpan.html'">
+      <h2>Ғабит Мүсірепов "Ұлпан"</h2>
+      <pre>Есенейдің төрт қос жылқысы «Қаршығалы» шұбарына жақындап келіп, қапталдай төніп қалып еді. Тақырланып қалған...</pre>
+      <a href="shygarma/ulpan.html">Толығырақ →</a>
+    </div>
+
+    <div class="card" onclick="location.href='shygarma/irim.html'">
+      <h2>Көкенов Жеңісбек "Иірім"</h2>
+      <pre>– Е-е-ей, қайсың барсың? Батты ғой ана қыз. Е-е-ей, өлді ғой ана қыз.
 Кезекті демалысымды алып, Қапшағай жағажайында демалып жатқан болатынмын...</pre>
-    <a href="shygarma/irim.html">Толығырақ →</a>
-  </div>
-  
-  <div class="card" onclick="location.href='shygarma/gauhartas.html'">
-    <h2>Дулат Исабеков "Гауһартас"</h2>
-    <pre>Ыбыштың мінез-құлқы, кескін-келбеті, аузындағысөзі мен күлкісіне шейін əкемнен аумай қалған, сойып қаптағандай дерсің.</pre>
-    <a href="shygarma/gauhartas.html">Толығырақ →</a>
-  </div>
+      <a href="shygarma/irim.html">Толығырақ →</a>
+    </div>
+    
+    <div class="card" onclick="location.href='shygarma/gauhartas.html'">
+      <h2>Дулат Исабеков "Гауһартас"</h2>
+      <pre>Ыбыштың мінез-құлқы, кескін-келбеті, аузындағысөзі мен күлкісіне шейін əкемнен аумай қалған, сойып қаптағандай дерсің.</pre>
+      <a href="shygarma/gauhartas.html">Толығырақ →</a>
+    </div>
 
     <div class="card" onclick="location.href='shygarma/ormanda.html'">
-    <h2>Көкенов Жеңісбек "Орманда сыр бар түсінсең"</h2>
-    <pre>Ағаштан қиып салынған еңселі үйімнен шыға сала, орманға тартып отырдым. Күндегі тірлігім осы...</pre>
-    <a href="shygarma/ormanda.html">Толығырақ →</a>
-  </div>
+      <h2>Көкенов Жеңісбек "Орманда сыр бар түсінсең"</h2>
+      <pre>Ағаштан қиып салынған еңселі үйімнен шыға сала, орманға тартып отырдым. Күндегі тірлігім осы...</pre>
+      <a href="shygarma/ormanda.html">Толығырақ →</a>
+    </div>
 
     <div class="card" onclick="location.href='shygarma/zhusan-isi.html'">
-    <h2>Сайын Мұратбеков "Жусан иісі"</h2>
-    <pre>Алыста қалған балалық шағым... Ойымнан: жарғақ сары тоны қаудырлаған, тобығы тайған сол аяғын сүйрете жүгіретін,</pre>
-    <a href="shygarma/zhusan-isi.html">Толығырақ →</a>
-  </div>
+      <h2>Сайын Мұратбеков "Жусан иісі"</h2>
+      <pre>Алыста қалған балалық шағым... Ойымнан: жарғақ сары тоны қаудырлаған, тобығы тайған сол аяғын сүйрете жүгіретін,</pre>
+      <a href="shygarma/zhusan-isi.html">Толығырақ →</a>
+    </div>
 
-      <div class="card" onclick="location.href='shygarma/eskertkish.html'">
-    <h2>Дулат Исабеков "Ескерткіш"</h2>
-    <pre>Аудандық партия комитетінің секретары Жанайдаров ертеңгілік кабинетіне келіп, шешініп, шашын тарап...</pre>
-    <a href="shygarma/eskertkish.html">Толығырақ →</a>
+    <div class="card" onclick="location.href='shygarma/eskertkish.html'">
+      <h2>Дулат Исабеков "Ескерткіш"</h2>
+      <pre>Аудандық партия комитетінің секретары Жанайдаров ертеңгілік кабинетіне келіп, шешініп, шашын тарап...</pre>
+      <a href="shygarma/eskertkish.html">Толығырақ →</a>
+    </div>
   </div>
 
 </section>
 
+<!-- Толық оқу модалы -->
+<div class="modal-overlay" id="shygarma-modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <h2 id="modal-title"></h2>
+    <div class="modal-author" id="modal-author"></div>
+    <div class="modal-text" id="modal-text"></div>
+  </div>
+</div>
+
 <footer>
 © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+    getFirestore, collection, getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+    authDomain: "adebiet-ordasy.firebaseapp.com",
+    projectId: "adebiet-ordasy",
+    storageBucket: "adebiet-ordasy.appspot.com",
+    messagingSenderId: "776364024545",
+    appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+let dbShygarmalar = [];
+
+async function fetchShygarmalar() {
+    const container = document.getElementById('db-shygarmalar-container');
+    const section   = document.getElementById('db-shygarmalar-section');
+
+    try {
+        const snap = await getDocs(collection(db, "shygarmalar"));
+        console.log("✅ shygarmalar коллекциясы — жазба саны:", snap.size);
+
+        dbShygarmalar = snap.docs
+            .map(d => ({ id: d.id, ...d.data() }))
+            .sort((a, b) => {
+                const aT = a.addedAt?.toMillis ? a.addedAt.toMillis() : 0;
+                const bT = b.addedAt?.toMillis ? b.addedAt.toMillis() : 0;
+                return bT - aT;
+            });
+
+        if (dbShygarmalar.length > 0) {
+            section.style.display = 'block';
+            renderDbShygarmalar(dbShygarmalar);
+        } else {
+            container.innerHTML = '';
+            section.style.display = 'none';
+        }
+    } catch (error) {
+        console.error("❌ Firebase қатесі:", error);
+        container.innerHTML = '';
+        section.style.display = 'none';
+    }
+}
+
+function renderDbShygarmalar(list) {
+    const container = document.getElementById('db-shygarmalar-container');
+    const section   = document.getElementById('db-shygarmalar-section');
+
+    container.innerHTML = '';
+
+    if (list.length === 0) {
+        section.style.display = 'none';
+        return;
+    }
+    section.style.display = 'block';
+
+    list.forEach(sh => {
+        const card = document.createElement('div');
+        card.className = 'card from-db';
+
+        const title      = sh.title      || 'Шығарма';
+        const authorName = sh.authorName || 'Белгісіз автор';
+        const text       = sh.textContent || '';
+        const preview    = text.substring(0, 200);
+        const genreLabel = sh.genreLabel  || '';
+
+        card.innerHTML = `
+            <h2>${authorName} &laquo;${title}&raquo;
+                <span class="new-badge">🆕 Жаңа</span>
+                ${genreLabel ? `<span class="genre-badge">${genreLabel}</span>` : ''}
+            </h2>
+            <pre>${preview}${text.length > 200 ? '...' : ''}</pre>
+            <span class="read-more">Толығырақ →</span>
+        `;
+
+        card.addEventListener('click', () => openModal(sh));
+        container.appendChild(card);
+    });
+}
+
+// ── Іздеу ──
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase().trim();
+
+    if (term) {
+        const filtered = dbShygarmalar.filter(s =>
+            (s.authorName  || '').toLowerCase().includes(term) ||
+            (s.title       || '').toLowerCase().includes(term) ||
+            (s.textContent || '').toLowerCase().includes(term)
+        );
+        renderDbShygarmalar(filtered);
+    } else {
+        renderDbShygarmalar(dbShygarmalar);
+    }
+
+    // Статикалық карталарды да сүзу
+    document.querySelectorAll('#static-shygarmalar .card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(term) ? '' : 'none';
+    });
+});
+
+// ── Модал ашу ──
+window.openModal = function(sh) {
+    document.getElementById('modal-title').textContent  = sh.title || 'Шығарма';
+    document.getElementById('modal-author').textContent = `✍️ ${sh.authorName || 'Белгісіз автор'}${sh.genreLabel ? ' · ' + sh.genreLabel : ''}`;
+    document.getElementById('modal-text').textContent   = sh.textContent || '—';
+    document.getElementById('shygarma-modal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+};
+
+window.closeModal = function(e) {
+    if (e.target === document.getElementById('shygarma-modal')) {
+        closeModalDirect();
+    }
+};
+
+window.closeModalDirect = function() {
+    document.getElementById('shygarma-modal').classList.remove('show');
+    document.body.style.overflow = '';
+};
+
+// ESC батырмасымен жабу
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModalDirect();
+});
+
+fetchShygarmalar();
+</script>
 
 <script>
 function toggleMenu(){
