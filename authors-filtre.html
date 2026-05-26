@@ -84,53 +84,129 @@ header p  { margin: 0; opacity: 0.85; }
   display: inline-block;
   font-size: 11px;
   font-weight: bold;
-  padding: 2px 10px;
+  padding: 3px 10px;
   border-radius: 12px;
-  margin-bottom: 8px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  backdrop-filter: blur(2px);
 }
-.cat-aqyn       { background: #ede8fb; color: #6b3fa0; }
-.cat-jazushy    { background: #e0f0fb; color: #1a6fa0; }
-.cat-alash      { background: #fdf5e0; color: #8a6000; }
-.cat-kompozitor { background: #e0fbf0; color: #0a6e45; }
-.cat-static     { background: #f4ede8; color: #5c4033; }
+.cat-aqyn       { background: rgba(237,232,251,0.92); color: #3C3489; }
+.cat-jazushy    { background: rgba(230,241,251,0.92); color: #0C447C; }
+.cat-alash      { background: rgba(250,238,218,0.92); color: #633806; }
+.cat-kompozitor { background: rgba(225,245,238,0.92); color: #085041; }
+.cat-static     { background: rgba(244,237,232,0.92); color: #5c4033; }
 
-/* ── CARDS ── */
+/* ── CARDS GRID ── */
 .cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  padding: 0 20px 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 0 28px 48px;
 }
+
+@media (max-width: 960px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 0 20px 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 16px 32px;
+  }
+}
+
+/* ── CARD ── */
 .card {
   background: white;
-  color: #333;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.3s;
+  align-items: stretch;
+  text-align: left;
+  padding: 0;
+  position: relative;
 }
-.card img {
-  width: 120px;
-  height: 150px;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(92,64,51,0.15);
+}
+
+/* Сурет бөлімі */
+.card-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #ede8e0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 5px;
-  margin-bottom: 15px;
+  object-position: top center;
+  display: block;
+  border-radius: 0;
+  margin: 0;
+  transition: transform 0.3s;
 }
-.card h2 { color: #5c4033; margin: 6px 0 5px; font-size: 1.1em; }
-.card p  { margin-bottom: 10px; font-size: 0.9em; flex: 1; }
-.card a  { text-decoration: none; color: #d4af37; font-weight: bold; }
-.card a:hover { color: #b8962e; }
-.card:hover { transform: translateY(-5px); }
+.card:hover .card-img-wrap img {
+  transform: scale(1.04);
+}
+
+/* Мәтін бөлімі */
+.card-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 6px;
+}
+.card h2 {
+  color: #5c4033;
+  margin: 0;
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 1.3;
+}
+.card p {
+  margin: 0;
+  font-size: 0.85em;
+  color: #666;
+  line-height: 1.55;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #8b5e3c;
+  font-weight: bold;
+  font-size: 0.85em;
+  margin-top: 4px;
+  align-self: flex-start;
+}
+.card a:hover { color: #5c4033; text-decoration: underline; }
+
+/* Hidden / Empty */
 .card.hidden { display: none; }
 
-/* Empty state */
 .empty-msg {
   text-align: center;
   padding: 40px;
@@ -138,19 +214,10 @@ header p  { margin: 0; opacity: 0.85; }
   font-size: 16px;
   width: 100%;
   display: none;
-}
-
-/* Loading */
-.loading-msg {
-  text-align: center;
-  padding: 30px;
-  color: #8b5e3c;
-  font-size: 15px;
-  width: 100%;
+  grid-column: 1 / -1;
 }
 
 footer { background: #5c4033; color: white; text-align: center; padding: 15px; margin-top: 10px; }
-
 </style>
 </head>
 <body>
@@ -160,7 +227,7 @@ footer { background: #5c4033; color: white; text-align: center; padding: 15px; m
   <p>Қазақ әдебиетінің көрнекті тұлғалары</p>
 </header>
   
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>  <!-- ← header ішіне -->
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
@@ -189,15 +256,10 @@ footer { background: #5c4033; color: white; text-align: center; padding: 15px; m
   <input type="text" id="searchInput" placeholder="Автор іздеу..." oninput="applyFilters()">
 </div>
 
-
-    <!-- ── FIREBASE-ТЕН ДИНАМИКАЛЫҚ АВТОРЛАР ── -->
-    <div id="dynamic-list" style="display: contents;"></div>
-
-    <!-- Ештеңе табылмаса -->
-    <div class="empty-msg" id="empty-msg">Автор табылмады</div>
-
-  </div>
-</section>
+<!-- ── FIREBASE-ТЕН ДИНАМИКАЛЫҚ АВТОРЛАР ── -->
+<div class="cards-container" id="all-cards">
+  <div class="empty-msg" id="empty-msg">Автор табылмады</div>
+</div>
 
 <footer>
   © 2026 Әдебиет ордасы | Қазақ әдеби порталы
@@ -269,7 +331,7 @@ const categoryLabels = {
 };
 
 async function loadAuthors() {
-  const container = document.getElementById('dynamic-list');
+  const container = document.getElementById('all-cards');
 
   try {
     const q    = query(collection(db, "authors"), orderBy("addedAt", "desc"));
@@ -284,22 +346,25 @@ async function loadAuthors() {
 
       const card = document.createElement('div');
       card.className = 'card';
-      card.setAttribute('data-category', category);  // ← фильтр осыны оқиды
+      card.setAttribute('data-category', category);
       card.onclick = () => { location.href = `author-profile.html?id=${id}`; };
 
       card.innerHTML = `
-        <img src="${author.photoUrl || 'images/logo.png'}" alt="${author.name || ''}"
-             onerror="this.src='images/logo.png'">
-        <span class="cat-label ${catClass}">${catLabel}</span>
-        <h2>${author.name || 'Белгісіз'}</h2>
-        <p>${(author.biography || '').substring(0, 100)}...</p>
-        <a href="author-profile.html?id=${id}">Толығырақ →</a>
+        <div class="card-img-wrap">
+          <img src="${author.photoUrl || 'images/logo.png'}" alt="${author.name || ''}"
+               onerror="this.src='images/logo.png'">
+          <span class="cat-label ${catClass}">${catLabel}</span>
+        </div>
+        <div class="card-body">
+          <h2>${author.name || 'Белгісіз'}</h2>
+          <p>${(author.biography || '').substring(0, 120)}...</p>
+          <a href="author-profile.html?id=${id}">Толығырақ →</a>
+        </div>
       `;
 
       container.appendChild(card);
     });
 
-    // Firebase жүктелгеннен кейін фильтрді қайта қолдан
     applyFilters();
 
   } catch (e) {
