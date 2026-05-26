@@ -98,6 +98,69 @@ input:focus, textarea:focus, select:focus {
     border-radius: 0 8px 8px 0;
 }
 
+/* ── Файл жүктеу аймағы ── */
+.file-upload-area {
+    border: 2px dashed #d4af37;
+    border-radius: 10px;
+    padding: 24px 20px;
+    text-align: center;
+    background: #fffdf5;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+}
+.file-upload-area:hover,
+.file-upload-area.drag-over {
+    background: #fdf6e3;
+    border-color: #8b5e3c;
+    box-shadow: 0 0 12px rgba(212,175,55,0.25);
+}
+.file-upload-area input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.file-upload-icon { font-size: 36px; margin-bottom: 8px; }
+.file-upload-title { font-weight: bold; color: #5c4033; font-size: 15px; }
+.file-upload-hint { font-size: 13px; color: #999; margin-top: 4px; }
+
+/* Жүктелген файл карточкасы */
+#file-card {
+    display: none;
+    align-items: center; gap: 12px;
+    background: #f0faf0; border: 1px solid #6abf69;
+    border-radius: 8px; padding: 12px 16px; margin-top: 10px;
+}
+.file-card-icon { font-size: 28px; }
+.file-card-info { flex: 1; }
+.file-card-name { font-weight: bold; color: #2e7d32; font-size: 14px; }
+.file-card-size { font-size: 12px; color: #888; }
+.file-card-status { font-size: 12px; margin-top: 2px; }
+.file-card-status.loading { color: #8b5e3c; }
+.file-card-status.success { color: #2e7d32; }
+.file-card-status.error   { color: #c62828; }
+.clear-file {
+    background: none; border: none; color: #999; cursor: pointer;
+    font-size: 20px; padding: 0 4px; transition: 0.2s;
+}
+.clear-file:hover { color: #e74c3c; }
+
+/* Мәтін/Файл табтары */
+.input-tabs {
+    display: flex; gap: 0; margin-bottom: 12px;
+    border: 1px solid #d3cdc0; border-radius: 8px; overflow: hidden;
+}
+.input-tab {
+    flex: 1; padding: 10px; text-align: center; cursor: pointer;
+    background: #fdfcf9; color: #888; font-weight: bold; font-size: 14px;
+    transition: 0.2s; border: none; font-family: inherit;
+}
+.input-tab.active {
+    background: #8b5e3c; color: white;
+}
+.input-tab:first-child { border-right: 1px solid #d3cdc0; }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
 /* Жіберу батырмасы */
 .btn-submit {
     background: #8b5e3c; color: white; border: none; padding: 15px 30px;
@@ -184,6 +247,7 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
         <b>Ескерту:</b><br>
         • Шығарма мәтіні кем дегенде 100 таңбадан тұруы тиіс.<br>
         • Автор міндетті түрде таңдалуы керек.<br>
+        • <b>.docx</b> (Word) файлын тікелей жүктеуге болады — мәтін автоматты оқылады.<br>
         • Жіберілген шығарма <b>әкімші бекіткеннен кейін</b> жарияланады.
     </div>
 
@@ -229,10 +293,44 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
             </select>
         </div>
 
+        <!-- ── МӘТІН НЕМЕСЕ ФАЙЛ ── -->
         <div class="form-group">
             <label>Шығарма мәтіні:</label>
-            <textarea id="text-textarea" rows="15" placeholder="Шығарма мәтінін осы жерге енгізіңіз..." required></textarea>
-            <div class="char-counter" id="char-count">0 таңба</div>
+
+            <div class="input-tabs">
+                <button type="button" class="input-tab active" id="tab-text" onclick="switchTab('text')">
+                    ✏️ Мәтін енгізу
+                </button>
+                <button type="button" class="input-tab" id="tab-file" onclick="switchTab('file')">
+                    📄 Word файл жүктеу (.docx)
+                </button>
+            </div>
+
+            <!-- Қол мәтін -->
+            <div class="tab-panel active" id="panel-text">
+                <textarea id="text-textarea" rows="15" placeholder="Шығарма мәтінін осы жерге енгізіңіз..."></textarea>
+                <div class="char-counter" id="char-count">0 таңба</div>
+            </div>
+
+            <!-- Файл жүктеу -->
+            <div class="tab-panel" id="panel-file">
+                <div class="file-upload-area" id="drop-zone">
+                    <input type="file" id="docx-file-input" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                    <div class="file-upload-icon">📄</div>
+                    <div class="file-upload-title">Word файлын таңдаңыз немесе осы жерге тастаңыз</div>
+                    <div class="file-upload-hint">Тек .docx форматы қолдау көрсетіледі</div>
+                </div>
+
+                <div id="file-card">
+                    <div class="file-card-icon">📝</div>
+                    <div class="file-card-info">
+                        <div class="file-card-name" id="file-card-name"></div>
+                        <div class="file-card-size" id="file-card-size"></div>
+                        <div class="file-card-status" id="file-card-status"></div>
+                    </div>
+                    <button type="button" class="clear-file" onclick="clearFile()">✕</button>
+                </div>
+            </div>
         </div>
 
         <!-- ── ҚОСЫМША ── -->
@@ -258,6 +356,9 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
 <footer>
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
+
+<!-- Mammoth.js — .docx мәтін оқу кітапханасы -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
 <!-- Firebase -->
 <script type="module">
@@ -298,6 +399,90 @@ const charDisp      = document.getElementById('char-count');
 const form          = document.getElementById('shygarmaForm');
 const statusEl      = document.getElementById('status');
 const btn           = document.getElementById('submitBtn');
+
+// ── Файл айнымалылары ──
+let extractedFileText = '';   // .docx-тен оқылған мәтін
+let activeTab = 'text';       // 'text' немесе 'file'
+
+// ── Таб ауыстыру (window-ға шығарылды) ──
+window.switchTab = function(tab) {
+    activeTab = tab;
+    document.getElementById('tab-text').classList.toggle('active', tab === 'text');
+    document.getElementById('tab-file').classList.toggle('active', tab === 'file');
+    document.getElementById('panel-text').classList.toggle('active', tab === 'text');
+    document.getElementById('panel-file').classList.toggle('active', tab === 'file');
+};
+
+// ── Drag & Drop ──
+const dropZone = document.getElementById('drop-zone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) handleDocxFile(file);
+});
+
+// ── Файл input өзгергенде ──
+document.getElementById('docx-file-input').addEventListener('change', function() {
+    if (this.files[0]) handleDocxFile(this.files[0]);
+});
+
+// ── .docx файлды өңдеу ──
+function handleDocxFile(file) {
+    // Формат тексеру
+    if (!file.name.toLowerCase().endsWith('.docx')) {
+        showFileCard(file, '❌ Тек .docx форматы қолдау көрсетіледі!', 'error');
+        extractedFileText = '';
+        return;
+    }
+
+    showFileCard(file, '⏳ Мәтін оқылуда...', 'loading');
+    extractedFileText = '';
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        // mammoth .docx → таза мәтін
+        mammoth.extractRawText({ arrayBuffer: e.target.result })
+            .then(result => {
+                extractedFileText = result.value.trim();
+                if (!extractedFileText) {
+                    showFileCard(file, '⚠️ Файлда мәтін табылмады.', 'error');
+                    return;
+                }
+                const charCount = extractedFileText.length;
+                showFileCard(file, `✅ ${charCount.toLocaleString()} таңба оқылды`, 'success');
+            })
+            .catch(() => {
+                showFileCard(file, '❌ Файлды оқу мүмкін болмады. Файл зақымдалған болуы мүмкін.', 'error');
+                extractedFileText = '';
+            });
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+function showFileCard(file, statusMsg, statusType) {
+    const card = document.getElementById('file-card');
+    document.getElementById('file-card-name').textContent = file.name;
+    document.getElementById('file-card-size').textContent = formatBytes(file.size);
+    const st = document.getElementById('file-card-status');
+    st.textContent = statusMsg;
+    st.className = 'file-card-status ' + statusType;
+    card.style.display = 'flex';
+}
+
+function formatBytes(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+window.clearFile = function() {
+    extractedFileText = '';
+    document.getElementById('file-card').style.display = 'none';
+    document.getElementById('docx-file-input').value = '';
+};
 
 // ── Авторлар тізімін жүктеу ──
 let allAuthors = [];
@@ -371,7 +556,7 @@ window.clearAuthor = function() {
     searchInput.value        = '';
 };
 
-// ── Таңба санауыш ──
+// ── Таңба санауыш (қол мәтін үшін) ──
 textTA.addEventListener('input', () => {
     const n = textTA.value.length;
     charDisp.textContent = n + ' таңба';
@@ -404,9 +589,26 @@ form.addEventListener('submit', async (e) => {
     const authorName  = selName.textContent.trim();
     const title       = document.getElementById('shygarma-title').value.trim();
     const genreVal    = document.getElementById('shygarma-genre').value;
-    const textContent = textTA.value.trim();
     const photoUrl    = document.getElementById('photo-url').value.trim();
     const annotation  = document.getElementById('annotation').value.trim();
+
+    // ── Мәтінді алу: таб режиміне байланысты ──
+    let textContent = '';
+    if (activeTab === 'file') {
+        textContent = extractedFileText;
+        if (!textContent) {
+            showStatus('⚠️ Word файл жүктелмеді немесе мәтін оқылмады. Файлды қайта таңдаңыз.', '#e67e22');
+            return;
+        }
+        // файл мәтіні дұрыс оқылды ма тексеру
+        const statusEl2 = document.getElementById('file-card-status');
+        if (statusEl2 && statusEl2.classList.contains('error')) {
+            showStatus('⚠️ Файлда қате бар. Басқа файл таңдаңыз.', '#e67e22');
+            return;
+        }
+    } else {
+        textContent = textTA.value.trim();
+    }
 
     if (!authorId) {
         showStatus('⚠️ Автор таңдалмады! Алдымен автор іздеп таңдаңыз.', '#e67e22');
@@ -420,7 +622,7 @@ form.addEventListener('submit', async (e) => {
     }
     if (textContent.length < 100) {
         showStatus(`⚠️ Шығарма тым қысқа! Қазір: ${textContent.length} таңба. Кем дегенде 100 таңба болуы керек.`, '#e67e22');
-        textTA.focus();
+        if (activeTab === 'text') textTA.focus();
         return;
     }
 
@@ -439,6 +641,7 @@ form.addEventListener('submit', async (e) => {
             photoUrl:    photoUrl   || null,
             annotation:  annotation || null,
             status:      'pending',
+            source:      activeTab === 'file' ? 'docx_upload' : 'manual',
             timestamp:   serverTimestamp()
         });
 
@@ -452,6 +655,10 @@ form.addEventListener('submit', async (e) => {
         authorCard.style.display = 'none';
         charDisp.textContent     = '0 таңба';
         charDisp.classList.remove('warn');
+        extractedFileText = '';
+        document.getElementById('file-card').style.display = 'none';
+        activeTab = 'text';
+        window.switchTab('text');
 
     } catch(err) {
         console.error('❌ Firebase қатесі:', err);
