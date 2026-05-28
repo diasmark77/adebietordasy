@@ -89,11 +89,6 @@ section {
 
 /* Firebase-тен келген шығармалар */
 .card.from-db { border-left: 5px solid #8b5e3c; }
-.card.from-db .new-badge {
-  display: inline-block; background: #8b5e3c; color: white;
-  font-size: 11px; font-weight: bold; padding: 2px 8px;
-  border-radius: 10px; margin-left: 10px; vertical-align: middle;
-}
 .genre-badge {
   display: inline-block; font-size: 11px; font-weight: bold;
   padding: 2px 8px; border-radius: 10px; margin-left: 8px;
@@ -173,13 +168,11 @@ footer {
 
 <section>
 
-  <!-- Firebase-тен жаңа шығармалар -->
+  <!-- Firebase-тен шығармалар -->
   <div id="db-shygarmalar-section" style="display:none;">
-    <div class="section-title">🆕 Жаңа қосылған шығармалар</div>
     <div id="db-shygarmalar-container">
       <div class="loading">Жүктелуде...</div>
     </div>
-    <div class="section-title" style="margin-top:40px;">📚 Классикалық шығармалар</div>
   </div>
 
   <!-- Статикалық шығармалар -->
@@ -294,7 +287,6 @@ function renderDbShygarmalar(list) {
 
         card.innerHTML = `
             <h2>${authorName} &laquo;${title}&raquo;
-                <span class="new-badge">🆕 Жаңа</span>
                 ${genreLabel ? `<span class="genre-badge">${genreLabel}</span>` : ''}
             </h2>
             <pre>${preview.replace(/</g,'&lt;')}${text.length > 200 ? '...' : ''}</pre>
