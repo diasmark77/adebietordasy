@@ -506,10 +506,10 @@
                     // audioUrl — аудио файл URL
                     // authorId — автор ID (author-profile бетіне сілтеме үшін)
 
-                    const workTitle  = data.workTitle  || data.title   || "Тақырыпсыз";
-                    const workText   = data.work       || data.content || "Мәтін жоқ";
+                    const workTitle  = data.workTitle  || data.title      || "Тақырыпсыз";
+                    const workText   = data.textContent || data.work || data.content || "Мәтін жоқ";
                     const authorName = data.authorName || "Белгісіз автор";
-                    const genre      = data.genre      || "";
+                    const genre      = data.genreLabel || data.genre || "";
                     const year       = data.year       || "";
 
                     document.getElementById('work-title-display').innerText   = workTitle;
