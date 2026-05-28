@@ -44,18 +44,8 @@
 
         /* Firebase-тен келген өлеңдер */
         .card.from-db { border-left-color: #d4af37; }
-        .card.from-db .new-badge {
-            display: inline-block; background: #d4af37; color: #1a1208;
-            font-size: 11px; font-weight: bold; padding: 2px 8px;
-            border-radius: 10px; margin-left: 10px; vertical-align: middle;
-        }
 
         .loading { text-align: center; font-size: 1.2rem; color: #8b5e3c; padding: 40px; }
-        .section-title {
-            font-size: 18px; color: #8b5e3c; font-weight: bold;
-            margin: 30px 0 10px; padding-bottom: 8px;
-            border-bottom: 2px solid #d3cdc0;
-        }
 
         footer { background: #5c4033; color: white; text-align: center; padding: 20px; font-size: 14px; }
 
@@ -91,12 +81,9 @@
 <!-- Firebase-тен жүктелген өлеңдер -->
 <section>
     <div id="db-poems-section" style="display:none;">
-        <div class="section-title">🆕 Жаңа қосылған өлеңдер</div>
         <div id="poems-container"></div>
-        <div class="section-title" style="margin-top:40px;">📚 Классикалық өлеңдер</div>
     </div>
 </section>
-
 
 <footer>
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
@@ -179,14 +166,11 @@
             const preview    = poemText.substring(0, 200);
 
             card.innerHTML = `
-                <h2>${authorName} &laquo;${title}&raquo;
-                    <span class="new-badge">🆕 Жаңа</span>
-                </h2>
+                <h2>${authorName} &laquo;${title}&raquo;</h2>
                 <pre>${preview}${poemText.length > 200 ? '...' : ''}</pre>
                 <span class="read-more">Толығырақ →</span>
             `;
 
-            // ✅ ТҮЗЕТІЛДІ: модал емес, poem-view.html бетіне өту
             card.addEventListener('click', () => {
                 window.location.href = `poem-view.html?id=${poem.id}`;
             });
