@@ -214,6 +214,8 @@
         }
         .back-btn:hover { background: #6e472c; }
 
+
+
         /* ===== Ұсыныстар ===== */
         .related-works { margin: 20px auto; max-width: 900px; padding: 15px; background: #fdf6f0; border-left: 4px solid #8b5e3c; border-radius: 6px; }
         .related-works p { font-weight: bold; margin-bottom: 10px; color: #333; }
@@ -339,6 +341,7 @@
         <h2 id="work-title-display"></h2>
         <pre id="work-content-display"></pre>
     </div>
+
 
     <!-- ===== НАВИГАЦИЯ ===== -->
     <div id="navigation-buttons" class="nav-wrapper">
@@ -485,7 +488,7 @@
 
             try {
                 // Алдымен shygarma (рұқсат етілген), таппаса shygarma_requests (күтуде)
-                let docSnap = await getDoc(doc(db, "shygarma", workId));
+                let docSnap = await getDoc(doc(db, "shygarmalar", workId));
                 if (!docSnap.exists()) {
                     docSnap = await getDoc(doc(db, "shygarma_requests", workId));
                 }
@@ -609,7 +612,7 @@
         async function loadSuggestions(currentId) {
             try {
                 // Ұсыныстар тек рұқсат етілген shygarma коллекциясынан
-                const q             = query(collection(db, "shygarma"), limit(5));
+                const q             = query(collection(db, "shygarmalar"), limit(5));
                 const querySnapshot = await getDocs(q);
                 let html = "";
                 querySnapshot.forEach((docItem) => {
