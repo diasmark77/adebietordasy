@@ -1,61 +1,60 @@
-
-.cards-container{
-  display:flex;
-  flex-wrap:wrap;
-  gap:20px;
-  justify-content:center;
-  padding:20px;
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
 }
 
-.card{
-  background:rgba(255,255,255,0.95);
-  padding:25px 20px;
-  border-radius:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.2);
-  width:300px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  transition:0.3s;
-  cursor:pointer;
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: 0.3s;
+  cursor: pointer;
 }
 
-.card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 12px 25px rgba(0,0,0,0.25);
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
 }
 
-.card img{
-  width:120px;
-  height:auto;
-  border-radius:5px;
-  margin-bottom:15px;
+.card img {
+  width: 120px;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
-.card h2{
-  color:#5c4033;
-  margin:10px 0 5px;
-  font-weight:bold;
+.card h2 {
+  color: #5c4033;
+  margin: 10px 0 5px;
+  font-weight: bold;
 }
 
-.card p{
-  margin-bottom:10px;
+.card p {
+  margin-bottom: 10px;
 }
 
-.card a{
-  text-decoration:none;
-  color:#d4af37;
-  font-weight:bold;
+.card a {
+  text-decoration: none;
+  color: #5c4033;
+  font-weight: bold;
 }
 
-.card a:hover{
-  color:#b8962e;
+.card a:hover {
+  color: #3e2b22;
 }
 
-@media(max-width:600px){
-  .card{
-    width:90%;
-    padding:20px;
+@media (max-width: 600px) {
+  .card {
+    width: 90%;
+    padding: 20px;
   }
 }
