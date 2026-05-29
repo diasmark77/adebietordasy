@@ -37,37 +37,15 @@ body {
 
 /* ── HEADER ── */
 header {
-  position: relative;
   background:
-    linear-gradient(160deg, rgba(44,22,10,0.82) 0%, rgba(92,64,51,0.70) 100%),
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
     url("images/kazakh-dalasy.jpg") center/cover no-repeat;
   color: white;
   text-align: center;
-  padding: 56px 20px 44px;
-  overflow: hidden;
+  padding: 25px;
 }
-header::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 48px;
-  background: var(--bg);
-  clip-path: ellipse(55% 100% at 50% 100%);
-}
-header h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 900;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
-}
-header p {
-  opacity: 0.85;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-}
+header h1 { margin: 0 0 6px; font-size: 2em; font-family: 'Merriweather', serif; }
+header p  { margin: 0; opacity: 0.85; font-size: 15px; }
 
 /* ── MENU BUTTON (from menu.css) ── */
 .menu-btn {
@@ -258,7 +236,7 @@ header p {
 }
 .read-more {
   display: inline-block;
-  color: var(--gold-dark);
+  color: #5c4033;
   font-weight: 700;
   font-size: 12.5px;
   letter-spacing: 0.2px;
@@ -267,8 +245,8 @@ header p {
   transition: border-color 0.2s, color 0.2s;
 }
 .card:hover .read-more {
-  color: var(--gold);
-  border-bottom-color: var(--gold);
+  color: #3a2410;
+  border-bottom-color: #5c4033;
 }
 
 /* ── HIDDEN / EMPTY / LOADING ── */
@@ -339,6 +317,7 @@ footer {
   <button onclick="location.href='contact.html'">📩 Байланыс</button>
   <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
   <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+  <button onclick="location.href='add-poem.html'">➕ Өлең қосу</button>
 </nav>
 
 <!-- ФИЛЬТР -->
