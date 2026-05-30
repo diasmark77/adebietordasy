@@ -98,7 +98,7 @@
         #audio-toggle-wrap {
             text-align: center;
             margin: 16px 0 0;
-            display: none; /* JS audioUrl болса ашады */
+            display: none;
         }
         #audio-toggle-btn {
             display: inline-flex;
@@ -419,7 +419,6 @@
             }
 
             try {
-                // ✅ТҮЗЕТУ: алдымен poems (рұқсат етілген), таппаса poem_requests (күтуде)
                 let docSnap = await getDoc(doc(db, "poems", poemId));
                 if (!docSnap.exists()) {
                     docSnap = await getDoc(doc(db, "poem_requests", poemId));
@@ -442,12 +441,63 @@
                     document.getElementById('meta-keywords').content =
                         `${poemTitle}, ${authorName}, қазақ өлеңдері, әдебиет ордасы`;
 
+                    // ===================================================
+                    // ✅ SEO БЛОГЫ — Schema.org + Canonical + Open Graph
+                    // ===================================================
+
+                    // 1. Schema.org (Google rich result үшін)
+                    const schema = {
+                        "@context": "https://schema.org",
+                        "@type": "Poem",
+                        "name": poemTitle,
+                        "author": {
+                            "@type": "Person",
+                            "name": authorName
+                        },
+                        "text": poemText.substring(0, 500),
+                        "inLanguage": "kk",
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "Әдебиет ордасы",
+                            "url": "https://diasmark77.github.io/adebietordasy/"
+                        }
+                    };
+                    const schemaEl = document.createElement('script');
+                    schemaEl.type = 'application/ld+json';
+                    schemaEl.textContent = JSON.stringify(schema);
+                    document.head.appendChild(schemaEl);
+
+                    // 2. Canonical URL
+                    const canonEl = document.createElement('link');
+                    canonEl.rel = 'canonical';
+                    canonEl.href = `https://diasmark77.github.io/adebietordasy/poem-view.html?id=${poemId}`;
+                    document.head.appendChild(canonEl);
+
+                    // 3. Open Graph (WhatsApp, Telegram, Facebook preview үшін)
+                    const ogTags = {
+                        'og:title':       `${poemTitle} — ${authorName}`,
+                        'og:description': poemText.substring(0, 150).replace(/\n/g, ' '),
+                        'og:url':         `https://diasmark77.github.io/adebietordasy/poem-view.html?id=${poemId}`,
+                        'og:type':        'article',
+                        'og:site_name':   'Әдебиет ордасы'
+                    };
+                    Object.entries(ogTags).forEach(([prop, content]) => {
+                        const el = document.createElement('meta');
+                        el.setAttribute('property', prop);
+                        el.setAttribute('content', content);
+                        document.head.appendChild(el);
+                    });
+
+                    // ===================================================
+                    // ✅ SEO БЛОГЫ АЯҚТАЛДЫ
+                    // ===================================================
+
                     // Өлең документінен алу
                     let photoUrl = (data.photoUrl || '').trim();
                     let audioUrl = (data.audioUrl || '').trim();
                     let authorId = (data.authorId || '').trim();
 
-                    // ✅ТҮЗЕТУ: photoUrl, authorId немесе audioUrl жоқ болса authors-тан іздейміз
+                    // photoUrl, authorId немесе audioUrl жоқ болса authors-тан іздейміз
                     if (!photoUrl || !authorId || !audioUrl) {
                         try {
                             const authQ    = query(
@@ -479,7 +529,6 @@
                     }
 
                     // ===== АУДИО ПЛЕЕР =====
-                    // ✅ТҮЗЕТУ: audioUrl бар болса ғана плеерді көрсетеміз
                     if (audioUrl) {
                         document.getElementById('poem-audio').src = audioUrl;
                         document.getElementById('audio-track-title').textContent =
@@ -525,7 +574,6 @@
 
         async function loadSuggestions(currentId) {
             try {
-                // ✅ТҮЗЕТУ: ұсыныстар тек рұқсат етілген poems-тен
                 const q             = query(collection(db, "poems"), limit(5));
                 const querySnapshot = await getDocs(q);
                 let html = "";
