@@ -1,5 +1,15 @@
-User-agent: * 
-Allow: / 
+User-agent: *
+Allow: /
 
+# Маңызды беттер
+Allow: /adebietordasy/poems.html
+Allow: /adebietordasy/poem-view.html
+Allow: /adebietordasy/poets.html
+Allow: /adebietordasy/author-profile.html
 
+# Индекстеу керек емес беттер
+Disallow: /adebietordasy/admin
+Disallow: /adebietordasy/admin.html
+
+# Sitemap
 Sitemap: https://diasmark77.github.io/adebietordasy/sitemap.xml
