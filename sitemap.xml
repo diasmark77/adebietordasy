@@ -1,200 +1,479 @@
-This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<!--  Басты бет  -->
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/index.html</loc>
-<changefreq>weekly</changefreq>
-<priority>1.0</priority>
-</url>
-<!--  Авторлар бөлімі  -->
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/writers.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.9</priority>
-</url>
-<!--  Жазушылар беттері  -->
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/writers/mauezov.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/writers/gabitm.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/writers/sabitm.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/writers/zhenisbek.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/writers/sainm.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/writers/dulat.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-<!--  Өлеңдер бөлімі  -->
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/poems.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.9</priority>
-</url>
-<!--  Өлеңдер беттері  -->
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/esine-meni-algaysyn.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/keta-balyktyn-erligi.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/mangurt.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/ustazdarga.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/ruh-pen-til.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/oyan-kazakh.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/adamdyk-dikanshysy.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/men-zhastarga-senemin.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/tutkyn.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/zhurektesin.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/men-sagan.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/senim.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/omir-kures.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/kobylandy-batyr.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/konilim.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/uly-kosh.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/bik-shyn.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/almaty-arman-kala.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/kozimnin-karasy.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/uly-ustaz.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/izgy-izdenis.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/create/baurlarym.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<!--  Шығармалар бөлімі  -->
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/shygarms.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.9</priority>
-</url>
-<!--  Шығармалар беттері  -->
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/shygarma/ulpan.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/shygarma/gauhartas.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/shygarma/ormanda.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/shygarma/zhusan-isi.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/shygarma/eskertkish.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://diasmark77.github.io/adebietordasy/shygarma/irim.html</loc>
-<changefreq>yearly</changefreq>
-<priority>0.7</priority>
-</url>
+
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/writers.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/writers/mauezov.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/writers/gabitm.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/writers/sabitm.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/writers/zhenisbek.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/writers/sainm.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/writers/dulat.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/poems.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/esine-meni-algaysyn.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/keta-balyktyn-erligi.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/mangurt.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/ustazdarga.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/ruh-pen-til.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/oyan-kazakh.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/adamdyk-dikanshysy.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/men-zhastarga-senemin.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/tutkyn.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/zhurektesin.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/men-sagan.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/senim.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/omir-kures.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/kobylandy-batyr.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/konilim.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/uly-kosh.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/bik-shyn.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/almaty-arman-kala.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/kozimnin-karasy.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/uly-ustaz.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/izgy-izdenis.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/create/baurlarym.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/shygarms.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/shygarma/ulpan.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/shygarma/gauhartas.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/shygarma/ormanda.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/shygarma/zhusan-isi.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/shygarma/eskertkish.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/shygarma/irim.html</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=8DvJ2vk9v7aOUWEpwuaj</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=C3tWy8bjqEptHurQcOWn</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=CYH6xqouCKYb311uufTO</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=IoxV99z5OUDCXmBuvnu7</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=J3ADbKUWwbB52RSJ1rB8</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=MwqriKH7cs8bjQBAiPTQ</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=NUSUNFBaKsvYbnyzutAO</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=R53CoUbrY9RbZVF1Bjve</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=Ridj1BH9pGlfVMxga5hI</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=RzuzhWXyZKGUvLkNaevJ</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=Tdv6a0HGT9opBS94gd4R</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=UxSzsfu5BOtmi65blvhp</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=btJEo2Sx7lz4EGUMMJgy</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=es7I4RSq0QhWZpzNWYqC</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=pkUeSeebgxAn48dkvYjG</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=x7XKP9kmvmGy4GmiH9jb</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?author=yuSbgDJ4HDGRfxdc7sjc</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=3Jx60HRXCpc6xU8vXALy</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=4DekjxxqtmhMwyygVJJh</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=6m8Gh0hTFzwzW0hC3uvm</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=81eshwIWJxUj32d9Klzx</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=AS3jzJ7Pz1CBmdZBamku</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=DhRGhQsNqgZifx3UI3Cd</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=IXNjfaxxdJwlHr299IUi</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=JDlKnIaPHoEe2WaM693c</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=JNBB0fLy7RVf7Ez2aUM9</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=OirLSpPfZsHxwDvA2GA3</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=UZwywB9EfOOMKz1vIobE</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=UlTzjFB7CNrqp5TroWde</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=W37QXEiqaMIYzLE77qPL</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=ZjGK6I1woeYrw9FDBRJX</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=d3VWnx6OzOMr2Oys9Buc</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=dqVbxtpnbbzxS59WnsSW</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=hs5szLKDx0qTpEcoDfCh</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=oCiKT62OIj52TubHPEBy</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=qAshPSxYOOADfP06Sma7</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=rXgRkhHJNx0xApKO6amp</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=wHR0r801nmqBLtLyg8Qr</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=yPCIqJKB6VHxDpy5qkWI</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=yPSEyyS3yyxMofScmzFV</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diasmark77.github.io/adebietordasy/index.html?poem=yU2Pbqyew8KI7bZYmcSE</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
