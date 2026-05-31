@@ -12,7 +12,7 @@
     <link rel="icon" href="images/logo.png" type="image/png">
 
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f1ea; color: #333; text-align: left; padding-bottom: 80px; }
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f1ea; color: #333; text-align: left; padding-bottom: 80px; }
         .card { background: white; padding: 20px; margin: 20px auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 900px; text-align: left; }
         h2 { color: #5c4033; text-align: center; }
 
@@ -31,60 +31,36 @@
             line-height: 1.7;
         }
 
-        /* ===== Автор суреті ===== */
+        /* ===== Автор header ===== */
         #author-hero {
             display: none;
             width: 100%;
-            background: linear-gradient(135deg, #3b1a08 0%, #7a3e1e 40%, #c8922a 100%);
-            padding: 50px 20px 0;
+            background: #5c4033;
+            padding: 40px 20px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
-        #author-hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        /* Суретті орайтын wrapper */
-        #author-hero-img-wrap {
-            position: relative;
-            display: inline-block;
-            line-height: 0;
-            z-index: 1;
-        }
-
-        /* ❌ ЖОЙЫЛДЫ: ::after ақ сызық жасап тұрған псевдоэлемент */
-
         #author-hero img {
-            display: block;
             width: 100%;
-            max-width: 420px;
+            max-width: 320px;
             height: auto;
-            border-radius: 10px 10px 0 0;
-            margin: 0 auto;
-            box-shadow: 0 8px 28px rgba(0,0,0,0.5);
-            border: none;        /* ❌ ЖОЙЫЛДЫ: ақ border */
-            position: relative;
-            z-index: 1;
+            border-radius: 15px;
+            margin: 0 auto 16px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            border: 4px solid white;
+            display: block;
         }
         #author-hero-name {
             color: white;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: bold;
-            margin-top: 16px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-            position: relative;
-            z-index: 1;
+            margin: 10px 0;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
         #author-hero-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            margin-top: 18px;
-            margin-bottom: 28px;
+            margin-top: 12px;
             padding: 11px 26px;
             background: rgba(255,255,255,0.15);
             color: white;
@@ -95,8 +71,6 @@
             border: 2px solid rgba(255,255,255,0.45);
             backdrop-filter: blur(6px);
             transition: all 0.25s;
-            position: relative;
-            z-index: 1;
             letter-spacing: 0.3px;
         }
         #author-hero-btn:hover {
@@ -219,11 +193,9 @@
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-    <!-- ===== АВТОР СУРЕТІ ===== -->
+    <!-- ===== АВТОР HEADER ===== -->
     <div id="author-hero">
-        <div id="author-hero-img-wrap">
-            <img id="author-hero-img" src="" alt="Автор">
-        </div>
+        <img id="author-hero-img" src="" alt="Автор">
         <div id="author-hero-name"></div>
         <a id="author-hero-btn" href="#" style="display:none;">
             ✍️ <span id="author-hero-btn-text">Автор бетіне →</span>
@@ -514,6 +486,7 @@
                         }
                     }
 
+                    // ===== АВТОР HEADER =====
                     document.getElementById('author-hero-name').innerText = authorName;
                     document.getElementById('author-hero').style.display  = 'block';
                     if (photoUrl) {
@@ -524,6 +497,7 @@
                         document.getElementById('author-hero-img').style.display = 'none';
                     }
 
+                    // ===== АУДИО ПЛЕЕР =====
                     if (audioUrl) {
                         document.getElementById('poem-audio').src = audioUrl;
                         document.getElementById('audio-track-title').textContent =
@@ -535,6 +509,7 @@
                         document.getElementById('audio-toggle-wrap').style.display = 'none';
                     }
 
+                    // ===== АВТОР БАТЫРМАСЫ =====
                     const authorUrl = authorId
                         ? `author-profile.html?id=${authorId}`
                         : 'poets.html';
