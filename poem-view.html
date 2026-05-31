@@ -36,7 +36,7 @@
             display: none;
             width: 100%;
             background: linear-gradient(135deg, #3b1a08 0%, #7a3e1e 40%, #c8922a 100%);
-            padding: 50px 20px 36px;
+            padding: 50px 20px 0;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -47,15 +47,36 @@
             inset: 0;
             background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
         }
+
+        /* Суретті орайтын wrapper */
+        #author-hero-img-wrap {
+            position: relative;
+            display: inline-block;
+            line-height: 0;
+            z-index: 1;
+        }
+        /* Суреттің астын body фонымен жабу — градиент "шығып кетпесін" */
+        #author-hero-img-wrap::after {
+            content: '';
+            position: absolute;
+            left: -3px;
+            right: -3px;
+            bottom: 0;
+            height: 6px;
+            background: #f4f1ea;
+            z-index: 2;
+        }
+
         #author-hero img {
             display: block;
             width: 100%;
             max-width: 420px;
             height: auto;
-            border-radius: 10px;
+            border-radius: 10px 10px 0 0;
             margin: 0 auto;
             box-shadow: 0 8px 28px rgba(0,0,0,0.5);
             border: 3px solid rgba(255,255,255,0.25);
+            border-bottom: none;
             position: relative;
             z-index: 1;
         }
@@ -63,7 +84,7 @@
             color: white;
             font-size: 1.4rem;
             font-weight: bold;
-            margin-top: 14px;
+            margin-top: 16px;
             text-shadow: 0 2px 8px rgba(0,0,0,0.6);
             position: relative;
             z-index: 1;
@@ -73,6 +94,7 @@
             align-items: center;
             gap: 8px;
             margin-top: 18px;
+            margin-bottom: 28px;
             padding: 11px 26px;
             background: rgba(255,255,255,0.15);
             color: white;
@@ -209,7 +231,9 @@
 
     <!-- ===== АВТОР СУРЕТІ ===== -->
     <div id="author-hero">
-        <img id="author-hero-img" src="" alt="Автор">
+        <div id="author-hero-img-wrap">
+            <img id="author-hero-img" src="" alt="Автор">
+        </div>
         <div id="author-hero-name"></div>
         <a id="author-hero-btn" href="#" style="display:none;">
             ✍️ <span id="author-hero-btn-text">Автор бетіне →</span>
@@ -441,19 +465,12 @@
                     document.getElementById('meta-keywords').content =
                         `${poemTitle}, ${authorName}, қазақ өлеңдері, әдебиет ордасы`;
 
-                    // ===================================================
-                    // ✅ SEO БЛОГЫ — Schema.org + Canonical + Open Graph
-                    // ===================================================
-
-                    // 1. Schema.org (Google rich result үшін)
+                    // Schema.org
                     const schema = {
                         "@context": "https://schema.org",
                         "@type": "Poem",
                         "name": poemTitle,
-                        "author": {
-                            "@type": "Person",
-                            "name": authorName
-                        },
+                        "author": { "@type": "Person", "name": authorName },
                         "text": poemText.substring(0, 500),
                         "inLanguage": "kk",
                         "publisher": {
@@ -467,13 +484,13 @@
                     schemaEl.textContent = JSON.stringify(schema);
                     document.head.appendChild(schemaEl);
 
-                    // 2. Canonical URL
+                    // Canonical URL
                     const canonEl = document.createElement('link');
                     canonEl.rel = 'canonical';
                     canonEl.href = `https://diasmark77.github.io/adebietordasy/poem-view.html?id=${poemId}`;
                     document.head.appendChild(canonEl);
 
-                    // 3. Open Graph (WhatsApp, Telegram, Facebook preview үшін)
+                    // Open Graph
                     const ogTags = {
                         'og:title':       `${poemTitle} — ${authorName}`,
                         'og:description': poemText.substring(0, 150).replace(/\n/g, ' '),
@@ -487,10 +504,6 @@
                         el.setAttribute('content', content);
                         document.head.appendChild(el);
                     });
-
-                    // ===================================================
-                    // ✅ SEO БЛОГЫ АЯҚТАЛДЫ
-                    // ===================================================
 
                     // Өлең документінен алу
                     let photoUrl = (data.photoUrl || '').trim();
