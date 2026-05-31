@@ -55,17 +55,8 @@
             line-height: 0;
             z-index: 1;
         }
-        /* Суреттің астын body фонымен жабу — градиент "шығып кетпесін" */
-        #author-hero-img-wrap::after {
-            content: '';
-            position: absolute;
-            left: -3px;
-            right: -3px;
-            bottom: 0;
-            height: 6px;
-            background: #f4f1ea;
-            z-index: 2;
-        }
+
+        /* ❌ ЖОЙЫЛДЫ: ::after ақ сызық жасап тұрған псевдоэлемент */
 
         #author-hero img {
             display: block;
@@ -75,8 +66,7 @@
             border-radius: 10px 10px 0 0;
             margin: 0 auto;
             box-shadow: 0 8px 28px rgba(0,0,0,0.5);
-            border: 3px solid rgba(255,255,255,0.25);
-            border-bottom: none;
+            border: none;        /* ❌ ЖОЙЫЛДЫ: ақ border */
             position: relative;
             z-index: 1;
         }
@@ -458,14 +448,12 @@
                     document.getElementById('poem-title-display').innerText   = poemTitle;
                     document.getElementById('poem-content-display').innerText = poemText;
 
-                    // Динамикалық title & meta
                     document.title = `${poemTitle} — ${authorName} | Әдебиет ордасы`;
                     document.getElementById('meta-description').content =
                         poemText.substring(0, 150).replace(/\n/g, ' ');
                     document.getElementById('meta-keywords').content =
                         `${poemTitle}, ${authorName}, қазақ өлеңдері, әдебиет ордасы`;
 
-                    // Schema.org
                     const schema = {
                         "@context": "https://schema.org",
                         "@type": "Poem",
@@ -484,13 +472,11 @@
                     schemaEl.textContent = JSON.stringify(schema);
                     document.head.appendChild(schemaEl);
 
-                    // Canonical URL
                     const canonEl = document.createElement('link');
                     canonEl.rel = 'canonical';
                     canonEl.href = `https://diasmark77.github.io/adebietordasy/poem-view.html?id=${poemId}`;
                     document.head.appendChild(canonEl);
 
-                    // Open Graph
                     const ogTags = {
                         'og:title':       `${poemTitle} — ${authorName}`,
                         'og:description': poemText.substring(0, 150).replace(/\n/g, ' '),
@@ -505,12 +491,10 @@
                         document.head.appendChild(el);
                     });
 
-                    // Өлең документінен алу
                     let photoUrl = (data.photoUrl || '').trim();
                     let audioUrl = (data.audioUrl || '').trim();
                     let authorId = (data.authorId || '').trim();
 
-                    // photoUrl, authorId немесе audioUrl жоқ болса authors-тан іздейміз
                     if (!photoUrl || !authorId || !audioUrl) {
                         try {
                             const authQ    = query(
@@ -530,7 +514,6 @@
                         }
                     }
 
-                    // ===== АВТОР СУРЕТІ =====
                     document.getElementById('author-hero-name').innerText = authorName;
                     document.getElementById('author-hero').style.display  = 'block';
                     if (photoUrl) {
@@ -541,7 +524,6 @@
                         document.getElementById('author-hero-img').style.display = 'none';
                     }
 
-                    // ===== АУДИО ПЛЕЕР =====
                     if (audioUrl) {
                         document.getElementById('poem-audio').src = audioUrl;
                         document.getElementById('audio-track-title').textContent =
@@ -553,7 +535,6 @@
                         document.getElementById('audio-toggle-wrap').style.display = 'none';
                     }
 
-                    // ===== АВТОР БАТЫРМАСЫ =====
                     const authorUrl = authorId
                         ? `author-profile.html?id=${authorId}`
                         : 'poets.html';
