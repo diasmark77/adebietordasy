@@ -25,6 +25,33 @@
         }
         .search-box input:focus { box-shadow: 0 0 10px rgba(139, 94, 60, 0.3); }
 
+        /* Іздеу нәтижесі белгісі */
+        .search-badge {
+            display: none;
+            text-align: center;
+            margin: -10px 0 20px;
+            font-size: 0.95rem;
+            color: #8b5e3c;
+        }
+        .search-badge span {
+            background: #f5e6d5;
+            border: 1px solid #c8a06a;
+            border-radius: 20px;
+            padding: 5px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .search-badge button {
+            background: none;
+            border: none;
+            color: #8b5e3c;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            line-height: 1;
+        }
+
         section { padding: 0 15px 50px 15px; max-width: 900px; margin: auto; }
         
         .card {
@@ -42,10 +69,10 @@
         }
         .read-more { display: inline-block; margin-top: 15px; color: #8b5e3c; font-weight: bold; text-decoration: none; }
 
-        /* Firebase-тен келген өлеңдер */
         .card.from-db { border-left-color: #8b5e3c; }
 
         .loading { text-align: center; font-size: 1.2rem; color: #8b5e3c; padding: 40px; }
+        .no-results { text-align: center; color: #9a7a5a; padding: 40px; font-size: 1rem; }
 
         footer { background: #5c4033; color: white; text-align: center; padding: 20px; font-size: 14px; }
 
@@ -78,7 +105,14 @@
     <input type="text" id="searchInput" placeholder="Автор немесе өлең атымен іздеу...">
 </div>
 
-<!-- Firebase-тен жүктелген өлеңдер -->
+<!-- Іздеу нәтижесі белгісі -->
+<div class="search-badge" id="searchBadge">
+    <span>
+        🔍 Іздеу: <strong id="badgeText"></strong>
+        <button onclick="clearSearch()" title="Тазалау">✕</button>
+    </span>
+</div>
+
 <section>
     <div id="db-poems-section" style="display:none;">
         <div id="poems-container"></div>
@@ -114,6 +148,7 @@
         const section   = document.getElementById('db-poems-section');
 
         container.innerHTML = '<div class="loading">Жүктелуде...</div>';
+        section.style.display = 'block';
 
         try {
             const snap = await getDocs(collection(db, "poems"));
@@ -128,12 +163,19 @@
                     return bT - aT;
                 });
 
-            if (dbPoems.length > 0) {
-                section.style.display = 'block';
-                renderDbPoems(dbPoems);
+            // Жүктелгеннен кейін URL параметрін тексер
+            const params = new URLSearchParams(window.location.search);
+            const urlSearch = params.get('search');
+
+            if (urlSearch && urlSearch.trim()) {
+                // URL-ден келген іздеу
+                const input = document.getElementById('searchInput');
+                input.value = urlSearch.trim();
+                showSearchBadge(urlSearch.trim());
+                filterAndRender(urlSearch.trim());
             } else {
-                container.innerHTML = '';
-                section.style.display = 'none';
+                // Әдеттегі режим — бәрін көрсет
+                renderDbPoems(dbPoems);
             }
 
         } catch (error) {
@@ -143,6 +185,20 @@
         }
     }
 
+    function filterAndRender(term) {
+        const lower = term.toLowerCase().trim();
+        if (!lower) {
+            renderDbPoems(dbPoems);
+            return;
+        }
+        const filtered = dbPoems.filter(p =>
+            (p.authorName || '').toLowerCase().includes(lower) ||
+            (p.title      || '').toLowerCase().includes(lower) ||
+            (p.poemText   || '').toLowerCase().includes(lower)
+        );
+        renderDbPoems(filtered);
+    }
+
     function renderDbPoems(list) {
         const container = document.getElementById('poems-container');
         const section   = document.getElementById('db-poems-section');
@@ -150,7 +206,8 @@
         container.innerHTML = '';
 
         if (list.length === 0) {
-            section.style.display = 'none';
+            section.style.display = 'block';
+            container.innerHTML = '<p class="no-results">😔 Ешқандай өлең табылмады.</p>';
             return;
         }
 
@@ -179,27 +236,44 @@
         });
     }
 
-    // ── Іздеу логикасы ──
+    function showSearchBadge(term) {
+        const badge = document.getElementById('searchBadge');
+        const badgeText = document.getElementById('badgeText');
+        badgeText.textContent = term;
+        badge.style.display = 'block';
+    }
+
+    function hideBadge() {
+        document.getElementById('searchBadge').style.display = 'none';
+    }
+
+    // Іздеуді тазалау (badge ✕ батырмасы)
+    window.clearSearch = function() {
+        const input = document.getElementById('searchInput');
+        input.value = '';
+        hideBadge();
+        renderDbPoems(dbPoems);
+        // URL-ді тазала
+        history.replaceState(null, '', window.location.pathname);
+    };
+
+    // ── Қолмен іздеу (input) ──
     document.getElementById('searchInput').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase().trim();
+        const term = e.target.value.trim();
+
+        // URL-ді тазала (қолмен жазғанда параметр жойылсын)
+        history.replaceState(null, '', window.location.pathname);
 
         if (term) {
-            const filtered = dbPoems.filter(p =>
-                (p.authorName || '').toLowerCase().includes(term) ||
-                (p.title      || '').toLowerCase().includes(term) ||
-                (p.poemText   || '').toLowerCase().includes(term)
-            );
-            renderDbPoems(filtered);
+            showSearchBadge(term);
+            filterAndRender(term);
         } else {
+            hideBadge();
             renderDbPoems(dbPoems);
         }
-
-        document.querySelectorAll('#static-poems .card').forEach(card => {
-            const text = card.textContent.toLowerCase();
-            card.style.display = text.includes(term) ? '' : 'none';
-        });
     });
 
+    // ── Бастау ──
     fetchPoems();
 </script>
 
