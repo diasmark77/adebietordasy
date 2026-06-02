@@ -25,7 +25,6 @@
         }
         .search-box input:focus { box-shadow: 0 0 10px rgba(139, 94, 60, 0.3); }
 
-        /* Іздеу нәтижесі белгісі */
         .search-badge {
             display: none;
             text-align: center;
@@ -43,17 +42,12 @@
             gap: 8px;
         }
         .search-badge button {
-            background: none;
-            border: none;
-            color: #8b5e3c;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0;
-            line-height: 1;
+            background: none; border: none; color: #8b5e3c;
+            cursor: pointer; font-size: 1rem; padding: 0; line-height: 1;
         }
 
         section { padding: 0 15px 50px 15px; max-width: 900px; margin: auto; }
-        
+
         .card {
             background: white; padding: 25px; margin: 20px 0;
             border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -68,11 +62,19 @@
             -webkit-box-orient: vertical; overflow: hidden;
         }
         .read-more { display: inline-block; margin-top: 15px; color: #8b5e3c; font-weight: bold; text-decoration: none; }
-
         .card.from-db { border-left-color: #8b5e3c; }
 
         .loading { text-align: center; font-size: 1.2rem; color: #8b5e3c; padding: 40px; }
         .no-results { text-align: center; color: #9a7a5a; padding: 40px; font-size: 1rem; }
+
+        /* Debug панелі */
+        #debug-panel {
+            display: none;
+            background: #fff3cd; border: 1px solid #ffc107;
+            border-radius: 8px; padding: 15px; margin: 10px 15px;
+            font-size: 0.85rem; color: #333; max-width: 870px; margin: 10px auto;
+        }
+        #debug-panel pre { margin: 5px 0; white-space: pre-wrap; word-break: break-all; }
 
         footer { background: #5c4033; color: white; text-align: center; padding: 20px; font-size: 14px; }
 
@@ -105,12 +107,17 @@
     <input type="text" id="searchInput" placeholder="Автор немесе өлең атымен іздеу...">
 </div>
 
-<!-- Іздеу нәтижесі белгісі -->
 <div class="search-badge" id="searchBadge">
     <span>
         🔍 Іздеу: <strong id="badgeText"></strong>
         <button onclick="clearSearch()" title="Тазалау">✕</button>
     </span>
+</div>
+
+<!-- Debug панелі — іздеу жұмыс жасамаса себебін көрсетеді -->
+<div id="debug-panel">
+    <strong>🔍 Іздеу ақпараты:</strong>
+    <pre id="debug-text"></pre>
 </div>
 
 <section>
@@ -143,6 +150,29 @@
 
     let dbPoems = [];
 
+    // ── Нормализация: қазақ/орыс әріптерін есепке алып салыстыру ──
+    function normalize(str) {
+        if (!str) return '';
+        return str
+            .toLowerCase()
+            .replace(/ё/g, 'е')
+            .trim();
+    }
+
+    // ── Ат бойынша дәл сәйкестік немесе ішінара сәйкестік ──
+    function matchesSearch(poem, term) {
+        const normTerm = normalize(term);
+        const normAuthor = normalize(poem.authorName || poem.author || poem.name || '');
+        const normTitle  = normalize(poem.title || '');
+        const normText   = normalize(poem.poemText || poem.text || poem.content || '');
+
+        return (
+            normAuthor.includes(normTerm) ||
+            normTitle.includes(normTerm)  ||
+            normText.includes(normTerm)
+        );
+    }
+
     async function fetchPoems() {
         const container = document.getElementById('poems-container');
         const section   = document.getElementById('db-poems-section');
@@ -152,8 +182,7 @@
 
         try {
             const snap = await getDocs(collection(db, "poems"));
-
-            console.log("✅ poems коллекциясы — жазба саны:", snap.size);
+            console.log("✅ poems жазба саны:", snap.size);
 
             dbPoems = snap.docs
                 .map(d => ({ id: d.id, ...d.data() }))
@@ -163,18 +192,16 @@
                     return bT - aT;
                 });
 
-            // Жүктелгеннен кейін URL параметрін тексер
-            const params = new URLSearchParams(window.location.search);
+            // URL параметрін тексер
+            const params    = new URLSearchParams(window.location.search);
             const urlSearch = params.get('search');
 
             if (urlSearch && urlSearch.trim()) {
-                // URL-ден келген іздеу
-                const input = document.getElementById('searchInput');
-                input.value = urlSearch.trim();
-                showSearchBadge(urlSearch.trim());
-                filterAndRender(urlSearch.trim());
+                const term = urlSearch.trim();
+                document.getElementById('searchInput').value = term;
+                showSearchBadge(term);
+                filterAndRender(term);
             } else {
-                // Әдеттегі режим — бәрін көрсет
                 renderDbPoems(dbPoems);
             }
 
@@ -186,16 +213,33 @@
     }
 
     function filterAndRender(term) {
-        const lower = term.toLowerCase().trim();
-        if (!lower) {
+        if (!term || !term.trim()) {
             renderDbPoems(dbPoems);
+            hideDebug();
             return;
         }
-        const filtered = dbPoems.filter(p =>
-            (p.authorName || '').toLowerCase().includes(lower) ||
-            (p.title      || '').toLowerCase().includes(lower) ||
-            (p.poemText   || '').toLowerCase().includes(lower)
-        );
+
+        const filtered = dbPoems.filter(p => matchesSearch(p, term));
+
+        // Debug панелі — нәтиже болмаса себебін көрсет
+        if (filtered.length === 0 && dbPoems.length > 0) {
+            const sample = dbPoems.slice(0, 3).map(p => ({
+                authorName: p.authorName,
+                author:     p.author,
+                name:       p.name,
+                title:      p.title
+            }));
+            showDebug(
+                `Іздеу: "${term}"\n` +
+                `Барлық өлең саны: ${dbPoems.length}\n` +
+                `Табылды: 0\n\n` +
+                `Алғашқы 3 өлеңнің автор өрістері:\n` +
+                JSON.stringify(sample, null, 2)
+            );
+        } else {
+            hideDebug();
+        }
+
         renderDbPoems(filtered);
     }
 
@@ -204,22 +248,20 @@
         const section   = document.getElementById('db-poems-section');
 
         container.innerHTML = '';
+        section.style.display = 'block';
 
         if (list.length === 0) {
-            section.style.display = 'block';
             container.innerHTML = '<p class="no-results">😔 Ешқандай өлең табылмады.</p>';
             return;
         }
-
-        section.style.display = 'block';
 
         list.forEach(poem => {
             const card = document.createElement('div');
             card.className = 'card from-db';
 
             const title      = poem.title      || 'Өлең';
-            const authorName = poem.authorName || 'Белгісіз автор';
-            const poemText   = poem.poemText   || '';
+            const authorName = poem.authorName || poem.author || poem.name || 'Белгісіз автор';
+            const poemText   = poem.poemText   || poem.text  || poem.content || '';
             const preview    = poemText.substring(0, 200);
 
             card.innerHTML = `
@@ -237,31 +279,34 @@
     }
 
     function showSearchBadge(term) {
-        const badge = document.getElementById('searchBadge');
-        const badgeText = document.getElementById('badgeText');
-        badgeText.textContent = term;
-        badge.style.display = 'block';
+        document.getElementById('badgeText').textContent = term;
+        document.getElementById('searchBadge').style.display = 'block';
     }
 
     function hideBadge() {
         document.getElementById('searchBadge').style.display = 'none';
     }
 
-    // Іздеуді тазалау (badge ✕ батырмасы)
+    function showDebug(text) {
+        document.getElementById('debug-panel').style.display = 'block';
+        document.getElementById('debug-text').textContent = text;
+    }
+
+    function hideDebug() {
+        document.getElementById('debug-panel').style.display = 'none';
+    }
+
     window.clearSearch = function() {
-        const input = document.getElementById('searchInput');
-        input.value = '';
+        document.getElementById('searchInput').value = '';
         hideBadge();
+        hideDebug();
         renderDbPoems(dbPoems);
-        // URL-ді тазала
         history.replaceState(null, '', window.location.pathname);
     };
 
-    // ── Қолмен іздеу (input) ──
+    // ── Қолмен іздеу ──
     document.getElementById('searchInput').addEventListener('input', (e) => {
         const term = e.target.value.trim();
-
-        // URL-ді тазала (қолмен жазғанда параметр жойылсын)
         history.replaceState(null, '', window.location.pathname);
 
         if (term) {
@@ -269,11 +314,11 @@
             filterAndRender(term);
         } else {
             hideBadge();
+            hideDebug();
             renderDbPoems(dbPoems);
         }
     });
 
-    // ── Бастау ──
     fetchPoems();
 </script>
 
