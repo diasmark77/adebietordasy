@@ -35,7 +35,6 @@ body {
   min-height: 100vh;
 }
 
-/* ── HEADER ── */
 header {
   background:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
@@ -47,7 +46,6 @@ header {
 header h1 { margin: 0 0 6px; font-size: 2em; font-family: 'Merriweather', serif; }
 header p  { margin: 0; opacity: 0.85; font-size: 15px; }
 
-/* ── MENU BUTTON (from menu.css) ── */
 .menu-btn {
   position: fixed;
   top: 16px; left: 16px;
@@ -61,7 +59,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
   cursor: pointer;
 }
 
-/* ── FILTER BAR ── */
 .filter-section {
   text-align: center;
   padding: 32px 16px 0;
@@ -96,7 +93,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
   box-shadow: 0 4px 14px rgba(92,64,51,0.25);
 }
 
-/* ── SEARCH ── */
 .search-box {
   text-align: center;
   margin: 20px 0 32px;
@@ -128,7 +124,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
   padding: 8px 0;
 }
 
-/* ── CARDS CONTAINER ── */
 .cards-container {
   display: flex;
   flex-wrap: wrap;
@@ -137,7 +132,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
   padding: 0 24px 60px;
 }
 
-/* ── CARD (full <a> tag) ── */
 .card {
   background: var(--card-bg);
   border-radius: 16px;
@@ -162,7 +156,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
   border-color: #c8b89a;
 }
 
-/* ── PHOTO AREA ── */
 .card-img-wrap {
   position: relative;
   width: 100%;
@@ -182,8 +175,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
 .card:hover .card-img-wrap img {
   transform: scale(1.05);
 }
-
-/* Gold shimmer overlay on hover */
 .card-img-wrap::after {
   content: '';
   position: absolute;
@@ -192,7 +183,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
   pointer-events: none;
 }
 
-/* ── CATEGORY LABEL ── */
 .cat-label {
   display: inline-block;
   font-size: 10px;
@@ -211,7 +201,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
 .cat-alash      { background: rgba(250,238,218,0.93); color: #633806; }
 .cat-kompozitor { background: rgba(225,245,238,0.93); color: #085041; }
 
-/* ── CARD BODY ── */
 .card-body {
   padding: 16px 16px 0;
   width: 100%;
@@ -249,7 +238,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
   border-bottom-color: #5c4033;
 }
 
-/* ── HIDDEN / EMPTY / LOADING ── */
 .card.hidden { display: none !important; }
 
 .empty-msg {
@@ -282,7 +270,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── FOOTER ── */
 footer {
   background: var(--brown);
   color: rgba(255,255,255,0.85);
@@ -292,7 +279,6 @@ footer {
   letter-spacing: 0.3px;
 }
 
-/* ── RESPONSIVE ── */
 @media (max-width: 600px) {
   .card { width: 90%; max-width: 340px; }
   .search-wrap { width: 88%; }
@@ -351,16 +337,16 @@ footer {
   © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-<!-- ── ГЛОБАЛ JS ── -->
+<!-- ГЛОБАЛ JS -->
 <script>
 let activeFilter = 'all';
-let firebaseLoaded = false;
+let dataLoaded = false;
 
 function setFilter(cat, btn) {
   activeFilter = cat;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if (firebaseLoaded) applyFilters();
+  if (dataLoaded) applyFilters();
 }
 
 function applyFilters() {
@@ -391,20 +377,14 @@ function toggleMenu() {
 }
 </script>
 
-<!-- ── FIREBASE ── -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, orderBy, query }
-  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- ✅ Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-const firebaseConfig = {
-  apiKey:    "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-  projectId: "adebiet-ordasy",
-  appId:     "1:331787955330:web:a77853b5bffdb44bed989b"
-};
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+<!-- АВТОРЛАР ЖҮКТЕУ (Supabase) -->
+<script>
+const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
+const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const categoryLabels = {
   aqyn:       '✍️ Ақын',
@@ -419,19 +399,22 @@ async function loadAuthors() {
   const emptyEl   = document.getElementById('empty-msg');
 
   try {
-    const q    = query(collection(db, "authors"), orderBy("addedAt", "desc"));
-    const snap = await getDocs(q);
+    const { data: authors, error } = await supabase
+      .from('authors')
+      .select('*')
+      .order('addedAt', { ascending: false });
+
+    if (error) throw error;
 
     loadingEl.style.display = 'none';
 
-    if (snap.empty) {
+    if (!authors || authors.length === 0) {
       emptyEl.style.display = 'block';
       return;
     }
 
-    snap.forEach(docSnap => {
-      const author   = docSnap.data();
-      const id       = docSnap.id;
+    authors.forEach(author => {
+      const id       = author.id;
       const category = author.category || 'aqyn';
       const catLabel = categoryLabels[category] || '';
       const catClass = `cat-${category}`;
@@ -458,11 +441,11 @@ async function loadAuthors() {
       container.appendChild(card);
     });
 
-    firebaseLoaded = true;
+    dataLoaded = true;
     applyFilters();
 
   } catch (e) {
-    console.error("Firebase қатесі:", e);
+    console.error("Supabase қатесі:", e);
     loadingEl.style.display = 'none';
     emptyEl.textContent = 'Деректерді жүктеу қатесі. Бетті қайта жүктеңіз.';
     emptyEl.style.display = 'block';
