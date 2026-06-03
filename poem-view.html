@@ -31,7 +31,6 @@
             line-height: 1.7;
         }
 
-        /* ===== Автор header ===== */
         #author-hero {
             display: none;
             width: 100%;
@@ -80,7 +79,6 @@
             box-shadow: 0 6px 18px rgba(0,0,0,0.3);
         }
 
-        /* ===== Аудио плеер ===== */
         #audio-toggle-wrap {
             text-align: center;
             margin: 16px 0 0;
@@ -144,18 +142,15 @@
         }
         #audio-dl-link:hover { background: #fdecea; }
 
-        /* Навигация */
         .nav-wrapper { text-align: center; margin: 20px 0; }
         .back-btn { display: inline-block; margin: 10px 10px 0 0; padding: 10px 18px; background: #8b5e3c; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; }
         .back-btn:hover { background: #6e472c; }
 
-        /* Ұсыныстар */
         .related-poems { margin: 20px auto; max-width: 900px; padding: 15px; background: #fdf6f0; border-left: 4px solid #8b5e3c; border-radius: 6px; }
         .related-poems p { font-weight: bold; margin-bottom: 10px; color: #333; }
         .poem-btn { display: block; text-decoration: none; color: white; background: #8b5e3c; padding: 10px 15px; border-radius: 6px; margin: 6px 0; text-align: center; font-weight: bold; transition: all 0.3s ease; }
         .poem-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.3); background: #6e472c; }
 
-        /* ===== Пікірлер ===== */
         .comments-section { max-width: 900px; margin: 40px auto 40px; padding: 0 20px; font-family: Arial, sans-serif; }
         .comments-title { font-size: 1.4rem; font-weight: 700; color: #3b1f0a; border-bottom: 2px solid #c8a06a; padding-bottom: 10px; margin-bottom: 24px; }
         .auth-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -193,7 +188,6 @@
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-    <!-- ===== АВТОР HEADER ===== -->
     <div id="author-hero">
         <img id="author-hero-img" src="" alt="Автор">
         <div id="author-hero-name"></div>
@@ -202,7 +196,6 @@
         </a>
     </div>
 
-    <!-- ===== АУДИО ПЛЕЕР ===== -->
     <div id="audio-toggle-wrap">
         <button id="audio-toggle-btn" onclick="toggleAudioPlayer()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
@@ -255,25 +248,21 @@
         </div>
     </div>
 
-    <!-- ===== ӨЛЕҢ МӘТІНІ ===== -->
     <div class="card">
         <h2 id="poem-title-display"></h2>
         <pre id="poem-content-display"></pre>
     </div>
 
-    <!-- Навигация -->
     <div id="navigation-buttons" class="nav-wrapper">
         <a href="poems.html" class="back-btn">← Өлеңдер бетіне</a>
         <a id="author-link" href="#" class="back-btn" style="display:none;">✍️ <span id="author-btn-name">Автор бетіне</span></a>
     </div>
 
-    <!-- Ұсыныстар -->
     <div id="related-poems-container" class="related-poems">
         <p>Сізге ұнауы мүмкін ⬇️</p>
         <div id="suggestions-list">Жүктелуде...</div>
     </div>
 
-    <!-- ===== ПІКІРЛЕР ===== -->
     <section class="comments-section">
         <h2 class="comments-title">💬 Пікірлер</h2>
         <div class="auth-bar">
@@ -302,7 +291,7 @@
 
     <script src="js/menu.js"></script>
 
-    <!-- ===== АУДИО ПЛЕЕР ЛОГИКАСЫ ===== -->
+    <!-- АУДИО ПЛЕЕР ЛОГИКАСЫ -->
     <script>
         var audioOpen = false;
         var audioEl   = document.getElementById('poem-audio');
@@ -368,31 +357,14 @@
         });
     </script>
 
-    <!-- ===== FIREBASE + НЕГІЗГІ ЛОГИКА ===== -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import {
-            getFirestore,
-            doc,
-            getDoc,
-            collection,
-            query,
-            limit,
-            where,
-            getDocs
-        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <!-- ✅ Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-            authDomain: "adebiet-ordasy.firebaseapp.com",
-            projectId: "adebiet-ordasy",
-            storageBucket: "adebiet-ordasy.appspot.com",
-            messagingSenderId: "776364024545",
-            appId: "1:331787955330:web:a77853b5bffdb44bed989b"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db  = getFirestore(app);
+    <!-- НЕГІЗГІ ЛОГИКА (Supabase) -->
+    <script>
+        const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
+        const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function initPage() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -405,14 +377,25 @@
             }
 
             try {
-                let docSnap = await getDoc(doc(db, "poems", poemId));
-                if (!docSnap.exists()) {
-                    docSnap = await getDoc(doc(db, "poem_requests", poemId));
+                // Алдымен poems кестесінен іздейміз
+                let { data, error } = await supabase
+                    .from('poems')
+                    .select('*')
+                    .eq('id', poemId)
+                    .single();
+
+                // Табылмаса poem_requests кестесінен іздейміз
+                if (error || !data) {
+                    const result = await supabase
+                        .from('poem_requests')
+                        .select('*')
+                        .eq('id', poemId)
+                        .single();
+                    data  = result.data;
+                    error = result.error;
                 }
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-
+                if (data) {
                     const poemTitle  = data.workTitle  || data.title    || "Тақырыпсыз";
                     const poemText   = data.work       || data.poemText || "Мәтін жоқ";
                     const authorName = data.authorName || "Белгісіз автор";
@@ -426,6 +409,7 @@
                     document.getElementById('meta-keywords').content =
                         `${poemTitle}, ${authorName}, қазақ өлеңдері, әдебиет ордасы`;
 
+                    // Schema.org
                     const schema = {
                         "@context": "https://schema.org",
                         "@type": "Poem",
@@ -444,11 +428,13 @@
                     schemaEl.textContent = JSON.stringify(schema);
                     document.head.appendChild(schemaEl);
 
+                    // Canonical URL
                     const canonEl = document.createElement('link');
-                    canonEl.rel = 'canonical';
+                    canonEl.rel  = 'canonical';
                     canonEl.href = `https://diasmark77.github.io/adebietordasy/poem-view.html?id=${poemId}`;
                     document.head.appendChild(canonEl);
 
+                    // Open Graph
                     const ogTags = {
                         'og:title':       `${poemTitle} — ${authorName}`,
                         'og:description': poemText.substring(0, 150).replace(/\n/g, ' '),
@@ -467,26 +453,27 @@
                     let audioUrl = (data.audioUrl || '').trim();
                     let authorId = (data.authorId || '').trim();
 
+                    // Автор кестесінен толықтыру
                     if (!photoUrl || !authorId || !audioUrl) {
                         try {
-                            const authQ    = query(
-                                collection(db, 'authors'),
-                                where('name', '==', authorName),
-                                limit(1)
-                            );
-                            const authSnap = await getDocs(authQ);
-                            if (!authSnap.empty) {
-                                const authData = authSnap.docs[0].data();
+                            const { data: authData } = await supabase
+                                .from('authors')
+                                .select('*')
+                                .eq('name', authorName)
+                                .limit(1)
+                                .single();
+
+                            if (authData) {
                                 if (!photoUrl) photoUrl = (authData.photoUrl || authData.authorImg || '').trim();
                                 if (!audioUrl) audioUrl = (authData.audioUrl || '').trim();
-                                if (!authorId) authorId = authSnap.docs[0].id;
+                                if (!authorId) authorId = authData.id;
                             }
                         } catch(e) {
                             console.warn('Authors іздеу қатесі:', e);
                         }
                     }
 
-                    // ===== АВТОР HEADER =====
+                    // Автор header
                     document.getElementById('author-hero-name').innerText = authorName;
                     document.getElementById('author-hero').style.display  = 'block';
                     if (photoUrl) {
@@ -497,7 +484,7 @@
                         document.getElementById('author-hero-img').style.display = 'none';
                     }
 
-                    // ===== АУДИО ПЛЕЕР =====
+                    // Аудио плеер
                     if (audioUrl) {
                         document.getElementById('poem-audio').src = audioUrl;
                         document.getElementById('audio-track-title').textContent =
@@ -509,7 +496,7 @@
                         document.getElementById('audio-toggle-wrap').style.display = 'none';
                     }
 
-                    // ===== АВТОР БАТЫРМАСЫ =====
+                    // Автор батырмасы
                     const authorUrl = authorId
                         ? `author-profile.html?id=${authorId}`
                         : 'poets.html';
@@ -534,7 +521,7 @@
                 }
 
             } catch (error) {
-                console.error("Firebase қатесі:", error);
+                console.error("Supabase қатесі:", error);
                 document.getElementById('poem-title-display').innerText   = "Қате орын алды";
                 document.getElementById('poem-content-display').innerText =
                     "Деректерді жүктеу кезінде қате шықты: " + error.message;
@@ -543,18 +530,21 @@
 
         async function loadSuggestions(currentId) {
             try {
-                const q             = query(collection(db, "poems"), limit(5));
-                const querySnapshot = await getDocs(q);
+                const { data: poems, error } = await supabase
+                    .from('poems')
+                    .select('id, workTitle, title, authorName')
+                    .neq('id', currentId)
+                    .limit(5);
+
+                if (error) throw error;
+
                 let html = "";
-                querySnapshot.forEach((docItem) => {
-                    if (docItem.id !== currentId) {
-                        const d      = docItem.data();
-                        const title  = d.workTitle  || d.title || "Өлең";
-                        const author = d.authorName || "";
-                        html += `<a href="poem-view.html?id=${docItem.id}" class="poem-btn">
-                                    📖 ${author ? author + ' — ' : ''}${title}
-                                 </a>`;
-                    }
+                (poems || []).forEach(d => {
+                    const title  = d.workTitle  || d.title || "Өлең";
+                    const author = d.authorName || "";
+                    html += `<a href="poem-view.html?id=${d.id}" class="poem-btn">
+                                📖 ${author ? author + ' — ' : ''}${title}
+                             </a>`;
                 });
                 document.getElementById('suggestions-list').innerHTML =
                     html || "<p>Ұсыныс жоқ</p>";
@@ -568,7 +558,7 @@
     </script>
 
     <!-- Пікірлер модулі -->
-    <script type="module" src="/adebietordasy/comments.js"></script>
+    <script src="/adebietordasy/comments.js"></script>
 
 </body>
 </html>
