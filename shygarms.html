@@ -87,7 +87,6 @@ section {
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* Firebase-тен келген шығармалар */
 .card.from-db { border-left: 5px solid #8b5e3c; }
 .genre-badge {
   display: inline-block; font-size: 11px; font-weight: bold;
@@ -168,7 +167,7 @@ footer {
 
 <section>
 
-  <!-- Firebase-тен шығармалар -->
+  <!-- Supabase-тен шығармалар -->
   <div id="db-shygarmalar-section" style="display:none;">
     <div id="db-shygarmalar-container">
       <div class="loading">Жүктелуде...</div>
@@ -183,38 +182,33 @@ footer {
 © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- ✅ Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-const firebaseConfig = {
-    apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-    authDomain: "adebiet-ordasy.firebaseapp.com",
-    projectId: "adebiet-ordasy",
-    storageBucket: "adebiet-ordasy.appspot.com",
-    messagingSenderId: "776364024545",
-    appId: "1:331787955330:web:a77853b5bffdb44bed989b"
-};
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+<script>
+// ── Supabase конфигурациясы ──
+const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let dbShygarmalar = [];
 
+// ── Деректерді жүктеу ──
 async function fetchShygarmalar() {
     const container = document.getElementById('db-shygarmalar-container');
     const section   = document.getElementById('db-shygarmalar-section');
 
     try {
-        const snap = await getDocs(collection(db, "shygarmalar"));
-        dbShygarmalar = snap.docs
-            .map(d => ({ id: d.id, ...d.data() }))
-            .sort((a, b) => {
-                const aT = a.addedAt?.toMillis ? a.addedAt.toMillis() : 0;
-                const bT = b.addedAt?.toMillis ? b.addedAt.toMillis() : 0;
-                return bT - aT;
-            });
+        // Supabase: "shygarmalar" кестесінен барлық жазбаларды алу,
+        // added_at бойынша кемуші ретпен сұрыптау
+        const { data, error } = await supabaseClient
+            .from('shygarmalar')
+            .select('*')
+            .order('added_at', { ascending: false });
+
+        if (error) throw error;
+
+        dbShygarmalar = data || [];
 
         if (dbShygarmalar.length > 0) {
             section.style.display = 'block';
@@ -224,12 +218,13 @@ async function fetchShygarmalar() {
             section.style.display = 'none';
         }
     } catch (error) {
-        console.error("❌ Firebase қатесі:", error);
+        console.error("❌ Supabase қатесі:", error);
         container.innerHTML = '';
         section.style.display = 'none';
     }
 }
 
+// ── Карточкаларды көрсету ──
 function renderDbShygarmalar(list) {
     const container = document.getElementById('db-shygarmalar-container');
     const section   = document.getElementById('db-shygarmalar-section');
@@ -243,11 +238,11 @@ function renderDbShygarmalar(list) {
     section.style.display = 'block';
 
     list.forEach(sh => {
-        const title      = sh.title      || 'Шығарма';
-        const authorName = sh.authorName || 'Белгісіз автор';
-        const text       = sh.textContent || '';
+        const title      = sh.title       || 'Шығарма';
+        const authorName = sh.author_name || 'Белгісіз автор';
+        const text       = sh.text_content || '';
         const preview    = text.substring(0, 200);
-        const genreLabel = sh.genreLabel  || '';
+        const genreLabel = sh.genre_label  || '';
 
         const card = document.createElement('a');
         card.className = 'card from-db';
@@ -271,9 +266,9 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
 
     if (term) {
         const filtered = dbShygarmalar.filter(s =>
-            (s.authorName  || '').toLowerCase().includes(term) ||
-            (s.title       || '').toLowerCase().includes(term) ||
-            (s.textContent || '').toLowerCase().includes(term)
+            (s.author_name  || '').toLowerCase().includes(term) ||
+            (s.title        || '').toLowerCase().includes(term) ||
+            (s.text_content || '').toLowerCase().includes(term)
         );
         renderDbShygarmalar(filtered);
     } else {
@@ -286,6 +281,7 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
     });
 });
 
+// ── Бастау ──
 fetchShygarmalar();
 </script>
 
