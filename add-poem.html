@@ -247,24 +247,14 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-    getFirestore, collection, addDoc, getDocs, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- ✅ Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-const firebaseConfig = {
-    apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-    authDomain: "adebiet-ordasy.firebaseapp.com",
-    projectId: "adebiet-ordasy",
-    storageBucket: "adebiet-ordasy.appspot.com",
-    messagingSenderId: "776364024545",
-    appId: "1:331787955330:web:a77853b5bffdb44bed989b"
-};
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+<script>
+// ── Supabase конфигурациясы (Firebase орнына) ──
+const SUPABASE_URL  = "https://rehdrlbhglnhajwtgohr.supabase.co";
+const SUPABASE_KEY  = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj..."; // ← толық кілтіңізді қойыңыз
+const supabase      = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const TG_TOKEN   = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
 const TG_CHAT_ID = "5616776281";
@@ -282,13 +272,18 @@ const form          = document.getElementById('poemForm');
 const statusEl      = document.getElementById('status');
 const btn           = document.getElementById('submitBtn');
 
-// ── Авторлар тізімін жүктеу ──
+// ── Авторлар тізімін жүктеу (Firestore → Supabase) ──
 let allAuthors = [];
 
 async function loadAuthors() {
     try {
-        const snap = await getDocs(collection(db, "authors"));
-        snap.forEach(d => allAuthors.push({ id: d.id, ...d.data() }));
+        const { data, error } = await supabase
+            .from('authors')       // Firestore: collection(db, "authors")
+            .select('*');
+
+        if (error) throw error;
+
+        allAuthors = data;
         console.log(`✅ ${allAuthors.length} автор жүктелді`);
     } catch(e) {
         console.error("❌ Авторлар жүктелмеді:", e);
@@ -351,11 +346,11 @@ function selectAuthor(a) {
     statusEl.classList.remove('show');
 }
 
-window.clearAuthor = function() {
+function clearAuthor() {
     authorIdInput.value      = '';
     authorCard.style.display = 'none';
     searchInput.value        = '';
-};
+}
 
 // ── Таңба санауыш ──
 poemTA.addEventListener('input', () => {
@@ -414,20 +409,24 @@ form.addEventListener('submit', async (e) => {
     showStatus('⏳ Сақталуда, күте тұрыңыз...', '#8b5e3c');
 
     try {
-        // ✅ ТҮЗЕТІЛДІ: poem_requests коллекциясына сақтайды
-        // ✅ ТҮЗЕТІЛДІ: өріс атаулары admin панелімен сәйкес (title, poemText, authorName)
-        const docRef = await addDoc(collection(db, "poem_requests"), {
-            title:      title,
-            authorName: authorName,
-            authorId:   authorId,
-            poemText:   poemText,
-            audioUrl:   audioUrl  || null,
-            photoUrl:   photoUrl  || null,
-            status:     'pending',
-            timestamp:  serverTimestamp()
-        });
+        // ✅ Supabase-ке сақтау (Firestore addDoc орнына)
+        const { data, error } = await supabase
+            .from('poem_requests')     // Firestore: collection(db, "poem_requests")
+            .insert([{
+                title:       title,
+                author_name: authorName,   // Supabase-те snake_case ұсынылады
+                author_id:   authorId,
+                poem_text:   poemText,
+                audio_url:   audioUrl  || null,
+                photo_url:   photoUrl  || null,
+                status:      'pending',
+                // timestamp: Supabase автоматты created_at қосады
+            }])
+            .select();
 
-        console.log('✅ Өлең жіберілді, ID:', docRef.id);
+        if (error) throw error;
+
+        console.log('✅ Өлең жіберілді:', data);
         await sendTelegram(authorName, title, poemText);
 
         showStatus('✅ Өлең сәтті жіберілді! Әкімші бекіткеннен кейін жарияланады.', 'green');
@@ -439,11 +438,11 @@ form.addEventListener('submit', async (e) => {
         charDisp.classList.remove('warn');
 
     } catch(err) {
-        console.error('❌ Firebase қатесі:', err);
+        console.error('❌ Supabase қатесі:', err);
         let errMsg = '❌ Сақтау кезінде қате орын алды.';
-        if (err.code === 'permission-denied') {
-            errMsg = '❌ Рұқсат жоқ. Firebase ережелерін тексеріңіз.';
-        } else if (err.code === 'unavailable') {
+        if (err.message && err.message.includes('permission')) {
+            errMsg = '❌ Рұқсат жоқ. Supabase RLS ережелерін тексеріңіз.';
+        } else if (err.message && err.message.includes('network')) {
             errMsg = '❌ Интернет байланысы жоқ. Желіні тексеріңіз.';
         }
         showStatus(errMsg + ' Қайта көріңіз.', 'red');
