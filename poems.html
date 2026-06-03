@@ -67,7 +67,6 @@
         .loading { text-align: center; font-size: 1.2rem; color: #8b5e3c; padding: 40px; }
         .no-results { text-align: center; color: #9a7a5a; padding: 40px; font-size: 1rem; }
 
-        /* Debug панелі */
         #debug-panel {
             display: none;
             background: #fff3cd; border: 1px solid #ffc107;
@@ -114,7 +113,6 @@
     </span>
 </div>
 
-<!-- Debug панелі — іздеу жұмыс жасамаса себебін көрсетеді -->
 <div id="debug-panel">
     <strong>🔍 Іздеу ақпараты:</strong>
     <pre id="debug-text"></pre>
@@ -130,42 +128,27 @@
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import {
-        getFirestore, collection, getDocs
-    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- ✅ Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-        authDomain: "adebiet-ordasy.firebaseapp.com",
-        projectId: "adebiet-ordasy",
-        storageBucket: "adebiet-ordasy.appspot.com",
-        messagingSenderId: "776364024545",
-        appId: "1:331787955330:web:a77853b5bffdb44bed989b"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
+<!-- ӨЛЕҢДЕР ЛОГИКАСЫ (Supabase) -->
+<script>
+    const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
+    const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let dbPoems = [];
 
-    // ── Нормализация: қазақ/орыс әріптерін есепке алып салыстыру ──
     function normalize(str) {
         if (!str) return '';
-        return str
-            .toLowerCase()
-            .replace(/ё/g, 'е')
-            .trim();
+        return str.toLowerCase().replace(/ё/g, 'е').trim();
     }
 
-    // ── Ат бойынша дәл сәйкестік немесе ішінара сәйкестік ──
     function matchesSearch(poem, term) {
-        const normTerm = normalize(term);
+        const normTerm   = normalize(term);
         const normAuthor = normalize(poem.authorName || poem.author || poem.name || '');
         const normTitle  = normalize(poem.title || '');
         const normText   = normalize(poem.poemText || poem.text || poem.content || '');
-
         return (
             normAuthor.includes(normTerm) ||
             normTitle.includes(normTerm)  ||
@@ -181,18 +164,17 @@
         section.style.display = 'block';
 
         try {
-            const snap = await getDocs(collection(db, "poems"));
-            console.log("✅ poems жазба саны:", snap.size);
+            const { data: poems, error } = await supabase
+                .from('poems')
+                .select('*')
+                .order('addedAt', { ascending: false });
 
-            dbPoems = snap.docs
-                .map(d => ({ id: d.id, ...d.data() }))
-                .sort((a, b) => {
-                    const aT = a.addedAt?.toMillis ? a.addedAt.toMillis() : 0;
-                    const bT = b.addedAt?.toMillis ? b.addedAt.toMillis() : 0;
-                    return bT - aT;
-                });
+            if (error) throw error;
 
-            // URL параметрін тексер
+            console.log("✅ poems жазба саны:", poems.length);
+
+            dbPoems = poems || [];
+
             const params    = new URLSearchParams(window.location.search);
             const urlSearch = params.get('search');
 
@@ -206,7 +188,7 @@
             }
 
         } catch (error) {
-            console.error("❌ Firebase қатесі:", error.code, error.message);
+            console.error("❌ Supabase қатесі:", error.message);
             container.innerHTML = '<p style="color:#c0392b;text-align:center;padding:20px;">' +
                 '⚠️ Өлеңдерді жүктеу мүмкін болмады. Желіні тексеріңіз.</p>';
         }
@@ -221,7 +203,6 @@
 
         const filtered = dbPoems.filter(p => matchesSearch(p, term));
 
-        // Debug панелі — нәтиже болмаса себебін көрсет
         if (filtered.length === 0 && dbPoems.length > 0) {
             const sample = dbPoems.slice(0, 3).map(p => ({
                 authorName: p.authorName,
@@ -304,11 +285,9 @@
         history.replaceState(null, '', window.location.pathname);
     };
 
-    // ── Қолмен іздеу ──
     document.getElementById('searchInput').addEventListener('input', (e) => {
         const term = e.target.value.trim();
         history.replaceState(null, '', window.location.pathname);
-
         if (term) {
             showSearchBadge(term);
             filterAndRender(term);
