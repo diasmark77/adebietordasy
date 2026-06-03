@@ -42,7 +42,6 @@ input:focus, textarea:focus, select:focus {
     box-shadow: 0 0 8px rgba(139,94,60,0.2);
 }
 
-/* Автор іздеу */
 .author-search-wrapper { position: relative; }
 #author-suggestions {
     position: absolute; top: 100%; left: 0; right: 0;
@@ -61,7 +60,6 @@ input:focus, textarea:focus, select:focus {
 }
 .suggestion-name { font-weight: bold; color: #5c4033; }
 
-/* Таңдалған автор */
 #selected-author-card {
     display: none; align-items: center; gap: 14px;
     background: #fdf6ec; border: 1px solid #d4af37;
@@ -79,7 +77,6 @@ input:focus, textarea:focus, select:focus {
 }
 .clear-author:hover { color: #e74c3c; }
 
-/* Шығарма мәтіні */
 #text-textarea {
     font-family: 'Georgia', serif;
     line-height: 1.9;
@@ -87,18 +84,15 @@ input:focus, textarea:focus, select:focus {
     resize: vertical;
 }
 
-/* Char counter */
 .char-counter { font-size: 13px; color: #999; text-align: right; margin-top: 4px; }
 .char-counter.warn { color: #e74c3c; }
 
-/* Notice */
 .notice {
     font-size: 14px; color: #777; background: #fdf5e6;
     padding: 15px; border-left: 4px solid #d4af37; margin-bottom: 25px;
     border-radius: 0 8px 8px 0;
 }
 
-/* ── Файл жүктеу аймағы ── */
 .file-upload-area {
     border: 2px dashed #d4af37;
     border-radius: 10px;
@@ -122,7 +116,6 @@ input:focus, textarea:focus, select:focus {
 .file-upload-title { font-weight: bold; color: #5c4033; font-size: 15px; }
 .file-upload-hint { font-size: 13px; color: #999; margin-top: 4px; }
 
-/* Жүктелген файл карточкасы */
 #file-card {
     display: none;
     align-items: center; gap: 12px;
@@ -143,7 +136,6 @@ input:focus, textarea:focus, select:focus {
 }
 .clear-file:hover { color: #e74c3c; }
 
-/* Мәтін/Файл табтары */
 .input-tabs {
     display: flex; gap: 0; margin-bottom: 12px;
     border: 1px solid #d3cdc0; border-radius: 8px; overflow: hidden;
@@ -153,15 +145,12 @@ input:focus, textarea:focus, select:focus {
     background: #fdfcf9; color: #888; font-weight: bold; font-size: 14px;
     transition: 0.2s; border: none; font-family: inherit;
 }
-.input-tab.active {
-    background: #8b5e3c; color: white;
-}
+.input-tab.active { background: #8b5e3c; color: white; }
 .input-tab:first-child { border-right: 1px solid #d3cdc0; }
 
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-/* Жіберу батырмасы */
 .btn-submit {
     background: #8b5e3c; color: white; border: none; padding: 15px 30px;
     border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;
@@ -170,7 +159,6 @@ input:focus, textarea:focus, select:focus {
 .btn-submit:hover:not(:disabled) { background: #5c4033; transform: translateY(-2px); }
 .btn-submit:disabled { background: #c4a882; cursor: not-allowed; transform: none; }
 
-/* Status */
 #status {
     text-align: center; margin-top: 20px; font-weight: bold;
     font-size: 16px; padding: 10px; border-radius: 8px;
@@ -178,7 +166,6 @@ input:focus, textarea:focus, select:focus {
 }
 #status.show { display: block; }
 
-/* Секция белгілегіш */
 .section-divider {
     display: flex; align-items: center; gap: 12px;
     margin: 28px 0 20px; color: #8b5e3c;
@@ -195,7 +182,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     .form-container { margin: 20px; padding: 20px; }
 }
 
-/* ── Мәзір ── */
 .menu-btn {
     position: fixed; top: 15px; left: 15px; z-index: 1000;
     background: #8b5e3c; color: white; border: none;
@@ -253,7 +239,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
 
     <form id="shygarmaForm">
 
-        <!-- ── АВТОР ТАҢДАУ ── -->
         <div class="section-divider"><span>📌 Автор</span></div>
 
         <div class="form-group">
@@ -272,7 +257,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
             <input type="hidden" id="author-id">
         </div>
 
-        <!-- ── ШЫҒАРМА МӘЛІМЕТТЕРІ ── -->
         <div class="section-divider"><span>📑 Шығарма</span></div>
 
         <div class="form-group">
@@ -293,7 +277,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
             </select>
         </div>
 
-        <!-- ── МӘТІН НЕМЕСЕ ФАЙЛ ── -->
         <div class="form-group">
             <label>Шығарма мәтіні:</label>
 
@@ -306,13 +289,11 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
                 </button>
             </div>
 
-            <!-- Қол мәтін -->
             <div class="tab-panel active" id="panel-text">
                 <textarea id="text-textarea" rows="15" placeholder="Шығарма мәтінін осы жерге енгізіңіз..."></textarea>
                 <div class="char-counter" id="char-count">0 таңба</div>
             </div>
 
-            <!-- Файл жүктеу -->
             <div class="tab-panel" id="panel-file">
                 <div class="file-upload-area" id="drop-zone">
                     <input type="file" id="docx-file-input" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
@@ -333,7 +314,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
             </div>
         </div>
 
-        <!-- ── ҚОСЫМША ── -->
         <div class="section-divider"><span>🔗 Қосымша</span></div>
 
         <div class="form-group">
@@ -360,24 +340,14 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
 <!-- Mammoth.js — .docx мәтін оқу кітапханасы -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-    getFirestore, collection, addDoc, getDocs, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- ✅ Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-const firebaseConfig = {
-    apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-    authDomain: "adebiet-ordasy.firebaseapp.com",
-    projectId: "adebiet-ordasy",
-    storageBucket: "adebiet-ordasy.appspot.com",
-    messagingSenderId: "776364024545",
-    appId: "1:331787955330:web:a77853b5bffdb44bed989b"
-};
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+<script>
+// ── Supabase конфигурациясы ──
+const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB"; // ← толық кілтіңіз
+const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const TG_TOKEN   = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
 const TG_CHAT_ID = "5616776281";
@@ -400,11 +370,10 @@ const form          = document.getElementById('shygarmaForm');
 const statusEl      = document.getElementById('status');
 const btn           = document.getElementById('submitBtn');
 
-// ── Файл айнымалылары ──
-let extractedFileText = '';   // .docx-тен оқылған мәтін
-let activeTab = 'text';       // 'text' немесе 'file'
+let extractedFileText = '';
+let activeTab = 'text';
 
-// ── Таб ауыстыру (window-ға шығарылды) ──
+// ── Таб ауыстыру ──
 window.switchTab = function(tab) {
     activeTab = tab;
     document.getElementById('tab-text').classList.toggle('active', tab === 'text');
@@ -424,26 +393,22 @@ dropZone.addEventListener('drop', e => {
     if (file) handleDocxFile(file);
 });
 
-// ── Файл input өзгергенде ──
 document.getElementById('docx-file-input').addEventListener('change', function() {
     if (this.files[0]) handleDocxFile(this.files[0]);
 });
 
 // ── .docx файлды өңдеу ──
 function handleDocxFile(file) {
-    // Формат тексеру
     if (!file.name.toLowerCase().endsWith('.docx')) {
         showFileCard(file, '❌ Тек .docx форматы қолдау көрсетіледі!', 'error');
         extractedFileText = '';
         return;
     }
-
     showFileCard(file, '⏳ Мәтін оқылуда...', 'loading');
     extractedFileText = '';
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        // mammoth .docx → таза мәтін
         mammoth.extractRawText({ arrayBuffer: e.target.result })
             .then(result => {
                 extractedFileText = result.value.trim();
@@ -451,11 +416,10 @@ function handleDocxFile(file) {
                     showFileCard(file, '⚠️ Файлда мәтін табылмады.', 'error');
                     return;
                 }
-                const charCount = extractedFileText.length;
-                showFileCard(file, `✅ ${charCount.toLocaleString()} таңба оқылды`, 'success');
+                showFileCard(file, `✅ ${extractedFileText.length.toLocaleString()} таңба оқылды`, 'success');
             })
             .catch(() => {
-                showFileCard(file, '❌ Файлды оқу мүмкін болмады. Файл зақымдалған болуы мүмкін.', 'error');
+                showFileCard(file, '❌ Файлды оқу мүмкін болмады.', 'error');
                 extractedFileText = '';
             });
     };
@@ -463,13 +427,12 @@ function handleDocxFile(file) {
 }
 
 function showFileCard(file, statusMsg, statusType) {
-    const card = document.getElementById('file-card');
     document.getElementById('file-card-name').textContent = file.name;
     document.getElementById('file-card-size').textContent = formatBytes(file.size);
     const st = document.getElementById('file-card-status');
     st.textContent = statusMsg;
     st.className = 'file-card-status ' + statusType;
-    card.style.display = 'flex';
+    document.getElementById('file-card').style.display = 'flex';
 }
 
 function formatBytes(bytes) {
@@ -484,13 +447,16 @@ window.clearFile = function() {
     document.getElementById('docx-file-input').value = '';
 };
 
-// ── Авторлар тізімін жүктеу ──
+// ── Авторлар тізімін жүктеу (Firestore → Supabase) ──
 let allAuthors = [];
 
 async function loadAuthors() {
     try {
-        const snap = await getDocs(collection(db, "authors"));
-        snap.forEach(d => allAuthors.push({ id: d.id, ...d.data() }));
+        const { data, error } = await supabase
+            .from('authors')     // Firestore: collection(db, "authors")
+            .select('*');
+        if (error) throw error;
+        allAuthors = data;
     } catch(e) {
         console.error("❌ Авторлар жүктелмеді:", e);
         showStatus('⚠️ Авторлар тізімі жүктелмеді. Бетті жаңартып көріңіз.', 'orange');
@@ -509,7 +475,7 @@ searchInput.addEventListener('input', () => {
     const q = searchInput.value.trim().toLowerCase();
     suggestBox.innerHTML = '';
     suggestBox.style.display = 'none';
-    if (!q || q.length < 1) return;
+    if (!q) return;
 
     const filtered = allAuthors.filter(a =>
         (a.authorName || a.name || '').toLowerCase().includes(q)
@@ -532,9 +498,7 @@ searchInput.addEventListener('input', () => {
 });
 
 document.addEventListener('click', e => {
-    if (!e.target.closest('.author-search-wrapper')) {
-        suggestBox.style.display = 'none';
-    }
+    if (!e.target.closest('.author-search-wrapper')) suggestBox.style.display = 'none';
 });
 
 function selectAuthor(a) {
@@ -556,7 +520,7 @@ window.clearAuthor = function() {
     searchInput.value        = '';
 };
 
-// ── Таңба санауыш (қол мәтін үшін) ──
+// ── Таңба санауыш ──
 textTA.addEventListener('input', () => {
     const n = textTA.value.length;
     charDisp.textContent = n + ' таңба';
@@ -585,24 +549,22 @@ async function sendTelegram(authorName, title, genre, textPreview) {
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const authorId    = authorIdInput.value.trim();
-    const authorName  = selName.textContent.trim();
-    const title       = document.getElementById('shygarma-title').value.trim();
-    const genreVal    = document.getElementById('shygarma-genre').value;
-    const photoUrl    = document.getElementById('photo-url').value.trim();
-    const annotation  = document.getElementById('annotation').value.trim();
+    const authorId   = authorIdInput.value.trim();
+    const authorName = selName.textContent.trim();
+    const title      = document.getElementById('shygarma-title').value.trim();
+    const genreVal   = document.getElementById('shygarma-genre').value;
+    const photoUrl   = document.getElementById('photo-url').value.trim();
+    const annotation = document.getElementById('annotation').value.trim();
 
-    // ── Мәтінді алу: таб режиміне байланысты ──
     let textContent = '';
     if (activeTab === 'file') {
         textContent = extractedFileText;
         if (!textContent) {
-            showStatus('⚠️ Word файл жүктелмеді немесе мәтін оқылмады. Файлды қайта таңдаңыз.', '#e67e22');
+            showStatus('⚠️ Word файл жүктелмеді немесе мәтін оқылмады.', '#e67e22');
             return;
         }
-        // файл мәтіні дұрыс оқылды ма тексеру
-        const statusEl2 = document.getElementById('file-card-status');
-        if (statusEl2 && statusEl2.classList.contains('error')) {
+        const st = document.getElementById('file-card-status');
+        if (st && st.classList.contains('error')) {
             showStatus('⚠️ Файлда қате бар. Басқа файл таңдаңыз.', '#e67e22');
             return;
         }
@@ -612,13 +574,11 @@ form.addEventListener('submit', async (e) => {
 
     if (!authorId) {
         showStatus('⚠️ Автор таңдалмады! Алдымен автор іздеп таңдаңыз.', '#e67e22');
-        searchInput.focus();
-        return;
+        searchInput.focus(); return;
     }
     if (!title) {
         showStatus('⚠️ Шығарма тақырыбын жазыңыз!', '#e67e22');
-        document.getElementById('shygarma-title').focus();
-        return;
+        document.getElementById('shygarma-title').focus(); return;
     }
     if (textContent.length < 100) {
         showStatus(`⚠️ Шығарма тым қысқа! Қазір: ${textContent.length} таңба. Кем дегенде 100 таңба болуы керек.`, '#e67e22');
@@ -631,21 +591,27 @@ form.addEventListener('submit', async (e) => {
     showStatus('⏳ Сақталуда, күте тұрыңыз...', '#8b5e3c');
 
     try {
-        const docRef = await addDoc(collection(db, "shygarma_requests"), {
-            title:       title,
-            authorName:  authorName,
-            authorId:    authorId,
-            genre:       genreVal || null,
-            genreLabel:  genreVal ? (genreLabels[genreVal] || genreVal) : null,
-            textContent: textContent,
-            photoUrl:    photoUrl   || null,
-            annotation:  annotation || null,
-            status:      'pending',
-            source:      activeTab === 'file' ? 'docx_upload' : 'manual',
-            timestamp:   serverTimestamp()
-        });
+        // ✅ Supabase-ке сақтау (Firestore addDoc орнына)
+        const { data, error } = await supabase
+            .from('shygarma_requests')    // Firestore: collection(db, "shygarma_requests")
+            .insert([{
+                title:        title,
+                author_name:  authorName,
+                author_id:    authorId,
+                genre:        genreVal || null,
+                genre_label:  genreVal ? (genreLabels[genreVal] || genreVal) : null,
+                text_content: textContent,
+                photo_url:    photoUrl   || null,
+                annotation:   annotation || null,
+                status:       'pending',
+                source:       activeTab === 'file' ? 'docx_upload' : 'manual',
+                // created_at: Supabase автоматты қосады
+            }])
+            .select();
 
-        console.log('✅ Шығарма жіберілді, ID:', docRef.id);
+        if (error) throw error;
+
+        console.log('✅ Шығарма жіберілді:', data);
         await sendTelegram(authorName, title, genreVal ? (genreLabels[genreVal] || genreVal) : '—', textContent);
 
         showStatus('✅ Шығарма сәтті жіберілді! Әкімші бекіткеннен кейін жарияланады.', 'green');
@@ -661,11 +627,11 @@ form.addEventListener('submit', async (e) => {
         window.switchTab('text');
 
     } catch(err) {
-        console.error('❌ Firebase қатесі:', err);
+        console.error('❌ Supabase қатесі:', err);
         let errMsg = '❌ Сақтау кезінде қате орын алды.';
-        if (err.code === 'permission-denied') {
-            errMsg = '❌ Рұқсат жоқ. Firebase ережелерін тексеріңіз.';
-        } else if (err.code === 'unavailable') {
+        if (err.message && err.message.includes('permission')) {
+            errMsg = '❌ Рұқсат жоқ. Supabase RLS ережелерін тексеріңіз.';
+        } else if (err.message && err.message.includes('network')) {
             errMsg = '❌ Интернет байланысы жоқ. Желіні тексеріңіз.';
         }
         showStatus(errMsg + ' Қайта көріңіз.', 'red');
