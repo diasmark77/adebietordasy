@@ -111,7 +111,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 .cat-alash      { background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.3); }
 .cat-kompozitor { background: rgba(76,175,130,0.15); color: #4caf82; border: 1px solid rgba(76,175,130,0.3); }
 
-/* ── Word белгісі ── */
 .badge-docx {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 11px; font-weight: bold;
@@ -307,8 +306,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
     </div>
 
     <div class="content">
-
-        <!-- ══ Авторлар өтініштері ══ -->
         <div class="pane active" id="pane-requests">
             <div class="loading-state" id="req-loading">
                 <div class="spinner"></div>
@@ -317,7 +314,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
             <div id="requests-list"></div>
         </div>
 
-        <!-- ══ Өлеңдер өтініштері ══ -->
         <div class="pane" id="pane-poems">
             <div class="filter-bar">
                 <button class="filter-btn active" onclick="filterPoems('all', this)">Барлығы</button>
@@ -326,13 +322,11 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
                 <button class="filter-btn" onclick="filterPoems('rejected', this)">❌ Қабылданбаған</button>
             </div>
             <div class="loading-state" id="poem-loading" style="display:none;">
-                <div class="spinner"></div>
-                <p>Өлеңдер жүктелуде...</p>
+                <div class="spinner"></div><p>Өлеңдер жүктелуде...</p>
             </div>
             <div id="poems-list"></div>
         </div>
 
-        <!-- ══ Шығармалар өтініштері ══ -->
         <div class="pane" id="pane-shygarmalar">
             <div class="filter-bar">
                 <button class="filter-btn active" onclick="filterShygarmalar('all', this)">Барлығы</button>
@@ -342,13 +336,11 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
                 <button class="filter-btn" onclick="filterShygarmalar('docx', this)">📄 Word файлдан</button>
             </div>
             <div class="loading-state" id="shygarma-loading" style="display:none;">
-                <div class="spinner"></div>
-                <p>Шығармалар жүктелуде...</p>
+                <div class="spinner"></div><p>Шығармалар жүктелуде...</p>
             </div>
             <div id="shygarmalar-list"></div>
         </div>
 
-        <!-- ══ Авторлар тізімі ══ -->
         <div class="pane" id="pane-authors">
             <div class="filter-bar">
                 <button class="filter-btn active" onclick="filterAuthors('all', this)">Барлығы</button>
@@ -358,35 +350,53 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
                 <button class="filter-btn" onclick="filterAuthors('kompozitor', this)">🎵 Композиторлар</button>
             </div>
             <div class="loading-state" id="auth-loading" style="display:none;">
-                <div class="spinner"></div>
-                <p>Авторлар жүктелуде...</p>
+                <div class="spinner"></div><p>Авторлар жүктелуде...</p>
             </div>
             <div id="authors-list"></div>
         </div>
-
     </div>
 </div>
 
 <div id="toast"></div>
 
-<script>
-const ADMIN_PASSWORD = "admin2026";
+<!-- ✅ Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+// ── Supabase конфигурациясы ──
+const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
+const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const ADMIN_PASSWORD = "admin2026";
 const tabLoaded = { requests: false, poems: false, shygarmalar: false, authors: false };
 
-window.switchTab = function(tab) {
-    document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('pane-' + tab).classList.add('active');
-    document.getElementById('tab-' + tab).classList.add('active');
-
-    if (!tabLoaded[tab]) {
-        tabLoaded[tab] = true;
-        if (tab === 'poems')       window._loadPoemRequests     && window._loadPoemRequests();
-        if (tab === 'shygarmalar') window._loadShygarmaRequests && window._loadShygarmaRequests();
-        if (tab === 'authors')     window._loadAuthors          && window._loadAuthors();
-    }
+const categoryLabels = {
+    aqyn: '✍️ Ақын', jazushy: '📚 Жазушы',
+    alash: '📜 Алаш зиялысы', kompozitor: '🎵 Композитор'
 };
+
+let allAuthors          = [];
+let allPoemRequests     = [];
+let allShygarmaRequests = [];
+
+// ── Көмекші функциялар ──
+function fmtDate(ts) {
+    if (!ts) return '';
+    const d = new Date(ts);
+    return d.toLocaleDateString('kk-KZ', {
+        day:'2-digit', month:'2-digit', year:'numeric',
+        hour:'2-digit', minute:'2-digit'
+    });
+}
+function avatarLetter(name) { return (name || '?')[0].toUpperCase(); }
+
+function toast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'show ' + type;
+    setTimeout(() => { t.className = ''; }, 3000);
+}
+window.toast = toast;
 
 window.toggleSection = function(el) {
     el.classList.toggle('open');
@@ -398,12 +408,18 @@ window.toggleMenu = function() {
     document.getElementById("overlay").classList.toggle("show");
 };
 
-function toast(msg, type = 'success') {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.className = 'show ' + type;
-    setTimeout(() => { t.className = ''; }, 3000);
-}
-window.toast = toast;
+window.switchTab = function(tab) {
+    document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('pane-' + tab).classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+    if (!tabLoaded[tab]) {
+        tabLoaded[tab] = true;
+        if (tab === 'poems')       loadPoemRequests();
+        if (tab === 'shygarmalar') loadShygarmaRequests();
+        if (tab === 'authors')     loadAuthors();
+    }
+};
 
 window.doLogin = function() {
     const pwd = document.getElementById('pwd-input').value.trim();
@@ -412,7 +428,7 @@ window.doLogin = function() {
         document.getElementById('main-panel').style.display = 'block';
         document.getElementById('login-err').textContent = '';
         tabLoaded.requests = true;
-        window._loadRequests && window._loadRequests();
+        loadRequests();
     } else {
         document.getElementById('login-err').textContent = '❌ Құпия сөз қате!';
         document.getElementById('pwd-input').value = '';
@@ -423,53 +439,12 @@ window.logout = function() {
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('main-panel').style.display  = 'none';
     document.getElementById('pwd-input').value = '';
-    tabLoaded.requests    = false;
-    tabLoaded.poems       = false;
-    tabLoaded.shygarmalar = false;
-    tabLoaded.authors     = false;
+    Object.keys(tabLoaded).forEach(k => tabLoaded[k] = false);
 };
-</script>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-    getFirestore, collection, getDocs, addDoc, doc, getDoc,
-    updateDoc, deleteDoc, serverTimestamp, query, orderBy
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-    apiKey:            "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-    authDomain:        "adebiet-ordasy.firebaseapp.com",
-    projectId:         "adebiet-ordasy",
-    storageBucket:     "adebiet-ordasy.appspot.com",
-    messagingSenderId: "776364024545",
-    appId:             "1:331787955330:web:a77853b5bffdb44bed989b"
-};
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
-
-const categoryLabels = {
-    aqyn: '✍️ Ақын', jazushy: '📚 Жазушы',
-    alash: '📜 Алаш зиялысы', kompozitor: '🎵 Композитор'
-};
-
-let allAuthors = [];
-let allPoemRequests = [];
-let allShygarmaRequests = [];
-
-function fmtDate(ts) {
-    if (!ts) return '';
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
-    return d.toLocaleDateString('kk-KZ', {
-        day:'2-digit', month:'2-digit', year:'numeric',
-        hour:'2-digit', minute:'2-digit'
-    });
-}
-function avatarLetter(name) { return (name || '?')[0].toUpperCase(); }
 
 /* ════════════════════════════════════════
    АВТОРЛАР ӨТІНІШТЕРІ
+   Firestore: collection('requests') → Supabase: from('requests')
 ════════════════════════════════════════ */
 async function loadRequests() {
     const loadingEl = document.getElementById('req-loading');
@@ -477,18 +452,23 @@ async function loadRequests() {
     loadingEl.style.display = 'block';
     listEl.innerHTML = '';
     try {
-        const q = query(collection(db, 'requests'), orderBy('timestamp', 'desc'));
-        const snap = await getDocs(q);
+        const { data, error } = await supabase
+            .from('requests')
+            .select('*')
+            .order('created_at', { ascending: false });
+        if (error) throw error;
+
         loadingEl.style.display = 'none';
-        const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
-        document.getElementById('cnt-pending').textContent = pending.length;
-        document.getElementById('stats-pill').textContent = `Барлығы: ${snap.size} өтініш`;
-        if (snap.empty) {
+        const pending = data.filter(d => !d.status || d.status === 'pending');
+        document.getElementById('cnt-pending').textContent  = pending.length;
+        document.getElementById('stats-pill').textContent   = `Барлығы: ${data.length} өтініш`;
+
+        if (!data.length) {
             listEl.innerHTML = '<div class="empty-state"><div class="icon">📭</div>Өтініш жоқ</div>';
             return;
         }
-        snap.forEach(docSnap => {
-            const d = docSnap.data(); const id = docSnap.id;
+        data.forEach(d => {
+            const id = d.id;
             const status = d.status || 'pending';
             const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
             const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
@@ -500,23 +480,23 @@ async function loadRequests() {
             card.innerHTML = `
                 <div class="card-header">
                     <div class="author-info">
-                        <div class="avatar">${avatarLetter(d.authorName)}</div>
+                        <div class="avatar">${avatarLetter(d.author_name)}</div>
                         <div>
                             <div class="author-name">
-                                ${d.authorName || 'Белгісіз'}
+                                ${d.author_name || 'Белгісіз'}
                                 <span class="status-badge ${badgeMap[status]}">${labelMap[status]}</span>
                                 ${d.category ? `<span class="cat-badge ${catClass}">${catLabel}</span>` : ''}
                             </div>
-                            <div class="author-contact">📞 ${d.contactInfo || '—'}</div>
+                            <div class="author-contact">📞 ${d.contact_info || '—'}</div>
                         </div>
                     </div>
-                    <div class="card-date">${fmtDate(d.timestamp)}</div>
+                    <div class="card-date">${fmtDate(d.created_at)}</div>
                 </div>
                 <div class="section-toggle" onclick="toggleSection(this)">📋 Өмірбаян <span class="arrow">▾</span></div>
                 <div class="section-content">${d.biography || '—'}</div>
                 <div class="section-toggle" onclick="toggleSection(this)">📝 Үлгі шығарма <span class="arrow">▾</span></div>
-                <div class="section-content">${d.sampleWork || '—'}</div>
-                ${d.photoUrl ? `<div style="margin:10px 0;font-size:13px;color:#9a8866;">🖼 Сурет: <a href="${d.photoUrl}" target="_blank" style="color:#d4af37;">${d.photoUrl.substring(0,60)}...</a></div>` : ''}
+                <div class="section-content">${d.sample_work || '—'}</div>
+                ${d.photo_url ? `<div style="margin:10px 0;font-size:13px;color:#9a8866;">🖼 Сурет: <a href="${d.photo_url}" target="_blank" style="color:#d4af37;">${d.photo_url.substring(0,60)}...</a></div>` : ''}
                 ${status === 'pending' ? `
                 <div class="card-actions">
                     <button class="btn-approve" onclick="approveRequest('${id}')">✅ Рұқсат беру</button>
@@ -536,38 +516,55 @@ async function loadRequests() {
         listEl.innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
     }
 }
-window._loadRequests = loadRequests;
 
 window.approveRequest = async function(reqId) {
     try {
-        const reqSnap = await getDocs(query(collection(db, 'requests')));
-        const reqData = reqSnap.docs.find(d => d.id === reqId)?.data();
-        await updateDoc(doc(db, 'requests', reqId), { status: 'approved', approvedAt: serverTimestamp() });
-        if (reqData) {
-            await addDoc(collection(db, 'authors'), {
-                name: reqData.authorName, contact: reqData.contactInfo,
-                biography: reqData.biography, photoUrl: reqData.photoUrl || null,
-                sampleWork: reqData.sampleWork, category: reqData.category || null,
-                requestId: reqId, addedAt: serverTimestamp()
-            });
-        }
-        window.toast('✅ Автор рұқсат алды және авторлар тізіміне қосылды!');
-        window.tabLoaded && (window.tabLoaded.authors = false);
+        // Өтінішті алу
+        const { data: req, error: fetchErr } = await supabase
+            .from('requests').select('*').eq('id', reqId).single();
+        if (fetchErr) throw fetchErr;
+
+        // Өтінішті approved деп белгілеу
+        const { error: updErr } = await supabase
+            .from('requests')
+            .update({ status: 'approved', approved_at: new Date().toISOString() })
+            .eq('id', reqId);
+        if (updErr) throw updErr;
+
+        // Авторлар тізіміне қосу
+        const { error: insErr } = await supabase.from('authors').insert([{
+            name:        req.author_name,
+            contact:     req.contact_info,
+            biography:   req.biography,
+            photo_url:   req.photo_url || null,
+            sample_work: req.sample_work,
+            category:    req.category || null,
+            request_id:  reqId,
+        }]);
+        if (insErr) throw insErr;
+
+        toast('✅ Автор рұқсат алды және авторлар тізіміне қосылды!');
+        tabLoaded.authors = false;
         loadRequests();
-    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+    } catch (e) { toast('❌ Қате: ' + e.message, 'error'); }
 };
 
 window.rejectRequest = async function(reqId) {
     if (!confirm('Бұл өтінішті қабылдамауға сенімдісіз бе?')) return;
     try {
-        await updateDoc(doc(db, 'requests', reqId), { status: 'rejected', rejectedAt: serverTimestamp() });
-        window.toast('Өтініш қабылданбады.');
+        const { error } = await supabase
+            .from('requests')
+            .update({ status: 'rejected', rejected_at: new Date().toISOString() })
+            .eq('id', reqId);
+        if (error) throw error;
+        toast('Өтініш қабылданбады.');
         loadRequests();
-    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+    } catch (e) { toast('❌ Қате: ' + e.message, 'error'); }
 };
 
 /* ════════════════════════════════════════
    ӨЛЕҢ ӨТІНІШТЕРІ
+   Firestore: collection('poem_requests') → Supabase: from('poem_requests')
 ════════════════════════════════════════ */
 async function loadPoemRequests() {
     const loadingEl = document.getElementById('poem-loading');
@@ -575,19 +572,22 @@ async function loadPoemRequests() {
     loadingEl.style.display = 'block';
     listEl.innerHTML = '';
     try {
-        const q = query(collection(db, 'poem_requests'), orderBy('timestamp', 'desc'));
-        const snap = await getDocs(q);
+        const { data, error } = await supabase
+            .from('poem_requests')
+            .select('*')
+            .order('created_at', { ascending: false });
+        if (error) throw error;
+
         loadingEl.style.display = 'none';
-        const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
+        const pending = data.filter(d => !d.status || d.status === 'pending');
         document.getElementById('cnt-poems-pending').textContent = pending.length;
-        allPoemRequests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        allPoemRequests = data;
         renderPoemRequests(allPoemRequests);
     } catch (e) {
         loadingEl.style.display = 'none';
         listEl.innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
     }
 }
-window._loadPoemRequests = loadPoemRequests;
 
 function renderPoemRequests(list) {
     const container = document.getElementById('poems-list');
@@ -601,7 +601,8 @@ function renderPoemRequests(list) {
         const status = d.status || 'pending';
         const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
         const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
-        const preview = (d.poemText || '').substring(0, 80).replace(/\n/g, ' ');
+        // Supabase: poem_text (snake_case)
+        const preview = (d.poem_text || '').substring(0, 80).replace(/\n/g, ' ');
         const card = document.createElement('div');
         card.className = `poem-card ${status !== 'pending' ? status : ''}`;
         card.id = 'poem-' + id;
@@ -609,7 +610,7 @@ function renderPoemRequests(list) {
             <div class="card-header">
                 <div class="author-info">
                     <div class="avatar" style="background: linear-gradient(135deg,#5e3a8b,#b07adf);">
-                        ${avatarLetter(d.authorName)}
+                        ${avatarLetter(d.author_name)}
                     </div>
                     <div>
                         <div class="author-name">
@@ -617,16 +618,16 @@ function renderPoemRequests(list) {
                             <span class="status-badge ${badgeMap[status]}">${labelMap[status]}</span>
                             ${d.genre ? `<span class="poem-genre-badge">${d.genre}</span>` : ''}
                         </div>
-                        <div class="author-contact">✍️ ${d.authorName || 'Белгісіз'}</div>
+                        <div class="author-contact">✍️ ${d.author_name || 'Белгісіз'}</div>
                     </div>
                 </div>
-                <div class="card-date">${fmtDate(d.timestamp)}</div>
+                <div class="card-date">${fmtDate(d.created_at)}</div>
             </div>
             <div class="section-toggle" onclick="toggleSection(this)">
                 📜 Өлең мәтіні <span style="font-size:12px;color:#6b5d47;margin-left:8px;">"${preview}…"</span>
                 <span class="arrow">▾</span>
             </div>
-            <div class="section-content poem-body">${d.poemText || '—'}</div>
+            <div class="section-content poem-body">${d.poem_text || '—'}</div>
             ${status === 'pending' ? `
             <div class="card-actions">
                 <button class="btn-approve" onclick="approvePoemRequest('${id}')">✅ Рұқсат беру</button>
@@ -653,48 +654,61 @@ window.filterPoems = function(filter, btn) {
 
 window.approvePoemRequest = async function(poemId) {
     try {
-        const docRef  = doc(db, 'poem_requests', poemId);
-        const docSnap = await getDoc(docRef);
-        const data    = docSnap.exists() ? docSnap.data() : null;
-        await updateDoc(docRef, { status: 'approved', approvedAt: serverTimestamp() });
-        if (data) {
-            await addDoc(collection(db, 'poems'), {
-                title:      data.title      || '',
-                authorName: data.authorName || '',
-                authorId:   data.authorId   || null,
-                poemText:   data.poemText   || '',
-                audioUrl:   data.audioUrl   || null,
-                photoUrl:   data.photoUrl   || null,
-                genre:      data.genre      || null,
-                requestId:  poemId,
-                addedAt:    serverTimestamp()
-            });
-        }
-        window.toast('✅ Өлең рұқсат алды және өлеңдер тізіміне қосылды!');
+        const { data: req, error: fetchErr } = await supabase
+            .from('poem_requests').select('*').eq('id', poemId).single();
+        if (fetchErr) throw fetchErr;
+
+        const { error: updErr } = await supabase
+            .from('poem_requests')
+            .update({ status: 'approved', approved_at: new Date().toISOString() })
+            .eq('id', poemId);
+        if (updErr) throw updErr;
+
+        // poems кестесіне қосу
+        const { error: insErr } = await supabase.from('poems').insert([{
+            title:       req.title      || '',
+            author_name: req.author_name || '',
+            author_id:   req.author_id   || null,
+            poem_text:   req.poem_text   || '',
+            audio_url:   req.audio_url   || null,
+            photo_url:   req.photo_url   || null,
+            genre:       req.genre       || null,
+            request_id:  poemId,
+        }]);
+        if (insErr) throw insErr;
+
+        toast('✅ Өлең рұқсат алды және өлеңдер тізіміне қосылды!');
         loadPoemRequests();
-    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+    } catch (e) { toast('❌ Қате: ' + e.message, 'error'); }
 };
 
 window.rejectPoemRequest = async function(poemId) {
     if (!confirm('Бұл өлеңді қабылдамауға сенімдісіз бе?')) return;
     try {
-        await updateDoc(doc(db, 'poem_requests', poemId), { status: 'rejected', rejectedAt: serverTimestamp() });
-        window.toast('Өлең қабылданбады.');
+        const { error } = await supabase
+            .from('poem_requests')
+            .update({ status: 'rejected', rejected_at: new Date().toISOString() })
+            .eq('id', poemId);
+        if (error) throw error;
+        toast('Өлең қабылданбады.');
         loadPoemRequests();
-    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+    } catch (e) { toast('❌ Қате: ' + e.message, 'error'); }
 };
 
 window.deletePoemRequest = async function(poemId) {
     if (!confirm('Өтінішті толығымен жоюға сенімдісіз бе?')) return;
     try {
-        await deleteDoc(doc(db, 'poem_requests', poemId));
-        window.toast('Өтініш жойылды.');
+        const { error } = await supabase
+            .from('poem_requests').delete().eq('id', poemId);
+        if (error) throw error;
+        toast('Өтініш жойылды.');
         loadPoemRequests();
-    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+    } catch (e) { toast('❌ Қате: ' + e.message, 'error'); }
 };
 
 /* ════════════════════════════════════════
    ШЫҒАРМА ӨТІНІШТЕРІ
+   Firestore: collection('shygarma_requests') → Supabase: from('shygarma_requests')
 ════════════════════════════════════════ */
 async function loadShygarmaRequests() {
     const loadingEl = document.getElementById('shygarma-loading');
@@ -702,19 +716,22 @@ async function loadShygarmaRequests() {
     loadingEl.style.display = 'block';
     listEl.innerHTML = '';
     try {
-        const q = query(collection(db, 'shygarma_requests'), orderBy('timestamp', 'desc'));
-        const snap = await getDocs(q);
+        const { data, error } = await supabase
+            .from('shygarma_requests')
+            .select('*')
+            .order('created_at', { ascending: false });
+        if (error) throw error;
+
         loadingEl.style.display = 'none';
-        const pending = snap.docs.filter(d => !d.data().status || d.data().status === 'pending');
+        const pending = data.filter(d => !d.status || d.status === 'pending');
         document.getElementById('cnt-shygarma-pending').textContent = pending.length;
-        allShygarmaRequests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        allShygarmaRequests = data;
         renderShygarmaRequests(allShygarmaRequests);
     } catch (e) {
         loadingEl.style.display = 'none';
         listEl.innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
     }
 }
-window._loadShygarmaRequests = loadShygarmaRequests;
 
 function renderShygarmaRequests(list) {
     const container = document.getElementById('shygarmalar-list');
@@ -726,10 +743,10 @@ function renderShygarmaRequests(list) {
     list.forEach(d => {
         const id = d.id;
         const status = d.status || 'pending';
-        const isDocx = d.source === 'docx_upload';   // ← Word белгісі
+        const isDocx = d.source === 'docx_upload';
         const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
         const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
-        const preview = (d.textContent || '').substring(0, 80).replace(/\n/g, ' ');
+        const preview = (d.text_content || '').substring(0, 80).replace(/\n/g, ' ');
         const card = document.createElement('div');
         card.className = `shygarma-card ${status !== 'pending' ? status : ''}`;
         card.id = 'shygarma-' + id;
@@ -737,19 +754,19 @@ function renderShygarmaRequests(list) {
             <div class="card-header">
                 <div class="author-info">
                     <div class="avatar" style="background: linear-gradient(135deg,#3c6e8b,#5aabdf);">
-                        ${avatarLetter(d.authorName)}
+                        ${avatarLetter(d.author_name)}
                     </div>
                     <div>
                         <div class="author-name">
                             ${d.title || 'Атауы жоқ'}
                             <span class="status-badge ${badgeMap[status]}">${labelMap[status]}</span>
-                            ${d.genreLabel ? `<span class="shygarma-genre-badge">${d.genreLabel}</span>` : ''}
+                            ${d.genre_label ? `<span class="shygarma-genre-badge">${d.genre_label}</span>` : ''}
                             ${isDocx ? `<span class="badge-docx">📄 Word</span>` : ''}
                         </div>
-                        <div class="author-contact">✍️ ${d.authorName || 'Белгісіз'}</div>
+                        <div class="author-contact">✍️ ${d.author_name || 'Белгісіз'}</div>
                     </div>
                 </div>
-                <div class="card-date">${fmtDate(d.timestamp)}</div>
+                <div class="card-date">${fmtDate(d.created_at)}</div>
             </div>
             ${d.annotation ? `
             <div class="section-toggle" onclick="toggleSection(this)">
@@ -760,7 +777,7 @@ function renderShygarmaRequests(list) {
                 📑 Шығарма мәтіні <span style="font-size:12px;color:#6b5d47;margin-left:8px;">"${preview}…"</span>
                 <span class="arrow">▾</span>
             </div>
-            <div class="section-content shygarma-body">${d.textContent || '—'}</div>
+            <div class="section-content shygarma-body">${d.text_content || '—'}</div>
             ${status === 'pending' ? `
             <div class="card-actions">
                 <button class="btn-approve" onclick="approveShygarmaRequest('${id}')">✅ Рұқсат беру</button>
@@ -781,58 +798,69 @@ function renderShygarmaRequests(list) {
 window.filterShygarmalar = function(filter, btn) {
     document.querySelectorAll('#pane-shygarmalar .filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    if (filter === 'all')   return renderShygarmaRequests(allShygarmaRequests);
-    if (filter === 'docx')  return renderShygarmaRequests(allShygarmaRequests.filter(s => s.source === 'docx_upload'));
+    if (filter === 'all')  return renderShygarmaRequests(allShygarmaRequests);
+    if (filter === 'docx') return renderShygarmaRequests(allShygarmaRequests.filter(s => s.source === 'docx_upload'));
     renderShygarmaRequests(allShygarmaRequests.filter(s => (s.status || 'pending') === filter));
 };
 
 window.approveShygarmaRequest = async function(shygarmaId) {
     try {
-        const docRef  = doc(db, 'shygarma_requests', shygarmaId);
-        const docSnap = await getDoc(docRef);
-        const data    = docSnap.exists() ? docSnap.data() : null;
-        await updateDoc(docRef, { status: 'approved', approvedAt: serverTimestamp() });
-        if (data) {
-            await addDoc(collection(db, 'shygarmalar'), {
-                title:       data.title       || '',
-                authorName:  data.authorName  || '',
-                authorId:    data.authorId    || null,
-                genre:       data.genre       || null,
-                genreLabel:  data.genreLabel  || null,
-                textContent: data.textContent || '',
-                photoUrl:    data.photoUrl    || null,
-                annotation:  data.annotation  || null,
-                requestId:   shygarmaId,
-                addedAt:     serverTimestamp()
-            });
-        }
-        window.toast('✅ Шығарма рұқсат алды және шығармалар тізіміне қосылды!');
+        const { data: req, error: fetchErr } = await supabase
+            .from('shygarma_requests').select('*').eq('id', shygarmaId).single();
+        if (fetchErr) throw fetchErr;
+
+        const { error: updErr } = await supabase
+            .from('shygarma_requests')
+            .update({ status: 'approved', approved_at: new Date().toISOString() })
+            .eq('id', shygarmaId);
+        if (updErr) throw updErr;
+
+        // shygarmalar кестесіне қосу
+        const { error: insErr } = await supabase.from('shygarmalar').insert([{
+            title:        req.title        || '',
+            author_name:  req.author_name  || '',
+            author_id:    req.author_id    || null,
+            genre:        req.genre        || null,
+            genre_label:  req.genre_label  || null,
+            text_content: req.text_content || '',
+            photo_url:    req.photo_url    || null,
+            annotation:   req.annotation   || null,
+            request_id:   shygarmaId,
+        }]);
+        if (insErr) throw insErr;
+
+        toast('✅ Шығарма рұқсат алды және шығармалар тізіміне қосылды!');
         loadShygarmaRequests();
-    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+    } catch (e) { toast('❌ Қате: ' + e.message, 'error'); }
 };
 
 window.rejectShygarmaRequest = async function(shygarmaId) {
     if (!confirm('Бұл шығарманы қабылдамауға сенімдісіз бе?')) return;
     try {
-        await updateDoc(doc(db, 'shygarma_requests', shygarmaId), {
-            status: 'rejected', rejectedAt: serverTimestamp()
-        });
-        window.toast('Шығарма қабылданбады.');
+        const { error } = await supabase
+            .from('shygarma_requests')
+            .update({ status: 'rejected', rejected_at: new Date().toISOString() })
+            .eq('id', shygarmaId);
+        if (error) throw error;
+        toast('Шығарма қабылданбады.');
         loadShygarmaRequests();
-    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+    } catch (e) { toast('❌ Қате: ' + e.message, 'error'); }
 };
 
 window.deleteShygarmaRequest = async function(shygarmaId) {
     if (!confirm('Өтінішті толығымен жоюға сенімдісіз бе?')) return;
     try {
-        await deleteDoc(doc(db, 'shygarma_requests', shygarmaId));
-        window.toast('Өтініш жойылды.');
+        const { error } = await supabase
+            .from('shygarma_requests').delete().eq('id', shygarmaId);
+        if (error) throw error;
+        toast('Өтініш жойылды.');
         loadShygarmaRequests();
-    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+    } catch (e) { toast('❌ Қате: ' + e.message, 'error'); }
 };
 
 /* ════════════════════════════════════════
    АВТОРЛАР ТІЗІМІ
+   Firestore: collection('authors') → Supabase: from('authors')
 ════════════════════════════════════════ */
 async function loadAuthors() {
     const loadingEl = document.getElementById('auth-loading');
@@ -840,21 +868,25 @@ async function loadAuthors() {
     loadingEl.style.display = 'block';
     listEl.innerHTML = '';
     try {
-        const snap = await getDocs(query(collection(db, 'authors'), orderBy('addedAt', 'desc')));
+        const { data, error } = await supabase
+            .from('authors')
+            .select('*')
+            .order('created_at', { ascending: false });
+        if (error) throw error;
+
         loadingEl.style.display = 'none';
-        document.getElementById('cnt-authors').textContent = snap.size;
-        allAuthors = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        document.getElementById('cnt-authors').textContent = data.length;
+        allAuthors = data;
         renderAuthors(allAuthors);
     } catch (e) {
         loadingEl.style.display = 'none';
         listEl.innerHTML = `<div class="empty-state">❌ Қате: ${e.message}</div>`;
     }
 }
-window._loadAuthors = loadAuthors;
 
 function renderAuthors(list) {
     const container = document.getElementById('authors-list');
-    if (list.length === 0) {
+    if (!list.length) {
         container.innerHTML = '<div class="empty-state"><div class="icon">✍️</div>Автор табылмады</div>';
         return;
     }
@@ -888,12 +920,13 @@ window.filterAuthors = function(category, btn) {
 window.deleteAuthor = async function(authorId) {
     if (!confirm('Авторды жоюға сенімдісіз бе?')) return;
     try {
-        await deleteDoc(doc(db, 'authors', authorId));
-        window.toast('Автор жойылды.');
+        const { error } = await supabase
+            .from('authors').delete().eq('id', authorId);
+        if (error) throw error;
+        toast('Автор жойылды.');
         loadAuthors();
-    } catch (e) { window.toast('❌ Қате: ' + e.message, 'error'); }
+    } catch (e) { toast('❌ Қате: ' + e.message, 'error'); }
 };
-
 </script>
 
 </body>
