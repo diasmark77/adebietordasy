@@ -1,7 +1,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const app = initializeApp({apiKey:"AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",authDomain:"adebiet-ordasy.firebaseapp.com",projectId:"adebiet-ordasy",storageBucket:"adebiet-ordasy.appspot.com",messagingSenderId:"776364024545",appId:"1:331787955330:web:a77853b5bffdb44bed989b"},"migration");
+const app = initializeApp({
+  apiKey: "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+  authDomain: "adebiet-ordasy.firebaseapp.com",
+  projectId: "adebiet-ordasy",
+  storageBucket: "adebiet-ordasy.appspot.com",
+  messagingSenderId: "776364024545",
+  appId: "1:331787955330:web:a77853b5bffdb44bed989b"
+}, "migration");
 
 const db = getFirestore(app);
 const U = "https://rehdrlbhglnhajwtgohr.supabase.co";
@@ -23,21 +30,46 @@ const post = async (t, d) => {
 const authors = await getDocs(collection(db, "authors"));
 for (const d of authors.docs) {
   const a = d.data();
-  await post("authors", {name:a.namenull,biography:a.biographynull,category:a.categorynull,photo_url:a.photoUrlnull,sample_work:a.sampleWorknull,contact:a.contactnull,request_id:a.requestId||null});
+  await post("authors", {
+    name: a.name || null,
+    biography: a.biography || null,
+    category: a.category || null,
+    photo_url: a.photoUrl || null,
+    sample_work: a.sampleWork || null,
+    contact: a.contact || null,
+    request_id: a.requestId || null
+  });
 }
 console.log("Avtorlar: " + authors.size);
 
 const poems = await getDocs(collection(db, "poems"));
 for (const d of poems.docs) {
   const p = d.data();
-  await post("poems", {title:p.titlenull,poem_text:p.poemTextnull,audio_url:p.audioUrlnull,photo_url:p.photoUrlnull,author_id:p.authorIdnull,author_name:p.authorNamenull,genre:p.genrenull,request_id:p.requestIdnull});
+  await post("poems", {
+    title: p.title || null,
+    poem_text: p.poemText || null,
+    audio_url: p.audioUrl || null,
+    photo_url: p.photoUrl || null,
+    author_id: p.authorId || null,
+    author_name: p.authorName || null,
+    genre: p.genre || null,
+    request_id: p.requestId || null
+  });
 }
 console.log("Olender: " + poems.size);
 
 const shyg = await getDocs(collection(db, "shygarmalar"));
 for (const d of shyg.docs) {
   const s = d.data();
-  await post("shygarmalar", {title:s.titlenull,content:s.contentnull,photo_url:s.photoUrlnull,author_id:s.authorIdnull,author_name:s.authorNamenull,genre:s.genrenull,request_id:s.requestId||null});
+  await post("shygarmalar", {
+    title: s.title || null,
+    content: s.content || null,
+    photo_url: s.photoUrl || null,
+    author_id: s.authorId || null,
+    author_name: s.authorName || null,
+    genre: s.genre || null,
+    request_id: s.requestId || null
+  });
 }
 console.log("Shygarmalar: " + shyg.size);
 
@@ -46,7 +78,13 @@ for (const pd of comms.docs) {
   const msgs = await getDocs(collection(db, "comments", pd.id, "messages"));
   for (const m of msgs.docs) {
     const c = m.data();
-    await post("comments", {page_id:pd.id,text:c.textnull,user_id:c.userIdnull,user_name:c.userNamenull,user_photo:c.userPhotonull});
+    await post("comments", {
+      page_id: pd.id,
+      text: c.text || null,
+      user_id: c.userId || null,
+      user_name: c.userName || null,
+      user_photo: c.userPhoto || null
+    });
   }
 }
 console.log("DONE!");
