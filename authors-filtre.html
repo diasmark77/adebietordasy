@@ -402,7 +402,7 @@ async function loadAuthors() {
     const { data: authors, error } = await supabase
       .from('authors')
       .select('*')
-      .order('addedAt', { ascending: false });
+      .order('added_at', { ascending: false });
 
     if (error) throw error;
 
@@ -426,7 +426,7 @@ async function loadAuthors() {
 
       card.innerHTML = `
         <div class="card-img-wrap">
-          <img src="${author.photoUrl || 'images/logo.png'}"
+          <img src="${author.photo_url || 'images/logo.png'}"
                alt="${author.name || ''}"
                onerror="this.src='images/logo.png'">
           <span class="cat-label ${catClass}">${catLabel}</span>
