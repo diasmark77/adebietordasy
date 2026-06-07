@@ -465,6 +465,8 @@ function toggleMenu() {
 const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
 const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Миграция үшін глобал деңгейде сақтаймыз
+window._sbClient   = supabase;
 
 const categoryLabels = {
   aqyn:       '✍️ Ақын',
@@ -583,7 +585,7 @@ async function runMigration() {
         let success = 0;
         for (let i = 0; i < rows.length; i += 500) {
           const chunk = rows.slice(i, i + 500);
-          const { error } = await supabase.from(col).upsert(chunk);
+          const { error } = await window._sbClient.from(col).upsert(chunk);
           if (error) {
             migrateLog(`❌ ${col}: ${error.message}`);
             break;
@@ -593,7 +595,11 @@ async function runMigration() {
         migrateLog(`✅ ${col}: ${success} жазба көшірілді`);
 
       } catch (e) {
-        migrateLog(`❌ ${col}: ${e.message}`);
+        if (e.code === 'permission-denied' || e.message.includes('permissions')) {
+          migrateLog(`⚠️ ${col}: Firebase рұқсат жоқ (rules мәселесі), өткізілді`);
+        } else {
+          migrateLog(`❌ ${col}: ${e.message}`);
+        }
       }
     }
 
