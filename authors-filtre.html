@@ -553,9 +553,8 @@ async function runMigration() {
 
   try {
     const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js");
-    const { getFirestore, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+    const { getFirestore, collection, collectionGroup, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
 
-    // Firebase app бұрыннан бар болса қайта жасамаймыз
     const _app = getApps().find(a => a.name === "migration")
       || initializeApp({
            apiKey:    "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
@@ -565,8 +564,9 @@ async function runMigration() {
 
     const _db = getFirestore(_app);
 
+    // Қарапайым коллекциялар (comments жоқ — ол subcollection)
     const _cols = [
-      "authors", "comments", "poem_requests",
+      "authors", "poem_requests",
       "poems", "requests", "shygarma_requests", "shygarmalar"
     ];
 
@@ -596,20 +596,51 @@ async function runMigration() {
 
       } catch (e) {
         if (e.code === 'permission-denied' || e.message.includes('permissions')) {
-          migrateLog(`⚠️ ${col}: Firebase рұқсат жоқ (rules мәселесі), өткізілді`);
+          migrateLog(`⚠️ ${col}: Firebase рұқсат жоқ, өткізілді`);
         } else {
           migrateLog(`❌ ${col}: ${e.message}`);
         }
       }
     }
 
+    // comments — subcollection: comments/{pageId}/messages/{messageId}
+    // collectionGroup арқылы барлық messages-ті бірден аламыз
+    try {
+      migrateLog("⏳ comments: жүктелуде...");
+      const msgSnap = await getDocs(collectionGroup(_db, "messages"));
+      const msgRows = msgSnap.docs.map(d => ({
+        id:      d.id,
+        page_id: d.ref.parent.parent.id,
+        ...d.data()
+      }));
+
+      if (!msgRows.length) {
+        migrateLog("⏭ comments: бос, өткізілді");
+      } else {
+        let success = 0;
+        for (let i = 0; i < msgRows.length; i += 500) {
+          const chunk = msgRows.slice(i, i + 500);
+          const { error } = await window._sbClient.from("comments").upsert(chunk);
+          if (error) { migrateLog(`❌ comments: ${error.message}`); break; }
+          success += chunk.length;
+        }
+        migrateLog(`✅ comments: ${success} хабарлама көшірілді`);
+      }
+    } catch (e) {
+      if (e.code === "permission-denied" || e.message.includes("permissions")) {
+        migrateLog("⚠️ comments: Firebase рұқсат жоқ, өткізілді");
+      } else {
+        migrateLog(`❌ comments: ${e.message}`);
+      }
+    }
+
     migrateLog("🎉 Миграция аяқталды!");
-    btn.textContent = '✅ Дайын';
+    btn.textContent = "✅ Дайын";
 
   } catch (e) {
     migrateLog("❌ Жалпы қате: " + e.message);
     btn.disabled = false;
-    btn.textContent = '▶ Қайта бастау';
+    btn.textContent = "▶ Қайта бастау";
   }
 }
 </script>
