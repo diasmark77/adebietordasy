@@ -270,6 +270,73 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ── Миграция панелі ── */
+#migrate-panel {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+#migrate-toggle {
+  background: var(--brown);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(92,64,51,0.35);
+}
+#migrate-toggle:hover { background: var(--brown-mid); }
+#migrate-box {
+  display: none;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  width: 320px;
+  box-shadow: 0 8px 28px rgba(92,64,51,0.18);
+  font-size: 13px;
+  color: var(--text);
+}
+#migrate-box h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: var(--brown);
+}
+#migrate-log {
+  background: #f5f0e8;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 11.5px;
+  max-height: 180px;
+  overflow-y: auto;
+  margin: 10px 0;
+  line-height: 1.7;
+  color: var(--text);
+}
+#migrate-run {
+  background: var(--brown);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+}
+#migrate-run:hover { background: var(--brown-mid); }
+#migrate-run:disabled { opacity: 0.5; cursor: not-allowed; }
+
 footer {
   background: var(--brown);
   color: rgba(255,255,255,0.85);
@@ -336,6 +403,19 @@ footer {
 <footer>
   © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
+
+<!-- ── МИГРАЦИЯ ПАНЕЛІ (беттің оң төменгі бұрышында) ── -->
+<div id="migrate-panel">
+  <button id="migrate-toggle" onclick="document.getElementById('migrate-box').style.display = document.getElementById('migrate-box').style.display === 'none' ? 'block' : 'none'">
+    🔄 Firebase → Supabase
+  </button>
+  <div id="migrate-box">
+    <h3>Firebase деректерін көшіру</h3>
+    <p style="color:#7a6a58; font-size:12px; margin-bottom:4px;">Барлық коллекциялар Supabase-ке жазылады.</p>
+    <div id="migrate-log">Лог осында шығады...</div>
+    <button id="migrate-run" onclick="runMigration()">▶ Миграцияны бастау</button>
+  </div>
+</div>
 
 <!-- ГЛОБАЛ JS -->
 <script>
@@ -453,6 +533,79 @@ async function loadAuthors() {
 }
 
 loadAuthors();
+</script>
+
+<!-- МИГРАЦИЯ СКРИПТІ -->
+<script>
+function migrateLog(msg) {
+  const log = document.getElementById('migrate-log');
+  log.innerHTML += msg + '<br>';
+  log.scrollTop = log.scrollHeight;
+}
+
+async function runMigration() {
+  const btn = document.getElementById('migrate-run');
+  btn.disabled = true;
+  btn.textContent = '⏳ Жүктелуде...';
+  document.getElementById('migrate-log').innerHTML = '';
+
+  try {
+    const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js");
+    const { getFirestore, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
+    // Firebase app бұрыннан бар болса қайта жасамаймыз
+    const _app = getApps().find(a => a.name === "migration")
+      || initializeApp({
+           apiKey:    "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
+           projectId: "adebiet-ordasy",
+           appId:     "1:331787955330:web:a77853b5bffdb44bed989b"
+         }, "migration");
+
+    const _db = getFirestore(_app);
+
+    const _cols = [
+      "authors", "comments", "poem_requests",
+      "poems", "requests", "shygarma_requests", "shygarmalar"
+    ];
+
+    migrateLog("🚀 Миграция басталды...");
+
+    for (const col of _cols) {
+      try {
+        const snap = await getDocs(collection(_db, col));
+        const rows = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        if (!rows.length) {
+          migrateLog(`⏭ ${col}: бос, өткізілді`);
+          continue;
+        }
+
+        let success = 0;
+        for (let i = 0; i < rows.length; i += 500) {
+          const chunk = rows.slice(i, i + 500);
+          const { error } = await supabase.from(col).upsert(chunk);
+          if (error) {
+            migrateLog(`❌ ${col}: ${error.message}`);
+            break;
+          }
+          success += chunk.length;
+        }
+        migrateLog(`✅ ${col}: ${success} жазба көшірілді`);
+
+      } catch (e) {
+        migrateLog(`❌ ${col}: ${e.message}`);
+      }
+    }
+
+    migrateLog("🎉 Миграция аяқталды!");
+    btn.textContent = '✅ Дайын';
+
+  } catch (e) {
+    migrateLog("❌ Жалпы қате: " + e.message);
+    btn.disabled = false;
+    btn.textContent = '▶ Қайта бастау';
+  }
+}
 </script>
 
 </body>
