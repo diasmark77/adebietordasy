@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Админ панелі | Әдебиет ордасы</title>
-<link rel="stylesheet" href="css/menu.css">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -15,6 +14,34 @@ body {
     min-height: 100vh;
 }
 
+/* ── MENU ── */
+.menu-btn {
+    position: fixed; top: 16px; left: 16px; z-index: 200;
+    background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3);
+    color: #d4af37; font-size: 20px; width: 40px; height: 40px;
+    border-radius: 8px; cursor: pointer; display: none;
+    align-items: center; justify-content: center;
+}
+#menu {
+    position: fixed; top: 0; left: -260px; width: 260px; height: 100%;
+    background: #1a1208; border-right: 1px solid rgba(212,175,55,0.2);
+    z-index: 300; transition: left .3s; padding: 60px 16px 20px;
+    display: flex; flex-direction: column; gap: 6px;
+}
+#menu.show { left: 0; }
+#menu button {
+    background: transparent; border: none; color: #9a8866;
+    padding: 12px 16px; border-radius: 8px; font-size: 14px;
+    cursor: pointer; text-align: left; font-family: inherit; transition: .2s;
+}
+#menu button:hover { background: rgba(212,175,55,0.1); color: #d4af37; }
+.overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 250;
+}
+.overlay.show { display: block; }
+
+/* ── LOGIN ── */
 #login-screen {
     display: flex; align-items: center; justify-content: center;
     min-height: 100vh;
@@ -43,6 +70,7 @@ body {
 .btn-login:hover { background: #e8c84a; }
 #login-err { color: #e07070; font-size: 13px; margin-top: 12px; min-height: 18px; }
 
+/* ── MAIN ── */
 #main-panel { display: none; }
 
 header {
@@ -243,30 +271,33 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 #toast.error   { border-color: rgba(224,112,112,0.4); color: #e07070; }
 
 @media(max-width: 600px) {
-    header { padding: 14px 16px; }
+    .menu-btn { display: flex; }
+    header { padding: 14px 16px 14px 64px; }
     .tabs  { padding: 16px 16px 0; }
     .content { padding: 16px; }
     .request-card, .poem-card, .shygarma-card { padding: 18px; }
     .card-header { flex-direction: column; }
     .poem-body, .shygarma-body { font-size: 14px; }
+    .header-right .stats-pill { display: none; }
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ══ LOGIN ══ -->
 <div id="login-screen">
     <div class="login-box">
         <h1>⚜️ Админ панелі</h1>
         <p>Әдебиет ордасы — басқару жүйесі</p>
-        <input type="password" id="pwd-input" placeholder="Құпия сөз" onkeydown="if(event.key==='Enter') doLogin()">
+        <input type="password" id="pwd-input" placeholder="Құпия сөз"
+               onkeydown="if(event.key==='Enter') doLogin()">
         <button class="btn-login" onclick="doLogin()">Кіру</button>
         <div id="login-err"></div>
     </div>
 </div>
 
-<!-- MAIN -->
-<div id="main-panel">
+<!-- ══ MAIN ══ -->
+<div id="main-panel" style="display:none;">
 
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
@@ -306,6 +337,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
     </div>
 
     <div class="content">
+        <!-- ӨТІНІШТЕР -->
         <div class="pane active" id="pane-requests">
             <div class="loading-state" id="req-loading">
                 <div class="spinner"></div>
@@ -314,6 +346,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
             <div id="requests-list"></div>
         </div>
 
+        <!-- ӨЛЕҢДЕР -->
         <div class="pane" id="pane-poems">
             <div class="filter-bar">
                 <button class="filter-btn active" onclick="filterPoems('all', this)">Барлығы</button>
@@ -327,6 +360,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
             <div id="poems-list"></div>
         </div>
 
+        <!-- ШЫҒАРМАЛАР -->
         <div class="pane" id="pane-shygarmalar">
             <div class="filter-bar">
                 <button class="filter-btn active" onclick="filterShygarmalar('all', this)">Барлығы</button>
@@ -341,6 +375,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
             <div id="shygarmalar-list"></div>
         </div>
 
+        <!-- АВТОРЛАР -->
         <div class="pane" id="pane-authors">
             <div class="filter-bar">
                 <button class="filter-btn active" onclick="filterAuthors('all', this)">Барлығы</button>
@@ -359,7 +394,7 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 
 <div id="toast"></div>
 
-<!-- ✅ Supabase SDK -->
+<!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
@@ -393,7 +428,8 @@ function avatarLetter(name) { return (name || '?')[0].toUpperCase(); }
 
 function toast(msg, type = 'success') {
     const t = document.getElementById('toast');
-    t.textContent = msg; t.className = 'show ' + type;
+    t.textContent = msg;
+    t.className = 'show ' + type;
     setTimeout(() => { t.className = ''; }, 3000);
 }
 window.toast = toast;
@@ -404,10 +440,11 @@ window.toggleSection = function(el) {
 };
 
 window.toggleMenu = function() {
-    document.getElementById("menu").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
+    document.getElementById('menu').classList.toggle('show');
+    document.getElementById('overlay').classList.toggle('show');
 };
 
+// ── ТАБ АУЫСТЫРУ ──
 window.switchTab = function(tab) {
     document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -421,11 +458,12 @@ window.switchTab = function(tab) {
     }
 };
 
+// ── КІРУ / ШЫҒУ ──
 window.doLogin = function() {
     const pwd = document.getElementById('pwd-input').value.trim();
     if (pwd === ADMIN_PASSWORD) {
         document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-panel').style.display = 'block';
+        document.getElementById('main-panel').style.display   = 'block';
         document.getElementById('login-err').textContent = '';
         tabLoaded.requests = true;
         loadRequests();
@@ -437,14 +475,13 @@ window.doLogin = function() {
 
 window.logout = function() {
     document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('main-panel').style.display  = 'none';
+    document.getElementById('main-panel').style.display   = 'none';
     document.getElementById('pwd-input').value = '';
     Object.keys(tabLoaded).forEach(k => tabLoaded[k] = false);
 };
 
 /* ════════════════════════════════════════
    АВТОРЛАР ӨТІНІШТЕРІ
-   Firestore: collection('requests') → Supabase: from('requests')
 ════════════════════════════════════════ */
 async function loadRequests() {
     const loadingEl = document.getElementById('req-loading');
@@ -460,8 +497,8 @@ async function loadRequests() {
 
         loadingEl.style.display = 'none';
         const pending = data.filter(d => !d.status || d.status === 'pending');
-        document.getElementById('cnt-pending').textContent  = pending.length;
-        document.getElementById('stats-pill').textContent   = `Барлығы: ${data.length} өтініш`;
+        document.getElementById('cnt-pending').textContent = pending.length;
+        document.getElementById('stats-pill').textContent  = `Барлығы: ${data.length} өтініш`;
 
         if (!data.length) {
             listEl.innerHTML = '<div class="empty-state"><div class="icon">📭</div>Өтініш жоқ</div>';
@@ -519,19 +556,16 @@ async function loadRequests() {
 
 window.approveRequest = async function(reqId) {
     try {
-        // Өтінішті алу
         const { data: req, error: fetchErr } = await supabase
             .from('requests').select('*').eq('id', reqId).single();
         if (fetchErr) throw fetchErr;
 
-        // Өтінішті approved деп белгілеу
         const { error: updErr } = await supabase
             .from('requests')
             .update({ status: 'approved', approved_at: new Date().toISOString() })
             .eq('id', reqId);
         if (updErr) throw updErr;
 
-        // Авторлар тізіміне қосу
         const { error: insErr } = await supabase.from('authors').insert([{
             name:        req.author_name,
             contact:     req.contact_info,
@@ -564,7 +598,6 @@ window.rejectRequest = async function(reqId) {
 
 /* ════════════════════════════════════════
    ӨЛЕҢ ӨТІНІШТЕРІ
-   Firestore: collection('poem_requests') → Supabase: from('poem_requests')
 ════════════════════════════════════════ */
 async function loadPoemRequests() {
     const loadingEl = document.getElementById('poem-loading');
@@ -601,7 +634,6 @@ function renderPoemRequests(list) {
         const status = d.status || 'pending';
         const badgeMap = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
         const labelMap = { pending:'Күтуде', approved:'Рұқсат берілді', rejected:'Қабылданбады' };
-        // Supabase: poem_text (snake_case)
         const preview = (d.poem_text || '').substring(0, 80).replace(/\n/g, ' ');
         const card = document.createElement('div');
         card.className = `poem-card ${status !== 'pending' ? status : ''}`;
@@ -664,7 +696,6 @@ window.approvePoemRequest = async function(poemId) {
             .eq('id', poemId);
         if (updErr) throw updErr;
 
-        // poems кестесіне қосу
         const { error: insErr } = await supabase.from('poems').insert([{
             title:       req.title      || '',
             author_name: req.author_name || '',
@@ -708,7 +739,6 @@ window.deletePoemRequest = async function(poemId) {
 
 /* ════════════════════════════════════════
    ШЫҒАРМА ӨТІНІШТЕРІ
-   Firestore: collection('shygarma_requests') → Supabase: from('shygarma_requests')
 ════════════════════════════════════════ */
 async function loadShygarmaRequests() {
     const loadingEl = document.getElementById('shygarma-loading');
@@ -815,7 +845,6 @@ window.approveShygarmaRequest = async function(shygarmaId) {
             .eq('id', shygarmaId);
         if (updErr) throw updErr;
 
-        // shygarmalar кестесіне қосу
         const { error: insErr } = await supabase.from('shygarmalar').insert([{
             title:        req.title        || '',
             author_name:  req.author_name  || '',
@@ -860,7 +889,6 @@ window.deleteShygarmaRequest = async function(shygarmaId) {
 
 /* ════════════════════════════════════════
    АВТОРЛАР ТІЗІМІ
-   Firestore: collection('authors') → Supabase: from('authors')
 ════════════════════════════════════════ */
 async function loadAuthors() {
     const loadingEl = document.getElementById('auth-loading');
