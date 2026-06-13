@@ -627,21 +627,21 @@ async function runMigration() {
 
     for (const col of _cols) {
       try {
-        migrateLog(`⏳ ${col}: жүктелуде...`);
+        migrateLog(`⏳ ${col}: Firebase-тен жүктелуде...`);
         const snap = await getDocs(collection(_db, col));
+        migrateLog(`📊 ${col}: ${snap.size} документ табылды`);
 
         if (snap.empty) {
-          migrateLog(`⏭ ${col}: бос, өткізілді`);
+          migrateLog(`⏭ ${col}: Firebase-те бос (0 документ)`);
           continue;
         }
 
-        // Деректерді тазалап, Timestamp → ISO string айналдырамыз
         const rows = snap.docs.map(d => ({
           id: d.id,
           ...cleanFirebaseData(d.data())
         }));
 
-        migrateLog(`📦 ${col}: ${rows.length} жазба табылды, Supabase-ке жазылуда...`);
+        migrateLog(`📦 ${col}: Supabase-ке жазылуда...`);
 
         let success = 0;
         let hasError = false;
@@ -650,7 +650,7 @@ async function runMigration() {
           const chunk = rows.slice(i, i + 500);
           const { error } = await sbClient.from(col).upsert(chunk, { onConflict: 'id' });
           if (error) {
-            migrateLog(`❌ ${col} (${i}–${i + chunk.length}): ${error.message}`);
+            migrateLog(`❌ ${col} Supabase қатесі: ${error.message} (code: ${error.code})`);
             hasError = true;
             break;
           }
@@ -662,11 +662,7 @@ async function runMigration() {
         }
 
       } catch (e) {
-        if (e.code === 'permission-denied' || (e.message && e.message.includes('permissions'))) {
-          migrateLog(`⚠️ ${col}: Firebase рұқсат жоқ, өткізілді`);
-        } else {
-          migrateLog(`❌ ${col}: ${e.message}`);
-        }
+        migrateLog(`❌ ${col} қате [${e.code || 'unknown'}]: ${e.message}`);
       }
     }
 
