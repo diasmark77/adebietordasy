@@ -570,26 +570,32 @@ function migrateLog(msg) {
   log.scrollTop = log.scrollHeight;
 }
 
+// camelCase → snake_case түрлендіру
+function toSnakeCase(str) {
+  return str.replace(/([A-Z])/g, '_$1').toLowerCase();
+}
+
 // Firebase Timestamp және басқа сериализацияланбайтын типтерді тазалайды
 function cleanFirebaseData(data) {
   const clean = {};
   for (const [key, val] of Object.entries(data)) {
+    const snakeKey = toSnakeCase(key);
     if (val === undefined || val === null) {
-      clean[key] = null;
+      clean[snakeKey] = null;
     } else if (typeof val?.toDate === 'function') {
       // Firestore Timestamp → ISO string
-      clean[key] = val.toDate().toISOString();
+      clean[snakeKey] = val.toDate().toISOString();
     } else if (val instanceof Object && val.seconds !== undefined && val.nanoseconds !== undefined) {
       // Timestamp plain object түрі
-      clean[key] = new Date(val.seconds * 1000).toISOString();
+      clean[snakeKey] = new Date(val.seconds * 1000).toISOString();
     } else if (Array.isArray(val)) {
-      clean[key] = val.map(item =>
+      clean[snakeKey] = val.map(item =>
         item && typeof item === 'object' ? cleanFirebaseData(item) : item
       );
     } else if (typeof val === 'object') {
-      clean[key] = cleanFirebaseData(val);
+      clean[snakeKey] = cleanFirebaseData(val);
     } else {
-      clean[key] = val;
+      clean[snakeKey] = val;
     }
   }
   return clean;
