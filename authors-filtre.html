@@ -423,7 +423,7 @@ async function loadAuthors() {
       const card = document.createElement('a');
       card.className = 'card';
       card.setAttribute('data-category', category);
-      card.href = `author-profile.html?id=${id}`;
+      card.href = `/author/${id}`;
 
       card.innerHTML = `
         <div class="card-img-wrap">
