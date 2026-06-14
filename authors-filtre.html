@@ -270,94 +270,6 @@ header p  { margin: 0; opacity: 0.85; font-size: 15px; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Миграция панелі ── */
-#migrate-panel {
-  position: fixed;
-  bottom: 20px; right: 20px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-}
-#migrate-toggle {
-  background: var(--brown);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 18px;
-  font-size: 13px;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(92,64,51,0.35);
-}
-#migrate-toggle:hover { background: var(--brown-mid); }
-#migrate-box {
-  display: none;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px 18px;
-  width: 340px;
-  box-shadow: 0 8px 28px rgba(92,64,51,0.18);
-  font-size: 13px;
-  color: var(--text);
-}
-#migrate-box h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 15px;
-  margin-bottom: 10px;
-  color: var(--brown);
-}
-#migrate-key-wrap {
-  margin-bottom: 10px;
-}
-#migrate-key-wrap label {
-  display: block;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--muted);
-  margin-bottom: 4px;
-}
-#migrate-sb-key {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 7px 10px;
-  font-size: 11.5px;
-  font-family: monospace;
-  color: var(--text);
-  outline: none;
-}
-#migrate-sb-key:focus { border-color: var(--brown-mid); }
-#migrate-log {
-  background: #f5f0e8;
-  border-radius: 8px;
-  padding: 10px;
-  font-family: monospace;
-  font-size: 11.5px;
-  max-height: 200px;
-  overflow-y: auto;
-  margin: 10px 0;
-  line-height: 1.7;
-  color: var(--text);
-}
-#migrate-run {
-  background: var(--brown);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 9px 18px;
-  font-size: 13px;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 700;
-  cursor: pointer;
-  width: 100%;
-}
-#migrate-run:hover { background: var(--brown-mid); }
-#migrate-run:disabled { opacity: 0.5; cursor: not-allowed; }
-
 footer {
   background: var(--brown);
   color: rgba(255,255,255,0.85);
@@ -425,23 +337,6 @@ footer {
   © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-<!-- ── МИГРАЦИЯ ПАНЕЛІ ── -->
-<div id="migrate-panel">
-  <button id="migrate-toggle" onclick="
-    var box = document.getElementById('migrate-box');
-    box.style.display = box.style.display === 'none' || box.style.display === '' ? 'block' : 'none';
-  ">🔄 Firebase → Supabase</button>
-
-  <div id="migrate-box">
-    <h3>Firebase деректерін көшіру</h3>
-    <p style="color:#7a6a58; font-size:12px; margin-bottom:8px;">
-      Барлық коллекциялар Supabase-ке жазылады.
-    </p>
-    <div id="migrate-log">Лог осында шығады...</div>
-    <button id="migrate-run" onclick="runMigration()">▶ Миграцияны бастау</button>
-  </div>
-</div>
-
 <!-- ГЛОБАЛ JS -->
 <script>
 let activeFilter = 'all';
@@ -482,7 +377,7 @@ function toggleMenu() {
 }
 </script>
 
-<!-- ✅ Supabase SDK (соңғы нұсқа — жаңа sb_publishable_ кілтін қолдайды) -->
+<!-- ✅ Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.50.0/dist/umd/supabase.js"></script>
 
 <!-- АВТОРЛАР ЖҮКТЕУ (Supabase) -->
@@ -491,7 +386,6 @@ const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-window._sbClient = supabase;
 
 const categoryLabels = {
   aqyn:       '✍️ Ақын',
@@ -560,169 +454,6 @@ async function loadAuthors() {
 }
 
 loadAuthors();
-</script>
-
-<!-- МИГРАЦИЯ СКРИПТІ -->
-<script>
-function migrateLog(msg) {
-  const log = document.getElementById('migrate-log');
-  log.innerHTML += msg + '<br>';
-  log.scrollTop = log.scrollHeight;
-}
-
-// camelCase → snake_case түрлендіру
-function toSnakeCase(str) {
-  return str.replace(/([A-Z])/g, '_$1').toLowerCase();
-}
-
-// Firebase Timestamp және басқа сериализацияланбайтын типтерді тазалайды
-function cleanFirebaseData(data) {
-  const clean = {};
-  for (const [key, val] of Object.entries(data)) {
-    const snakeKey = toSnakeCase(key);
-    if (val === undefined || val === null) {
-      clean[snakeKey] = null;
-    } else if (typeof val?.toDate === 'function') {
-      // Firestore Timestamp → ISO string
-      clean[snakeKey] = val.toDate().toISOString();
-    } else if (val instanceof Object && val.seconds !== undefined && val.nanoseconds !== undefined) {
-      // Timestamp plain object түрі
-      clean[snakeKey] = new Date(val.seconds * 1000).toISOString();
-    } else if (Array.isArray(val)) {
-      clean[snakeKey] = val.map(item =>
-        item && typeof item === 'object' ? cleanFirebaseData(item) : item
-      );
-    } else if (typeof val === 'object') {
-      clean[snakeKey] = cleanFirebaseData(val);
-    } else {
-      clean[snakeKey] = val;
-    }
-  }
-  return clean;
-}
-
-async function runMigration() {
-  const btn = document.getElementById('migrate-run');
-
-  // Бетте бұрын жасалған supabase клиентін қолданамыз
-  const sbClient = window._sbClient;
-
-  btn.disabled = true;
-  btn.textContent = '⏳ Жүктелуде...';
-  document.getElementById('migrate-log').innerHTML = '';
-
-  try {
-    const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js");
-    const { getFirestore, collection, collectionGroup, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
-
-    const _app = getApps().find(a => a.name === "migration")
-      || initializeApp({
-           apiKey:    "AIzaSyC_aLF4dK_m0jvkbSzhTWo3rsP7yx5uoXw",
-           projectId: "adebiet-ordasy",
-           appId:     "1:331787955330:web:a77853b5bffdb44bed989b"
-         }, "migration");
-
-    const _db = getFirestore(_app);
-
-    const _cols = [
-      "authors", "poem_requests",
-      "poems", "requests", "shygarma_requests", "shygarmalar"
-    ];
-
-    migrateLog("🚀 Миграция басталды...");
-
-    for (const col of _cols) {
-      try {
-        migrateLog(`⏳ ${col}: Firebase-тен жүктелуде...`);
-        const snap = await getDocs(collection(_db, col));
-        migrateLog(`📊 ${col}: ${snap.size} документ табылды`);
-
-        if (snap.empty) {
-          migrateLog(`⏭ ${col}: Firebase-те бос (0 документ)`);
-          continue;
-        }
-
-        const rows = snap.docs.map(d => ({
-          id: d.id,
-          ...cleanFirebaseData(d.data())
-        }));
-
-        migrateLog(`📦 ${col}: Supabase-ке жазылуда...`);
-
-        let success = 0;
-        let hasError = false;
-
-        for (let i = 0; i < rows.length; i += 500) {
-          const chunk = rows.slice(i, i + 500);
-          const { error } = await sbClient.from(col).upsert(chunk, { onConflict: 'id' });
-          if (error) {
-            migrateLog(`❌ ${col} Supabase қатесі: ${error.message} (code: ${error.code})`);
-            hasError = true;
-            break;
-          }
-          success += chunk.length;
-        }
-
-        if (!hasError) {
-          migrateLog(`✅ ${col}: ${success} жазба сәтті көшірілді`);
-        }
-
-      } catch (e) {
-        migrateLog(`❌ ${col} қате [${e.code || 'unknown'}]: ${e.message}`);
-      }
-    }
-
-    // comments subcollection миграциясы
-    try {
-      migrateLog("⏳ comments: жүктелуде...");
-      const msgSnap = await getDocs(collectionGroup(_db, "messages"));
-
-      if (msgSnap.empty) {
-        migrateLog("⏭ comments: бос, өткізілді");
-      } else {
-        const msgRows = msgSnap.docs.map(d => ({
-          id:      d.id,
-          page_id: d.ref.parent.parent.id,
-          ...cleanFirebaseData(d.data())
-        }));
-
-        migrateLog(`📦 comments: ${msgRows.length} хабарлама табылды, жазылуда...`);
-
-        let success = 0;
-        let hasError = false;
-
-        for (let i = 0; i < msgRows.length; i += 500) {
-          const chunk = msgRows.slice(i, i + 500);
-          const { error } = await sbClient.from("comments").upsert(chunk, { onConflict: 'id' });
-          if (error) {
-            migrateLog(`❌ comments (${i}–${i + chunk.length}): ${error.message}`);
-            hasError = true;
-            break;
-          }
-          success += chunk.length;
-        }
-
-        if (!hasError) {
-          migrateLog(`✅ comments: ${success} хабарлама сәтті көшірілді`);
-        }
-      }
-    } catch (e) {
-      if (e.code === "permission-denied" || (e.message && e.message.includes("permissions"))) {
-        migrateLog("⚠️ comments: Firebase рұқсат жоқ, өткізілді");
-      } else {
-        migrateLog(`❌ comments: ${e.message}`);
-      }
-    }
-
-    migrateLog("🎉 Миграция аяқталды!");
-    btn.textContent = "✅ Дайын";
-
-  } catch (e) {
-    migrateLog("❌ Жалпы қате: " + e.message);
-    btn.disabled = false;
-    btn.textContent = "▶ Қайта бастау";
-  }
-}
 </script>
 
 </body>
