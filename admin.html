@@ -399,9 +399,10 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 
 <script>
 // ── Supabase конфигурациясы ──
+// ⚠️ SUPABASE_KEY-ді Supabase Dashboard → Settings → API → anon public кілтімен ауыстырыңыз
 const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
-const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
-const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlaGRybGJoZ2xuaGFqd3Rnb2hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDczNjUsImV4cCI6MjA5NjA4MzM2NX0.A99bsOSP-VhbryWsBCtXYc0oWE6BIl4RWAkci-fEt2c";
+const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const ADMIN_PASSWORD = "admin2026";
 const tabLoaded = { requests: false, poems: false, shygarmalar: false, authors: false };
@@ -489,7 +490,7 @@ async function loadRequests() {
     loadingEl.style.display = 'block';
     listEl.innerHTML = '';
     try {
-        const { data, error } = await supabase
+        const { data, error } = await _supabase
             .from('requests')
             .select('*')
             .order('created_at', { ascending: false });
@@ -556,17 +557,17 @@ async function loadRequests() {
 
 window.approveRequest = async function(reqId) {
     try {
-        const { data: req, error: fetchErr } = await supabase
+        const { data: req, error: fetchErr } = await _supabase
             .from('requests').select('*').eq('id', reqId).single();
         if (fetchErr) throw fetchErr;
 
-        const { error: updErr } = await supabase
+        const { error: updErr } = await _supabase
             .from('requests')
             .update({ status: 'approved', approved_at: new Date().toISOString() })
             .eq('id', reqId);
         if (updErr) throw updErr;
 
-        const { error: insErr } = await supabase.from('authors').insert([{
+        const { error: insErr } = await _supabase.from('authors').insert([{
             name:        req.author_name,
             contact:     req.contact_info,
             biography:   req.biography,
@@ -586,7 +587,7 @@ window.approveRequest = async function(reqId) {
 window.rejectRequest = async function(reqId) {
     if (!confirm('Бұл өтінішті қабылдамауға сенімдісіз бе?')) return;
     try {
-        const { error } = await supabase
+        const { error } = await _supabase
             .from('requests')
             .update({ status: 'rejected', rejected_at: new Date().toISOString() })
             .eq('id', reqId);
@@ -605,7 +606,7 @@ async function loadPoemRequests() {
     loadingEl.style.display = 'block';
     listEl.innerHTML = '';
     try {
-        const { data, error } = await supabase
+        const { data, error } = await _supabase
             .from('poem_requests')
             .select('*')
             .order('created_at', { ascending: false });
@@ -686,17 +687,17 @@ window.filterPoems = function(filter, btn) {
 
 window.approvePoemRequest = async function(poemId) {
     try {
-        const { data: req, error: fetchErr } = await supabase
+        const { data: req, error: fetchErr } = await _supabase
             .from('poem_requests').select('*').eq('id', poemId).single();
         if (fetchErr) throw fetchErr;
 
-        const { error: updErr } = await supabase
+        const { error: updErr } = await _supabase
             .from('poem_requests')
             .update({ status: 'approved', approved_at: new Date().toISOString() })
             .eq('id', poemId);
         if (updErr) throw updErr;
 
-        const { error: insErr } = await supabase.from('poems').insert([{
+        const { error: insErr } = await _supabase.from('poems').insert([{
             title:       req.title      || '',
             author_name: req.author_name || '',
             author_id:   req.author_id   || null,
@@ -716,7 +717,7 @@ window.approvePoemRequest = async function(poemId) {
 window.rejectPoemRequest = async function(poemId) {
     if (!confirm('Бұл өлеңді қабылдамауға сенімдісіз бе?')) return;
     try {
-        const { error } = await supabase
+        const { error } = await _supabase
             .from('poem_requests')
             .update({ status: 'rejected', rejected_at: new Date().toISOString() })
             .eq('id', poemId);
@@ -729,7 +730,7 @@ window.rejectPoemRequest = async function(poemId) {
 window.deletePoemRequest = async function(poemId) {
     if (!confirm('Өтінішті толығымен жоюға сенімдісіз бе?')) return;
     try {
-        const { error } = await supabase
+        const { error } = await _supabase
             .from('poem_requests').delete().eq('id', poemId);
         if (error) throw error;
         toast('Өтініш жойылды.');
@@ -746,7 +747,7 @@ async function loadShygarmaRequests() {
     loadingEl.style.display = 'block';
     listEl.innerHTML = '';
     try {
-        const { data, error } = await supabase
+        const { data, error } = await _supabase
             .from('shygarma_requests')
             .select('*')
             .order('created_at', { ascending: false });
@@ -835,17 +836,17 @@ window.filterShygarmalar = function(filter, btn) {
 
 window.approveShygarmaRequest = async function(shygarmaId) {
     try {
-        const { data: req, error: fetchErr } = await supabase
+        const { data: req, error: fetchErr } = await _supabase
             .from('shygarma_requests').select('*').eq('id', shygarmaId).single();
         if (fetchErr) throw fetchErr;
 
-        const { error: updErr } = await supabase
+        const { error: updErr } = await _supabase
             .from('shygarma_requests')
             .update({ status: 'approved', approved_at: new Date().toISOString() })
             .eq('id', shygarmaId);
         if (updErr) throw updErr;
 
-        const { error: insErr } = await supabase.from('shygarmalar').insert([{
+        const { error: insErr } = await _supabase.from('shygarmalar').insert([{
             title:        req.title        || '',
             author_name:  req.author_name  || '',
             author_id:    req.author_id    || null,
@@ -866,7 +867,7 @@ window.approveShygarmaRequest = async function(shygarmaId) {
 window.rejectShygarmaRequest = async function(shygarmaId) {
     if (!confirm('Бұл шығарманы қабылдамауға сенімдісіз бе?')) return;
     try {
-        const { error } = await supabase
+        const { error } = await _supabase
             .from('shygarma_requests')
             .update({ status: 'rejected', rejected_at: new Date().toISOString() })
             .eq('id', shygarmaId);
@@ -879,7 +880,7 @@ window.rejectShygarmaRequest = async function(shygarmaId) {
 window.deleteShygarmaRequest = async function(shygarmaId) {
     if (!confirm('Өтінішті толығымен жоюға сенімдісіз бе?')) return;
     try {
-        const { error } = await supabase
+        const { error } = await _supabase
             .from('shygarma_requests').delete().eq('id', shygarmaId);
         if (error) throw error;
         toast('Өтініш жойылды.');
@@ -896,7 +897,7 @@ async function loadAuthors() {
     loadingEl.style.display = 'block';
     listEl.innerHTML = '';
     try {
-        const { data, error } = await supabase
+        const { data, error } = await _supabase
             .from('authors')
             .select('*')
             .order('created_at', { ascending: false });
@@ -948,7 +949,7 @@ window.filterAuthors = function(category, btn) {
 window.deleteAuthor = async function(authorId) {
     if (!confirm('Авторды жоюға сенімдісіз бе?')) return;
     try {
-        const { error } = await supabase
+        const { error } = await _supabase
             .from('authors').delete().eq('id', authorId);
         if (error) throw error;
         toast('Автор жойылды.');
