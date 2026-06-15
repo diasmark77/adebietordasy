@@ -36,6 +36,7 @@ label { display: block; font-weight: bold; color: #5c4033; margin-bottom: 8px; }
 input, textarea, select {
     width: 100%; padding: 12px; border: 1px solid #d3cdc0; border-radius: 8px;
     background: #fdfcf9; font-family: inherit; font-size: 16px; transition: 0.3s;
+    color: #333;
 }
 
 input:focus, textarea:focus, select:focus {
@@ -45,24 +46,60 @@ input:focus, textarea:focus, select:focus {
 
 /* Автор іздеу */
 .author-search-wrapper { position: relative; }
+.ac-input-wrap { position: relative; }
+.ac-input-wrap input { padding-left: 40px; }
+.ac-icon {
+    position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%); font-size: 16px;
+    color: #9a8070; pointer-events: none;
+}
+.ac-spinner {
+    display: none; position: absolute; right: 12px; top: 50%;
+    transform: translateY(-50%); font-size: 16px;
+    animation: ac-spin 0.8s linear infinite;
+}
+@keyframes ac-spin { to { transform: translateY(-50%) rotate(360deg); } }
+
 #author-suggestions {
+    display: none;
     position: absolute; top: 100%; left: 0; right: 0;
-    background: white; border: 1px solid #d3cdc0; border-top: none;
-    border-radius: 0 0 8px 8px; z-index: 100; max-height: 200px;
-    overflow-y: auto; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: #fff;
+    border: 1px solid #d3cdc0;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    z-index: 100;
+    max-height: 260px;
+    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 .suggestion-item {
-    padding: 10px 14px; cursor: pointer; display: flex;
-    align-items: center; gap: 10px; transition: 0.2s;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; cursor: pointer;
+    border-bottom: 1px solid #f0ece4; transition: background 0.15s;
 }
-.suggestion-item:hover { background: #f4f1ea; }
+.suggestion-item:last-child { border-bottom: none; }
+.suggestion-item:hover, .suggestion-item.ac-active { background: #fdf5e6; }
 .suggestion-item img {
-    width: 36px; height: 36px; border-radius: 50%;
-    object-fit: cover; border: 2px solid #d4af37;
+    width: 38px; height: 38px; border-radius: 50%;
+    object-fit: cover; border: 2px solid #d4af37; flex-shrink: 0;
 }
-.suggestion-name { font-weight: bold; color: #5c4033; }
+.suggestion-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: #fdf5e6; display: flex; align-items: center;
+    justify-content: center; font-weight: bold; font-size: 13px;
+    color: #8b5e3c; flex-shrink: 0; border: 2px solid #d4af37;
+}
+.suggestion-info { flex: 1; min-width: 0; }
+.suggestion-name { font-weight: bold; color: #5c4033; font-size: 14px; }
+.suggestion-name mark { background: none; color: #8b5e3c; font-weight: bold; }
+.suggestion-bio { font-size: 12px; color: #999; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.suggestion-badge {
+    font-size: 11px; padding: 3px 8px; border-radius: 20px;
+    white-space: nowrap; flex-shrink: 0;
+}
+.ac-empty { padding: 14px; text-align: center; color: #999; font-size: 14px; }
 
-/* Таңдалған автор */
+/* Таңдалған автор карточкасы */
 #selected-author-card {
     display: none; align-items: center; gap: 14px;
     background: #fdf6ec; border: 1px solid #d4af37;
@@ -71,6 +108,12 @@ input:focus, textarea:focus, select:focus {
 #selected-author-card img {
     width: 48px; height: 48px; border-radius: 50%;
     object-fit: cover; border: 2px solid #d4af37;
+}
+.sel-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: #fdf5e6; display: flex; align-items: center;
+    justify-content: center; font-weight: bold; font-size: 15px;
+    color: #8b5e3c; border: 2px solid #d4af37; flex-shrink: 0;
 }
 #selected-author-card .author-info { flex: 1; }
 #selected-author-card .author-name { font-weight: bold; color: #5c4033; }
@@ -88,18 +131,15 @@ input:focus, textarea:focus, select:focus {
     resize: vertical;
 }
 
-/* Char counter */
 .char-counter { font-size: 13px; color: #999; text-align: right; margin-top: 4px; }
 .char-counter.warn { color: #e74c3c; }
 
-/* Notice */
 .notice {
     font-size: 14px; color: #777; background: #fdf5e6;
     padding: 15px; border-left: 4px solid #d4af37; margin-bottom: 25px;
     border-radius: 0 8px 8px 0;
 }
 
-/* Жіберу батырмасы */
 .btn-submit {
     background: #8b5e3c; color: white; border: none; padding: 15px 30px;
     border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;
@@ -108,7 +148,6 @@ input:focus, textarea:focus, select:focus {
 .btn-submit:hover:not(:disabled) { background: #5c4033; transform: translateY(-2px); }
 .btn-submit:disabled { background: #c4a882; cursor: not-allowed; transform: none; }
 
-/* Status */
 #status {
     text-align: center; margin-top: 20px; font-weight: bold;
     font-size: 16px; padding: 10px; border-radius: 8px;
@@ -116,7 +155,6 @@ input:focus, textarea:focus, select:focus {
 }
 #status.show { display: block; }
 
-/* Секция белгілегіш */
 .section-divider {
     display: flex; align-items: center; gap: 12px;
     margin: 28px 0 20px; color: #8b5e3c;
@@ -133,7 +171,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     .form-container { margin: 20px; padding: 20px; }
 }
 
-/* ── Мәзір ── */
 .menu-btn {
     position: fixed; top: 15px; left: 15px; z-index: 1000;
     background: #8b5e3c; color: white; border: none;
@@ -190,26 +227,30 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
 
     <form id="poemForm">
 
-        <!-- ── АВТОР ТАҢДАУ ── -->
+        <!-- АВТОР ТАҢДАУ -->
         <div class="section-divider"><span>📌 Автор</span></div>
 
-        <div class="form-group">
+        <div class="form-group author-search-wrapper">
             <label>Автор іздеу:</label>
-            <div class="author-search-wrapper">
+            <div class="ac-input-wrap">
+                <span class="ac-icon">👤</span>
                 <input type="text" id="author-search" placeholder="Автор атын жазыңыз..." autocomplete="off">
-                <div id="author-suggestions"></div>
+                <span class="ac-spinner" id="ac-spinner">⏳</span>
             </div>
+            <div id="author-suggestions"></div>
+
             <div id="selected-author-card">
-                <img id="sel-author-img" src="" alt="">
+                <div class="sel-avatar" id="sel-avatar"></div>
                 <div class="author-info">
                     <div class="author-name" id="sel-author-name"></div>
                 </div>
                 <button type="button" class="clear-author" onclick="clearAuthor()">✕</button>
             </div>
             <input type="hidden" id="author-id">
+            <input type="hidden" id="author-name-hidden">
         </div>
 
-        <!-- ── ӨЛЕҢ МӘЛІМЕТТЕРІ ── -->
+        <!-- ӨЛЕҢ МӘЛІМЕТТЕРІ -->
         <div class="section-divider"><span>📝 Өлең</span></div>
 
         <div class="form-group">
@@ -223,7 +264,7 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
             <div class="char-counter" id="char-count">0 таңба</div>
         </div>
 
-        <!-- ── ҚОСЫМША ── -->
+        <!-- ҚОСЫМША -->
         <div class="section-divider"><span>🔗 Қосымша</span></div>
 
         <div class="form-group">
@@ -247,99 +288,117 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-<!-- ✅ Supabase SDK -->
+<!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-// ── Supabase конфигурациясы (Firebase орнына) ──
-const SUPABASE_URL  = "https://rehdrlbhglnhajwtgohr.supabase.co";
-const SUPABASE_KEY  = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB"; // ← толық кілтіңізді қойыңыз
-const supabase      = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const TG_TOKEN   = "8575113225:AAGA0i4BfLyvwOFPRdSnmd1ot4VTXHurfv0";
 const TG_CHAT_ID = "5616776281";
+
+const catMeta = {
+    aqyn:       { label: '✍️ Ақын',         bg: '#fdf5e6', color: '#5c4033' },
+    jazushy:    { label: '📚 Жазушы',        bg: '#e8f4fd', color: '#1a5276' },
+    alash:      { label: '📜 Алаш зиялысы', bg: '#f9f0ff', color: '#6c3483' },
+    kompozitor: { label: '🎵 Композитор',    bg: '#eafaf1', color: '#1e8449' },
+};
 
 // ── Элементтер ──
 const searchInput   = document.getElementById('author-search');
 const suggestBox    = document.getElementById('author-suggestions');
 const authorCard    = document.getElementById('selected-author-card');
 const authorIdInput = document.getElementById('author-id');
+const authorNameHid = document.getElementById('author-name-hidden');
 const selName       = document.getElementById('sel-author-name');
-const selImg        = document.getElementById('sel-author-img');
+const selAvatar     = document.getElementById('sel-avatar');
 const poemTA        = document.getElementById('poem-textarea');
 const charDisp      = document.getElementById('char-count');
 const form          = document.getElementById('poemForm');
 const statusEl      = document.getElementById('status');
 const btn           = document.getElementById('submitBtn');
+const spinner       = document.getElementById('ac-spinner');
 
-// ── Авторлар тізімін жүктеу (Firestore → Supabase) ──
-let allAuthors = [];
+let timer, results = [], active = -1;
 
-async function loadAuthors() {
-    try {
-        const { data, error } = await supabase
-            .from('authors')       // Firestore: collection(db, "authors")
-            .select('*');
-
-        if (error) throw error;
-
-        allAuthors = data;
-        console.log(`✅ ${allAuthors.length} автор жүктелді`);
-    } catch(e) {
-        console.error("❌ Авторлар жүктелмеді:", e);
-        showStatus('⚠️ Авторлар тізімі жүктелмеді. Бетті жаңартып көріңіз.', 'orange');
-    }
+// ── Көмекші функциялар ──
+function initials(name) {
+    return name.trim().split(/\s+/).map(w => w[0]?.toUpperCase() || '').slice(0, 2).join('');
 }
-loadAuthors();
 
-// ── Статус көрсету ──
-function showStatus(msg, color = '#333') {
+function highlight(text, query) {
+    const esc = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.replace(new RegExp(`(${esc})`, 'gi'), '<mark>$1</mark>');
+}
+
+function showStatus(msg, color) {
     statusEl.innerHTML = msg;
-    statusEl.style.color = color;
+    statusEl.style.color = color || '#333';
     statusEl.classList.add('show');
 }
 
-// ── Автор іздеу ──
-searchInput.addEventListener('input', () => {
-    const q = searchInput.value.trim().toLowerCase();
-    suggestBox.innerHTML = '';
-    suggestBox.style.display = 'none';
-    if (!q || q.length < 1) return;
+// ── Autocomplete: іздеу ──
+async function searchAuthors(q) {
+    spinner.style.display = 'inline';
+    try {
+        const { data, error } = await sb
+            .from('authors')
+            .select('id, name, biography, category, photo_url')
+            .ilike('name', `%${q}%`)
+            .limit(6);
 
-    const filtered = allAuthors.filter(a =>
-        (a.authorName || a.name || '').toLowerCase().includes(q)
-    );
-    if (!filtered.length) return;
-
-    filtered.slice(0, 8).forEach(a => {
-        const name  = a.authorName || a.name || 'Белгісіз';
-        const photo = a.photoUrl || a.authorImg || 'images/default-author.png';
-        const div   = document.createElement('div');
-        div.className = 'suggestion-item';
-        div.innerHTML = `
-            <img src="${photo}" alt="${name}" onerror="this.src='images/default-author.png'">
-            <span class="suggestion-name">${name}</span>
-        `;
-        div.addEventListener('click', () => selectAuthor(a));
-        suggestBox.appendChild(div);
-    });
-    suggestBox.style.display = 'block';
-});
-
-document.addEventListener('click', e => {
-    if (!e.target.closest('.author-search-wrapper')) {
-        suggestBox.style.display = 'none';
+        if (error) throw error;
+        results = data || [];
+        renderSuggestions(q);
+    } catch (e) {
+        suggestBox.innerHTML = '<div class="ac-empty">❌ Қате орын алды</div>';
+        suggestBox.style.display = 'block';
+    } finally {
+        spinner.style.display = 'none';
     }
-});
+}
 
-// ── Автор таңдау ──
-function selectAuthor(a) {
-    const name  = a.authorName || a.name || 'Белгісіз';
-    const photo = a.photoUrl || a.authorImg || 'images/default-author.png';
-    authorIdInput.value = a.id;
-    selName.textContent = name;
-    selImg.src          = photo;
-    selImg.onerror      = () => { selImg.src = 'images/default-author.png'; };
+function renderSuggestions(query) {
+    if (!results.length) {
+        suggestBox.innerHTML = '<div class="ac-empty">😔 Автор табылмады</div>';
+        suggestBox.style.display = 'block';
+        return;
+    }
+    suggestBox.innerHTML = results.map((a, i) => {
+        const m = catMeta[a.category] || { label: '', bg: '#f4f1ea', color: '#888' };
+        const avatarHtml = a.photo_url
+            ? `<img src="${a.photo_url}" alt="${a.name}" onerror="this.outerHTML='<div class=\'suggestion-avatar\'>${initials(a.name)}</div>'">`
+            : `<div class="suggestion-avatar">${initials(a.name)}</div>`;
+        return `<div class="suggestion-item" id="sug-${i}"
+            onmouseenter="hoverSug(${i})"
+            onclick="selectAuthor(${i})">
+            ${avatarHtml}
+            <div class="suggestion-info">
+                <div class="suggestion-name">${highlight(a.name, query)}</div>
+                <div class="suggestion-bio">${a.biography ? a.biography.slice(0, 55) + '…' : ''}</div>
+            </div>
+            ${m.label ? `<span class="suggestion-badge" style="background:${m.bg};color:${m.color};">${m.label}</span>` : ''}
+        </div>`;
+    }).join('');
+    suggestBox.style.display = 'block';
+    active = -1;
+}
+
+function hoverSug(i) {
+    document.querySelectorAll('.suggestion-item').forEach(el => el.classList.remove('ac-active'));
+    const el = document.getElementById('sug-' + i);
+    if (el) el.classList.add('ac-active');
+    active = i;
+}
+
+function selectAuthor(i) {
+    const a = results[i];
+    authorIdInput.value  = a.id;
+    authorNameHid.value  = a.name;
+    selName.textContent  = a.name;
+    selAvatar.textContent = initials(a.name);
     authorCard.style.display = 'flex';
     searchInput.value        = '';
     suggestBox.style.display = 'none';
@@ -348,9 +407,33 @@ function selectAuthor(a) {
 
 function clearAuthor() {
     authorIdInput.value      = '';
+    authorNameHid.value      = '';
     authorCard.style.display = 'none';
     searchInput.value        = '';
 }
+
+searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim();
+    clearTimeout(timer);
+    if (q.length < 1) { suggestBox.style.display = 'none'; return; }
+    timer = setTimeout(() => searchAuthors(q), 280);
+});
+
+searchInput.addEventListener('keydown', e => {
+    const items = document.querySelectorAll('.suggestion-item');
+    if (!items.length || suggestBox.style.display === 'none') return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, items.length - 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); }
+    else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); selectAuthor(active); return; }
+    else if (e.key === 'Escape') { suggestBox.style.display = 'none'; return; }
+    items.forEach((el, i) => el.classList.toggle('ac-active', i === active));
+});
+
+document.addEventListener('click', e => {
+    if (!e.target.closest('.author-search-wrapper')) {
+        suggestBox.style.display = 'none';
+    }
+});
 
 // ── Таңба санауыш ──
 poemTA.addEventListener('input', () => {
@@ -359,7 +442,7 @@ poemTA.addEventListener('input', () => {
     charDisp.classList.toggle('warn', n < 50 && n > 0);
 });
 
-// ── Telegram хабарлама ──
+// ── Telegram ──
 async function sendTelegram(authorName, title, poemText) {
     try {
         const msg = `📝 *Жаңа өлең өтініші!*\n\n` +
@@ -371,23 +454,22 @@ async function sendTelegram(authorName, title, poemText) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: 'Markdown' })
         });
-    } catch(e) {
+    } catch (e) {
         console.warn('Telegram хабарлама жіберілмеді:', e);
     }
 }
 
-// ── Форм жіберу ──
+// ── Форма жіберу ──
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const authorId   = authorIdInput.value.trim();
-    const authorName = selName.textContent.trim();
+    const authorName = authorNameHid.value.trim();
     const title      = document.getElementById('poem-title').value.trim();
     const poemText   = poemTA.value.trim();
     const audioUrl   = document.getElementById('audio-url').value.trim();
     const photoUrl   = document.getElementById('photo-url').value.trim();
 
-    // ── Тексерулер ──
     if (!authorId) {
         showStatus('⚠️ Автор таңдалмады! Алдымен автор іздеп таңдаңыз.', '#e67e22');
         searchInput.focus();
@@ -409,43 +491,32 @@ form.addEventListener('submit', async (e) => {
     showStatus('⏳ Сақталуда, күте тұрыңыз...', '#8b5e3c');
 
     try {
-        // ✅ Supabase-ке сақтау (Firestore addDoc орнына)
-        const { data, error } = await supabase
-            .from('poem_requests')     // Firestore: collection(db, "poem_requests")
-            .insert([{
-                title:       title,
-                author_name: authorName,   // Supabase-те snake_case ұсынылады
-                author_id:   authorId,
-                poem_text:   poemText,
-                audio_url:   audioUrl  || null,
-                photo_url:   photoUrl  || null,
-                status:      'pending',
-                // timestamp: Supabase автоматты created_at қосады
-            }])
-            .select();
+        const { error } = await sb.from('poems').insert([{
+            title,
+            author_name: authorName,
+            author_id:   authorId,
+            poem_text:   poemText,
+            audio_url:   audioUrl  || null,
+            photo_url:   photoUrl  || null,
+            created_at:  new Date().toISOString()
+        }]);
 
         if (error) throw error;
 
-        console.log('✅ Өлең жіберілді:', data);
         await sendTelegram(authorName, title, poemText);
 
         showStatus('✅ Өлең сәтті жіберілді! Әкімші бекіткеннен кейін жарияланады.', 'green');
 
         form.reset();
         authorIdInput.value      = '';
+        authorNameHid.value      = '';
         authorCard.style.display = 'none';
         charDisp.textContent     = '0 таңба';
         charDisp.classList.remove('warn');
 
-    } catch(err) {
-        console.error('❌ Supabase қатесі:', err);
-        let errMsg = '❌ Сақтау кезінде қате орын алды.';
-        if (err.message && err.message.includes('permission')) {
-            errMsg = '❌ Рұқсат жоқ. Supabase RLS ережелерін тексеріңіз.';
-        } else if (err.message && err.message.includes('network')) {
-            errMsg = '❌ Интернет байланысы жоқ. Желіні тексеріңіз.';
-        }
-        showStatus(errMsg + ' Қайта көріңіз.', 'red');
+    } catch (err) {
+        console.error('Supabase қатесі:', err);
+        showStatus('❌ Қате орын алды: ' + err.message, 'red');
     } finally {
         btn.disabled    = false;
         btn.textContent = '📤 Өлеңді жариялау';
