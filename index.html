@@ -3,15 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <meta name="description" content="Әдебиет ордасы – ақындар мен жазушылар, қаламгерлер шығармалары, қазақ әдебиеті және қаламгер ойыны қамтылған білім беру сайты.">
 <title>Әдебиет ордасы</title>
-
 <meta name="keywords" content="әдебиет ордасы, қазақ әдебиеті, ақындар, жазушылар, қаламгер, қаламгер ойыны, өлеңдер, шығармалар">
-
 <link rel="icon" href="images/logo.png" type="image/png">
 <link rel="stylesheet" href="css/menu.css">
-  
 <link rel="manifest" href="/adebietordasy/manifest.json">
 <meta name="theme-color" content="#2c1810">
 <script>
@@ -19,42 +15,42 @@
     navigator.serviceWorker.register('/adebietordasy/sw.js');
   }
 </script>
-  
+
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-body{
-  font-family:Arial,sans-serif;
-  background:#f4f1ea;
-  color:#333;
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f1ea;
+  color: #333;
 }
 
 /* HEADER */
-header{
+header {
   background:
-  linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-  url("images/kazakh-dalasy.jpg") center/cover no-repeat;
-  color:white;
-  text-align:center;
-  padding:60px 15px;
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 60px 15px;
 }
 
-header h1{
-  font-size:32px;
+header h1 {
+  font-size: 32px;
 }
 
-header p{
-  font-size:18px;
-  margin-top:8px;
+header p {
+  font-size: 18px;
+  margin-top: 8px;
 }
 
-/* ═══ PWA ОРНАТУ БАТЫРМАСЫ ═══ */
+/* PWA БАТЫРМАСЫ */
 #installBtn {
-  display: none; /* JS арқылы көрсетіледі */
+  display: inline-block;
   margin-top: 18px;
   padding: 10px 22px;
   background: rgba(255, 255, 255, 0.15);
@@ -77,142 +73,229 @@ header p{
   transform: scale(0.97);
 }
 
+/* Standalone режимінде батырманы жасыру */
+@media (display-mode: standalone) {
+  #installBtn {
+    display: none !important;
+  }
+}
+
 /* MENU */
-.menu-btn{
-  position:fixed;
-  top:15px;
-  left:15px;
-  font-size:22px;
-  background:#8b5e3c;
-  color:white;
-  border:none;
-  padding:10px 14px;
-  border-radius:8px;
-  z-index:1000;
+.menu-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 22px;
+  background: #8b5e3c;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  z-index: 1000;
 }
 
-.overlay{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.5);
-  display:none;
-  z-index:900;
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 900;
 }
 
-.overlay.show{
-  display:block;
+.overlay.show {
+  display: block;
 }
 
-nav{
-  position:fixed;
-  top:0;
-  left:0;
-  width:250px;
-  height:100%;
-  background:#8b5e3c;
-  display:flex;
-  flex-direction:column;
-  transform:translateX(-100%);
-  transition:0.3s;
-  z-index:1001;
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background: #8b5e3c;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: 0.3s;
+  z-index: 1001;
 }
 
-nav.show{
-  transform:translateX(0);
+nav.show {
+  transform: translateX(0);
 }
 
-nav button{
-  background:none;
-  border:none;
-  color:white;
-  padding:15px;
-  text-align:left;
-  font-size:16px;
-  border-bottom:1px solid rgba(255,255,255,0.2);
+nav button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 15px;
+  text-align: left;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
-nav button:hover{
-  background:#6e472c;
+nav button:hover {
+  background: #6e472c;
 }
 
 /* CONTENT */
-section{
-  padding:15px;
-  width:100%;
-  display:grid;
-  grid-template-columns:repeat(2, 1fr);
-  gap:15px;
+section {
+  padding: 15px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
 }
 
-.card{
-  position:relative;
-  overflow:hidden;
-  border-radius:12px;
-  cursor:pointer;
-  box-shadow:0 4px 12px rgba(0,0,0,0.3);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  background:#fff;
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #fff;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover{
+.card:hover {
   transform: translateY(-5px);
-  box-shadow:0 12px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
 }
 
-.card img{
-  width:100%;
-  height:auto;
-  object-fit:contain;
+.card img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
   transition: transform 0.3s ease;
-  border-radius:8px;
+  border-radius: 8px;
 }
 
-.card:hover img{
+.card:hover img {
   transform: scale(1.05);
 }
 
-.card h2{
-  margin-top:8px;
-  font-size:18px;
-  color:#5c4033;
+.card h2 {
+  margin-top: 8px;
+  font-size: 18px;
+  color: #5c4033;
 }
 
 /* FOOTER */
-footer{
-  background:#5c4033;
-  color:white;
-  text-align:center;
-  padding:15px;
-  margin-top:20px;
+footer {
+  background: #5c4033;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 20px;
 }
 
 /* MOBILE */
-@media (max-width:600px){
-  header h1{
-    font-size:22px;
-  }
+@media (max-width: 600px) {
+  header h1 { font-size: 22px; }
+  header p { font-size: 14px; }
+  section { grid-template-columns: 1fr; }
+  .card img { height: auto; }
+  #installBtn { font-size: 13px; padding: 9px 18px; }
+}
 
-  header p{
-    font-size:14px;
-  }
+/* ═══ МОДАЛЬДІ ТЕРЕЗЕ (iOS және fallback үшін) ═══ */
+.pwa-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
 
-  section{
-    grid-template-columns:1fr;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
-  .card img{
-    height:auto;
-  }
+.pwa-modal {
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 28px 24px 40px;
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  animation: slideUp 0.3s ease;
+}
 
-  #installBtn {
-    font-size: 13px;
-    padding: 9px 18px;
-  }
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.pwa-modal-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.pwa-modal-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2c1810;
+  margin-bottom: 12px;
+}
+
+.pwa-modal-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.pwa-modal-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f4f1ea;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+}
+
+.pwa-modal-step-num {
+  background: #8b5e3c;
+  color: white;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.pwa-modal-close {
+  margin-top: 20px;
+  padding: 13px 0;
+  width: 100%;
+  background: #8b5e3c;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pwa-modal-close:hover {
+  background: #6e472c;
 }
 </style>
 </head>
@@ -222,22 +305,19 @@ footer{
 <header>
   <h1>Әдебиет ордасы</h1>
   <p>Қазақ руханиятының әдеби ордасы</p>
-
-  <!-- ═══ PWA ОРНАТУ БАТЫРМАСЫ ═══ -->
   <button id="installBtn">📲 Қолданбаны орнату</button>
 </header>
 
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
-
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <nav id="menu">
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-<button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
+  <button onclick="location.href='index.html'">🏠 Басты бет</button>
+  <button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
+  <button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
+  <button onclick="location.href='contact.html'">📩 Байланыс</button>
+  <button onclick="location.href='poems.html'">📝 Өлеңдер</button>
+  <button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
 </nav>
 
 <section>
@@ -251,10 +331,10 @@ footer{
   <div class="card">
     <a href="shygarma/irim.html">
       <img src="images/irim.jpeg" alt="Иірім шығармасы">
-      <h2>Көкенов Жеңісбек "Иірім" </h2>
+      <h2>Көкенов Жеңісбек "Иірім"</h2>
     </a>
   </div>
-  
+
   <div class="card">
     <a href="shygarma/ulpan.html">
       <img src="images/ulpan.jpeg" alt="Ұлпан шығармасы">
@@ -265,10 +345,10 @@ footer{
   <div class="card">
     <a href="shygarma/ormanda.html">
       <img src="images/ormanda.jpeg" alt="Орманда шығармасы">
-      <h2>Көкенов Жеңісбек "Орманда..." </h2>
+      <h2>Көкенов Жеңісбек "Орманда..."</h2>
     </a>
   </div>
-  
+
   <div class="card">
     <a href="create/kobylandy-batyr.html">
       <img src="images/kobylandy-batyr.jpg" alt="Қобыланды батыр">
@@ -285,42 +365,113 @@ footer{
 </section>
 
 <footer>
-© 2026 Әдебиет ордасы | Қазақ әдеби порталы
+  © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
 <script>
 // ═══ МЕНЮ ═══
-function toggleMenu(){
+function toggleMenu() {
   document.getElementById("menu").classList.toggle("show");
   document.getElementById("overlay").classList.toggle("show");
 }
 
 // ═══ PWA ОРНАТУ ═══
-let deferredPrompt;
+let deferredPrompt = null;
 const installBtn = document.getElementById('installBtn');
 
+// Android/Chrome: beforeinstallprompt ұстау
 window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();          // браузердің автоматты prompts-ын тоқтату
-  deferredPrompt = e;          // сақтап қою
-  installBtn.style.display = 'inline-block'; // батырманы көрсету
+  e.preventDefault();
+  deferredPrompt = e;
 });
 
-installBtn.addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();                   // орнату диалогын шақыру
-  const { outcome } = await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  if (outcome === 'accepted') {
-    installBtn.style.display = 'none';       // орнатылса батырманы жасыру
+// iOS анықтау
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+}
+
+// Модальді терезе жасау
+function showModal(isIOS) {
+  const overlay = document.createElement('div');
+  overlay.className = 'pwa-modal-overlay';
+
+  if (isIOS) {
+    overlay.innerHTML = `
+      <div class="pwa-modal">
+        <div class="pwa-modal-icon">📱</div>
+        <div class="pwa-modal-title">Қолданбаны орнату</div>
+        <div class="pwa-modal-text">Safari арқылы орнату үшін:</div>
+        <div class="pwa-modal-step">
+          <div class="pwa-modal-step-num">1</div>
+          <span>Төменгі «Бөлісу» батырмасын басыңыз <strong>⎙</strong></span>
+        </div>
+        <div class="pwa-modal-step">
+          <div class="pwa-modal-step-num">2</div>
+          <span>«Басты экранға қосу» (<strong>Add to Home Screen</strong>) таңдаңыз</span>
+        </div>
+        <div class="pwa-modal-step">
+          <div class="pwa-modal-step-num">3</div>
+          <span>Жоғарғы оң жақтағы «<strong>Қосу</strong>» батырмасын басыңыз</span>
+        </div>
+        <button class="pwa-modal-close" onclick="this.closest('.pwa-modal-overlay').remove()">Түсінікті</button>
+      </div>
+    `;
+  } else {
+    overlay.innerHTML = `
+      <div class="pwa-modal">
+        <div class="pwa-modal-icon">📲</div>
+        <div class="pwa-modal-title">Қолданбаны орнату</div>
+        <div class="pwa-modal-text">Браузер мәзірі арқылы орнатуға болады:</div>
+        <div class="pwa-modal-step">
+          <div class="pwa-modal-step-num">1</div>
+          <span>Браузердің жоғарғы оң жақтағы <strong>⋮</strong> мәзірін ашыңыз</span>
+        </div>
+        <div class="pwa-modal-step">
+          <div class="pwa-modal-step-num">2</div>
+          <span>«<strong>Қолданбаны орнату</strong>» немесе «<strong>Add to Home Screen</strong>» таңдаңыз</span>
+        </div>
+        <button class="pwa-modal-close" onclick="this.closest('.pwa-modal-overlay').remove()">Түсінікті</button>
+      </div>
+    `;
   }
+
+  // Фонға басу — жабу
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
+
+  document.body.appendChild(overlay);
+}
+
+// Батырма басылғанда
+installBtn.addEventListener('click', async () => {
+  // iOS Safari
+  if (isIOS()) {
+    showModal(true);
+    return;
+  }
+
+  // Android/Chrome — жүйелік диалог
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    if (outcome === 'accepted') {
+      installBtn.style.display = 'none';
+    }
+    return;
+  }
+
+  // Басқа браузерлер — fallback модалі
+  showModal(false);
 });
 
-// Қолданба орнатылған болса батырманы жасыру
+// Орнатылып болса — жасыру
 window.addEventListener('appinstalled', () => {
   installBtn.style.display = 'none';
   deferredPrompt = null;
 });
 </script>
-        
+
 </body>
 </html>
