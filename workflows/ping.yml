@@ -10,5 +10,5 @@ jobs:
     steps:
       - name: Ping Supabase
         run: |
-          curl -H "apikey: ${{ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlaGRybGJoZ2xuaGFqd3Rnb2hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDczNjUsImV4cCI6MjA5NjA4MzM2NX0.A99bsOSP-VhbryWsBCtXYc0oWE6BIl4RWAkci-fEt2c }}" \
+          curl -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
           "https://rehdrlbhglnhajwtgohr.supabase.co/rest/v1/authors?select=id&limit=1"
