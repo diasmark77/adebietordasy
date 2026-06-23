@@ -44,7 +44,6 @@ input:focus, textarea:focus, select:focus {
     box-shadow: 0 0 8px rgba(139,94,60,0.2);
 }
 
-/* Автор іздеу */
 .author-search-wrapper { position: relative; }
 .ac-input-wrap { position: relative; }
 .ac-input-wrap input { padding-left: 40px; }
@@ -99,7 +98,6 @@ input:focus, textarea:focus, select:focus {
 }
 .ac-empty { padding: 14px; text-align: center; color: #999; font-size: 14px; }
 
-/* Таңдалған автор карточкасы */
 #selected-author-card {
     display: none; align-items: center; gap: 14px;
     background: #fdf6ec; border: 1px solid #d4af37;
@@ -123,7 +121,6 @@ input:focus, textarea:focus, select:focus {
 }
 .clear-author:hover { color: #e74c3c; }
 
-/* Өлең мәтіні */
 #poem-textarea {
     font-family: 'Georgia', serif;
     line-height: 1.9;
@@ -227,7 +224,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
 
     <form id="poemForm">
 
-        <!-- АВТОР ТАҢДАУ -->
         <div class="section-divider"><span>📌 Автор</span></div>
 
         <div class="form-group author-search-wrapper">
@@ -250,7 +246,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
             <input type="hidden" id="author-name-hidden">
         </div>
 
-        <!-- ӨЛЕҢ МӘЛІМЕТТЕРІ -->
         <div class="section-divider"><span>📝 Өлең</span></div>
 
         <div class="form-group">
@@ -264,7 +259,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
             <div class="char-counter" id="char-count">0 таңба</div>
         </div>
 
-        <!-- ҚОСЫМША -->
         <div class="section-divider"><span>🔗 Қосымша</span></div>
 
         <div class="form-group">
@@ -288,7 +282,6 @@ footer { background: #5c4033; color: white; text-align: center; padding: 20px; }
     © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
 
-<!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
@@ -306,7 +299,6 @@ const catMeta = {
     kompozitor: { label: '🎵 Композитор',    bg: '#eafaf1', color: '#1e8449' },
 };
 
-// ── Элементтер ──
 const searchInput   = document.getElementById('author-search');
 const suggestBox    = document.getElementById('author-suggestions');
 const authorCard    = document.getElementById('selected-author-card');
@@ -323,7 +315,6 @@ const spinner       = document.getElementById('ac-spinner');
 
 let timer, results = [], active = -1;
 
-// ── Көмекші функциялар ──
 function initials(name) {
     return name.trim().split(/\s+/).map(w => w[0]?.toUpperCase() || '').slice(0, 2).join('');
 }
@@ -339,7 +330,6 @@ function showStatus(msg, color) {
     statusEl.classList.add('show');
 }
 
-// ── Autocomplete: іздеу ──
 async function searchAuthors(q) {
     spinner.style.display = 'inline';
     try {
@@ -435,14 +425,12 @@ document.addEventListener('click', e => {
     }
 });
 
-// ── Таңба санауыш ──
 poemTA.addEventListener('input', () => {
     const n = poemTA.value.length;
     charDisp.textContent = n + ' таңба';
     charDisp.classList.toggle('warn', n < 50 && n > 0);
 });
 
-// ── Telegram ──
 async function sendTelegram(authorName, title, poemText) {
     try {
         const msg = `📝 *Жаңа өлең өтініші!*\n\n` +
@@ -459,7 +447,6 @@ async function sendTelegram(authorName, title, poemText) {
     }
 }
 
-// ── Форма жіберу ──
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -491,7 +478,8 @@ form.addEventListener('submit', async (e) => {
     showStatus('⏳ Сақталуда, күте тұрыңыз...', '#8b5e3c');
 
     try {
-        const { error } = await sb.from('poems').insert([{
+        // ✅ poem_requests кестесіне жазылады (бұрын poems деп қате болған)
+        const { error } = await sb.from('poem_requests').insert([{
             title,
             author_name: authorName,
             author_id:   authorId,
