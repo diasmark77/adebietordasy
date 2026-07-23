@@ -41,35 +41,6 @@ body {
 }
 .overlay.show { display: block; }
 
-/* ── LOGIN ── */
-#login-screen {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 100vh;
-    background: radial-gradient(ellipse at center, #2d1f0e 0%, #1a1208 70%);
-}
-.login-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(212,175,55,0.3);
-    border-radius: 16px; padding: 48px 40px; width: 360px; text-align: center;
-}
-.login-box h1 { font-size: 22px; color: #d4af37; margin-bottom: 6px; letter-spacing: 1px; }
-.login-box p  { font-size: 13px; color: #9a8866; margin-bottom: 32px; }
-.login-box input {
-    width: 100%; padding: 13px 16px; margin-bottom: 14px;
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(212,175,55,0.25);
-    border-radius: 8px; color: #e8dcc8; font-size: 15px; font-family: inherit;
-    outline: none; transition: border-color .2s;
-}
-.login-box input:focus { border-color: #d4af37; }
-.login-box input::placeholder { color: #6b5d47; }
-.btn-login {
-    width: 100%; padding: 13px; background: #d4af37; color: #1a1208;
-    border: none; border-radius: 8px; font-size: 15px; font-weight: bold;
-    cursor: pointer; font-family: inherit; transition: .2s;
-}
-.btn-login:hover { background: #e8c84a; }
-#login-err { color: #e07070; font-size: 13px; margin-top: 12px; min-height: 18px; }
-
 /* ── MAIN ── */
 #main-panel { display: none; }
 
@@ -284,20 +255,8 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
 </head>
 <body>
 
-<!-- ══ LOGIN ══ -->
-<div id="login-screen">
-    <div class="login-box">
-        <h1>⚜️ Админ панелі</h1>
-        <p>Әдебиет ордасы — басқару жүйесі</p>
-        <input type="password" id="pwd-input" placeholder="Құпия сөз"
-               onkeydown="if(event.key==='Enter') doLogin()">
-        <button class="btn-login" onclick="doLogin()">Кіру</button>
-        <div id="login-err"></div>
-    </div>
-</div>
-
 <!-- ══ MAIN ══ -->
-<div id="main-panel" style="display:none;">
+<div id="main-panel" style="display:block;">
 
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
@@ -317,7 +276,6 @@ header h1 { font-size: 20px; color: #d4af37; letter-spacing: .5px; }
         <div class="header-right">
             <span class="stats-pill" id="stats-pill">Жүктелуде...</span>
             <a href="generate-sitemap.html" class="btn-sitemap" title="Sitemap генерациялау">🗺 S</a>
-            <button class="btn-logout" onclick="logout()">Шығу</button>
         </div>
     </header>
 
@@ -404,7 +362,6 @@ const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlaGRybGJoZ2xuaGFqd3Rnb2hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDczNjUsImV4cCI6MjA5NjA4MzM2NX0.A99bsOSP-VhbryWsBCtXYc0oWE6BIl4RWAkci-fEt2c";
 const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const ADMIN_PASSWORD = "admin2026";
 const tabLoaded = { requests: false, poems: false, shygarmalar: false, authors: false };
 
 const categoryLabels = {
@@ -459,27 +416,11 @@ window.switchTab = function(tab) {
     }
 };
 
-// ── КІРУ / ШЫҒУ ──
-window.doLogin = function() {
-    const pwd = document.getElementById('pwd-input').value.trim();
-    if (pwd === ADMIN_PASSWORD) {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-panel').style.display   = 'block';
-        document.getElementById('login-err').textContent = '';
-        tabLoaded.requests = true;
-        loadRequests();
-    } else {
-        document.getElementById('login-err').textContent = '❌ Құпия сөз қате!';
-        document.getElementById('pwd-input').value = '';
-    }
-};
-
-window.logout = function() {
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('main-panel').style.display   = 'none';
-    document.getElementById('pwd-input').value = '';
-    Object.keys(tabLoaded).forEach(k => tabLoaded[k] = false);
-};
+// ── Бетті ашу кезінде тікелей жүктеу (парольсіз) ──
+document.addEventListener('DOMContentLoaded', function() {
+    tabLoaded.requests = true;
+    loadRequests();
+});
 
 /* ════════════════════════════════════════
    АВТОРЛАР ӨТІНІШТЕРІ
