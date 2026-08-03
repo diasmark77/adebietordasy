@@ -2,7 +2,7 @@
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Шығармалар | Әдебиет ордасы</title>
 <meta name="description" content="Әдебиет ордасы сайтында қазақ әдеби шығармаларының жинағы: әңгімелер, романдар және поэмалар ұсынылған.">
 <meta name="keywords" content="әдебиет ордасы, әдеби шығармалар, қазақ әдебиеті, әңгімелер, романдар, поэмалар">
@@ -12,7 +12,11 @@
   
 <style>
 * {box-sizing:border-box;}
-body {margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;line-height:1.5;}
+body {
+  margin:0;font-family:Arial,sans-serif;background:#f4f1ea;color:#333;line-height:1.5;
+  /* Мазмұн төмендегі қалқыма тіл-бар астында қалып қоймас үшін */
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+}
 
 header {
   background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("images/kazakh-dalasy.jpg") center/cover no-repeat;
@@ -22,24 +26,6 @@ header {
 }
 header h1 {font-size:42px;margin-bottom:10px;}
 header p {font-size:18px;opacity:0.9;}
-
-nav {
-  display:none;
-  flex-direction:column;
-  background:#8b5e3c;
-}
-nav button {
-  background:none;
-  border:none;
-  color:white;
-  padding:14px;
-  cursor:pointer;
-  font-size:16px;
-  font-weight:bold;
-  border-top:1px solid rgba(255,255,255,0.2);
-}
-nav button:hover {background:#6e472c;}
-nav.show{display:flex;}
 
 .search-box {
   text-align:center;
@@ -129,16 +115,134 @@ footer {
   font-size:14px;
 }
 
-@media(max-width:800px){
-  .menu-btn{display:block;}
-  nav{display:none;}
-  nav.show{display:flex;}
-}
 @media(max-width:600px){
-  nav button {width:90%; margin:3px 0;}
   .search-box input {width:95%;}
   .card h2 {font-size:18px;}
   .card pre {font-size:15px;}
+}
+
+/* ═══════════════════════════════════════════════
+   ТӨМЕНГІ МЕНЮ — iOS/Instagram стиліндегі tab bar
+   (index.html беттегі стильмен бірдей)
+   ═══════════════════════════════════════════════ */
+nav.tabbar {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: row !important;
+  position: fixed !important;
+  top: auto !important;
+  left: 10px !important;
+  right: 10px !important;
+  bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-width: 520px !important;
+  margin: 0 auto !important;
+  transform: none !important;
+  transition: none !important;
+  align-items: stretch !important;
+  justify-content: space-around !important;
+  background: rgba(250, 247, 240, 0.92) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  border: 1px solid rgba(139, 94, 60, 0.14) !important;
+  border-radius: 26px !important;
+  box-shadow: 0 8px 28px rgba(44, 24, 16, 0.16) !important;
+  padding: 8px 6px !important;
+  z-index: 1000 !important;
+}
+
+.tabbar-indicator {
+  position: absolute;
+  top: 6px;
+  height: 46px;
+  border-radius: 20px;
+  background: rgba(139, 94, 60, 0.13);
+  box-shadow: inset 0 0 0 1px rgba(139, 94, 60, 0.16);
+  transition: left 0.35s cubic-bezier(.34,1.56,.64,1),
+              width 0.35s cubic-bezier(.34,1.56,.64,1),
+              opacity 0.2s ease;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.tabbar a {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #9c8874;
+  padding: 9px 2px 7px;
+  min-height: 46px;
+  border-radius: 20px;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.25s ease, transform 0.15s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.tabbar a svg {
+  width: 25px;
+  height: 25px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
+}
+
+.tabbar a span {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  line-height: 1.1;
+  white-space: nowrap;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.tabbar a:active {
+  transform: scale(0.92);
+}
+
+.tabbar a.active {
+  color: #6e472c;
+}
+
+.tabbar a.active svg {
+  transform: translateY(-1px) scale(1.08);
+}
+
+.tabbar-indicator.dragging {
+  transform: scale(1.05);
+  box-shadow: inset 0 0 0 1.5px rgba(139, 94, 60, 0.35), 0 6px 16px rgba(139, 94, 60, 0.28);
+}
+
+.tabbar a.active {
+  cursor: grab;
+  touch-action: none;
+}
+
+.tabbar a.active:active {
+  cursor: grabbing;
+}
+
+.tabbar a.drag-hover {
+  color: #6e472c;
+}
+
+.tabbar a.drag-hover svg {
+  transform: translateY(-1px) scale(1.12);
+}
+
+@media (max-width: 380px) {
+  .tabbar a span { font-size: 9.5px; }
+  .tabbar a svg { width: 21px; height: 21px; }
 }
 </style>
 </head>
@@ -148,18 +252,6 @@ footer {
 <h1>📚 Әдебиет ордасы</h1>
 <p>Қазақ руханиятының әдеби ордасы</p>
 </header>
-
-<button class="menu-btn" onclick="toggleMenu()">☰</button>
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<nav id="menu">
-<button onclick="location.href='index.html'">🏠 Басты бет</button>
-<button onclick="location.href='authors-filtre.html'">✍️ Авторлар</button>
-<button onclick="location.href='poemGame.html'">🎮 Қаламгер ойыны</button>
-<button onclick="location.href='contact.html'">📩 Байланыс</button>
-<button onclick="location.href='poems.html'">📝 Өлеңдер</button>
-<button onclick="location.href='shygarms.html'">📑 Шығармалар</button>
-</nav>
 
 <div class="search-box">
 <input type="text" id="searchInput" placeholder="Іздеу авторлар мен шығармалар бойынша...">
@@ -181,6 +273,35 @@ footer {
 <footer>
 © 2026 Әдебиет ордасы | Қазақ әдеби порталы
 </footer>
+
+<!-- ═══ ТӨМЕНГІ МЕНЮ (iOS стиліндегі tab bar) ═══ -->
+<nav class="tabbar" id="tabbar">
+  <div class="tabbar-indicator" id="tabbarIndicator"></div>
+  <a href="index.html" data-page="index.html">
+    <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
+    <span>Басты бет</span>
+  </a>
+  <a href="authors-filtre.html" data-page="authors-filtre.html">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
+    <span>Авторлар</span>
+  </a>
+  <a href="poemGame.html" data-page="poemGame.html">
+    <svg viewBox="0 0 24 24"><rect x="2.5" y="8" width="19" height="9" rx="4"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="15.5" cy="11.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="18" cy="13.5" r="0.9" fill="currentColor" stroke="none"/></svg>
+    <span>Ойын</span>
+  </a>
+  <a href="contact.html" data-page="contact.html">
+    <svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
+    <span>Байланыс</span>
+  </a>
+  <a href="poems.html" data-page="poems.html">
+    <svg viewBox="0 0 24 24"><path d="M4 5.2c2.4-.9 5-.9 7 .5v13c-2-1.4-4.6-1.4-7-.5Z"/><path d="M20 5.2c-2.4-.9-5-.9-7 .5v13c2-1.4 4.6-1.4 7-.5Z"/></svg>
+    <span>Өлеңдер</span>
+  </a>
+  <a href="shygarms.html" class="active" data-page="shygarms.html">
+    <svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="4.5" rx="1.2"/><rect x="4" y="10.5" width="16" height="4.5" rx="1.2"/><rect x="4" y="16.5" width="16" height="4.5" rx="1.2"/></svg>
+    <span>Шығармалар</span>
+  </a>
+</nav>
 
 <!-- ✅ Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -285,11 +406,132 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
 fetchShygarmalar();
 </script>
 
+<!-- ТІЛ-БАР инициализациясы (index.html беттегімен бірдей) -->
 <script>
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("show");
-  document.getElementById("overlay").classList.toggle("show");
-}
+(function initTabbar() {
+  const tabbar = document.getElementById('tabbar');
+  const indicator = document.getElementById('tabbarIndicator');
+  const tabs = Array.from(document.querySelectorAll('.tabbar a'));
+  const current = location.pathname.split('/').pop() || 'index.html';
+
+  tabs.forEach(a => a.classList.toggle('active', a.dataset.page === current));
+
+  function getTabBox(tab) {
+    const barRect = tabbar.getBoundingClientRect();
+    const tabRect = tab.getBoundingClientRect();
+    const pad = 6;
+    return {
+      left: tabRect.left - barRect.left + pad,
+      width: tabRect.width - pad * 2
+    };
+  }
+
+  function movePillTo(tab, animate) {
+    if (!tab) { indicator.style.opacity = '0'; return; }
+    const box = getTabBox(tab);
+    indicator.style.transition = animate
+      ? 'left 0.35s cubic-bezier(.34,1.56,.64,1), width 0.35s cubic-bezier(.34,1.56,.64,1), opacity 0.2s ease'
+      : 'opacity 0.2s ease';
+    indicator.style.left = box.left + 'px';
+    indicator.style.width = box.width + 'px';
+    indicator.style.opacity = '1';
+  }
+
+  function positionPill() {
+    const activeTab = tabs.find(a => a.classList.contains('active'));
+    movePillTo(activeTab, false);
+  }
+
+  positionPill();
+  window.addEventListener('load', positionPill);
+  window.addEventListener('resize', positionPill);
+
+  let ignoreNextClick = false;
+
+  function goToTab(tab) {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    movePillTo(tab, true);
+    const href = tab.getAttribute('href');
+    setTimeout(() => { location.href = href; }, 260);
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function (e) {
+      if (ignoreNextClick) { ignoreNextClick = false; e.preventDefault(); return; }
+      if (tab.classList.contains('active')) return;
+      e.preventDefault();
+      goToTab(tab);
+    });
+  });
+
+  let isDragging = false;
+  let dragMoved = false;
+  let activePointerId = null;
+
+  tabbar.style.userSelect = 'none';
+  tabbar.style.webkitUserSelect = 'none';
+
+  tabbar.addEventListener('pointerdown', (e) => {
+    const tab = e.target.closest('a');
+    if (!tab || !tab.classList.contains('active')) return;
+    isDragging = true;
+    dragMoved = false;
+    activePointerId = e.pointerId;
+    try { tabbar.setPointerCapture(e.pointerId); } catch (err) {}
+    indicator.classList.add('dragging');
+    document.body.style.cursor = 'grabbing';
+  });
+
+  tabbar.addEventListener('pointermove', (e) => {
+    if (!isDragging || e.pointerId !== activePointerId) return;
+    dragMoved = true;
+    e.preventDefault();
+
+    const x = e.clientX;
+    let targetTab = null;
+    for (const tab of tabs) {
+      const r = tab.getBoundingClientRect();
+      if (x >= r.left && x <= r.right) { targetTab = tab; break; }
+    }
+
+    tabs.forEach(t => t.classList.remove('drag-hover'));
+    if (targetTab) {
+      targetTab.classList.add('drag-hover');
+      indicator.style.transition = 'left 0.12s ease, width 0.12s ease';
+      const box = getTabBox(targetTab);
+      indicator.style.left = box.left + 'px';
+      indicator.style.width = box.width + 'px';
+    }
+  }, { passive: false });
+
+  function endDrag(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    document.body.style.cursor = '';
+    indicator.classList.remove('dragging');
+
+    const dropTab = tabs.find(t => t.classList.contains('drag-hover'));
+    tabs.forEach(t => t.classList.remove('drag-hover'));
+
+    if (dropTab && dragMoved) {
+      if (dropTab.classList.contains('active')) {
+        movePillTo(dropTab, true);
+      } else {
+        ignoreNextClick = true;
+        setTimeout(() => { ignoreNextClick = false; }, 500);
+        goToTab(dropTab);
+      }
+    } else {
+      const activeTab = tabs.find(t => t.classList.contains('active'));
+      movePillTo(activeTab, true);
+    }
+    dragMoved = false;
+  }
+
+  tabbar.addEventListener('pointerup', endDrag);
+  tabbar.addEventListener('pointercancel', endDrag);
+})();
 </script>
 
 </body>
