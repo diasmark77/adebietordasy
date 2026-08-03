@@ -85,24 +85,38 @@ header p {
 /* ═══════════════════════════════════════════════
    ТӨМЕНГІ МЕНЮ — iOS/Instagram стиліндегі tab bar
    ═══════════════════════════════════════════════ */
-.tabbar {
-  position: fixed;
-  left: 10px;
-  right: 10px;
-  bottom: calc(10px + env(safe-area-inset-bottom));
-  z-index: 1000;
-  display: flex;
-  align-items: stretch;
-  justify-content: space-around;
-  background: rgba(250, 247, 240, 0.92);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  backdrop-filter: saturate(180%) blur(20px);
-  border: 1px solid rgba(139, 94, 60, 0.14);
-  border-radius: 26px;
-  box-shadow: 0 8px 28px rgba(44, 24, 16, 0.16);
-  padding: 8px 6px;
-  max-width: 520px;
-  margin: 0 auto;
+/* nav.tabbar (тег+класс) арнайы қолданылды — сайттағы ескі css/menu.css
+   файлындағы "nav {...}" (бүйірлік мәзірден қалған width:250px,
+   height:100%, flex-direction:column, transform т.б.) стильдерін
+   толықтай басып тастау үшін барлық маңызды қасиеттер !important-пен
+   қайта анықталды. */
+nav.tabbar {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: row !important;
+  position: fixed !important;
+  top: auto !important;
+  left: 10px !important;
+  right: 10px !important;
+  bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-width: 520px !important;
+  margin: 0 auto !important;
+  transform: none !important;
+  transition: none !important;
+  align-items: stretch !important;
+  justify-content: space-around !important;
+  background: rgba(250, 247, 240, 0.92) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  border: 1px solid rgba(139, 94, 60, 0.14) !important;
+  border-radius: 26px !important;
+  box-shadow: 0 8px 28px rgba(44, 24, 16, 0.16) !important;
+  padding: 8px 6px !important;
+  z-index: 1000 !important;
 }
 
 /* Белсенді батырманың астында жылжитын сопақ (pill) форма */
