@@ -184,6 +184,30 @@ nav.tabbar {
   transform: translateY(-1px) scale(1.08);
 }
 
+/* Пиллді ұстап тұрғандағы (сүйреу) көрініс */
+.tabbar-indicator.dragging {
+  transform: scale(1.05);
+  box-shadow: inset 0 0 0 1.5px rgba(139, 94, 60, 0.35), 0 6px 16px rgba(139, 94, 60, 0.28);
+}
+
+.tabbar a.active {
+  cursor: grab;
+  touch-action: none;
+}
+
+.tabbar a.active:active {
+  cursor: grabbing;
+}
+
+/* Пилл сүйреліп апарылып тұрған батырманың белгісі */
+.tabbar a.drag-hover {
+  color: #6e472c;
+}
+
+.tabbar a.drag-hover svg {
+  transform: translateY(-1px) scale(1.12);
+}
+
 /* CONTENT */
 section {
   padding: 15px;
@@ -537,38 +561,125 @@ window.addEventListener('appinstalled', () => {
 
   tabs.forEach(a => a.classList.toggle('active', a.dataset.page === current));
 
-  function movePillTo(tab) {
-    if (!tab) { indicator.style.opacity = '0'; return; }
+  function getTabBox(tab) {
     const barRect = tabbar.getBoundingClientRect();
     const tabRect = tab.getBoundingClientRect();
     const pad = 6; // pill сол/оң жиегінен кішкене қалыңдық
-    indicator.style.left = (tabRect.left - barRect.left + pad) + 'px';
-    indicator.style.width = (tabRect.width - pad * 2) + 'px';
+    return {
+      left: tabRect.left - barRect.left + pad,
+      width: tabRect.width - pad * 2
+    };
+  }
+
+  function movePillTo(tab, animate) {
+    if (!tab) { indicator.style.opacity = '0'; return; }
+    const box = getTabBox(tab);
+    indicator.style.transition = animate
+      ? 'left 0.35s cubic-bezier(.34,1.56,.64,1), width 0.35s cubic-bezier(.34,1.56,.64,1), opacity 0.2s ease'
+      : 'opacity 0.2s ease';
+    indicator.style.left = box.left + 'px';
+    indicator.style.width = box.width + 'px';
     indicator.style.opacity = '1';
   }
 
   function positionPill() {
     const activeTab = tabs.find(a => a.classList.contains('active'));
-    movePillTo(activeTab);
+    movePillTo(activeTab, false);
   }
 
-  // Бастапқы орналасу (суреттер/шрифттер жүктелгенде дәл өлшем үшін кідіріспен де қайталаймыз)
+  // Бастапқы орналасу (суреттер/шрифттер жүктелгенде дәл өлшем үшін қайталаймыз)
   positionPill();
   window.addEventListener('load', positionPill);
   window.addEventListener('resize', positionPill);
 
-  // Батырма басылғанда — pill сол батырмаға сырғып барады, сосын бетке өтеді
+  let ignoreNextClick = false;
+
+  function goToTab(tab) {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    movePillTo(tab, true);
+    const href = tab.getAttribute('href');
+    setTimeout(() => { location.href = href; }, 260);
+  }
+
+  // Қарапайым түрту (tap) арқылы бет ауыстыру
   tabs.forEach(tab => {
     tab.addEventListener('click', function (e) {
+      if (ignoreNextClick) { ignoreNextClick = false; e.preventDefault(); return; }
       if (tab.classList.contains('active')) return; // қазірдің өзінде осы бетте
       e.preventDefault();
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      movePillTo(tab);
-      const href = tab.getAttribute('href');
-      setTimeout(() => { location.href = href; }, 260);
+      goToTab(tab);
     });
   });
+
+  // ═══ Пиллді (сопақ форманы) ұстап, басқа батырмаға апарып тастау ═══
+  let isDragging = false;
+  let dragMoved = false;
+  let activePointerId = null;
+
+  tabbar.style.userSelect = 'none';
+  tabbar.style.webkitUserSelect = 'none';
+
+  tabbar.addEventListener('pointerdown', (e) => {
+    const tab = e.target.closest('a');
+    // Тек қазір белсенді батырманы (яғни пилл тұрған жерді) басып ұстағанда ғана сүйрейміз
+    if (!tab || !tab.classList.contains('active')) return;
+    isDragging = true;
+    dragMoved = false;
+    activePointerId = e.pointerId;
+    try { tabbar.setPointerCapture(e.pointerId); } catch (err) {}
+    indicator.classList.add('dragging');
+    document.body.style.cursor = 'grabbing';
+  });
+
+  tabbar.addEventListener('pointermove', (e) => {
+    if (!isDragging || e.pointerId !== activePointerId) return;
+    dragMoved = true;
+    e.preventDefault();
+
+    const x = e.clientX;
+    let targetTab = null;
+    for (const tab of tabs) {
+      const r = tab.getBoundingClientRect();
+      if (x >= r.left && x <= r.right) { targetTab = tab; break; }
+    }
+
+    tabs.forEach(t => t.classList.remove('drag-hover'));
+    if (targetTab) {
+      targetTab.classList.add('drag-hover');
+      indicator.style.transition = 'left 0.12s ease, width 0.12s ease';
+      const box = getTabBox(targetTab);
+      indicator.style.left = box.left + 'px';
+      indicator.style.width = box.width + 'px';
+    }
+  }, { passive: false });
+
+  function endDrag(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    document.body.style.cursor = '';
+    indicator.classList.remove('dragging');
+
+    const dropTab = tabs.find(t => t.classList.contains('drag-hover'));
+    tabs.forEach(t => t.classList.remove('drag-hover'));
+
+    if (dropTab && dragMoved) {
+      if (dropTab.classList.contains('active')) {
+        movePillTo(dropTab, true);
+      } else {
+        ignoreNextClick = true;
+        setTimeout(() => { ignoreNextClick = false; }, 500); // сақтық шарасы
+        goToTab(dropTab);
+      }
+    } else {
+      const activeTab = tabs.find(t => t.classList.contains('active'));
+      movePillTo(activeTab, true);
+    }
+    dragMoved = false;
+  }
+
+  tabbar.addEventListener('pointerup', endDrag);
+  tabbar.addEventListener('pointercancel', endDrag);
 })();
 </script>
 
