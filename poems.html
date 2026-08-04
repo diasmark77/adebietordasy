@@ -312,7 +312,7 @@
             const { data: poems, error } = await supabase
                 .from('poems')
                 .select('*')
-                .order('addedAt', { ascending: false });
+                .order('added_at', { ascending: false });
 
             if (error) throw error;
 
