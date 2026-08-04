@@ -291,11 +291,29 @@
         return str.toLowerCase().replace(/ё/g, 'е').trim();
     }
 
+    function getAuthorName(poem) {
+        return poem.authorName || poem.author_name || poem.author ||
+               poem.name || poem.author_name_full || 'Белгісіз автор';
+    }
+
+    function getPoemText(poem) {
+        return poem.poemText || poem.poem_text || poem.text || poem.content || '';
+    }
+
+    // Өлең мәтінінің алғашқы 4 жолын қайтарады
+    function getFirstFourLines(text) {
+        if (!text) return '';
+        const lines = text.split('\n').filter(line => line.trim() !== '');
+        const preview = lines.slice(0, 4);
+        const hasMore = lines.length > 4;
+        return preview.join('\n') + (hasMore ? '\n...' : '');
+    }
+
     function matchesSearch(poem, term) {
         const normTerm   = normalize(term);
-        const normAuthor = normalize(poem.authorName || poem.author || poem.name || '');
+        const normAuthor = normalize(getAuthorName(poem));
         const normTitle  = normalize(poem.title || '');
-        const normText   = normalize(poem.poemText || poem.text || poem.content || '');
+        const normText   = normalize(getPoemText(poem));
         return (
             normAuthor.includes(normTerm) ||
             normTitle.includes(normTerm)  ||
@@ -352,10 +370,8 @@
 
         if (filtered.length === 0 && dbPoems.length > 0) {
             const sample = dbPoems.slice(0, 3).map(p => ({
-                authorName: p.authorName,
-                author:     p.author,
-                name:       p.name,
-                title:      p.title
+                resolvedAuthor: getAuthorName(p),
+                title:          p.title
             }));
             showDebug(
                 `Іздеу: "${term}"\n` +
@@ -387,14 +403,14 @@
             const card = document.createElement('div');
             card.className = 'card from-db';
 
-            const title      = poem.title      || 'Өлең';
-            const authorName = poem.authorName || poem.author || poem.name || 'Белгісіз автор';
-            const poemText   = poem.poemText   || poem.text  || poem.content || '';
-            const preview    = poemText.substring(0, 200);
+            const title      = poem.title || 'Өлең';
+            const authorName = getAuthorName(poem);
+            const poemText    = getPoemText(poem);
+            const preview     = getFirstFourLines(poemText);
 
             card.innerHTML = `
                 <h2>${authorName} &laquo;${title}&raquo;</h2>
-                <pre>${preview}${poemText.length > 200 ? '...' : ''}</pre>
+                <pre>${preview}</pre>
                 <span class="read-more">Толығырақ →</span>
             `;
 
