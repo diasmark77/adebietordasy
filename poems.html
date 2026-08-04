@@ -280,7 +280,9 @@
 <script>
     const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
     const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
-    const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Ескерту: айнымалы аты SDK-дың window.supabase объектісімен
+    // қақтығыспас үшін supabaseClient деп аталды
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let dbPoems = [];
 
@@ -309,7 +311,7 @@
         section.style.display = 'block';
 
         try {
-            const { data: poems, error } = await supabase
+            const { data: poems, error } = await supabaseClient
                 .from('poems')
                 .select('*')
                 .order('added_at', { ascending: false });
