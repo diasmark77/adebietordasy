@@ -1,687 +1,848 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="Әдебиет ордасы – ақындар мен жазушылар, қаламгерлер шығармалары, қазақ әдебиеті және қаламгер ойыны қамтылған білім беру сайты.">
-<title>Әдебиет ордасы</title>
-<meta name="keywords" content="әдебиет ордасы, қазақ әдебиеті, ақындар, жазушылар, қаламгер, қаламгер ойыны, өлеңдер, шығармалар">
-<link rel="icon" href="images/logo.png" type="image/png">
-<link rel="stylesheet" href="css/menu.css">
-<link rel="manifest" href="/adebietordasy/manifest.json">
-<meta name="theme-color" content="#2c1810">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/adebietordasy/sw.js');
-  }
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title id="dynamic-title">Жүктелуде... | Әдебиет ордасы</title>
+    <meta name="description" id="meta-description" content="Қазақ өлеңдері — Әдебиет ордасы">
+    <meta name="keywords" id="meta-keywords" content="қазақ өлеңдері, әдебиет ордасы">
 
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="icon" href="images/logo.png" type="image/png">
 
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f1ea;
-  color: #333;
-  /* Бөлек бет мазмұны төмендегі қалқыма тіл-бар астында қалып қоймас үшін */
-  padding-bottom: calc(96px + env(safe-area-inset-bottom));
-}
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f1ea; color: #333; text-align: left; padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+        .card { background: white; padding: 20px; margin: 20px auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 900px; text-align: left; }
+        h2 { color: #5c4033; text-align: center; }
 
-/* HEADER */
-header {
-  background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url("images/kazakh-dalasy.jpg") center/cover no-repeat;
-  color: white;
-  text-align: center;
-  padding: 60px 15px;
-}
+        #poem-content-display {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            line-height: 1.7;
+        }
 
-header h1 {
-  font-size: 32px;
-}
+        #author-hero {
+            display: none;
+            width: 100%;
+            background: #5c4033;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        #author-hero img {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            border-radius: 15px;
+            margin: 0 auto 16px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            border: 4px solid white;
+            display: block;
+        }
+        #author-hero-name {
+            color: white;
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin: 10px 0;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        #author-hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 11px 26px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border: 2px solid rgba(255,255,255,0.45);
+            backdrop-filter: blur(6px);
+            transition: all 0.25s;
+            letter-spacing: 0.3px;
+        }
+        #author-hero-btn:hover {
+            background: rgba(255,255,255,0.28);
+            border-color: rgba(255,255,255,0.75);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+        }
 
-header p {
-  font-size: 18px;
-  margin-top: 8px;
-}
+        #audio-toggle-wrap {
+            text-align: center;
+            margin: 16px 0 0;
+            display: none;
+        }
+        #audio-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #8B4513;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(139,46,46,0.25);
+            transition: opacity 0.15s;
+        }
+        #audio-player-wrap {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .audio-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            background: #fdf6f0;
+            border: 1px solid #d4a97a;
+            border-radius: 16px;
+            padding: 20px 24px;
+            max-width: 380px;
+            margin: 14px auto 0;
+            box-shadow: 0 2px 12px rgba(139,69,19,0.08);
+        }
+        .audio-title { font-size: 15px; font-weight: 600; color: #5a2a00; }
+        .audio-seek-row { display: flex; align-items: center; gap: 10px; width: 100%; }
+        .audio-time { font-size: 12px; color: #999; min-width: 32px; text-align: center; }
+        #audio-seek { flex: 1; accent-color: #8B4513; cursor: pointer; }
+        .audio-controls { display: flex; align-items: center; gap: 16px; }
+        .ctrl-btn {
+            width: 38px; height: 38px; border-radius: 50%;
+            border: 1.5px solid #c8914f; background: none;
+            color: #7a2020; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #audio-play-btn {
+            width: 52px; height: 52px; border-radius: 50%;
+            background: #8B4513; border: none; color: #fff;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(139,69,19,0.35);
+        }
+        #audio-dl-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 13px; color: #8b2e2e; text-decoration: none;
+            border: 1px solid #d4a090; border-radius: 8px;
+            padding: 6px 16px; transition: background 0.15s;
+        }
+        #audio-dl-link:hover { background: #fdecea; }
 
-/* PWA БАТЫРМАСЫ */
-#installBtn {
-  display: inline-block;
-  margin-top: 18px;
-  padding: 10px 22px;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  border-radius: 25px;
-  font-size: 15px;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  transition: background 0.25s, transform 0.2s;
-  letter-spacing: 0.3px;
-}
+        .nav-wrapper { text-align: center; margin: 20px 0; }
+        .back-btn { display: inline-block; margin: 10px 10px 0 0; padding: 10px 18px; background: #8b5e3c; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; }
+        .back-btn:hover { background: #6e472c; }
 
-#installBtn:hover {
-  background: rgba(255, 255, 255, 0.28);
-  transform: scale(1.04);
-}
+        .related-poems { margin: 20px auto; max-width: 900px; padding: 15px; background: #fdf6f0; border-left: 4px solid #8b5e3c; border-radius: 6px; }
+        .related-poems p { font-weight: bold; margin-bottom: 10px; color: #333; }
+        .poem-btn { display: block; text-decoration: none; color: white; background: #8b5e3c; padding: 10px 15px; border-radius: 6px; margin: 6px 0; text-align: center; font-weight: bold; transition: all 0.3s ease; }
+        .poem-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.3); background: #6e472c; }
 
-#installBtn:active {
-  transform: scale(0.97);
-}
+        .comments-section { max-width: 900px; margin: 40px auto 40px; padding: 0 20px; font-family: Arial, sans-serif; }
+        .comments-title { font-size: 1.4rem; font-weight: 700; color: #3b1f0a; border-bottom: 2px solid #c8a06a; padding-bottom: 10px; margin-bottom: 24px; }
+        .auth-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        #user-info { display: none; align-items: center; gap: 10px; }
+        #user-photo { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; }
+        #user-name { font-size: 0.95rem; color: #3b1f0a; font-weight: 600; }
+        .auth-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        #login-btn { background: #4285f4; color: #fff; }
+        #login-btn:hover { background: #2f6fd8; }
+        #logout-btn { display: none; background: #f1e8db; color: #7a4520; }
+        #logout-btn:hover { background: #e2d0bb; }
+        #comment-form { display: none; margin-bottom: 28px; }
+        #comment-input { width: 100%; min-height: 90px; padding: 12px 14px; border: 1.5px solid #d4b896; border-radius: 10px; font-size: 0.95rem; color: #2c1a0a; background: #fffaf5; resize: vertical; box-sizing: border-box; font-family: inherit; transition: border-color 0.2s; }
+        #comment-input:focus { outline: none; border-color: #a0622a; }
+        #submit-btn { margin-top: 10px; padding: 10px 24px; background: #8B4513; color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        #submit-btn:hover { background: #6b3410; }
+        #submit-btn:disabled { background: #c4a882; cursor: not-allowed; }
+        #login-note { color: #9a7a5a; font-size: 0.9rem; margin-bottom: 20px; }
+        .comment-card { display: flex; gap: 14px; padding: 16px; background: #fffaf5; border: 1px solid #e8d5ba; border-radius: 12px; margin-bottom: 14px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .comment-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #c8a06a; flex-shrink: 0; }
+        .comment-body { flex: 1; }
+        .comment-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+        .comment-name { font-weight: 700; font-size: 0.95rem; color: #3b1f0a; }
+        .comment-date { font-size: 0.8rem; color: #b08060; }
+        .comment-text { font-size: 0.95rem; color: #4a3020; line-height: 1.6; margin: 0; white-space: pre-wrap; }
+        .loading-text, .no-comments, .error-text { text-align: center; color: #9a7a5a; padding: 20px 0; font-size: 0.95rem; }
+        .delete-btn { background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 0.8rem; margin-left: 10px; padding: 0; text-decoration: underline; }
+        .delete-btn:hover { color: #cc0000; }
 
-/* Standalone режимінде батырманы жасыру */
-@media (display-mode: standalone) {
-  #installBtn {
-    display: none !important;
-  }
-}
+        /* ═══════════════════════════════════════════════
+           ТӨМЕНГІ МЕНЮ — iOS/Instagram стиліндегі tab bar
+           (index.html-мен бірдей, сол сайттың сол мәзірі)
+           ═══════════════════════════════════════════════ */
+        /* nav.tabbar (тег+класс) арнайы қолданылды — сайттағы ескі css/menu.css
+           файлындағы "nav {...}" (бүйірлік мәзірден қалған width:250px,
+           height:100%, flex-direction:column, transform т.б.) стильдерін
+           толықтай басып тастау үшін барлық маңызды қасиеттер !important-пен
+           қайта анықталды. */
+        nav.tabbar {
+          all: unset !important;
+          box-sizing: border-box !important;
+          display: flex !important;
+          flex-direction: row !important;
+          position: fixed !important;
+          top: auto !important;
+          left: 10px !important;
+          right: 10px !important;
+          bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+          width: auto !important;
+          height: auto !important;
+          min-height: 0 !important;
+          max-width: 520px !important;
+          margin: 0 auto !important;
+          transform: none !important;
+          transition: none !important;
+          align-items: stretch !important;
+          justify-content: space-around !important;
+          background: rgba(250, 247, 240, 0.92) !important;
+          -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+          backdrop-filter: saturate(180%) blur(20px) !important;
+          border: 1px solid rgba(139, 94, 60, 0.14) !important;
+          border-radius: 26px !important;
+          box-shadow: 0 8px 28px rgba(44, 24, 16, 0.16) !important;
+          padding: 8px 6px !important;
+          z-index: 1000 !important;
+        }
 
-/* ═══════════════════════════════════════════════
-   ТӨМЕНГІ МЕНЮ — iOS/Instagram стиліндегі tab bar
-   ═══════════════════════════════════════════════ */
-/* nav.tabbar (тег+класс) арнайы қолданылды — сайттағы ескі css/menu.css
-   файлындағы "nav {...}" (бүйірлік мәзірден қалған width:250px,
-   height:100%, flex-direction:column, transform т.б.) стильдерін
-   толықтай басып тастау үшін барлық маңызды қасиеттер !important-пен
-   қайта анықталды. */
-nav.tabbar {
-  all: unset !important;
-  box-sizing: border-box !important;
-  display: flex !important;
-  flex-direction: row !important;
-  position: fixed !important;
-  top: auto !important;
-  left: 10px !important;
-  right: 10px !important;
-  bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-  width: auto !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-width: 520px !important;
-  margin: 0 auto !important;
-  transform: none !important;
-  transition: none !important;
-  align-items: stretch !important;
-  justify-content: space-around !important;
-  background: rgba(250, 247, 240, 0.92) !important;
-  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
-  backdrop-filter: saturate(180%) blur(20px) !important;
-  border: 1px solid rgba(139, 94, 60, 0.14) !important;
-  border-radius: 26px !important;
-  box-shadow: 0 8px 28px rgba(44, 24, 16, 0.16) !important;
-  padding: 8px 6px !important;
-  z-index: 1000 !important;
-}
+        /* Белсенді батырманың астында жылжитын сопақ (pill) форма */
+        .tabbar-indicator {
+          position: absolute;
+          top: 6px;
+          height: 46px;
+          border-radius: 20px;
+          background: rgba(139, 94, 60, 0.13);
+          box-shadow: inset 0 0 0 1px rgba(139, 94, 60, 0.16);
+          transition: left 0.35s cubic-bezier(.34,1.56,.64,1),
+                      width 0.35s cubic-bezier(.34,1.56,.64,1),
+                      opacity 0.2s ease;
+          pointer-events: none;
+          opacity: 0;
+        }
 
-/* Белсенді батырманың астында жылжитын сопақ (pill) форма */
-.tabbar-indicator {
-  position: absolute;
-  top: 6px;
-  height: 46px;
-  border-radius: 20px;
-  background: rgba(139, 94, 60, 0.13);
-  box-shadow: inset 0 0 0 1px rgba(139, 94, 60, 0.16);
-  transition: left 0.35s cubic-bezier(.34,1.56,.64,1),
-              width 0.35s cubic-bezier(.34,1.56,.64,1),
-              opacity 0.2s ease;
-  pointer-events: none;
-  opacity: 0;
-}
+        .tabbar a {
+          flex: 1 1 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          text-decoration: none;
+          color: #9c8874;
+          padding: 9px 2px 7px;
+          min-height: 46px;
+          border-radius: 20px;
+          -webkit-tap-highlight-color: transparent;
+          transition: color 0.25s ease, transform 0.15s ease;
+          position: relative;
+          z-index: 1;
+        }
 
-.tabbar a {
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  text-decoration: none;
-  color: #9c8874;
-  padding: 9px 2px 7px;
-  min-height: 46px;
-  border-radius: 20px;
-  -webkit-tap-highlight-color: transparent;
-  transition: color 0.25s ease, transform 0.15s ease;
-  position: relative;
-  z-index: 1;
-}
+        .tabbar a svg {
+          width: 25px;
+          height: 25px;
+          stroke: currentColor;
+          fill: none;
+          stroke-width: 1.8;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
+        }
 
-.tabbar a svg {
-  width: 25px;
-  height: 25px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
-}
+        .tabbar a span {
+          font-size: 10.5px;
+          font-weight: 600;
+          letter-spacing: 0.1px;
+          line-height: 1.1;
+          white-space: nowrap;
+          transition: opacity 0.25s ease, transform 0.25s ease;
+        }
 
-.tabbar a span {
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.1px;
-  line-height: 1.1;
-  white-space: nowrap;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
+        .tabbar a:active {
+          transform: scale(0.92);
+        }
 
-.tabbar a:active {
-  transform: scale(0.92);
-}
+        .tabbar a.active {
+          color: #6e472c;
+          cursor: grab;
+          touch-action: none;
+        }
 
-.tabbar a.active {
-  color: #6e472c;
-}
+        .tabbar a.active svg {
+          transform: translateY(-1px) scale(1.08);
+        }
 
-.tabbar a.active svg {
-  transform: translateY(-1px) scale(1.08);
-}
+        .tabbar a.active:active {
+          cursor: grabbing;
+        }
 
-/* Пиллді ұстап тұрғандағы (сүйреу) көрініс */
-.tabbar-indicator.dragging {
-  transform: scale(1.05);
-  box-shadow: inset 0 0 0 1.5px rgba(139, 94, 60, 0.35), 0 6px 16px rgba(139, 94, 60, 0.28);
-}
+        /* Пиллді ұстап тұрғандағы (сүйреу) көрініс */
+        .tabbar-indicator.dragging {
+          transform: scale(1.05);
+          box-shadow: inset 0 0 0 1.5px rgba(139, 94, 60, 0.35), 0 6px 16px rgba(139, 94, 60, 0.28);
+        }
 
-.tabbar a.active {
-  cursor: grab;
-  touch-action: none;
-}
+        /* Пилл сүйреліп апарылып тұрған батырманың белгісі */
+        .tabbar a.drag-hover {
+          color: #6e472c;
+        }
 
-.tabbar a.active:active {
-  cursor: grabbing;
-}
+        .tabbar a.drag-hover svg {
+          transform: translateY(-1px) scale(1.12);
+        }
 
-/* Пилл сүйреліп апарылып тұрған батырманың белгісі */
-.tabbar a.drag-hover {
-  color: #6e472c;
-}
-
-.tabbar a.drag-hover svg {
-  transform: translateY(-1px) scale(1.12);
-}
-
-/* CONTENT */
-section {
-  padding: 15px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-.card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
-}
-
-.card img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  transition: transform 0.3s ease;
-  border-radius: 8px;
-}
-
-.card:hover img {
-  transform: scale(1.05);
-}
-
-.card h2 {
-  margin-top: 8px;
-  font-size: 18px;
-  color: #5c4033;
-}
-
-/* FOOTER */
-footer {
-  background: #5c4033;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  margin-top: 20px;
-}
-
-/* MOBILE */
-@media (max-width: 600px) {
-  header h1 { font-size: 22px; }
-  header p { font-size: 14px; }
-  section { grid-template-columns: 1fr; }
-  .card img { height: auto; }
-  #installBtn { font-size: 13px; padding: 9px 18px; }
-}
-
-/* Тіл-бардың орналасуы 6 батырмаға сай тарылып кетпес үшін */
-@media (max-width: 380px) {
-  .tabbar a span { font-size: 9.5px; }
-  .tabbar a svg { width: 21px; height: 21px; }
-}
-
-/* ═══ МОДАЛЬДІ ТЕРЕЗЕ (iOS және fallback үшін) ═══ */
-.pwa-modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.pwa-modal {
-  background: #fff;
-  border-radius: 20px 20px 0 0;
-  padding: 28px 24px 40px;
-  width: 100%;
-  max-width: 480px;
-  text-align: center;
-  animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to   { transform: translateY(0); }
-}
-
-.pwa-modal-icon {
-  font-size: 48px;
-  margin-bottom: 12px;
-}
-
-.pwa-modal-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #2c1810;
-  margin-bottom: 12px;
-}
-
-.pwa-modal-text {
-  font-size: 15px;
-  line-height: 1.7;
-  color: #555;
-  margin-bottom: 8px;
-}
-
-.pwa-modal-step {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #f4f1ea;
-  border-radius: 10px;
-  padding: 10px 14px;
-  margin: 8px 0;
-  text-align: left;
-  font-size: 14px;
-  color: #333;
-}
-
-.pwa-modal-step-num {
-  background: #8b5e3c;
-  color: white;
-  border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.pwa-modal-close {
-  margin-top: 20px;
-  padding: 13px 0;
-  width: 100%;
-  background: #8b5e3c;
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.pwa-modal-close:hover {
-  background: #6e472c;
-}
-</style>
+        @media (max-width: 380px) {
+          .tabbar a span { font-size: 9.5px; }
+          .tabbar a svg { width: 21px; height: 21px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-  <h1>Әдебиет ордасы</h1>
-  <p>Қазақ руханиятының әдеби ордасы</p>
-  <button id="installBtn">📲 Қолданбаны орнату</button>
-</header>
+    <div id="author-hero">
+        <img id="author-hero-img" src="" alt="Автор">
+        <div id="author-hero-name"></div>
+        <a id="author-hero-btn" href="#" style="display:none;">
+            ✍️ <span id="author-hero-btn-text">Автор бетіне →</span>
+        </a>
+    </div>
 
-<section>
-  <div class="card">
-    <a href="shygarma/eskertkish.html">
-      <img src="images/eskertkish.jpeg" alt="Ескерткіш шығармасы">
-      <h2>"Ескерткіш" Дулат Исабеков</h2>
-    </a>
-  </div>
+    <div id="audio-toggle-wrap">
+        <button id="audio-toggle-btn" onclick="toggleAudioPlayer()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm-2 13V8l6 4-6 4z"/>
+            </svg>
+            Әнді тыңдау
+        </button>
+    </div>
 
-  <div class="card">
-    <a href="shygarma/irim.html">
-      <img src="images/irim.jpeg" alt="Иірім шығармасы">
-      <h2>Көкенов Жеңісбек "Иірім"</h2>
-    </a>
-  </div>
-
-  <div class="card">
-    <a href="shygarma/ulpan.html">
-      <img src="images/ulpan.jpeg" alt="Ұлпан шығармасы">
-      <h2>"Ұлпан" Ғабит Мүсірепов</h2>
-    </a>
-  </div>
-
-  <div class="card">
-    <a href="shygarma/ormanda.html">
-      <img src="images/ormanda.jpeg" alt="Орманда шығармасы">
-      <h2>Көкенов Жеңісбек "Орманда..."</h2>
-    </a>
-  </div>
-
-  <div class="card">
-    <a href="create/kobylandy-batyr.html">
-      <img src="images/kobylandy-batyr.jpg" alt="Қобыланды батыр">
-      <h2>"Қобыланды батыр" Мұхтар Әуезов</h2>
-    </a>
-  </div>
-
-  <div class="card">
-    <a href="create/zhurektesin.html">
-      <img src="images/zhurektesin.jpeg" alt="Жүректесің">
-      <h2>"Жүректесің" Бақдәулет Арыстан</h2>
-    </a>
-  </div>
-</section>
-
-<footer>
-  © 2026 Әдебиет ордасы | Қазақ әдеби порталы
-</footer>
-
-<!-- ═══ ТӨМЕНГІ МЕНЮ (iOS стиліндегі tab bar) ═══ -->
-<nav class="tabbar" id="tabbar">
-  <div class="tabbar-indicator" id="tabbarIndicator"></div>
-  <a href="index.html" class="active" data-page="index.html">
-    <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
-    <span>Басты бет</span>
-  </a>
-  <a href="authors-filtre.html" data-page="authors-filtre.html">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
-    <span>Авторлар</span>
-  </a>
-  <a href="poemGame.html" data-page="poemGame.html">
-    <svg viewBox="0 0 24 24"><rect x="2.5" y="8" width="19" height="9" rx="4"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="15.5" cy="11.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="18" cy="13.5" r="0.9" fill="currentColor" stroke="none"/></svg>
-    <span>Ойын</span>
-  </a>
-  <a href="contact.html" data-page="contact.html">
-    <svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
-    <span>Байланыс</span>
-  </a>
-  <a href="poems.html" data-page="poems.html">
-    <svg viewBox="0 0 24 24"><path d="M4 5.2c2.4-.9 5-.9 7 .5v13c-2-1.4-4.6-1.4-7-.5Z"/><path d="M20 5.2c-2.4-.9-5-.9-7 .5v13c2-1.4 4.6-1.4 7-.5Z"/></svg>
-    <span>Өлеңдер</span>
-  </a>
-  <a href="shygarms.html" data-page="shygarms.html">
-    <svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="4.5" rx="1.2"/><rect x="4" y="10.5" width="16" height="4.5" rx="1.2"/><rect x="4" y="16.5" width="16" height="4.5" rx="1.2"/></svg>
-    <span>Шығармалар</span>
-  </a>
-</nav>
-
-<script>
-// ═══ PWA ОРНАТУ ═══
-let deferredPrompt = null;
-const installBtn = document.getElementById('installBtn');
-
-// Android/Chrome: beforeinstallprompt ұстау
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-});
-
-// iOS анықтау
-function isIOS() {
-  return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
-}
-
-// Модальді терезе жасау
-function showModal(isIOS) {
-  const overlay = document.createElement('div');
-  overlay.className = 'pwa-modal-overlay';
-
-  if (isIOS) {
-    overlay.innerHTML = `
-      <div class="pwa-modal">
-        <div class="pwa-modal-icon">📱</div>
-        <div class="pwa-modal-title">Қолданбаны орнату</div>
-        <div class="pwa-modal-text">Safari арқылы орнату үшін:</div>
-        <div class="pwa-modal-step">
-          <div class="pwa-modal-step-num">1</div>
-          <span>Төменгі «Бөлісу» батырмасын басыңыз <strong>⎙</strong></span>
+    <div id="audio-player-wrap">
+        <div class="audio-inner">
+            <audio id="poem-audio" preload="metadata"></audio>
+            <div id="audio-track-title" class="audio-title"></div>
+            <div class="audio-seek-row">
+                <span id="audio-cur" class="audio-time">0:00</span>
+                <input type="range" id="audio-seek" min="0" max="100" step="0.1" value="0">
+                <span id="audio-dur" class="audio-time">0:00</span>
+            </div>
+            <div class="audio-controls">
+                <button class="ctrl-btn" onclick="audioRew()" title="10 сек кері">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <polyline points="1 4 1 10 7 10"/>
+                        <path d="M3.51 15a9 9 0 1 0 .49-3.28"/>
+                    </svg>
+                </button>
+                <button id="audio-play-btn" onclick="audioPlayPause()">
+                    <svg id="audio-play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5,3 19,12 5,21"/>
+                    </svg>
+                    <svg id="audio-pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+                        <rect x="6" y="4" width="4" height="16"/>
+                        <rect x="14" y="4" width="4" height="16"/>
+                    </svg>
+                </button>
+                <button class="ctrl-btn" onclick="audioFwd()" title="10 сек алға" style="border-color:#8B4513;color:#8B4513;">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <polyline points="23 4 23 10 17 10"/>
+                        <path d="M20.49 15a9 9 0 1 1-.49-3.28"/>
+                    </svg>
+                </button>
+            </div>
+            <a id="audio-dl-link" href="#" download>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Жүктеп алу
+            </a>
         </div>
-        <div class="pwa-modal-step">
-          <div class="pwa-modal-step-num">2</div>
-          <span>«Басты экранға қосу» (<strong>Add to Home Screen</strong>) таңдаңыз</span>
+    </div>
+
+    <div class="card">
+        <h2 id="poem-title-display"></h2>
+        <pre id="poem-content-display"></pre>
+    </div>
+
+    <div id="navigation-buttons" class="nav-wrapper">
+        <a href="poems.html" class="back-btn">← Өлеңдер бетіне</a>
+        <a id="author-link" href="#" class="back-btn" style="display:none;">✍️ <span id="author-btn-name">Автор бетіне</span></a>
+    </div>
+
+    <div id="related-poems-container" class="related-poems">
+        <p>Сізге ұнауы мүмкін ⬇️</p>
+        <div id="suggestions-list">Жүктелуде...</div>
+    </div>
+
+    <section class="comments-section">
+        <h2 class="comments-title">💬 Пікірлер</h2>
+        <div class="auth-bar">
+            <button id="login-btn" class="auth-btn">
+                <svg width="18" height="18" viewBox="0 0 48 48">
+                    <path fill="#4285F4" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.5 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 28.9 5 24 5 13 5 4 14 4 25s9 20 20 20c11 0 20-9 20-20 0-1.5-.2-3-.4-4.5z"/>
+                    <path fill="#34A853" d="M6.3 15.7l6.6 4.8C14.5 17 19 14 24 14c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 28.9 5 24 5c-7.7 0-14.3 4.4-17.7 10.7z"/>
+                    <path fill="#FBBC05" d="M24 45c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.5 36.4 26.9 37 24 37c-5.2 0-9.6-3.4-11.2-8.1l-6.5 5C9.5 40.5 16.2 45 24 45z"/>
+                    <path fill="#EA4335" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2C37 39.1 44 34 44 25c0-1.5-.2-3-.4-4.5z"/>
+                </svg>
+                Google арқылы кіру
+            </button>
+            <div id="user-info">
+                <img id="user-photo" src="" alt="avatar">
+                <span id="user-name"></span>
+            </div>
+            <button id="logout-btn" class="auth-btn">Шығу</button>
         </div>
-        <div class="pwa-modal-step">
-          <div class="pwa-modal-step-num">3</div>
-          <span>Жоғарғы оң жақтағы «<strong>Қосу</strong>» батырмасын басыңыз</span>
+        <div id="comment-form">
+            <textarea id="comment-input" placeholder="Пікіріңізді жазыңыз..."></textarea>
+            <button id="submit-btn">Жіберу</button>
         </div>
-        <button class="pwa-modal-close" onclick="this.closest('.pwa-modal-overlay').remove()">Түсінікті</button>
-      </div>
-    `;
-  } else {
-    overlay.innerHTML = `
-      <div class="pwa-modal">
-        <div class="pwa-modal-icon">📲</div>
-        <div class="pwa-modal-title">Қолданбаны орнату</div>
-        <div class="pwa-modal-text">Браузер мәзірі арқылы орнатуға болады:</div>
-        <div class="pwa-modal-step">
-          <div class="pwa-modal-step-num">1</div>
-          <span>Браузердің жоғарғы оң жақтағы <strong>⋮</strong> мәзірін ашыңыз</span>
-        </div>
-        <div class="pwa-modal-step">
-          <div class="pwa-modal-step-num">2</div>
-          <span>«<strong>Қолданбаны орнату</strong>» немесе «<strong>Add to Home Screen</strong>» таңдаңыз</span>
-        </div>
-        <button class="pwa-modal-close" onclick="this.closest('.pwa-modal-overlay').remove()">Түсінікті</button>
-      </div>
-    `;
-  }
+        <p id="login-note">Пікір қалдыру үшін Google аккаунтымен кіріңіз.</p>
+        <div id="comments-list"></div>
+    </section>
 
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) overlay.remove();
-  });
+    <!-- ═══ ТӨМЕНГІ МЕНЮ (index.html-мен бірдей iOS стиліндегі tab bar) ═══ -->
+    <nav class="tabbar" id="tabbar">
+      <div class="tabbar-indicator" id="tabbarIndicator"></div>
+      <a href="index.html" data-page="index.html">
+        <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
+        <span>Басты бет</span>
+      </a>
+      <a href="authors-filtre.html" data-page="authors-filtre.html">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4"/></svg>
+        <span>Авторлар</span>
+      </a>
+      <a href="poemGame.html" data-page="poemGame.html">
+        <svg viewBox="0 0 24 24"><rect x="2.5" y="8" width="19" height="9" rx="4"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="15.5" cy="11.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="18" cy="13.5" r="0.9" fill="currentColor" stroke="none"/></svg>
+        <span>Ойын</span>
+      </a>
+      <a href="contact.html" data-page="contact.html">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
+        <span>Байланыс</span>
+      </a>
+      <a href="poems.html" data-page="poems.html">
+        <svg viewBox="0 0 24 24"><path d="M4 5.2c2.4-.9 5-.9 7 .5v13c-2-1.4-4.6-1.4-7-.5Z"/><path d="M20 5.2c-2.4-.9-5-.9-7 .5v13c2-1.4 4.6-1.4 7-.5Z"/></svg>
+        <span>Өлеңдер</span>
+      </a>
+      <a href="shygarms.html" data-page="shygarms.html">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="4.5" rx="1.2"/><rect x="4" y="10.5" width="16" height="4.5" rx="1.2"/><rect x="4" y="16.5" width="16" height="4.5" rx="1.2"/></svg>
+        <span>Шығармалар</span>
+      </a>
+    </nav>
 
-  document.body.appendChild(overlay);
-}
+    <!-- АУДИО ПЛЕЕР ЛОГИКАСЫ -->
+    <script>
+        var audioOpen = false;
+        var audioEl   = document.getElementById('poem-audio');
+        var audioSeek = document.getElementById('audio-seek');
+        var audioCur  = document.getElementById('audio-cur');
+        var audioDur  = document.getElementById('audio-dur');
 
-installBtn.addEventListener('click', async () => {
-  if (isIOS()) {
-    showModal(true);
-    return;
-  }
+        function toggleAudioPlayer() {
+            var wrap = document.getElementById('audio-player-wrap');
+            var btn  = document.getElementById('audio-toggle-btn');
+            audioOpen = !audioOpen;
+            if (audioOpen) {
+                if (audioEl.readyState === 0) audioEl.load();
+                wrap.style.maxHeight = '420px';
+                wrap.style.opacity   = '1';
+                btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H7.83l4.88-4.88c.39-.39.39-1.03 0-1.42-.39-.39-1.02-.39-1.41 0l-6.59 6.59c-.39.39-.39 1.02 0 1.41l6.59 6.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.83 13H19c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg> Жабу';
+            } else {
+                wrap.style.maxHeight = '0';
+                wrap.style.opacity   = '0';
+                audioEl.pause();
+                document.getElementById('audio-play-icon').style.display  = '';
+                document.getElementById('audio-pause-icon').style.display = 'none';
+                btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm-2 13V8l6 4-6 4z"/></svg> Әнді тыңдау';
+            }
+        }
 
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    if (outcome === 'accepted') {
-      installBtn.style.display = 'none';
-    }
-    return;
-  }
+        function audioPlayPause() {
+            if (audioEl.paused) {
+                audioEl.play();
+                document.getElementById('audio-play-icon').style.display  = 'none';
+                document.getElementById('audio-pause-icon').style.display = '';
+            } else {
+                audioEl.pause();
+                document.getElementById('audio-play-icon').style.display  = '';
+                document.getElementById('audio-pause-icon').style.display = 'none';
+            }
+        }
 
-  showModal(false);
-});
+        function audioRew() { audioEl.currentTime = Math.max(0, audioEl.currentTime - 10); }
+        function audioFwd() { audioEl.currentTime = Math.min(audioEl.duration || 0, audioEl.currentTime + 10); }
 
-window.addEventListener('appinstalled', () => {
-  installBtn.style.display = 'none';
-  deferredPrompt = null;
-});
+        function audioFmt(s) {
+            s = Math.floor(s || 0);
+            var m = Math.floor(s / 60), sec = s % 60;
+            return m + ':' + (sec < 10 ? '0' : '') + sec;
+        }
 
-// ═══ Ағымдағы бетті тіл-барда белсенді етіп көрсету + жылжымалы pill индикатор ═══
-(function initTabbar() {
-  const tabbar = document.getElementById('tabbar');
-  const indicator = document.getElementById('tabbarIndicator');
-  const tabs = Array.from(document.querySelectorAll('.tabbar a'));
-  const current = location.pathname.split('/').pop() || 'index.html';
+        audioEl.addEventListener('timeupdate', function() {
+            if (audioEl.duration) audioSeek.value = (audioEl.currentTime / audioEl.duration) * 100;
+            audioCur.textContent = audioFmt(audioEl.currentTime);
+        });
+        audioEl.addEventListener('loadedmetadata', function() {
+            audioDur.textContent = audioFmt(audioEl.duration);
+        });
+        audioEl.addEventListener('ended', function() {
+            document.getElementById('audio-play-icon').style.display  = '';
+            document.getElementById('audio-pause-icon').style.display = 'none';
+            audioSeek.value = 0;
+            audioCur.textContent = '0:00';
+        });
+        audioSeek.addEventListener('input', function() {
+            if (audioEl.duration) audioEl.currentTime = (audioSeek.value / 100) * audioEl.duration;
+        });
+    </script>
 
-  tabs.forEach(a => a.classList.toggle('active', a.dataset.page === current));
+    <!-- ✅ Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  function getTabBox(tab) {
-    const barRect = tabbar.getBoundingClientRect();
-    const tabRect = tab.getBoundingClientRect();
-    const pad = 6; // pill сол/оң жиегінен кішкене қалыңдық
-    return {
-      left: tabRect.left - barRect.left + pad,
-      width: tabRect.width - pad * 2
-    };
-  }
+    <!-- НЕГІЗГІ ЛОГИКА (Supabase) -->
+    <script>
+        const SUPABASE_URL = "https://rehdrlbhglnhajwtgohr.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_9-WTtRK7KHkr8dQ7x30Yew_Syacj2vB";
+        const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  function movePillTo(tab, animate) {
-    if (!tab) { indicator.style.opacity = '0'; return; }
-    const box = getTabBox(tab);
-    indicator.style.transition = animate
-      ? 'left 0.35s cubic-bezier(.34,1.56,.64,1), width 0.35s cubic-bezier(.34,1.56,.64,1), opacity 0.2s ease'
-      : 'opacity 0.2s ease';
-    indicator.style.left = box.left + 'px';
-    indicator.style.width = box.width + 'px';
-    indicator.style.opacity = '1';
-  }
+        async function initPage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const poemId    = urlParams.get('id');
 
-  function positionPill() {
-    const activeTab = tabs.find(a => a.classList.contains('active'));
-    movePillTo(activeTab, false);
-  }
+            if (!poemId) {
+                document.getElementById('poem-title-display').innerText   = "Өлең табылмады";
+                document.getElementById('poem-content-display').innerText = "URL-де ?id= параметрі жоқ.";
+                return;
+            }
 
-  // Бастапқы орналасу (суреттер/шрифттер жүктелгенде дәл өлшем үшін қайталаймыз)
-  positionPill();
-  window.addEventListener('load', positionPill);
-  window.addEventListener('resize', positionPill);
+            try {
+                // Алдымен poems кестесінен іздейміз
+                let { data, error } = await supabase
+                    .from('poems')
+                    .select('*')
+                    .eq('id', poemId)
+                    .single();
 
-  let ignoreNextClick = false;
+                // Табылмаса poem_requests кестесінен іздейміз
+                if (error || !data) {
+                    const result = await supabase
+                        .from('poem_requests')
+                        .select('*')
+                        .eq('id', poemId)
+                        .single();
+                    data  = result.data;
+                    error = result.error;
+                }
 
-  function goToTab(tab) {
-    tabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    movePillTo(tab, true);
-    const href = tab.getAttribute('href');
-    setTimeout(() => { location.href = href; }, 260);
-  }
+                if (data) {
+                    const poemTitle  = data.workTitle  || data.title    || "Тақырыпсыз";
+                    const poemText   = data.work       || data.poemText || "Мәтін жоқ";
+                    const authorName = data.authorName || "Белгісіз автор";
 
-  // Қарапайым түрту (tap) арқылы бет ауыстыру
-  tabs.forEach(tab => {
-    tab.addEventListener('click', function (e) {
-      if (ignoreNextClick) { ignoreNextClick = false; e.preventDefault(); return; }
-      if (tab.classList.contains('active')) return; // қазірдің өзінде осы бетте
-      e.preventDefault();
-      goToTab(tab);
-    });
-  });
+                    document.getElementById('poem-title-display').innerText   = poemTitle;
+                    document.getElementById('poem-content-display').innerText = poemText;
 
-  // ═══ Пиллді (сопақ форманы) ұстап, басқа батырмаға апарып тастау ═══
-  let isDragging = false;
-  let dragMoved = false;
-  let activePointerId = null;
+                    document.title = `${poemTitle} — ${authorName} | Әдебиет ордасы`;
+                    document.getElementById('meta-description').content =
+                        poemText.substring(0, 150).replace(/\n/g, ' ');
+                    document.getElementById('meta-keywords').content =
+                        `${poemTitle}, ${authorName}, қазақ өлеңдері, әдебиет ордасы`;
 
-  tabbar.style.userSelect = 'none';
-  tabbar.style.webkitUserSelect = 'none';
+                    // Schema.org
+                    const schema = {
+                        "@context": "https://schema.org",
+                        "@type": "Poem",
+                        "name": poemTitle,
+                        "author": { "@type": "Person", "name": authorName },
+                        "text": poemText.substring(0, 500),
+                        "inLanguage": "kk",
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "Әдебиет ордасы",
+                            "url": "https://diasmark77.github.io/adebietordasy/"
+                        }
+                    };
+                    const schemaEl = document.createElement('script');
+                    schemaEl.type = 'application/ld+json';
+                    schemaEl.textContent = JSON.stringify(schema);
+                    document.head.appendChild(schemaEl);
 
-  tabbar.addEventListener('pointerdown', (e) => {
-    const tab = e.target.closest('a');
-    // Тек қазір белсенді батырманы (яғни пилл тұрған жерді) басып ұстағанда ғана сүйрейміз
-    if (!tab || !tab.classList.contains('active')) return;
-    isDragging = true;
-    dragMoved = false;
-    activePointerId = e.pointerId;
-    try { tabbar.setPointerCapture(e.pointerId); } catch (err) {}
-    indicator.classList.add('dragging');
-    document.body.style.cursor = 'grabbing';
-  });
+                    // Canonical URL
+                    const canonEl = document.createElement('link');
+                    canonEl.rel  = 'canonical';
+                    canonEl.href = `https://diasmark77.github.io/adebietordasy/poem-view.html?id=${poemId}`;
+                    document.head.appendChild(canonEl);
 
-  tabbar.addEventListener('pointermove', (e) => {
-    if (!isDragging || e.pointerId !== activePointerId) return;
-    dragMoved = true;
-    e.preventDefault();
+                    // Open Graph
+                    const ogTags = {
+                        'og:title':       `${poemTitle} — ${authorName}`,
+                        'og:description': poemText.substring(0, 150).replace(/\n/g, ' '),
+                        'og:url':         `https://diasmark77.github.io/adebietordasy/poem-view.html?id=${poemId}`,
+                        'og:type':        'article',
+                        'og:site_name':   'Әдебиет ордасы'
+                    };
+                    Object.entries(ogTags).forEach(([prop, content]) => {
+                        const el = document.createElement('meta');
+                        el.setAttribute('property', prop);
+                        el.setAttribute('content', content);
+                        document.head.appendChild(el);
+                    });
 
-    const x = e.clientX;
-    let targetTab = null;
-    for (const tab of tabs) {
-      const r = tab.getBoundingClientRect();
-      if (x >= r.left && x <= r.right) { targetTab = tab; break; }
-    }
+                    let photoUrl = (data.photoUrl || '').trim();
+                    let audioUrl = (data.audioUrl || '').trim();
+                    let authorId = (data.authorId || '').trim();
 
-    tabs.forEach(t => t.classList.remove('drag-hover'));
-    if (targetTab) {
-      targetTab.classList.add('drag-hover');
-      indicator.style.transition = 'left 0.12s ease, width 0.12s ease';
-      const box = getTabBox(targetTab);
-      indicator.style.left = box.left + 'px';
-      indicator.style.width = box.width + 'px';
-    }
-  }, { passive: false });
+                    // Автор кестесінен толықтыру
+                    if (!photoUrl || !authorId || !audioUrl) {
+                        try {
+                            const { data: authData } = await supabase
+                                .from('authors')
+                                .select('*')
+                                .eq('name', authorName)
+                                .limit(1)
+                                .single();
 
-  function endDrag(e) {
-    if (!isDragging) return;
-    isDragging = false;
-    document.body.style.cursor = '';
-    indicator.classList.remove('dragging');
+                            if (authData) {
+                                if (!photoUrl) photoUrl = (authData.photoUrl || authData.authorImg || '').trim();
+                                if (!audioUrl) audioUrl = (authData.audioUrl || '').trim();
+                                if (!authorId) authorId = authData.id;
+                            }
+                        } catch(e) {
+                            console.warn('Authors іздеу қатесі:', e);
+                        }
+                    }
 
-    const dropTab = tabs.find(t => t.classList.contains('drag-hover'));
-    tabs.forEach(t => t.classList.remove('drag-hover'));
+                    // Автор header
+                    document.getElementById('author-hero-name').innerText = authorName;
+                    document.getElementById('author-hero').style.display  = 'block';
+                    if (photoUrl) {
+                        document.getElementById('author-hero-img').src           = photoUrl;
+                        document.getElementById('author-hero-img').alt           = authorName;
+                        document.getElementById('author-hero-img').style.display = 'block';
+                    } else {
+                        document.getElementById('author-hero-img').style.display = 'none';
+                    }
 
-    if (dropTab && dragMoved) {
-      if (dropTab.classList.contains('active')) {
-        movePillTo(dropTab, true);
-      } else {
-        ignoreNextClick = true;
-        setTimeout(() => { ignoreNextClick = false; }, 500); // сақтық шарасы
-        goToTab(dropTab);
+                    // Аудио плеер
+                    if (audioUrl) {
+                        document.getElementById('poem-audio').src = audioUrl;
+                        document.getElementById('audio-track-title').textContent =
+                            '🎵 ' + authorName + ' — ' + poemTitle;
+                        document.getElementById('audio-dl-link').href     = audioUrl;
+                        document.getElementById('audio-dl-link').download = authorName + ' — ' + poemTitle;
+                        document.getElementById('audio-toggle-wrap').style.display = 'block';
+                    } else {
+                        document.getElementById('audio-toggle-wrap').style.display = 'none';
+                    }
+
+                    // Автор батырмасы
+                    const authorUrl = authorId
+                        ? `author-profile.html?id=${authorId}`
+                        : 'poets.html';
+
+                    const authorLink = document.getElementById('author-link');
+                    authorLink.href  = authorUrl;
+                    authorLink.style.display = 'inline-block';
+                    document.getElementById('author-btn-name').innerText = authorName + ' бетіне →';
+
+                    const heroBtn = document.getElementById('author-hero-btn');
+                    heroBtn.href  = authorUrl;
+                    document.getElementById('author-hero-btn-text').innerText = authorName + ' бетіне →';
+                    heroBtn.style.display = 'inline-flex';
+
+                    loadSuggestions(poemId);
+
+                } else {
+                    document.getElementById('poem-title-display').innerText   = "Өлең табылмады";
+                    document.getElementById('poem-content-display').innerText =
+                        "Бұл ID-мен өлең базада жоқ. Мүмкін жойылған болуы мүмкін.";
+                    document.getElementById('suggestions-list').innerHTML = "";
+                }
+
+            } catch (error) {
+                console.error("Supabase қатесі:", error);
+                document.getElementById('poem-title-display').innerText   = "Қате орын алды";
+                document.getElementById('poem-content-display').innerText =
+                    "Деректерді жүктеу кезінде қате шықты: " + error.message;
+            }
+        }
+
+        async function loadSuggestions(currentId) {
+            try {
+                const { data: poems, error } = await supabase
+                    .from('poems')
+                    .select('id, workTitle, title, authorName')
+                    .neq('id', currentId)
+                    .limit(5);
+
+                if (error) throw error;
+
+                let html = "";
+                (poems || []).forEach(d => {
+                    const title  = d.workTitle  || d.title || "Өлең";
+                    const author = d.authorName || "";
+                    html += `<a href="poem-view.html?id=${d.id}" class="poem-btn">
+                                📖 ${author ? author + ' — ' : ''}${title}
+                             </a>`;
+                });
+                document.getElementById('suggestions-list').innerHTML =
+                    html || "<p>Ұсыныс жоқ</p>";
+            } catch (error) {
+                console.error("Ұсыныстар қатесі:", error);
+                document.getElementById('suggestions-list').innerHTML = "<p>Жүктеу қатесі</p>";
+            }
+        }
+
+        initPage();
+    </script>
+
+    <!-- Пікірлер модулі -->
+    <script src="/adebietordasy/comments.js"></script>
+
+    <!-- ═══ Тіл-бардың JS логикасы (index.html-мен бірдей: белсенді бет + жылжымалы pill + сүйреу) ═══ -->
+    <script>
+    (function initTabbar() {
+      const tabbar = document.getElementById('tabbar');
+      const indicator = document.getElementById('tabbarIndicator');
+      const tabs = Array.from(document.querySelectorAll('.tabbar a'));
+
+      // Бұл бет (poem-view.html) сайт құрылымында "Өлеңдер" бөліміне жатады,
+      // сондықтан тіл-барда сол батырма белсенді болып көрсетіледі.
+      let current = location.pathname.split('/').pop() || 'index.html';
+      if (current === 'poem-view.html') current = 'poems.html';
+
+      tabs.forEach(a => a.classList.toggle('active', a.dataset.page === current));
+
+      function getTabBox(tab) {
+        const barRect = tabbar.getBoundingClientRect();
+        const tabRect = tab.getBoundingClientRect();
+        const pad = 6;
+        return {
+          left: tabRect.left - barRect.left + pad,
+          width: tabRect.width - pad * 2
+        };
       }
-    } else {
-      const activeTab = tabs.find(t => t.classList.contains('active'));
-      movePillTo(activeTab, true);
-    }
-    dragMoved = false;
-  }
 
-  tabbar.addEventListener('pointerup', endDrag);
-  tabbar.addEventListener('pointercancel', endDrag);
-})();
-</script>
+      function movePillTo(tab, animate) {
+        if (!tab) { indicator.style.opacity = '0'; return; }
+        const box = getTabBox(tab);
+        indicator.style.transition = animate
+          ? 'left 0.35s cubic-bezier(.34,1.56,.64,1), width 0.35s cubic-bezier(.34,1.56,.64,1), opacity 0.2s ease'
+          : 'opacity 0.2s ease';
+        indicator.style.left = box.left + 'px';
+        indicator.style.width = box.width + 'px';
+        indicator.style.opacity = '1';
+      }
+
+      function positionPill() {
+        const activeTab = tabs.find(a => a.classList.contains('active'));
+        movePillTo(activeTab, false);
+      }
+
+      positionPill();
+      window.addEventListener('load', positionPill);
+      window.addEventListener('resize', positionPill);
+
+      let ignoreNextClick = false;
+
+      function goToTab(tab) {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        movePillTo(tab, true);
+        const href = tab.getAttribute('href');
+        setTimeout(() => { location.href = href; }, 260);
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function (e) {
+          if (ignoreNextClick) { ignoreNextClick = false; e.preventDefault(); return; }
+          if (tab.classList.contains('active')) return;
+          e.preventDefault();
+          goToTab(tab);
+        });
+      });
+
+      let isDragging = false;
+      let dragMoved = false;
+      let activePointerId = null;
+
+      tabbar.style.userSelect = 'none';
+      tabbar.style.webkitUserSelect = 'none';
+
+      tabbar.addEventListener('pointerdown', (e) => {
+        const tab = e.target.closest('a');
+        if (!tab || !tab.classList.contains('active')) return;
+        isDragging = true;
+        dragMoved = false;
+        activePointerId = e.pointerId;
+        try { tabbar.setPointerCapture(e.pointerId); } catch (err) {}
+        indicator.classList.add('dragging');
+        document.body.style.cursor = 'grabbing';
+      });
+
+      tabbar.addEventListener('pointermove', (e) => {
+        if (!isDragging || e.pointerId !== activePointerId) return;
+        dragMoved = true;
+        e.preventDefault();
+
+        const x = e.clientX;
+        let targetTab = null;
+        for (const tab of tabs) {
+          const r = tab.getBoundingClientRect();
+          if (x >= r.left && x <= r.right) { targetTab = tab; break; }
+        }
+
+        tabs.forEach(t => t.classList.remove('drag-hover'));
+        if (targetTab) {
+          targetTab.classList.add('drag-hover');
+          indicator.style.transition = 'left 0.12s ease, width 0.12s ease';
+          const box = getTabBox(targetTab);
+          indicator.style.left = box.left + 'px';
+          indicator.style.width = box.width + 'px';
+        }
+      }, { passive: false });
+
+      function endDrag(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        document.body.style.cursor = '';
+        indicator.classList.remove('dragging');
+
+        const dropTab = tabs.find(t => t.classList.contains('drag-hover'));
+        tabs.forEach(t => t.classList.remove('drag-hover'));
+
+        if (dropTab && dragMoved) {
+          if (dropTab.classList.contains('active')) {
+            movePillTo(dropTab, true);
+          } else {
+            ignoreNextClick = true;
+            setTimeout(() => { ignoreNextClick = false; }, 500);
+            goToTab(dropTab);
+          }
+        } else {
+          const activeTab = tabs.find(t => t.classList.contains('active'));
+          movePillTo(activeTab, true);
+        }
+        dragMoved = false;
+      }
+
+      tabbar.addEventListener('pointerup', endDrag);
+      tabbar.addEventListener('pointercancel', endDrag);
+    })();
+    </script>
 
 </body>
 </html>
